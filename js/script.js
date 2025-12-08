@@ -90,11 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile Navigation Toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
+    const navOverlay = document.querySelector('.nav-overlay');
 
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('active');
+            if (navOverlay) {
+                navOverlay.classList.toggle('active');
+            }
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
         });
 
         // Close mobile menu when clicking a link
@@ -102,8 +108,22 @@ document.addEventListener('DOMContentLoaded', function() {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
+                if (navOverlay) {
+                    navOverlay.classList.remove('active');
+                }
+                document.body.style.overflow = '';
             });
         });
+        
+        // Close mobile menu when clicking overlay
+        if (navOverlay) {
+            navOverlay.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
     }
 
     // Smooth scroll for same-page anchor links only
@@ -192,14 +212,23 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pageBorder && navbar) {
         pageBorder.addEventListener('scroll', () => {
             if (pageBorder.scrollTop > 50) {
-                navbar.style.background = 'rgba(26, 26, 46, 0.98)';
-                navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
+                navbar.classList.add('scrolled');
             } else {
-                navbar.style.background = 'rgba(26, 26, 46, 0.95)';
-                navbar.style.boxShadow = 'none';
+                navbar.classList.remove('scrolled');
             }
         });
     }
+    
+    // Also check window scroll
+    window.addEventListener('scroll', () => {
+        if (navbar) {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+    });
 
     // FAQ Accordion
     const faqItems = document.querySelectorAll('.faq-question');
