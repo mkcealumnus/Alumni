@@ -123,6 +123,77 @@ body {
     animation-delay: 1s;
 }
 
+/* Top Bar */
+.top-bar {
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #00cec9 100%);
+    padding: 10px 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 23px 23px 0 0;
+}
+
+.top-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}
+
+.top-bar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.top-bar-quote {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.top-bar-quote i {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.top-bar-info {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.top-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.top-bar-item:hover {
+    transform: translateY(-2px);
+}
+
+.top-bar-item i {
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px;
+    border-radius: 50%;
+}
+
 /* Navigation */
 .navbar {
     position: sticky;
@@ -770,6 +841,37 @@ body {
         width: calc(100% - 20px);
         height: calc(100% - 20px);
         border-radius: 15px;
+    }
+
+    /* Top Bar Mobile */
+    .top-bar {
+        border-radius: 13px 13px 0 0;
+    }
+    
+    .top-bar-container {
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 15px;
+    }
+    
+    .top-bar-quote {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    .top-bar-info {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .top-bar-item {
+        font-size: 0.75rem;
+    }
+    
+    .top-bar-item i {
+        padding: 4px;
+        font-size: 0.8rem;
     }
 
     .nav-container {
