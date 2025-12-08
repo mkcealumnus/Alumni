@@ -1741,6 +1741,16 @@ body {
     color: #fff;
 }
 
+.team-avatar.ai-avatar {
+    background: linear-gradient(135deg, #00cec9 0%, #6c5ce7 50%, #a29bfe 100%);
+    animation: pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(0, 206, 201, 0.4);
+}
+
+.team-avatar.ai-avatar i {
+    animation: rotate 10s linear infinite;
+}
+
 .team-card h3 {
     margin-bottom: 5px;
 }
