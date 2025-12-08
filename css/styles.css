@@ -23,46 +23,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Custom Scrollbar Styles */
-::-webkit-scrollbar {
-    width: 1px;
-    height: 1px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--gradient-primary);
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color);
-}
-
-/* Page Border Scrollbar */
-.page-border::-webkit-scrollbar {
-    width: 8px;
-}
-
-.page-border::-webkit-scrollbar-track {
-    background: rgba(26, 26, 46, 0.3);
-    border-radius: 10px;
-}
-
-.page-border::-webkit-scrollbar-thumb {
-    background: var(--gradient-accent);
-    border-radius: 10px;
-}
-
-.page-border::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-color);
-}
-
 body {
     background: #ffffff;
     color: #ffffff;
@@ -86,13 +46,10 @@ body {
 .page-border {
     border: 2px solid rgba(108, 92, 231, 0.5);
     border-radius: 25px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    height: calc(100vh - 40px);
+    min-height: calc(100vh - 40px);
     position: relative;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) rgba(26, 26, 46, 0.3);
 }
 
 .highlight {
@@ -149,7 +106,6 @@ body {
     backdrop-filter: blur(20px);
     padding: 15px 0;
     border-bottom: 1px solid rgba(108, 92, 231, 0.3);
-    border-radius: 23px 23px 0 0;
 }
 
 .nav-container {
@@ -728,7 +684,7 @@ body {
     .hero-section {
         flex-direction: column;
         text-align: center;
-        padding: 40px;
+        padding: 40px 30px;
     }
 
     .hero-title {
@@ -737,6 +693,7 @@ body {
 
     .hero-buttons {
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .ai-visual {
@@ -765,32 +722,68 @@ body {
     .contact-content {
         grid-template-columns: 1fr;
     }
+    
+    .section {
+        padding: 80px 30px;
+    }
 }
 
 @media (max-width: 768px) {
     body {
         padding: 10px;
     }
+    
+    .page-border {
+        border-radius: 15px;
+        min-height: calc(100vh - 20px);
+    }
+    
+    #particles-js {
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+        border-radius: 15px;
+    }
+
+    .nav-container {
+        padding: 0 15px;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .logo i {
+        font-size: 1.5rem;
+    }
 
     .nav-links {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 70%;
+        width: 75%;
         height: 100vh;
         background: rgba(26, 26, 46, 0.98);
         flex-direction: column;
         justify-content: center;
         align-items: center;
         transition: 0.3s;
+        z-index: 1001;
+        gap: 30px;
     }
 
     .nav-links.active {
         right: 0;
     }
+    
+    .nav-link {
+        font-size: 1.2rem;
+    }
 
     .hamburger {
         display: flex;
+        z-index: 1002;
     }
 
     .hamburger.active span:nth-child(1) {
@@ -806,11 +799,12 @@ body {
     }
 
     .section {
-        padding: 60px 20px;
+        padding: 50px 15px;
     }
 
     .section-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        margin-bottom: 40px;
     }
 
     .about-stats {
@@ -818,12 +812,180 @@ body {
         gap: 20px;
     }
 
+    .hero-section {
+        padding: 30px 15px;
+        min-height: auto;
+    }
+
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .hero-subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .hero-description {
+        font-size: 0.95rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .ai-visual {
+        width: 150px;
+        height: 150px;
+        margin-top: 30px;
+    }
+    
+    .ai-visual > i {
+        font-size: 3rem;
+    }
+    
+    .orbit {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .orbit-2 {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .orbit-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .orbit-icon i {
+        font-size: 0.9rem;
+    }
+    
+    /* Products cards */
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-card {
+        padding: 25px;
+    }
+    
+    /* Career cards */
+    .careers-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .career-card {
+        padding: 25px;
+    }
+    
+    /* Contact section */
+    .contact-content {
+        gap: 40px;
+    }
+    
+    .contact-form {
+        padding: 25px;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 30px 15px;
+    }
+    
+    .footer-logo {
+        font-size: 1.2rem;
+    }
+    
+    .footer-logo i {
+        font-size: 1.5rem;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    /* Overview cards */
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .overview-card {
+        padding: 25px;
+    }
+    
+    /* Stats grid */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stat-card {
+        padding: 20px 15px;
+    }
+    
+    .stat-card h3 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+    }
+    
+    .page-border {
+        border-radius: 12px;
+        min-height: calc(100vh - 16px);
+    }
+    
+    #particles-js {
+        top: 8px;
+        left: 8px;
+        width: calc(100% - 16px);
+        height: calc(100% - 16px);
+        border-radius: 12px;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-contact-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -2040,23 +2202,42 @@ body {
     .faq-grid {
         grid-template-columns: 1fr;
     }
+    
+    .products-detailed-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
     .page-header {
-        padding: 50px 20px 25px;
+        padding: 40px 15px 20px;
     }
 
     .page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1rem;
     }
 
     .timeline {
-        padding-left: 25px;
+        padding-left: 20px;
     }
 
     .timeline-item {
-        padding-left: 30px;
+        padding-left: 25px;
+        margin-bottom: 30px;
+    }
+    
+    .timeline-dot {
+        left: -31px;
+        width: 12px;
+        height: 12px;
+    }
+    
+    .timeline-content h3 {
+        font-size: 1.1rem;
     }
 
     .contact-form-detailed .form-row {
@@ -2066,17 +2247,200 @@ body {
     .job-header {
         flex-direction: column;
     }
-
-    .products-detailed-grid {
-        grid-template-columns: 1fr;
+    
+    .job-card {
+        padding: 25px;
+    }
+    
+    .job-info h3 {
+        font-size: 1.2rem;
+    }
+    
+    .job-meta {
+        gap: 10px;
+    }
+    
+    .job-meta span {
+        font-size: 0.8rem;
     }
 
     .culture-image-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 
     .culture-img {
-        width: 80px;
+        width: 100%;
         height: 80px;
+    }
+    
+    .culture-values {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .culture-value {
+        padding: 12px 20px;
+        justify-content: center;
+    }
+    
+    /* Featured product */
+    .featured-text h2 {
+        font-size: 2rem;
+    }
+    
+    .featured-description {
+        font-size: 1rem;
+    }
+    
+    .featured-buttons {
+        flex-direction: column;
+    }
+    
+    .featured-buttons .btn {
+        width: 100%;
+    }
+    
+    .phone-mockup {
+        width: 180px;
+        height: 360px;
+    }
+    
+    .phone-screen i {
+        font-size: 3rem;
+    }
+    
+    /* Product detailed cards */
+    .product-detailed-card {
+        padding: 25px;
+    }
+    
+    .product-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .product-icon-large {
+        margin: 0 auto;
+    }
+    
+    /* Comparison table */
+    .comparison-table th,
+    .comparison-table td {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+    }
+    
+    /* Contact page */
+    .contact-form-wrapper {
+        padding: 25px;
+    }
+    
+    .contact-method {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .method-icon {
+        margin: 0 auto;
+    }
+    
+    .social-links-large {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* FAQ */
+    .faq-question h3 {
+        font-size: 0.95rem;
+    }
+    
+    .faq-answer {
+        padding: 0 20px 15px;
+    }
+    
+    /* Map */
+    .map-placeholder {
+        height: 200px;
+    }
+    
+    .map-placeholder i {
+        font-size: 2.5rem;
+    }
+    
+    .map-placeholder p {
+        font-size: 1.2rem;
+    }
+    
+    /* Benefit cards */
+    .benefit-card {
+        padding: 25px;
+    }
+    
+    .benefit-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .benefit-icon i {
+        font-size: 1.5rem;
+    }
+    
+    /* Job filters */
+    .job-filters {
+        gap: 10px;
+    }
+    
+    .filter-btn {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+    
+    /* Sub title */
+    .sub-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header {
+        padding: 30px 10px 15px;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .faq-question {
+        padding: 15px;
+    }
+    
+    .faq-question h3 {
+        font-size: 0.9rem;
+    }
+    
+    .contact-methods {
+        gap: 20px;
+    }
+    
+    .method-content h3 {
+        font-size: 1rem;
+    }
+    
+    .social-link-large {
+        padding: 8px 14px;
+    }
+    
+    .social-link-large span {
+        font-size: 0.8rem;
     }
 }
