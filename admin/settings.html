@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - SignBridge AI Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-logo">
+                <i class="fas fa-hands"></i>
+                <span>SignBridge</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="translations.html" class="nav-link">
+                        <i class="fas fa-language"></i>
+                        <span>Translations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="api-keys.html" class="nav-link">
+                        <i class="fas fa-key"></i>
+                        <span>API Keys</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="notifications.html" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link active">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="../index.html" class="nav-link">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
+            </a>
+            <a href="login.html" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span class="current">Settings</span>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="header-user">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content -->
+        <div class="admin-content">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1>Settings</h1>
+                    <p>Manage your application settings and preferences</p>
+                </div>
+            </div>
+            
+            <!-- Settings Tabs -->
+            <div class="settings-container">
+                <div class="settings-sidebar">
+                    <ul class="settings-nav">
+                        <li class="settings-nav-item active" data-tab="general">
+                            <i class="fas fa-cog"></i>
+                            <span>General</span>
+                        </li>
+                        <li class="settings-nav-item" data-tab="appearance">
+                            <i class="fas fa-palette"></i>
+                            <span>Appearance</span>
+                        </li>
+                        <li class="settings-nav-item" data-tab="notifications">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
+                        </li>
+                        <li class="settings-nav-item" data-tab="security">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Security</span>
+                        </li>
+                        <li class="settings-nav-item" data-tab="api">
+                            <i class="fas fa-code"></i>
+                            <span>API Settings</span>
+                        </li>
+                        <li class="settings-nav-item" data-tab="backup">
+                            <i class="fas fa-database"></i>
+                            <span>Backup & Data</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="settings-content">
+                    <!-- General Settings -->
+                    <div class="settings-panel active" id="general">
+                        <div class="settings-section">
+                            <h3 class="settings-title">General Settings</h3>
+                            <p class="settings-description">Configure basic application settings</p>
+                            
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label">Site Name</label>
+                                    <input type="text" class="form-input" value="SignBridge AI">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Site Description</label>
+                                    <textarea class="form-textarea" rows="3">AI-powered sign language translation platform bridging communication gaps.</textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Contact Email</label>
+                                        <input type="email" class="form-input" value="contact@signbridgeai.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Support Phone</label>
+                                        <input type="tel" class="form-input" value="+1 (800) 555-0123">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Default Language</label>
+                                        <select class="form-select">
+                                            <option value="en" selected>English</option>
+                                            <option value="es">Spanish</option>
+                                            <option value="fr">French</option>
+                                            <option value="de">German</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Timezone</label>
+                                        <select class="form-select">
+                                            <option value="UTC">UTC</option>
+                                            <option value="EST" selected>Eastern Time (EST)</option>
+                                            <option value="PST">Pacific Time (PST)</option>
+                                            <option value="GMT">Greenwich Mean Time (GMT)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary">Reset to Default</button>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Appearance Settings -->
+                    <div class="settings-panel" id="appearance">
+                        <div class="settings-section">
+                            <h3 class="settings-title">Appearance Settings</h3>
+                            <p class="settings-description">Customize the look and feel of your admin panel</p>
+                            
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label">Theme</label>
+                                    <div class="theme-options">
+                                        <label class="theme-option">
+                                            <input type="radio" name="theme" value="light" checked>
+                                            <div class="theme-preview light">
+                                                <i class="fas fa-sun"></i>
+                                                <span>Light</span>
+                                            </div>
+                                        </label>
+                                        <label class="theme-option">
+                                            <input type="radio" name="theme" value="dark">
+                                            <div class="theme-preview dark">
+                                                <i class="fas fa-moon"></i>
+                                                <span>Dark</span>
+                                            </div>
+                                        </label>
+                                        <label class="theme-option">
+                                            <input type="radio" name="theme" value="auto">
+                                            <div class="theme-preview auto">
+                                                <i class="fas fa-adjust"></i>
+                                                <span>Auto</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Accent Color</label>
+                                    <div class="color-options">
+                                        <label class="color-option">
+                                            <input type="radio" name="accent" value="indigo" checked>
+                                            <span class="color-swatch" style="background: #6366f1;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="accent" value="blue">
+                                            <span class="color-swatch" style="background: #3b82f6;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="accent" value="green">
+                                            <span class="color-swatch" style="background: #10b981;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="accent" value="purple">
+                                            <span class="color-swatch" style="background: #8b5cf6;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="accent" value="pink">
+                                            <span class="color-swatch" style="background: #ec4899;"></span>
+                                        </label>
+                                        <label class="color-option">
+                                            <input type="radio" name="accent" value="orange">
+                                            <span class="color-swatch" style="background: #f59e0b;"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Sidebar Style</label>
+                                    <select class="form-select">
+                                        <option value="expanded" selected>Expanded</option>
+                                        <option value="collapsed">Collapsed</option>
+                                        <option value="mini">Mini</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="toggle-group">
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Compact Mode</span>
+                                            <span class="toggle-description">Reduce padding and spacing</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Show Breadcrumbs</span>
+                                            <span class="toggle-description">Display navigation breadcrumbs</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary">Reset to Default</button>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Settings -->
+                    <div class="settings-panel" id="notifications">
+                        <div class="settings-section">
+                            <h3 class="settings-title">Notification Settings</h3>
+                            <p class="settings-description">Manage your notification preferences</p>
+                            
+                            <div class="settings-form">
+                                <div class="toggle-group">
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Email Notifications</span>
+                                            <span class="toggle-description">Receive notifications via email</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Push Notifications</span>
+                                            <span class="toggle-description">Receive browser push notifications</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">New User Signup</span>
+                                            <span class="toggle-description">Get notified when new users register</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">API Usage Alerts</span>
+                                            <span class="toggle-description">Alert when API usage exceeds threshold</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Weekly Reports</span>
+                                            <span class="toggle-description">Receive weekly analytics summary</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">System Updates</span>
+                                            <span class="toggle-description">Notify about system updates and maintenance</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary">Reset to Default</button>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Settings -->
+                    <div class="settings-panel" id="security">
+                        <div class="settings-section">
+                            <h3 class="settings-title">Security Settings</h3>
+                            <p class="settings-description">Configure security and authentication options</p>
+                            
+                            <div class="settings-form">
+                                <div class="toggle-group">
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Two-Factor Authentication</span>
+                                            <span class="toggle-description">Add an extra layer of security</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Session Timeout</span>
+                                            <span class="toggle-description">Auto logout after inactivity</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Login Alerts</span>
+                                            <span class="toggle-description">Get notified of new login attempts</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Session Timeout Duration</label>
+                                    <select class="form-select">
+                                        <option value="15">15 minutes</option>
+                                        <option value="30" selected>30 minutes</option>
+                                        <option value="60">1 hour</option>
+                                        <option value="120">2 hours</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Password Policy</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" checked>
+                                            <span>Require uppercase letters</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" checked>
+                                            <span>Require lowercase letters</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" checked>
+                                            <span>Require numbers</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" checked>
+                                            <span>Require special characters</span>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" checked>
+                                            <span>Minimum 8 characters</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section">
+                            <h3 class="settings-title">Change Password</h3>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label">Current Password</label>
+                                    <input type="password" class="form-input" placeholder="Enter current password">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" class="form-input" placeholder="Enter new password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-input" placeholder="Confirm new password">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary">Cancel</button>
+                            <button class="btn btn-primary">Update Password</button>
+                        </div>
+                    </div>
+                    
+                    <!-- API Settings -->
+                    <div class="settings-panel" id="api">
+                        <div class="settings-section">
+                            <h3 class="settings-title">API Settings</h3>
+                            <p class="settings-description">Configure API rate limits and access</p>
+                            
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label">API Rate Limit (requests/minute)</label>
+                                    <input type="number" class="form-input" value="100">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Default API Key Expiration</label>
+                                    <select class="form-select">
+                                        <option value="30">30 days</option>
+                                        <option value="60">60 days</option>
+                                        <option value="90" selected>90 days</option>
+                                        <option value="365">1 year</option>
+                                        <option value="0">Never</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="toggle-group">
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Allow Public API Access</span>
+                                            <span class="toggle-description">Enable public endpoints</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">API Logging</span>
+                                            <span class="toggle-description">Log all API requests</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary">Reset to Default</button>
+                            <button class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Backup & Data Settings -->
+                    <div class="settings-panel" id="backup">
+                        <div class="settings-section">
+                            <h3 class="settings-title">Backup & Data</h3>
+                            <p class="settings-description">Manage backups and data export/import</p>
+                            
+                            <div class="settings-form">
+                                <div class="toggle-group">
+                                    <div class="toggle-item">
+                                        <div class="toggle-info">
+                                            <span class="toggle-label">Auto Backup</span>
+                                            <span class="toggle-description">Automatically backup data daily</span>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Backup Frequency</label>
+                                    <select class="form-select">
+                                        <option value="daily" selected>Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Backup Retention</label>
+                                    <select class="form-select">
+                                        <option value="7">7 days</option>
+                                        <option value="14">14 days</option>
+                                        <option value="30" selected>30 days</option>
+                                        <option value="90">90 days</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="backup-actions">
+                                    <div class="backup-card">
+                                        <div class="backup-icon">
+                                            <i class="fas fa-download"></i>
+                                        </div>
+                                        <div class="backup-info">
+                                            <h4>Export Data</h4>
+                                            <p>Download all your data as JSON/CSV</p>
+                                        </div>
+                                        <button class="btn btn-secondary">Export</button>
+                                    </div>
+                                    <div class="backup-card">
+                                        <div class="backup-icon">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <div class="backup-info">
+                                            <h4>Import Data</h4>
+                                            <p>Import data from backup file</p>
+                                        </div>
+                                        <button class="btn btn-secondary">Import</button>
+                                    </div>
+                                    <div class="backup-card">
+                                        <div class="backup-icon">
+                                            <i class="fas fa-database"></i>
+                                        </div>
+                                        <div class="backup-info">
+                                            <h4>Create Backup</h4>
+                                            <p>Manually create a new backup now</p>
+                                        </div>
+                                        <button class="btn btn-primary">Backup Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section danger-zone">
+                            <h3 class="settings-title">Danger Zone</h3>
+                            <p class="settings-description">Irreversible actions - proceed with caution</p>
+                            
+                            <div class="danger-actions">
+                                <div class="danger-item">
+                                    <div class="danger-info">
+                                        <h4>Clear All Cache</h4>
+                                        <p>Remove all cached data and regenerate</p>
+                                    </div>
+                                    <button class="btn btn-danger">Clear Cache</button>
+                                </div>
+                                <div class="danger-item">
+                                    <div class="danger-info">
+                                        <h4>Reset All Settings</h4>
+                                        <p>Reset all settings to factory defaults</p>
+                                    </div>
+                                    <button class="btn btn-danger">Reset Settings</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

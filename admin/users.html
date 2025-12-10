@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - SignBridge AI Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-logo">
+                <i class="fas fa-hands"></i>
+                <span>SignBridge</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link active">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="translations.html" class="nav-link">
+                        <i class="fas fa-language"></i>
+                        <span>Translations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="api-keys.html" class="nav-link">
+                        <i class="fas fa-key"></i>
+                        <span>API Keys</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="notifications.html" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="../index.html" class="nav-link">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
+            </a>
+            <a href="login.html" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span class="current">User Management</span>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="header-user">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content -->
+        <div class="admin-content">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1>User Management</h1>
+                    <p>Manage all registered users and their permissions</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-primary" onclick="openModal('addUserModal')">
+                        <i class="fas fa-plus"></i>
+                        Add New User
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Filters -->
+            <div class="filters-card">
+                <div class="filters-row">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search users by name, email..." id="userSearch">
+                    </div>
+                    <div class="filter-group">
+                        <select class="form-select" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                        <select class="form-select" id="roleFilter">
+                            <option value="">All Roles</option>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-filter"></i>
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Users Table -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">All Users</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" class="form-checkbox" id="selectAll">
+                                </th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Join Date</th>
+                                <th>Last Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="form-checkbox"></td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff" alt="John Doe">
+                                        <span>John Doe</span>
+                                    </div>
+                                </td>
+                                <td>john.doe@example.com</td>
+                                <td><span class="role-badge admin">Admin</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Jan 15, 2024</td>
+                                <td>2 hours ago</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="form-checkbox"></td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Sarah+Smith&background=10b981&color=fff" alt="Sarah Smith">
+                                        <span>Sarah Smith</span>
+                                    </div>
+                                </td>
+                                <td>sarah.smith@example.com</td>
+                                <td><span class="role-badge premium">Premium</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Feb 20, 2024</td>
+                                <td>5 minutes ago</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="form-checkbox"></td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=f59e0b&color=fff" alt="Mike Johnson">
+                                        <span>Mike Johnson</span>
+                                    </div>
+                                </td>
+                                <td>mike.johnson@example.com</td>
+                                <td><span class="role-badge user">User</span></td>
+                                <td><span class="status-badge inactive">Inactive</span></td>
+                                <td>Mar 10, 2024</td>
+                                <td>3 days ago</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="form-checkbox"></td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Emily+Brown&background=ec4899&color=fff" alt="Emily Brown">
+                                        <span>Emily Brown</span>
+                                    </div>
+                                </td>
+                                <td>emily.brown@example.com</td>
+                                <td><span class="role-badge premium">Premium</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Mar 25, 2024</td>
+                                <td>1 hour ago</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="form-checkbox"></td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=David+Lee&background=8b5cf6&color=fff" alt="David Lee">
+                                        <span>David Lee</span>
+                                    </div>
+                                </td>
+                                <td>david.lee@example.com</td>
+                                <td><span class="role-badge user">User</span></td>
+                                <td><span class="status-badge suspended">Suspended</span></td>
+                                <td>Apr 5, 2024</td>
+                                <td>1 week ago</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-info">
+                        Showing 1 to 5 of 248 entries
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-dots">...</span>
+                        <button class="page-btn">50</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Add User Modal -->
+    <div class="modal-overlay" id="addUserModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add New User</h3>
+                <button class="modal-close" onclick="closeModal('addUserModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-input" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-input" placeholder="Enter last name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="Enter email address" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" required>
+                                <option value="">Select role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                                <option value="premium">Premium</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-input" placeholder="Confirm password" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addUserModal')">Cancel</button>
+                <button class="btn btn-primary">Create User</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

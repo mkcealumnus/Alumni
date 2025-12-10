@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Keys - SignBridge AI Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="admin-logo">
+                <i class="fas fa-hands"></i>
+                <span>SignBridge</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="translations.html" class="nav-link">
+                        <i class="fas fa-language"></i>
+                        <span>Translations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="api-keys.html" class="nav-link active">
+                        <i class="fas fa-key"></i>
+                        <span>API Keys</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="notifications.html" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="../index.html" class="nav-link">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
+            </a>
+            <a href="login.html" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span class="current">API Keys</span>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="header-user">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content -->
+        <div class="admin-content">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1>API Keys</h1>
+                    <p>Manage API keys for developers and integrations</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-primary" onclick="openModal('createKeyModal')">
+                        <i class="fas fa-plus"></i>
+                        Generate New Key
+                    </button>
+                </div>
+            </div>
+            
+            <!-- API Stats -->
+            <div class="stats-grid stats-grid-4">
+                <div class="stat-card mini">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Keys</h3>
+                        <div class="stat-value">48</div>
+                    </div>
+                </div>
+                <div class="stat-card mini">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active</h3>
+                        <div class="stat-value">42</div>
+                    </div>
+                </div>
+                <div class="stat-card mini">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>API Calls Today</h3>
+                        <div class="stat-value">156K</div>
+                    </div>
+                </div>
+                <div class="stat-card mini">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Revoked</h3>
+                        <div class="stat-value">6</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- API Keys Table -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">All API Keys</h3>
+                    <div class="card-actions">
+                        <select class="form-select form-select-sm">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Expired</option>
+                            <option>Revoked</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>API Key</th>
+                                <th>Owner</th>
+                                <th>Plan</th>
+                                <th>Usage</th>
+                                <th>Status</th>
+                                <th>Expires</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="key-name">
+                                        <i class="fas fa-key"></i>
+                                        <span>Production API</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="api-key-display">
+                                        <code>sb_live_**********************7x9k</code>
+                                        <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=TechCorp&background=6366f1&color=fff" alt="TechCorp">
+                                        <span>TechCorp Inc.</span>
+                                    </div>
+                                </td>
+                                <td><span class="plan-badge enterprise">Enterprise</span></td>
+                                <td>
+                                    <div class="usage-info">
+                                        <div class="usage-bar">
+                                            <div class="usage-progress" style="width: 65%;"></div>
+                                        </div>
+                                        <span>65K / 100K</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Dec 31, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Revoke"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="key-name">
+                                        <i class="fas fa-key"></i>
+                                        <span>Development Key</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="api-key-display">
+                                        <code>sb_test_**********************a2m1</code>
+                                        <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=10b981&color=fff" alt="John Doe">
+                                        <span>John Doe</span>
+                                    </div>
+                                </td>
+                                <td><span class="plan-badge pro">Pro</span></td>
+                                <td>
+                                    <div class="usage-info">
+                                        <div class="usage-bar">
+                                            <div class="usage-progress" style="width: 25%;"></div>
+                                        </div>
+                                        <span>2.5K / 10K</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Jun 15, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Revoke"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="key-name">
+                                        <i class="fas fa-key"></i>
+                                        <span>Mobile App Key</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="api-key-display">
+                                        <code>sb_live_**********************k8p2</code>
+                                        <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=AppDev+Co&background=f59e0b&color=fff" alt="AppDev Co">
+                                        <span>AppDev Co.</span>
+                                    </div>
+                                </td>
+                                <td><span class="plan-badge business">Business</span></td>
+                                <td>
+                                    <div class="usage-info">
+                                        <div class="usage-bar">
+                                            <div class="usage-progress warning" style="width: 85%;"></div>
+                                        </div>
+                                        <span>42.5K / 50K</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>Mar 22, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Revoke"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="key-name">
+                                        <i class="fas fa-key"></i>
+                                        <span>Integration Key</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="api-key-display">
+                                        <code>sb_live_**********************n5v7</code>
+                                        <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Sarah+Smith&background=ec4899&color=fff" alt="Sarah Smith">
+                                        <span>Sarah Smith</span>
+                                    </div>
+                                </td>
+                                <td><span class="plan-badge starter">Starter</span></td>
+                                <td>
+                                    <div class="usage-info">
+                                        <div class="usage-bar">
+                                            <div class="usage-progress danger" style="width: 98%;"></div>
+                                        </div>
+                                        <span>980 / 1K</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge inactive">Near Limit</span></td>
+                                <td>Feb 10, 2025</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn danger" title="Revoke"><i class="fas fa-ban"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="key-name">
+                                        <i class="fas fa-key"></i>
+                                        <span>Old Integration</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="api-key-display">
+                                        <code>sb_test_**********************x3w9</code>
+                                        <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Legacy+App&background=94a3b8&color=fff" alt="Legacy App">
+                                        <span>Legacy App</span>
+                                    </div>
+                                </td>
+                                <td><span class="plan-badge starter">Starter</span></td>
+                                <td>
+                                    <div class="usage-info">
+                                        <div class="usage-bar">
+                                            <div class="usage-progress" style="width: 0%;"></div>
+                                        </div>
+                                        <span>0 / 1K</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge suspended">Revoked</span></td>
+                                <td>Expired</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn" title="Reactivate"><i class="fas fa-redo"></i></button>
+                                        <button class="action-btn danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-info">
+                        Showing 1 to 5 of 48 entries
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-dots">...</span>
+                        <button class="page-btn">10</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- API Documentation Link -->
+            <div class="dashboard-card">
+                <div class="api-docs-promo">
+                    <div class="docs-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="docs-content">
+                        <h3>API Documentation</h3>
+                        <p>Learn how to integrate SignBridge AI into your applications with our comprehensive API documentation.</p>
+                    </div>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-external-link-alt"></i>
+                        View Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Create API Key Modal -->
+    <div class="modal-overlay" id="createKeyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Generate New API Key</h3>
+                <button class="modal-close" onclick="closeModal('createKeyModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createKeyForm">
+                    <div class="form-group">
+                        <label class="form-label">Key Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., Production API Key" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Environment</label>
+                            <select class="form-select" required>
+                                <option value="live">Live / Production</option>
+                                <option value="test">Test / Development</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Plan</label>
+                            <select class="form-select" required>
+                                <option value="starter">Starter (1K calls/month)</option>
+                                <option value="pro">Pro (10K calls/month)</option>
+                                <option value="business">Business (50K calls/month)</option>
+                                <option value="enterprise">Enterprise (100K calls/month)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Expiration</label>
+                        <select class="form-select" required>
+                            <option value="30">30 days</option>
+                            <option value="90">90 days</option>
+                            <option value="180">6 months</option>
+                            <option value="365">1 year</option>
+                            <option value="0">Never expire</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Allowed Origins (optional)</label>
+                        <input type="text" class="form-input" placeholder="https://example.com, https://app.example.com">
+                        <small class="form-help">Comma-separated list of allowed domains for CORS</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description (optional)</label>
+                        <textarea class="form-textarea" rows="3" placeholder="What is this API key for?"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('createKeyModal')">Cancel</button>
+                <button class="btn btn-primary">Generate Key</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>
