@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics - SignBridge AI Admin</title>
+    <title>Analytics - SignBridgeAI Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11,478 +11,545 @@
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="admin-sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="admin-logo">
-                <i class="fas fa-hands"></i>
-                <span>SignBridge</span>
-            </div>
-            <button class="sidebar-close" id="sidebarClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+    <div class="admin-layout">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
         
-        <nav class="sidebar-nav">
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="index.html" class="nav-item">
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="users.html" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="analytics.html" class="nav-link active">
+                    <a href="analytics.html" class="nav-item active">
                         <i class="fas fa-chart-line"></i>
                         <span>Analytics</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="translations.html" class="nav-link">
+                    <a href="users.html" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                        <span class="nav-badge">24</span>
+                    </a>
+                    <a href="translations.html" class="nav-item">
                         <i class="fas fa-language"></i>
                         <span>Translations</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="api-keys.html" class="nav-link">
-                        <i class="fas fa-key"></i>
-                        <span>API Keys</span>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="products.html" class="nav-item">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="messages.html" class="nav-link">
-                        <i class="fas fa-envelope"></i>
-                        <span>Messages</span>
+                    <a href="subscriptions.html" class="nav-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                    <a href="support.html" class="nav-item">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
                         <span class="nav-badge">5</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="notifications.html" class="nav-link">
-                        <i class="fas fa-bell"></i>
-                        <span>Notifications</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="settings.html" class="nav-link">
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="settings.html" class="nav-item">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
-                </li>
-            </ul>
-        </nav>
+                    <a href="logs.html" class="nav-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Logs</span>
+                    </a>
+                    <a href="../index.html" class="nav-item">
+                        <i class="fas fa-globe"></i>
+                        <span>View Website</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
         
-        <div class="sidebar-footer">
-            <a href="../index.html" class="nav-link">
-                <i class="fas fa-external-link-alt"></i>
-                <span>View Website</span>
-            </a>
-            <a href="login.html" class="nav-link">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-    </aside>
-    
-    <!-- Main Content -->
-    <main class="admin-main">
-        <!-- Header -->
-        <header class="admin-header">
-            <div class="header-left">
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="breadcrumb">
-                    <span>Admin</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span class="current">Analytics</span>
-                </div>
-            </div>
-            
-            <div class="header-right">
-                <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <div class="header-user">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
-                    <span>Admin</span>
-                </div>
-            </div>
-        </header>
-        
-        <!-- Content -->
-        <div class="admin-content">
-            <div class="page-header">
-                <div class="page-header-left">
-                    <h1>Analytics Dashboard</h1>
-                    <p>Monitor your platform performance and user engagement</p>
-                </div>
-                <div class="page-header-right">
-                    <select class="form-select">
-                        <option>Last 7 Days</option>
-                        <option>Last 30 Days</option>
-                        <option>Last 90 Days</option>
-                        <option>This Year</option>
-                    </select>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-download"></i>
-                        Export Report
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
                     </button>
-                </div>
-            </div>
-            
-            <!-- Analytics Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Total Visitors</h3>
-                        <div class="stat-value">156,842</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>18.2% vs last period</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Avg. Session Duration</h3>
-                        <div class="stat-value">4m 32s</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>5.8% vs last period</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Bounce Rate</h3>
-                        <div class="stat-value">32.4%</div>
-                        <div class="stat-change negative">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>2.1% vs last period</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
-                        <i class="fas fa-redo"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Conversion Rate</h3>
-                        <div class="stat-value">8.7%</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>12.4% vs last period</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Charts Row -->
-            <div class="charts-grid">
-                <div class="dashboard-card chart-card-large">
-                    <div class="card-header">
-                        <h3 class="card-title">Traffic Overview</h3>
-                        <div class="card-actions">
-                            <button class="btn btn-sm btn-secondary active">Daily</button>
-                            <button class="btn btn-sm btn-secondary">Weekly</button>
-                            <button class="btn btn-sm btn-secondary">Monthly</button>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-placeholder">
-                            <div class="chart-bars">
-                                <div class="chart-bar" style="height: 60%;"><span>Mon</span></div>
-                                <div class="chart-bar" style="height: 80%;"><span>Tue</span></div>
-                                <div class="chart-bar" style="height: 45%;"><span>Wed</span></div>
-                                <div class="chart-bar" style="height: 90%;"><span>Thu</span></div>
-                                <div class="chart-bar" style="height: 75%;"><span>Fri</span></div>
-                                <div class="chart-bar" style="height: 55%;"><span>Sat</span></div>
-                                <div class="chart-bar" style="height: 40%;"><span>Sun</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="dashboard-card chart-card-small">
-                    <div class="card-header">
-                        <h3 class="card-title">Traffic Sources</h3>
-                    </div>
-                    <div class="chart-container">
-                        <div class="donut-chart">
-                            <div class="donut-center">
-                                <span class="donut-value">156K</span>
-                                <span class="donut-label">Total</span>
-                            </div>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #6366f1;"></span>
-                                <span class="legend-label">Organic Search</span>
-                                <span class="legend-value">45%</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #10b981;"></span>
-                                <span class="legend-label">Direct</span>
-                                <span class="legend-value">28%</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #f59e0b;"></span>
-                                <span class="legend-label">Social Media</span>
-                                <span class="legend-value">18%</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #ec4899;"></span>
-                                <span class="legend-label">Referral</span>
-                                <span class="legend-value">9%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- More Analytics -->
-            <div class="analytics-grid">
-                <!-- Top Pages -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Top Pages</h3>
-                        <a href="#" class="card-link">View All</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Page</th>
-                                    <th>Views</th>
-                                    <th>Avg. Time</th>
-                                    <th>Bounce</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>/</td>
-                                    <td>45,234</td>
-                                    <td>3m 12s</td>
-                                    <td>24%</td>
-                                </tr>
-                                <tr>
-                                    <td>/products</td>
-                                    <td>28,456</td>
-                                    <td>5m 45s</td>
-                                    <td>18%</td>
-                                </tr>
-                                <tr>
-                                    <td>/about</td>
-                                    <td>15,789</td>
-                                    <td>2m 30s</td>
-                                    <td>35%</td>
-                                </tr>
-                                <tr>
-                                    <td>/contact</td>
-                                    <td>12,345</td>
-                                    <td>4m 15s</td>
-                                    <td>22%</td>
-                                </tr>
-                                <tr>
-                                    <td>/careers</td>
-                                    <td>8,901</td>
-                                    <td>6m 20s</td>
-                                    <td>15%</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search anything...">
                     </div>
                 </div>
                 
-                <!-- Top Countries -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Top Countries</h3>
-                        <a href="#" class="card-link">View All</a>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
                     </div>
-                    <div class="country-list">
-                        <div class="country-item">
-                            <div class="country-info">
-                                <span class="country-flag">🇺🇸</span>
-                                <span class="country-name">United States</span>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">7</span>
+                    </div>
+                    
+                    <div class="dropdown" id="userDropdown">
+                        <div class="user-menu">
+                            <div class="user-avatar">JD</div>
+                            <div class="user-info">
+                                <span class="user-name">John Doe</span>
+                                <span class="user-role">Administrator</span>
                             </div>
-                            <div class="country-stats">
-                                <div class="country-bar">
-                                    <div class="country-progress" style="width: 45%;"></div>
-                                </div>
-                                <span class="country-value">45,234</span>
-                            </div>
+                            <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
                         </div>
-                        <div class="country-item">
-                            <div class="country-info">
-                                <span class="country-flag">🇬🇧</span>
-                                <span class="country-name">United Kingdom</span>
-                            </div>
-                            <div class="country-stats">
-                                <div class="country-bar">
-                                    <div class="country-progress" style="width: 28%;"></div>
-                                </div>
-                                <span class="country-value">28,456</span>
-                            </div>
-                        </div>
-                        <div class="country-item">
-                            <div class="country-info">
-                                <span class="country-flag">🇮🇳</span>
-                                <span class="country-name">India</span>
-                            </div>
-                            <div class="country-stats">
-                                <div class="country-bar">
-                                    <div class="country-progress" style="width: 22%;"></div>
-                                </div>
-                                <span class="country-value">22,789</span>
-                            </div>
-                        </div>
-                        <div class="country-item">
-                            <div class="country-info">
-                                <span class="country-flag">🇩🇪</span>
-                                <span class="country-name">Germany</span>
-                            </div>
-                            <div class="country-stats">
-                                <div class="country-bar">
-                                    <div class="country-progress" style="width: 18%;"></div>
-                                </div>
-                                <span class="country-value">18,345</span>
-                            </div>
-                        </div>
-                        <div class="country-item">
-                            <div class="country-info">
-                                <span class="country-flag">🇨🇦</span>
-                                <span class="country-name">Canada</span>
-                            </div>
-                            <div class="country-stats">
-                                <div class="country-bar">
-                                    <div class="country-progress" style="width: 15%;"></div>
-                                </div>
-                                <span class="country-value">15,123</span>
-                            </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="login.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </header>
             
-            <!-- Device & Browser Stats -->
-            <div class="analytics-grid">
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Device Types</h3>
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-header-left">
+                        <h1 class="page-title">Analytics</h1>
+                        <p class="page-subtitle">Monitor your platform's performance and user engagement</p>
                     </div>
-                    <div class="device-stats">
-                        <div class="device-item">
-                            <div class="device-icon">
-                                <i class="fas fa-desktop"></i>
+                    <div class="page-header-right">
+                        <select class="form-select" style="width: auto;">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">This Year</option>
+                        </select>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-eye"></i>
                             </div>
-                            <div class="device-info">
-                                <span class="device-name">Desktop</span>
-                                <span class="device-percent">58%</span>
-                            </div>
-                            <div class="device-bar">
-                                <div class="device-progress" style="width: 58%; background: #6366f1;"></div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>18%</span>
                             </div>
                         </div>
-                        <div class="device-item">
-                            <div class="device-icon">
-                                <i class="fas fa-mobile-alt"></i>
+                        <div class="stat-value">2.4M</div>
+                        <div class="stat-label">Total Page Views</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon success">
+                                <i class="fas fa-user-check"></i>
                             </div>
-                            <div class="device-info">
-                                <span class="device-name">Mobile</span>
-                                <span class="device-percent">32%</span>
-                            </div>
-                            <div class="device-bar">
-                                <div class="device-progress" style="width: 32%; background: #10b981;"></div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12%</span>
                             </div>
                         </div>
-                        <div class="device-item">
-                            <div class="device-icon">
-                                <i class="fas fa-tablet-alt"></i>
+                        <div class="stat-value">45,280</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-clock"></i>
                             </div>
-                            <div class="device-info">
-                                <span class="device-name">Tablet</span>
-                                <span class="device-percent">10%</span>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>5%</span>
                             </div>
-                            <div class="device-bar">
-                                <div class="device-progress" style="width: 10%; background: #f59e0b;"></div>
+                        </div>
+                        <div class="stat-value">8m 32s</div>
+                        <div class="stat-label">Avg. Session Duration</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon accent">
+                                <i class="fas fa-sign-language"></i>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>32%</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">3.8M</div>
+                        <div class="stat-label">Translations Processed</div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">User Growth</h3>
+                            <div class="chart-legend">
+                                <span class="legend-item"><span class="legend-dot primary"></span>New Users</span>
+                                <span class="legend-item"><span class="legend-dot accent"></span>Active Users</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <div class="chart-bars">
+                                    <div class="chart-bar-group">
+                                        <div class="chart-bar" style="height: 60%;" data-value="2.4K"></div>
+                                        <span class="chart-label">Jan</span>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-bar" style="height: 75%;" data-value="3.2K"></div>
+                                        <span class="chart-label">Feb</span>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-bar" style="height: 65%;" data-value="2.8K"></div>
+                                        <span class="chart-label">Mar</span>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-bar" style="height: 80%;" data-value="3.5K"></div>
+                                        <span class="chart-label">Apr</span>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-bar" style="height: 90%;" data-value="4.1K"></div>
+                                        <span class="chart-label">May</span>
+                                    </div>
+                                    <div class="chart-bar-group">
+                                        <div class="chart-bar" style="height: 95%;" data-value="4.5K"></div>
+                                        <span class="chart-label">Jun</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Translation Usage</h3>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <div class="donut-chart">
+                                    <div class="donut-center">
+                                        <span class="donut-value">3.8M</span>
+                                        <span class="donut-label">Total</span>
+                                    </div>
+                                </div>
+                                <div class="donut-legend">
+                                    <div class="donut-legend-item">
+                                        <span class="donut-dot" style="background: var(--primary);"></span>
+                                        <span>ASL to Text (45%)</span>
+                                    </div>
+                                    <div class="donut-legend-item">
+                                        <span class="donut-dot" style="background: var(--accent);"></span>
+                                        <span>Text to ASL (35%)</span>
+                                    </div>
+                                    <div class="donut-legend-item">
+                                        <span class="donut-dot" style="background: var(--warning);"></span>
+                                        <span>BSL (12%)</span>
+                                    </div>
+                                    <div class="donut-legend-item">
+                                        <span class="donut-dot" style="background: var(--success);"></span>
+                                        <span>Others (8%)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Top Browsers</h3>
+                <!-- Traffic Sources & Top Countries -->
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Traffic Sources</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="source-list">
+                                <div class="source-item">
+                                    <div class="source-info">
+                                        <div class="source-icon" style="background: rgba(66, 133, 244, 0.15); color: #4285f4;">
+                                            <i class="fab fa-google"></i>
+                                        </div>
+                                        <div>
+                                            <div class="source-name">Organic Search</div>
+                                            <div class="source-visits">124,580 visits</div>
+                                        </div>
+                                    </div>
+                                    <div class="source-percent">42%</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill primary" style="width: 42%;"></div>
+                                </div>
+                                
+                                <div class="source-item">
+                                    <div class="source-info">
+                                        <div class="source-icon" style="background: rgba(59, 89, 152, 0.15); color: #3b5998;">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </div>
+                                        <div>
+                                            <div class="source-name">Social Media</div>
+                                            <div class="source-visits">89,420 visits</div>
+                                        </div>
+                                    </div>
+                                    <div class="source-percent">28%</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 28%; background: #3b5998;"></div>
+                                </div>
+                                
+                                <div class="source-item">
+                                    <div class="source-info">
+                                        <div class="source-icon" style="background: rgba(0, 206, 201, 0.15); color: var(--accent);">
+                                            <i class="fas fa-link"></i>
+                                        </div>
+                                        <div>
+                                            <div class="source-name">Direct</div>
+                                            <div class="source-visits">56,230 visits</div>
+                                        </div>
+                                    </div>
+                                    <div class="source-percent">18%</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 18%; background: var(--accent);"></div>
+                                </div>
+                                
+                                <div class="source-item">
+                                    <div class="source-info">
+                                        <div class="source-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);">
+                                            <i class="fas fa-ad"></i>
+                                        </div>
+                                        <div>
+                                            <div class="source-name">Paid Ads</div>
+                                            <div class="source-visits">35,890 visits</div>
+                                        </div>
+                                    </div>
+                                    <div class="source-percent">12%</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill warning" style="width: 12%;"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="browser-stats">
-                        <div class="browser-item">
-                            <div class="browser-icon">
-                                <i class="fab fa-chrome"></i>
-                            </div>
-                            <div class="browser-info">
-                                <span class="browser-name">Chrome</span>
-                                <span class="browser-percent">64%</span>
-                            </div>
-                            <div class="browser-bar">
-                                <div class="browser-progress" style="width: 64%; background: #4285f4;"></div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Countries</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="country-list">
+                                <div class="country-item">
+                                    <div class="country-info">
+                                        <span class="country-flag">🇺🇸</span>
+                                        <span class="country-name">United States</span>
+                                    </div>
+                                    <div class="country-stats">
+                                        <span class="country-users">45,280</span>
+                                        <span class="country-percent">35%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill primary" style="width: 35%;"></div>
+                                </div>
+                                
+                                <div class="country-item">
+                                    <div class="country-info">
+                                        <span class="country-flag">🇬🇧</span>
+                                        <span class="country-name">United Kingdom</span>
+                                    </div>
+                                    <div class="country-stats">
+                                        <span class="country-users">28,150</span>
+                                        <span class="country-percent">22%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 22%; background: var(--accent);"></div>
+                                </div>
+                                
+                                <div class="country-item">
+                                    <div class="country-info">
+                                        <span class="country-flag">🇩🇪</span>
+                                        <span class="country-name">Germany</span>
+                                    </div>
+                                    <div class="country-stats">
+                                        <span class="country-users">18,920</span>
+                                        <span class="country-percent">15%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 15%;"></div>
+                                </div>
+                                
+                                <div class="country-item">
+                                    <div class="country-info">
+                                        <span class="country-flag">🇨🇦</span>
+                                        <span class="country-name">Canada</span>
+                                    </div>
+                                    <div class="country-stats">
+                                        <span class="country-users">14,560</span>
+                                        <span class="country-percent">11%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill warning" style="width: 11%;"></div>
+                                </div>
+                                
+                                <div class="country-item">
+                                    <div class="country-info">
+                                        <span class="country-flag">🇦🇺</span>
+                                        <span class="country-name">Australia</span>
+                                    </div>
+                                    <div class="country-stats">
+                                        <span class="country-users">12,340</span>
+                                        <span class="country-percent">10%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 10%; background: var(--info);"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="browser-item">
-                            <div class="browser-icon">
-                                <i class="fab fa-safari"></i>
-                            </div>
-                            <div class="browser-info">
-                                <span class="browser-name">Safari</span>
-                                <span class="browser-percent">19%</span>
-                            </div>
-                            <div class="browser-bar">
-                                <div class="browser-progress" style="width: 19%; background: #5ac8fa;"></div>
+                    </div>
+                </div>
+                
+                <!-- Device & Browser Stats -->
+                <div class="grid-3" style="margin-top: 20px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Devices</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="device-stats">
+                                <div class="device-item">
+                                    <div class="device-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="device-info">
+                                        <div class="device-name">Mobile</div>
+                                        <div class="device-percent">58%</div>
+                                    </div>
+                                </div>
+                                <div class="device-item">
+                                    <div class="device-icon">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                    <div class="device-info">
+                                        <div class="device-name">Desktop</div>
+                                        <div class="device-percent">32%</div>
+                                    </div>
+                                </div>
+                                <div class="device-item">
+                                    <div class="device-icon">
+                                        <i class="fas fa-tablet-alt"></i>
+                                    </div>
+                                    <div class="device-info">
+                                        <div class="device-name">Tablet</div>
+                                        <div class="device-percent">10%</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="browser-item">
-                            <div class="browser-icon">
-                                <i class="fab fa-firefox-browser"></i>
-                            </div>
-                            <div class="browser-info">
-                                <span class="browser-name">Firefox</span>
-                                <span class="browser-percent">12%</span>
-                            </div>
-                            <div class="browser-bar">
-                                <div class="browser-progress" style="width: 12%; background: #ff7139;"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Browsers</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="browser-stats">
+                                <div class="browser-item">
+                                    <i class="fab fa-chrome" style="color: #4285f4;"></i>
+                                    <span>Chrome</span>
+                                    <span class="browser-percent">64%</span>
+                                </div>
+                                <div class="browser-item">
+                                    <i class="fab fa-safari" style="color: #0fb5ee;"></i>
+                                    <span>Safari</span>
+                                    <span class="browser-percent">18%</span>
+                                </div>
+                                <div class="browser-item">
+                                    <i class="fab fa-firefox" style="color: #ff7139;"></i>
+                                    <span>Firefox</span>
+                                    <span class="browser-percent">12%</span>
+                                </div>
+                                <div class="browser-item">
+                                    <i class="fab fa-edge" style="color: #0078d7;"></i>
+                                    <span>Edge</span>
+                                    <span class="browser-percent">6%</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="browser-item">
-                            <div class="browser-icon">
-                                <i class="fab fa-edge"></i>
-                            </div>
-                            <div class="browser-info">
-                                <span class="browser-name">Edge</span>
-                                <span class="browser-percent">5%</span>
-                            </div>
-                            <div class="browser-bar">
-                                <div class="browser-progress" style="width: 5%; background: #0078d7;"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Performance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="performance-stats">
+                                <div class="perf-item">
+                                    <div class="perf-label">Page Load Time</div>
+                                    <div class="perf-value">1.2s</div>
+                                    <span class="status-badge active">Excellent</span>
+                                </div>
+                                <div class="perf-item">
+                                    <div class="perf-label">Server Response</div>
+                                    <div class="perf-value">0.3s</div>
+                                    <span class="status-badge active">Excellent</span>
+                                </div>
+                                <div class="perf-item">
+                                    <div class="perf-label">Uptime</div>
+                                    <div class="perf-value">99.9%</div>
+                                    <span class="status-badge active">Healthy</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
     
     <script src="js/admin.js"></script>
 </body>

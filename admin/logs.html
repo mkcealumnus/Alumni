@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs - SignBridgeAI Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="index.html" class="nav-item">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="analytics.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="users.html" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                        <span class="nav-badge">24</span>
+                    </a>
+                    <a href="translations.html" class="nav-item">
+                        <i class="fas fa-language"></i>
+                        <span>Translations</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="products.html" class="nav-item">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="subscriptions.html" class="nav-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                    <a href="support.html" class="nav-item">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="logs.html" class="nav-item active">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Logs</span>
+                    </a>
+                    <a href="../index.html" class="nav-item">
+                        <i class="fas fa-globe"></i>
+                        <span>View Website</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search logs...">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">7</span>
+                    </div>
+                    
+                    <div class="dropdown" id="userDropdown">
+                        <div class="user-menu">
+                            <div class="user-avatar">JD</div>
+                            <div class="user-info">
+                                <span class="user-name">John Doe</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="login.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-header-left">
+                        <h1 class="page-title">System Logs</h1>
+                        <p class="page-subtitle">Monitor system activity and debug issues</p>
+                    </div>
+                    <div class="page-header-right">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export Logs
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-trash"></i>
+                            Clear Logs
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Log Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">24,589</div>
+                        <div class="stat-label">Total Logs</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon danger" style="background: rgba(239, 68, 68, 0.15); color: var(--danger);">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Errors Today</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Warnings Today</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">99.8%</div>
+                        <div class="stat-label">System Health</div>
+                    </div>
+                </div>
+                
+                <!-- Logs Filters -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="log-filters">
+                            <button class="filter-btn active" data-filter="all">All Logs</button>
+                            <button class="filter-btn" data-filter="info">
+                                <i class="fas fa-info-circle" style="color: var(--info);"></i> Info
+                            </button>
+                            <button class="filter-btn" data-filter="warning">
+                                <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> Warning
+                            </button>
+                            <button class="filter-btn" data-filter="error">
+                                <i class="fas fa-times-circle" style="color: var(--danger);"></i> Error
+                            </button>
+                            <button class="filter-btn" data-filter="success">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Success
+                            </button>
+                        </div>
+                        <div class="log-actions">
+                            <select class="form-select filter-select">
+                                <option value="all">All Categories</option>
+                                <option value="auth">Authentication</option>
+                                <option value="api">API</option>
+                                <option value="system">System</option>
+                                <option value="user">User Actions</option>
+                            </select>
+                            <input type="date" class="form-input date-filter">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="logs-container">
+                            <!-- Log Entry - Error -->
+                            <div class="log-entry error">
+                                <div class="log-icon">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level error">ERROR</span>
+                                        <span class="log-category">API</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:32:15</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>API Rate Limit Exceeded</strong> - User ID: USR-10458 exceeded rate limit of 1000 requests/min
+                                    </div>
+                                    <div class="log-details">
+                                        <code>Request: POST /api/v2/translate | IP: 192.168.1.105 | User-Agent: Mozilla/5.0</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Warning -->
+                            <div class="log-entry warning">
+                                <div class="log-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level warning">WARNING</span>
+                                        <span class="log-category">System</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:28:42</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>High Memory Usage</strong> - Server #2 memory usage at 85%
+                                    </div>
+                                    <div class="log-details">
+                                        <code>Server: api-server-02 | Memory: 13.6GB/16GB | CPU: 45%</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Info -->
+                            <div class="log-entry info">
+                                <div class="log-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level info">INFO</span>
+                                        <span class="log-category">User</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:25:18</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>New User Registration</strong> - Sarah Wilson registered with email sarah.wilson@email.com
+                                    </div>
+                                    <div class="log-details">
+                                        <code>User ID: USR-10458 | Plan: Pro | Method: Email</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Success -->
+                            <div class="log-entry success">
+                                <div class="log-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level success">SUCCESS</span>
+                                        <span class="log-category">Payment</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:20:33</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>Payment Processed</strong> - Subscription payment of $19.00 for Michael Johnson
+                                    </div>
+                                    <div class="log-details">
+                                        <code>Transaction: TXN-89456 | Plan: Pro | Method: Stripe</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Info -->
+                            <div class="log-entry info">
+                                <div class="log-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level info">INFO</span>
+                                        <span class="log-category">Auth</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:15:27</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>Admin Login</strong> - John Doe logged in from New York, US
+                                    </div>
+                                    <div class="log-details">
+                                        <code>IP: 192.168.1.100 | Browser: Chrome 120 | OS: Windows 11</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Warning -->
+                            <div class="log-entry warning">
+                                <div class="log-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level warning">WARNING</span>
+                                        <span class="log-category">Auth</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:10:05</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>Failed Login Attempt</strong> - 3 failed attempts for user@example.com
+                                    </div>
+                                    <div class="log-details">
+                                        <code>IP: 203.45.67.89 | Location: Unknown | Attempts: 3/5</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Success -->
+                            <div class="log-entry success">
+                                <div class="log-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level success">SUCCESS</span>
+                                        <span class="log-category">System</span>
+                                        <span class="log-timestamp">Dec 10, 2025 14:00:00</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>Scheduled Backup Completed</strong> - Daily backup created successfully
+                                    </div>
+                                    <div class="log-details">
+                                        <code>Backup: backup_2025-12-10.sql | Size: 245 MB | Duration: 2m 15s</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Log Entry - Error -->
+                            <div class="log-entry error">
+                                <div class="log-icon">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                                <div class="log-content">
+                                    <div class="log-header">
+                                        <span class="log-level error">ERROR</span>
+                                        <span class="log-category">API</span>
+                                        <span class="log-timestamp">Dec 10, 2025 13:45:22</span>
+                                    </div>
+                                    <div class="log-message">
+                                        <strong>Translation Service Timeout</strong> - Request timed out after 30 seconds
+                                    </div>
+                                    <div class="log-details">
+                                        <code>Request ID: REQ-456789 | Language: JSL | Input Length: 2500 chars</code>
+                                    </div>
+                                </div>
+                                <div class="log-actions-menu">
+                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="table-pagination">
+                            <div class="pagination-info">
+                                Showing <strong>1-8</strong> of <strong>24,589</strong> logs
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">2</button>
+                                <button class="pagination-btn">3</button>
+                                <span class="pagination-ellipsis">...</span>
+                                <button class="pagination-btn">3074</button>
+                                <button class="pagination-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - SignBridgeAI Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="index.html" class="nav-item">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="analytics.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="users.html" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                        <span class="nav-badge">24</span>
+                    </a>
+                    <a href="translations.html" class="nav-item">
+                        <i class="fas fa-language"></i>
+                        <span>Translations</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="products.html" class="nav-item active">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="subscriptions.html" class="nav-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                    <a href="support.html" class="nav-item">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="logs.html" class="nav-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Logs</span>
+                    </a>
+                    <a href="../index.html" class="nav-item">
+                        <i class="fas fa-globe"></i>
+                        <span>View Website</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search products...">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">7</span>
+                    </div>
+                    
+                    <div class="dropdown" id="userDropdown">
+                        <div class="user-menu">
+                            <div class="user-avatar">JD</div>
+                            <div class="user-info">
+                                <span class="user-name">John Doe</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="login.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-header-left">
+                        <h1 class="page-title">Products</h1>
+                        <p class="page-subtitle">Manage your products and API services</p>
+                    </div>
+                    <div class="page-header-right">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="btn btn-primary" onclick="openModal('addProductModal')">
+                            <i class="fas fa-plus"></i>
+                            Add Product
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>3</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Total Products</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">9</div>
+                        <div class="stat-label">Active Products</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>18%</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">4,521</div>
+                        <div class="stat-label">API Keys Generated</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon accent">
+                                <i class="fas fa-server"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">99.9%</div>
+                        <div class="stat-label">API Uptime</div>
+                    </div>
+                </div>
+                
+                <!-- Products Grid -->
+                <div class="products-grid">
+                    <!-- Translation API -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon primary">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-title">Translation API</h3>
+                            <p class="product-description">Real-time sign language translation API for developers</p>
+                            <div class="product-meta">
+                                <span class="product-version">v2.4.0</span>
+                                <span class="status-badge active">Active</span>
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-stats">
+                                <div class="product-stat">
+                                    <i class="fas fa-users"></i>
+                                    <span>2,450 Users</span>
+                                </div>
+                                <div class="product-stat">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>1.2M Calls/day</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile SDK -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon accent">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-title">Mobile SDK</h3>
+                            <p class="product-description">Native SDKs for iOS and Android applications</p>
+                            <div class="product-meta">
+                                <span class="product-version">v1.8.2</span>
+                                <span class="status-badge active">Active</span>
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-stats">
+                                <div class="product-stat">
+                                    <i class="fas fa-users"></i>
+                                    <span>890 Users</span>
+                                </div>
+                                <div class="product-stat">
+                                    <i class="fas fa-download"></i>
+                                    <span>12.5K Downloads</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Web Widget -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon success">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-title">Web Widget</h3>
+                            <p class="product-description">Embeddable translation widget for websites</p>
+                            <div class="product-meta">
+                                <span class="product-version">v3.1.0</span>
+                                <span class="status-badge active">Active</span>
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-stats">
+                                <div class="product-stat">
+                                    <i class="fas fa-users"></i>
+                                    <span>1,250 Users</span>
+                                </div>
+                                <div class="product-stat">
+                                    <i class="fas fa-globe"></i>
+                                    <span>3.2K Websites</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enterprise Suite -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon warning">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-title">Enterprise Suite</h3>
+                            <p class="product-description">Complete solution for enterprise customers</p>
+                            <div class="product-meta">
+                                <span class="product-version">v2.0.0</span>
+                                <span class="status-badge active">Active</span>
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-stats">
+                                <div class="product-stat">
+                                    <i class="fas fa-building"></i>
+                                    <span>45 Companies</span>
+                                </div>
+                                <div class="product-stat">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>$48K/month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Education Platform -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon info">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-title">Education Platform</h3>
+                            <p class="product-description">Interactive learning platform for sign language</p>
+                            <div class="product-meta">
+                                <span class="product-version">v1.5.0</span>
+                                <span class="status-badge active">Active</span>
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-stats">
+                                <div class="product-stat">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>5,200 Students</span>
+                                </div>
+                                <div class="product-stat">
+                                    <i class="fas fa-school"></i>
+                                    <span>120 Schools</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Call Plugin -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="product-actions">
+                                <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-title">Video Call Plugin</h3>
+                            <p class="product-description">Real-time translation for video conferencing</p>
+                            <div class="product-meta">
+                                <span class="product-version">v1.2.0</span>
+                                <span class="status-badge pending">Beta</span>
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-stats">
+                                <div class="product-stat">
+                                    <i class="fas fa-users"></i>
+                                    <span>320 Users</span>
+                                </div>
+                                <div class="product-stat">
+                                    <i class="fas fa-clock"></i>
+                                    <span>1.5K Hours</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- API Keys Section -->
+                <div class="card" style="margin-top: 30px;">
+                    <div class="card-header">
+                        <h3 class="card-title">API Keys</h3>
+                        <button class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Generate Key
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>API Key</th>
+                                        <th>Product</th>
+                                        <th>Created</th>
+                                        <th>Last Used</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Production Key</td>
+                                        <td>
+                                            <div class="api-key-cell">
+                                                <code>sk_live_xxxx...8f4a</code>
+                                                <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                            </div>
+                                        </td>
+                                        <td>Translation API</td>
+                                        <td>Nov 15, 2025</td>
+                                        <td>2 min ago</td>
+                                        <td><span class="status-badge active">Active</span></td>
+                                        <td>
+                                            <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                            <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Development Key</td>
+                                        <td>
+                                            <div class="api-key-cell">
+                                                <code>sk_test_xxxx...2b1c</code>
+                                                <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                            </div>
+                                        </td>
+                                        <td>Translation API</td>
+                                        <td>Nov 10, 2025</td>
+                                        <td>1 hour ago</td>
+                                        <td><span class="status-badge active">Active</span></td>
+                                        <td>
+                                            <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                            <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mobile SDK Key</td>
+                                        <td>
+                                            <div class="api-key-cell">
+                                                <code>sk_mob_xxxx...9d3e</code>
+                                                <button class="copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                                            </div>
+                                        </td>
+                                        <td>Mobile SDK</td>
+                                        <td>Oct 28, 2025</td>
+                                        <td>5 hours ago</td>
+                                        <td><span class="status-badge active">Active</span></td>
+                                        <td>
+                                            <button class="action-btn view"><i class="fas fa-eye"></i></button>
+                                            <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add Product Modal -->
+    <div class="modal-overlay" id="addProductModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Product</h3>
+                <button class="modal-close" onclick="closeModal('addProductModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-input" placeholder="Enter product name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" placeholder="Enter product description" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option value="api">API</option>
+                                <option value="sdk">SDK</option>
+                                <option value="widget">Widget</option>
+                                <option value="platform">Platform</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Version</label>
+                            <input type="text" class="form-input" placeholder="e.g., 1.0.0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" required>
+                            <option value="active">Active</option>
+                            <option value="beta">Beta</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addProductModal')">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="addProductForm">Add Product</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

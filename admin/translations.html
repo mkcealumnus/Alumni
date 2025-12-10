@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Translations - SignBridge AI Admin</title>
+    <title>Translations - SignBridgeAI Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11,402 +11,493 @@
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="admin-sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="admin-logo">
-                <i class="fas fa-hands"></i>
-                <span>SignBridge</span>
-            </div>
-            <button class="sidebar-close" id="sidebarClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+    <div class="admin-layout">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
         
-        <nav class="sidebar-nav">
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="index.html" class="nav-item">
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="users.html" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="analytics.html" class="nav-link">
+                    <a href="analytics.html" class="nav-item">
                         <i class="fas fa-chart-line"></i>
                         <span>Analytics</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="translations.html" class="nav-link active">
+                    <a href="users.html" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                        <span class="nav-badge">24</span>
+                    </a>
+                    <a href="translations.html" class="nav-item active">
                         <i class="fas fa-language"></i>
                         <span>Translations</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="api-keys.html" class="nav-link">
-                        <i class="fas fa-key"></i>
-                        <span>API Keys</span>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="products.html" class="nav-item">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="messages.html" class="nav-link">
-                        <i class="fas fa-envelope"></i>
-                        <span>Messages</span>
+                    <a href="subscriptions.html" class="nav-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                    <a href="support.html" class="nav-item">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
                         <span class="nav-badge">5</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="notifications.html" class="nav-link">
-                        <i class="fas fa-bell"></i>
-                        <span>Notifications</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="settings.html" class="nav-link">
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="settings.html" class="nav-item">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
-                </li>
-            </ul>
-        </nav>
+                    <a href="logs.html" class="nav-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Logs</span>
+                    </a>
+                    <a href="../index.html" class="nav-item">
+                        <i class="fas fa-globe"></i>
+                        <span>View Website</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
         
-        <div class="sidebar-footer">
-            <a href="../index.html" class="nav-link">
-                <i class="fas fa-external-link-alt"></i>
-                <span>View Website</span>
-            </a>
-            <a href="login.html" class="nav-link">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-    </aside>
-    
-    <!-- Main Content -->
-    <main class="admin-main">
-        <!-- Header -->
-        <header class="admin-header">
-            <div class="header-left">
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="breadcrumb">
-                    <span>Admin</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span class="current">Translations</span>
-                </div>
-            </div>
-            
-            <div class="header-right">
-                <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <div class="header-user">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" alt="Admin">
-                    <span>Admin</span>
-                </div>
-            </div>
-        </header>
-        
-        <!-- Content -->
-        <div class="admin-content">
-            <div class="page-header">
-                <div class="page-header-left">
-                    <h1>Translation Logs</h1>
-                    <p>Monitor sign language translation activity and performance</p>
-                </div>
-                <div class="page-header-right">
-                    <select class="form-select">
-                        <option>Last 24 Hours</option>
-                        <option>Last 7 Days</option>
-                        <option>Last 30 Days</option>
-                        <option>All Time</option>
-                    </select>
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-download"></i>
-                        Export Logs
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
                     </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search translations...">
+                    </div>
                 </div>
-            </div>
+                
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">7</span>
+                    </div>
+                    
+                    <div class="dropdown" id="userDropdown">
+                        <div class="user-menu">
+                            <div class="user-avatar">JD</div>
+                            <div class="user-info">
+                                <span class="user-name">John Doe</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="login.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
             
-            <!-- Translation Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
-                        <i class="fas fa-language"></i>
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-header-left">
+                        <h1 class="page-title">Translations</h1>
+                        <p class="page-subtitle">Monitor and manage sign language translation services</p>
                     </div>
-                    <div class="stat-info">
-                        <h3>Total Translations</h3>
-                        <div class="stat-value">1.2M</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>24.5% vs last week</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <i class="fas fa-check-double"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Success Rate</h3>
-                        <div class="stat-value">99.2%</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>0.3% improvement</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Avg. Response Time</h3>
-                        <div class="stat-value">45ms</div>
-                        <div class="stat-change positive">
-                            <i class="fas fa-arrow-down"></i>
-                            <span>12ms faster</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
-                        <i class="fas fa-sign-language"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Active Languages</h3>
-                        <div class="stat-value">12</div>
-                        <div class="stat-change positive">
+                    <div class="page-header-right">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-cog"></i>
+                            AI Settings
+                        </button>
+                        <button class="btn btn-primary">
                             <i class="fas fa-plus"></i>
-                            <span>2 new added</span>
-                        </div>
+                            Add Language
+                        </button>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Language Distribution -->
-            <div class="analytics-grid">
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Translation by Language</h3>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-sign-language"></i>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>28%</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">3.8M</div>
+                        <div class="stat-label">Total Translations</div>
                     </div>
-                    <div class="language-stats">
-                        <div class="language-item">
-                            <div class="language-info">
-                                <span class="language-name">ASL (American Sign Language)</span>
-                                <span class="language-count">485,234</span>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="language-bar">
-                                <div class="language-progress" style="width: 45%; background: #6366f1;"></div>
-                            </div>
-                        </div>
-                        <div class="language-item">
-                            <div class="language-info">
-                                <span class="language-name">BSL (British Sign Language)</span>
-                                <span class="language-count">298,156</span>
-                            </div>
-                            <div class="language-bar">
-                                <div class="language-progress" style="width: 28%; background: #10b981;"></div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>2%</span>
                             </div>
                         </div>
-                        <div class="language-item">
-                            <div class="language-info">
-                                <span class="language-name">ISL (Indian Sign Language)</span>
-                                <span class="language-count">186,432</span>
+                        <div class="stat-value">98.5%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-globe"></i>
                             </div>
-                            <div class="language-bar">
-                                <div class="language-progress" style="width: 17%; background: #f59e0b;"></div>
-                            </div>
-                        </div>
-                        <div class="language-item">
-                            <div class="language-info">
-                                <span class="language-name">Auslan (Australian)</span>
-                                <span class="language-count">98,654</span>
-                            </div>
-                            <div class="language-bar">
-                                <div class="language-progress" style="width: 9%; background: #ec4899;"></div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>3</span>
                             </div>
                         </div>
-                        <div class="language-item">
-                            <div class="language-info">
-                                <span class="language-name">Other Languages</span>
-                                <span class="language-count">45,678</span>
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Languages Supported</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon accent">
+                                <i class="fas fa-bolt"></i>
                             </div>
-                            <div class="language-bar">
-                                <div class="language-progress" style="width: 4%; background: #8b5cf6;"></div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>15%</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">0.8s</div>
+                        <div class="stat-label">Avg. Response Time</div>
+                    </div>
+                </div>
+                
+                <!-- Languages Grid -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Supported Sign Languages</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="languages-grid">
+                            <div class="language-card">
+                                <div class="language-header">
+                                    <div class="language-flag">🇺🇸</div>
+                                    <div class="language-info">
+                                        <h4>American Sign Language</h4>
+                                        <span>ASL</span>
+                                    </div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
+                                <div class="language-stats">
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">1.7M</span>
+                                        <span class="lang-stat-label">Translations</span>
+                                    </div>
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">99.2%</span>
+                                        <span class="lang-stat-label">Accuracy</span>
+                                    </div>
+                                </div>
+                                <div class="language-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill primary" style="width: 99%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="language-card">
+                                <div class="language-header">
+                                    <div class="language-flag">🇬🇧</div>
+                                    <div class="language-info">
+                                        <h4>British Sign Language</h4>
+                                        <span>BSL</span>
+                                    </div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
+                                <div class="language-stats">
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">892K</span>
+                                        <span class="lang-stat-label">Translations</span>
+                                    </div>
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">98.8%</span>
+                                        <span class="lang-stat-label">Accuracy</span>
+                                    </div>
+                                </div>
+                                <div class="language-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 98%; background: var(--accent);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="language-card">
+                                <div class="language-header">
+                                    <div class="language-flag">🇦🇺</div>
+                                    <div class="language-info">
+                                        <h4>Australian Sign Language</h4>
+                                        <span>Auslan</span>
+                                    </div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
+                                <div class="language-stats">
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">456K</span>
+                                        <span class="lang-stat-label">Translations</span>
+                                    </div>
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">97.5%</span>
+                                        <span class="lang-stat-label">Accuracy</span>
+                                    </div>
+                                </div>
+                                <div class="language-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill success" style="width: 97%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="language-card">
+                                <div class="language-header">
+                                    <div class="language-flag">🇫🇷</div>
+                                    <div class="language-info">
+                                        <h4>French Sign Language</h4>
+                                        <span>LSF</span>
+                                    </div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
+                                <div class="language-stats">
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">324K</span>
+                                        <span class="lang-stat-label">Translations</span>
+                                    </div>
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">96.2%</span>
+                                        <span class="lang-stat-label">Accuracy</span>
+                                    </div>
+                                </div>
+                                <div class="language-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill warning" style="width: 96%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="language-card">
+                                <div class="language-header">
+                                    <div class="language-flag">🇩🇪</div>
+                                    <div class="language-info">
+                                        <h4>German Sign Language</h4>
+                                        <span>DGS</span>
+                                    </div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
+                                <div class="language-stats">
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">287K</span>
+                                        <span class="lang-stat-label">Translations</span>
+                                    </div>
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">95.8%</span>
+                                        <span class="lang-stat-label">Accuracy</span>
+                                    </div>
+                                </div>
+                                <div class="language-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 95%; background: var(--info);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="language-card">
+                                <div class="language-header">
+                                    <div class="language-flag">🇯🇵</div>
+                                    <div class="language-info">
+                                        <h4>Japanese Sign Language</h4>
+                                        <span>JSL</span>
+                                    </div>
+                                    <span class="status-badge pending">Beta</span>
+                                </div>
+                                <div class="language-stats">
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">156K</span>
+                                        <span class="lang-stat-label">Translations</span>
+                                    </div>
+                                    <div class="lang-stat">
+                                        <span class="lang-stat-value">92.4%</span>
+                                        <span class="lang-stat-label">Accuracy</span>
+                                    </div>
+                                </div>
+                                <div class="language-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 92%; background: var(--warning);"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="dashboard-card">
+                <!-- Recent Translations -->
+                <div class="card" style="margin-top: 20px;">
                     <div class="card-header">
-                        <h3 class="card-title">Translation Types</h3>
+                        <h3 class="card-title">Recent Translation Logs</h3>
+                        <a href="logs.html" class="btn btn-sm btn-secondary">View All</a>
                     </div>
-                    <div class="translation-types">
-                        <div class="type-card">
-                            <div class="type-icon">
-                                <i class="fas fa-video"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Sign to Text</h4>
-                                <p>Real-time video translation</p>
-                                <span class="type-count">756,234</span>
-                            </div>
-                        </div>
-                        <div class="type-card">
-                            <div class="type-icon">
-                                <i class="fas fa-keyboard"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Text to Sign</h4>
-                                <p>Avatar-based rendering</p>
-                                <span class="type-count">312,456</span>
-                            </div>
-                        </div>
-                        <div class="type-card">
-                            <div class="type-icon">
-                                <i class="fas fa-microphone"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Speech to Sign</h4>
-                                <p>Voice recognition + Sign</p>
-                                <span class="type-count">145,678</span>
-                            </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Type</th>
+                                        <th>Language</th>
+                                        <th>Duration</th>
+                                        <th>Confidence</th>
+                                        <th>Status</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>#TRL-89456</code></td>
+                                        <td>
+                                            <div class="user-cell">
+                                                <div class="user-avatar">SW</div>
+                                                <span>Sarah Wilson</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="type-badge video">Video to Text</span></td>
+                                        <td>ASL</td>
+                                        <td>2.4s</td>
+                                        <td>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 98%;"></div>
+                                                <span>98%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge active">Completed</span></td>
+                                        <td>2 min ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>#TRL-89455</code></td>
+                                        <td>
+                                            <div class="user-cell">
+                                                <div class="user-avatar" style="background: var(--gradient-accent);">MJ</div>
+                                                <span>Michael Johnson</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="type-badge text">Text to Sign</span></td>
+                                        <td>BSL</td>
+                                        <td>1.8s</td>
+                                        <td>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 95%;"></div>
+                                                <span>95%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge active">Completed</span></td>
+                                        <td>5 min ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>#TRL-89454</code></td>
+                                        <td>
+                                            <div class="user-cell">
+                                                <div class="user-avatar" style="background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);">EL</div>
+                                                <span>Emily Lee</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="type-badge video">Video to Text</span></td>
+                                        <td>ASL</td>
+                                        <td>3.2s</td>
+                                        <td>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 87%;"></div>
+                                                <span>87%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge pending">Processing</span></td>
+                                        <td>8 min ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>#TRL-89453</code></td>
+                                        <td>
+                                            <div class="user-cell">
+                                                <div class="user-avatar" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">RB</div>
+                                                <span>Robert Brown</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="type-badge audio">Audio to Sign</span></td>
+                                        <td>Auslan</td>
+                                        <td>4.1s</td>
+                                        <td>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 92%;"></div>
+                                                <span>92%</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="status-badge active">Completed</span></td>
+                                        <td>12 min ago</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Recent Translations Table -->
-            <div class="dashboard-card">
-                <div class="card-header">
-                    <h3 class="card-title">Recent Translations</h3>
-                    <div class="card-actions">
-                        <div class="search-box-mini">
-                            <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search logs...">
-                        </div>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>User</th>
-                                <th>Type</th>
-                                <th>Source</th>
-                                <th>Target</th>
-                                <th>Duration</th>
-                                <th>Status</th>
-                                <th>Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>#TR-89234</code></td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff" alt="John Doe">
-                                        <span>John Doe</span>
-                                    </div>
-                                </td>
-                                <td><span class="type-badge video"><i class="fas fa-video"></i> Sign to Text</span></td>
-                                <td>ASL</td>
-                                <td>English</td>
-                                <td>2.3s</td>
-                                <td><span class="status-badge active">Success</span></td>
-                                <td>2 min ago</td>
-                            </tr>
-                            <tr>
-                                <td><code>#TR-89233</code></td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=Sarah+Smith&background=10b981&color=fff" alt="Sarah Smith">
-                                        <span>Sarah Smith</span>
-                                    </div>
-                                </td>
-                                <td><span class="type-badge text"><i class="fas fa-keyboard"></i> Text to Sign</span></td>
-                                <td>English</td>
-                                <td>BSL</td>
-                                <td>1.8s</td>
-                                <td><span class="status-badge active">Success</span></td>
-                                <td>5 min ago</td>
-                            </tr>
-                            <tr>
-                                <td><code>#TR-89232</code></td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=f59e0b&color=fff" alt="Mike Johnson">
-                                        <span>Mike Johnson</span>
-                                    </div>
-                                </td>
-                                <td><span class="type-badge speech"><i class="fas fa-microphone"></i> Speech to Sign</span></td>
-                                <td>English</td>
-                                <td>ASL</td>
-                                <td>3.1s</td>
-                                <td><span class="status-badge active">Success</span></td>
-                                <td>8 min ago</td>
-                            </tr>
-                            <tr>
-                                <td><code>#TR-89231</code></td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=Emily+Brown&background=ec4899&color=fff" alt="Emily Brown">
-                                        <span>Emily Brown</span>
-                                    </div>
-                                </td>
-                                <td><span class="type-badge video"><i class="fas fa-video"></i> Sign to Text</span></td>
-                                <td>ISL</td>
-                                <td>Hindi</td>
-                                <td>2.8s</td>
-                                <td><span class="status-badge inactive">Partial</span></td>
-                                <td>12 min ago</td>
-                            </tr>
-                            <tr>
-                                <td><code>#TR-89230</code></td>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=David+Lee&background=8b5cf6&color=fff" alt="David Lee">
-                                        <span>David Lee</span>
-                                    </div>
-                                </td>
-                                <td><span class="type-badge text"><i class="fas fa-keyboard"></i> Text to Sign</span></td>
-                                <td>Spanish</td>
-                                <td>ASL</td>
-                                <td>1.5s</td>
-                                <td><span class="status-badge active">Success</span></td>
-                                <td>15 min ago</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="table-footer">
-                    <div class="table-info">
-                        Showing 1 to 5 of 1,245,678 entries
-                    </div>
-                    <div class="pagination">
-                        <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
-                        <button class="page-btn active">1</button>
-                        <button class="page-btn">2</button>
-                        <button class="page-btn">3</button>
-                        <span class="page-dots">...</span>
-                        <button class="page-btn">249136</button>
-                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
     
     <script src="js/admin.js"></script>
 </body>

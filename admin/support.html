@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - SignBridgeAI Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="index.html" class="nav-item">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="analytics.html" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="users.html" class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                        <span class="nav-badge">24</span>
+                    </a>
+                    <a href="translations.html" class="nav-item">
+                        <i class="fas fa-language"></i>
+                        <span>Translations</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="products.html" class="nav-item">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="subscriptions.html" class="nav-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                    <a href="support.html" class="nav-item active">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="logs.html" class="nav-item">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Logs</span>
+                    </a>
+                    <a href="../index.html" class="nav-item">
+                        <i class="fas fa-globe"></i>
+                        <span>View Website</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search tickets...">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    
+                    <div class="header-icon">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">7</span>
+                    </div>
+                    
+                    <div class="dropdown" id="userDropdown">
+                        <div class="user-menu">
+                            <div class="user-avatar">JD</div>
+                            <div class="user-info">
+                                <span class="user-name">John Doe</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="login.html" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-header-left">
+                        <h1 class="page-title">Support Center</h1>
+                        <p class="page-subtitle">Manage support tickets and customer inquiries</p>
+                    </div>
+                    <div class="page-header-right">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-book"></i>
+                            Knowledge Base
+                        </button>
+                        <button class="btn btn-primary" onclick="openModal('newTicketModal')">
+                            <i class="fas fa-plus"></i>
+                            New Ticket
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Support Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon primary">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">248</div>
+                        <div class="stat-label">Total Tickets</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-trend down">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>5</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Open Tickets</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8%</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">95.2%</div>
+                        <div class="stat-label">Resolution Rate</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon accent">
+                                <i class="fas fa-stopwatch"></i>
+                            </div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12%</span>
+                            </div>
+                        </div>
+                        <div class="stat-value">2.4h</div>
+                        <div class="stat-label">Avg. Response Time</div>
+                    </div>
+                </div>
+                
+                <!-- Tickets Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="ticket-filters">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="open">Open</button>
+                            <button class="filter-btn" data-filter="pending">Pending</button>
+                            <button class="filter-btn" data-filter="resolved">Resolved</button>
+                            <button class="filter-btn" data-filter="closed">Closed</button>
+                        </div>
+                        <select class="form-select filter-select">
+                            <option value="">Sort by: Latest</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="priority">Priority</option>
+                        </select>
+                    </div>
+                    <div class="card-body">
+                        <div class="tickets-list">
+                            <!-- Ticket Item 1 -->
+                            <div class="ticket-item">
+                                <div class="ticket-priority high"></div>
+                                <div class="ticket-content">
+                                    <div class="ticket-header">
+                                        <div class="ticket-info">
+                                            <span class="ticket-id">#TKT-1234</span>
+                                            <h4 class="ticket-title">API Integration Issue - 500 Error</h4>
+                                        </div>
+                                        <span class="status-badge pending">Open</span>
+                                    </div>
+                                    <p class="ticket-description">Getting a 500 error when trying to integrate the Translation API with our mobile app...</p>
+                                    <div class="ticket-meta">
+                                        <div class="ticket-user">
+                                            <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.7rem;">SW</div>
+                                            <span>Sarah Wilson</span>
+                                        </div>
+                                        <div class="ticket-tags">
+                                            <span class="ticket-tag">API</span>
+                                            <span class="ticket-tag">Technical</span>
+                                        </div>
+                                        <span class="ticket-time"><i class="far fa-clock"></i> 15 min ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ticket Item 2 -->
+                            <div class="ticket-item">
+                                <div class="ticket-priority medium"></div>
+                                <div class="ticket-content">
+                                    <div class="ticket-header">
+                                        <div class="ticket-info">
+                                            <span class="ticket-id">#TKT-1233</span>
+                                            <h4 class="ticket-title">Billing Question - Enterprise Plan</h4>
+                                        </div>
+                                        <span class="status-badge info">Pending</span>
+                                    </div>
+                                    <p class="ticket-description">Would like to understand the billing cycle for the Enterprise plan and if there are any volume discounts...</p>
+                                    <div class="ticket-meta">
+                                        <div class="ticket-user">
+                                            <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.7rem; background: var(--gradient-accent);">MJ</div>
+                                            <span>Michael Johnson</span>
+                                        </div>
+                                        <div class="ticket-tags">
+                                            <span class="ticket-tag">Billing</span>
+                                        </div>
+                                        <span class="ticket-time"><i class="far fa-clock"></i> 2 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ticket Item 3 -->
+                            <div class="ticket-item">
+                                <div class="ticket-priority low"></div>
+                                <div class="ticket-content">
+                                    <div class="ticket-header">
+                                        <div class="ticket-info">
+                                            <span class="ticket-id">#TKT-1232</span>
+                                            <h4 class="ticket-title">Feature Request - BSL Support</h4>
+                                        </div>
+                                        <span class="status-badge info">Pending</span>
+                                    </div>
+                                    <p class="ticket-description">When will British Sign Language be fully supported? Currently showing as Beta...</p>
+                                    <div class="ticket-meta">
+                                        <div class="ticket-user">
+                                            <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.7rem; background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">EL</div>
+                                            <span>Emily Lee</span>
+                                        </div>
+                                        <div class="ticket-tags">
+                                            <span class="ticket-tag">Feature</span>
+                                            <span class="ticket-tag">Language</span>
+                                        </div>
+                                        <span class="ticket-time"><i class="far fa-clock"></i> 5 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ticket Item 4 -->
+                            <div class="ticket-item">
+                                <div class="ticket-priority high"></div>
+                                <div class="ticket-content">
+                                    <div class="ticket-header">
+                                        <div class="ticket-info">
+                                            <span class="ticket-id">#TKT-1231</span>
+                                            <h4 class="ticket-title">Cannot Access Dashboard</h4>
+                                        </div>
+                                        <span class="status-badge pending">Open</span>
+                                    </div>
+                                    <p class="ticket-description">After upgrading to Pro plan, I cannot access my dashboard. Keep getting redirected to login page...</p>
+                                    <div class="ticket-meta">
+                                        <div class="ticket-user">
+                                            <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.7rem; background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);">RB</div>
+                                            <span>Robert Brown</span>
+                                        </div>
+                                        <div class="ticket-tags">
+                                            <span class="ticket-tag">Access</span>
+                                            <span class="ticket-tag">Urgent</span>
+                                        </div>
+                                        <span class="ticket-time"><i class="far fa-clock"></i> 8 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ticket Item 5 -->
+                            <div class="ticket-item resolved">
+                                <div class="ticket-priority low"></div>
+                                <div class="ticket-content">
+                                    <div class="ticket-header">
+                                        <div class="ticket-info">
+                                            <span class="ticket-id">#TKT-1230</span>
+                                            <h4 class="ticket-title">Translation Accuracy Feedback</h4>
+                                        </div>
+                                        <span class="status-badge active">Resolved</span>
+                                    </div>
+                                    <p class="ticket-description">Great improvement in ASL translations! Just wanted to provide some feedback on specific gestures...</p>
+                                    <div class="ticket-meta">
+                                        <div class="ticket-user">
+                                            <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.7rem; background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);">AT</div>
+                                            <span>Amanda Taylor</span>
+                                        </div>
+                                        <div class="ticket-tags">
+                                            <span class="ticket-tag">Feedback</span>
+                                        </div>
+                                        <span class="ticket-time"><i class="far fa-clock"></i> 1 day ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="table-pagination">
+                            <div class="pagination-info">
+                                Showing <strong>1-5</strong> of <strong>248</strong> tickets
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="pagination-btn active">1</button>
+                                <button class="pagination-btn">2</button>
+                                <button class="pagination-btn">3</button>
+                                <span class="pagination-ellipsis">...</span>
+                                <button class="pagination-btn">50</button>
+                                <button class="pagination-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions & FAQ -->
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon primary">
+                                        <i class="fas fa-reply"></i>
+                                    </div>
+                                    <div class="quick-action-info">
+                                        <h4>Canned Responses</h4>
+                                        <p>Manage pre-written responses</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon accent">
+                                        <i class="fas fa-users-cog"></i>
+                                    </div>
+                                    <div class="quick-action-info">
+                                        <h4>Assign Tickets</h4>
+                                        <p>Bulk assign to team members</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon success">
+                                        <i class="fas fa-file-export"></i>
+                                    </div>
+                                    <div class="quick-action-info">
+                                        <h4>Export Report</h4>
+                                        <p>Download support analytics</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon warning">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div class="quick-action-info">
+                                        <h4>Auto-Reply Settings</h4>
+                                        <p>Configure automated responses</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top FAQ Articles</h3>
+                            <a href="#" class="btn btn-sm btn-secondary">Manage FAQ</a>
+                        </div>
+                        <div class="card-body">
+                            <ul class="faq-list">
+                                <li class="faq-item">
+                                    <a href="#">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>How to integrate the Translation API</span>
+                                        <span class="faq-views">2.4K views</span>
+                                    </a>
+                                </li>
+                                <li class="faq-item">
+                                    <a href="#">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Supported sign languages list</span>
+                                        <span class="faq-views">1.8K views</span>
+                                    </a>
+                                </li>
+                                <li class="faq-item">
+                                    <a href="#">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Upgrading subscription plans</span>
+                                        <span class="faq-views">1.2K views</span>
+                                    </a>
+                                </li>
+                                <li class="faq-item">
+                                    <a href="#">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>API rate limits explained</span>
+                                        <span class="faq-views">956 views</span>
+                                    </a>
+                                </li>
+                                <li class="faq-item">
+                                    <a href="#">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span>Mobile SDK installation guide</span>
+                                        <span class="faq-views">842 views</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- New Ticket Modal -->
+    <div class="modal-overlay" id="newTicketModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Ticket</h3>
+                <button class="modal-close" onclick="closeModal('newTicketModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="newTicketForm">
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-input" placeholder="Enter ticket subject" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Priority</label>
+                            <select class="form-select" required>
+                                <option value="">Select Priority</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option value="technical">Technical</option>
+                                <option value="billing">Billing</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Assign To</label>
+                        <select class="form-select">
+                            <option value="">Unassigned</option>
+                            <option value="john">John Doe</option>
+                            <option value="jane">Jane Smith</option>
+                            <option value="mike">Mike Johnson</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" placeholder="Enter ticket description" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newTicketModal')">Cancel</button>
+                <button class="btn btn-primary" type="submit" form="newTicketForm">Create Ticket</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>
