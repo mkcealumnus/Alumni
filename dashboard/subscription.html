@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription - SignBridge AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main</div>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="translate.html" class="nav-item">
+                    <i class="fas fa-language"></i>
+                    <span>Translator</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Translation History</span>
+                </a>
+                
+                <div class="nav-section">Learning</div>
+                <a href="learn.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn Signs</span>
+                    <span class="nav-badge success">New</span>
+                </a>
+                <a href="practice.html" class="nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>My Progress</span>
+                </a>
+                
+                <div class="nav-section">Account</div>
+                <a href="subscription.html" class="nav-item active">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="support.html" class="nav-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Free Plan</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="dropdown">
+                        <div class="header-profile">
+                            <div class="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john@example.com</p>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Subscription Plans</h1>
+                        <p>Choose the perfect plan for your needs</p>
+                    </div>
+                    <div class="billing-toggle">
+                        <span class="active">Monthly</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="billingToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Yearly <span class="save-badge">Save 20%</span></span>
+                    </div>
+                </div>
+                
+                <!-- Current Plan -->
+                <div class="alert alert-info mb-30">
+                    <i class="fas fa-info-circle"></i>
+                    <span>You are currently on the <strong>Free Plan</strong>. Upgrade to unlock all features!</span>
+                </div>
+                
+                <!-- Pricing Cards -->
+                <div class="pricing-grid mb-30">
+                    <!-- Free Plan -->
+                    <div class="plan-card current">
+                        <div class="plan-header">
+                            <h3>Free</h3>
+                            <p>Perfect for getting started</p>
+                        </div>
+                        <div class="plan-price">
+                            <span class="price">$0</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> 50 translations per month</li>
+                            <li><i class="fas fa-check"></i> Basic sign language courses</li>
+                            <li><i class="fas fa-check"></i> ASL support only</li>
+                            <li><i class="fas fa-check"></i> Standard accuracy</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Video upload</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Priority support</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Advanced courses</li>
+                        </ul>
+                        <button class="btn btn-secondary btn-block" disabled>Current Plan</button>
+                    </div>
+                    
+                    <!-- Pro Plan -->
+                    <div class="plan-card featured">
+                        <div class="plan-badge">Most Popular</div>
+                        <div class="plan-header">
+                            <h3>Pro</h3>
+                            <p>For serious learners</p>
+                        </div>
+                        <div class="plan-price">
+                            <span class="price">$9.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Unlimited translations</li>
+                            <li><i class="fas fa-check"></i> All sign language courses</li>
+                            <li><i class="fas fa-check"></i> ASL, BSL, ISL support</li>
+                            <li><i class="fas fa-check"></i> Enhanced accuracy</li>
+                            <li><i class="fas fa-check"></i> Video upload (up to 50MB)</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li class="disabled"><i class="fas fa-times"></i> API access</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Upgrade to Pro</button>
+                    </div>
+                    
+                    <!-- Enterprise Plan -->
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3>Enterprise</h3>
+                            <p>For teams and organizations</p>
+                        </div>
+                        <div class="plan-price">
+                            <span class="price">$29.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Everything in Pro</li>
+                            <li><i class="fas fa-check"></i> Unlimited team members</li>
+                            <li><i class="fas fa-check"></i> All languages supported</li>
+                            <li><i class="fas fa-check"></i> Maximum accuracy AI</li>
+                            <li><i class="fas fa-check"></i> Video upload (up to 500MB)</li>
+                            <li><i class="fas fa-check"></i> Priority 24/7 support</li>
+                            <li><i class="fas fa-check"></i> Full API access</li>
+                        </ul>
+                        <button class="btn btn-outline btn-block">Contact Sales</button>
+                    </div>
+                </div>
+                
+                <!-- Features Comparison -->
+                <div class="card mb-30">
+                    <div class="card-header">
+                        <h2><i class="fas fa-list"></i> Feature Comparison</h2>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-container">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Free</th>
+                                        <th>Pro</th>
+                                        <th>Enterprise</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Monthly Translations</td>
+                                        <td>50</td>
+                                        <td>Unlimited</td>
+                                        <td>Unlimited</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sign Languages</td>
+                                        <td>ASL only</td>
+                                        <td>ASL, BSL, ISL</td>
+                                        <td>All 15+</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AI Accuracy</td>
+                                        <td>Standard</td>
+                                        <td>Enhanced</td>
+                                        <td>Maximum</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Video Upload</td>
+                                        <td><i class="fas fa-times text-danger"></i></td>
+                                        <td>50MB</td>
+                                        <td>500MB</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Learning Courses</td>
+                                        <td>Basic</td>
+                                        <td>All</td>
+                                        <td>All + Custom</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Support</td>
+                                        <td>Community</td>
+                                        <td>Email</td>
+                                        <td>Priority 24/7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>API Access</td>
+                                        <td><i class="fas fa-times text-danger"></i></td>
+                                        <td><i class="fas fa-times text-danger"></i></td>
+                                        <td><i class="fas fa-check text-success"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Team Members</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>Unlimited</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>Can I change my plan later?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Yes! You can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated difference. When downgrading, your new plan will take effect at the start of the next billing cycle.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>What payment methods do you accept?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for Enterprise plans.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>Is there a free trial for Pro?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Yes! We offer a 14-day free trial for the Pro plan. No credit card required to start your trial.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>What happens if I cancel?</h4>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>If you cancel, you'll continue to have access to your current plan until the end of your billing period. After that, your account will be downgraded to the Free plan.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <style>
+        .billing-toggle {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .billing-toggle span.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--bg-tertiary);
+            border-radius: 26px;
+            transition: 0.3s;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--primary);
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .save-badge {
+            background: var(--success);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .plan-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transition: all var(--transition-normal);
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .plan-card.current {
+            border-color: var(--primary);
+        }
+        
+        .plan-card.featured {
+            background: var(--gradient-primary);
+            color: #fff;
+            transform: scale(1.02);
+        }
+        
+        .plan-card.featured:hover {
+            transform: scale(1.02) translateY(-5px);
+        }
+        
+        .plan-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .plan-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .plan-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .plan-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .plan-card.featured .plan-header p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .plan-price {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .plan-price .price {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        
+        .plan-price .period {
+            color: var(--text-muted);
+        }
+        
+        .plan-card.featured .plan-price .period {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .plan-card.featured .plan-features li {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .plan-features li i {
+            width: 20px;
+        }
+        
+        .plan-features li i.fa-check {
+            color: var(--success);
+        }
+        
+        .plan-card.featured .plan-features li i.fa-check {
+            color: var(--accent);
+        }
+        
+        .plan-features li i.fa-times {
+            color: var(--text-muted);
+        }
+        
+        .plan-features li.disabled {
+            color: var(--text-muted);
+        }
+        
+        .plan-card.featured .btn-primary {
+            background: #fff;
+            color: var(--primary);
+        }
+        
+        .comparison-table th, .comparison-table td {
+            text-align: center;
+        }
+        
+        .comparison-table th:first-child, .comparison-table td:first-child {
+            text-align: left;
+        }
+        
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .faq-item {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .faq-question h4 {
+            margin: 0;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 200px;
+        }
+        
+        .faq-answer p {
+            color: var(--text-secondary);
+        }
+    </style>
+    
+    <script src="js/dashboard.js"></script>
+    <script>
+        // FAQ toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.closest('.faq-item');
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Billing toggle
+        document.getElementById('billingToggle').addEventListener('change', function() {
+            const spans = document.querySelectorAll('.billing-toggle > span');
+            if (this.checked) {
+                spans[0].classList.remove('active');
+                spans[1].classList.add('active');
+            } else {
+                spans[0].classList.add('active');
+                spans[1].classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

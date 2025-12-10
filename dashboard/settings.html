@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - SignBridge AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main</div>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="translate.html" class="nav-item">
+                    <i class="fas fa-language"></i>
+                    <span>Translator</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Translation History</span>
+                </a>
+                
+                <div class="nav-section">Learning</div>
+                <a href="learn.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn Signs</span>
+                    <span class="nav-badge success">New</span>
+                </a>
+                <a href="practice.html" class="nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>My Progress</span>
+                </a>
+                
+                <div class="nav-section">Account</div>
+                <a href="subscription.html" class="nav-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+                <a href="settings.html" class="nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="support.html" class="nav-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Free Plan</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search settings...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="dropdown">
+                        <div class="header-profile">
+                            <div class="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john@example.com</p>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Settings</h1>
+                        <p>Manage your account and preferences</p>
+                    </div>
+                </div>
+                
+                <!-- Settings Tabs -->
+                <div class="settings-container">
+                    <div class="settings-tabs">
+                        <button class="settings-tab active" data-tab="profile">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </button>
+                        <button class="settings-tab" data-tab="preferences">
+                            <i class="fas fa-sliders-h"></i>
+                            Preferences
+                        </button>
+                        <button class="settings-tab" data-tab="notifications">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </button>
+                        <button class="settings-tab" data-tab="privacy">
+                            <i class="fas fa-shield-alt"></i>
+                            Privacy & Security
+                        </button>
+                        <button class="settings-tab" data-tab="accessibility">
+                            <i class="fas fa-universal-access"></i>
+                            Accessibility
+                        </button>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- Profile Settings -->
+                        <div class="settings-panel active" id="profile-panel">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2>Profile Information</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="profile-photo-section">
+                                        <div class="profile-photo">
+                                            <div class="photo-avatar">JD</div>
+                                        </div>
+                                        <div class="photo-actions">
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fas fa-upload"></i>
+                                                Upload Photo
+                                            </button>
+                                            <button class="btn btn-secondary btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <form class="settings-form">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">First Name</label>
+                                                <input type="text" class="form-input" value="John">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Last Name</label>
+                                                <input type="text" class="form-input" value="Doe">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label">Email Address</label>
+                                            <input type="email" class="form-input" value="john@example.com">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-input" placeholder="+1 (555) 000-0000">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label">Bio</label>
+                                            <textarea class="form-input" rows="3" placeholder="Tell us about yourself..."></textarea>
+                                        </div>
+                                        
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            <button type="button" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Preferences Settings -->
+                        <div class="settings-panel" id="preferences-panel">
+                            <div class="card mb-20">
+                                <div class="card-header">
+                                    <h2>Translation Preferences</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Default Sign Language</h4>
+                                            <p>Choose your preferred sign language for translations</p>
+                                        </div>
+                                        <select class="form-input form-select" style="width: 200px;">
+                                            <option selected>ASL (American)</option>
+                                            <option>BSL (British)</option>
+                                            <option>ISL (Indian)</option>
+                                            <option>Auslan</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Default Text Language</h4>
+                                            <p>Choose the language for text translations</p>
+                                        </div>
+                                        <select class="form-input form-select" style="width: 200px;">
+                                            <option selected>English</option>
+                                            <option>Spanish</option>
+                                            <option>French</option>
+                                            <option>German</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Auto-detect Language</h4>
+                                            <p>Automatically detect the input language</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2>Appearance</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Theme</h4>
+                                            <p>Choose between light and dark mode</p>
+                                        </div>
+                                        <select class="form-input form-select" style="width: 200px;">
+                                            <option>Light</option>
+                                            <option>Dark</option>
+                                            <option>System Default</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Animation Speed</h4>
+                                            <p>Adjust the speed of sign language animations</p>
+                                        </div>
+                                        <select class="form-input form-select" style="width: 200px;">
+                                            <option>Slow (0.5x)</option>
+                                            <option selected>Normal (1x)</option>
+                                            <option>Fast (1.5x)</option>
+                                            <option>Very Fast (2x)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notifications Settings -->
+                        <div class="settings-panel" id="notifications-panel">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2>Email Notifications</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Learning Reminders</h4>
+                                            <p>Get reminded to practice daily</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Progress Reports</h4>
+                                            <p>Weekly summary of your learning progress</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>New Features</h4>
+                                            <p>Be the first to know about new features</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Promotional Emails</h4>
+                                            <p>Receive offers and discounts</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Privacy Settings -->
+                        <div class="settings-panel" id="privacy-panel">
+                            <div class="card mb-20">
+                                <div class="card-header">
+                                    <h2>Password</h2>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label class="form-label">Current Password</label>
+                                            <input type="password" class="form-input" placeholder="Enter current password">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">New Password</label>
+                                                <input type="password" class="form-input" placeholder="Enter new password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Confirm New Password</label>
+                                                <input type="password" class="form-input" placeholder="Confirm new password">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Update Password</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-20">
+                                <div class="card-header">
+                                    <h2>Two-Factor Authentication</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Enable 2FA</h4>
+                                            <p>Add an extra layer of security to your account</p>
+                                        </div>
+                                        <button class="btn btn-outline">Enable 2FA</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2>Data & Privacy</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Save Translation History</h4>
+                                            <p>Store your translation history for easy access</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Download My Data</h4>
+                                            <p>Get a copy of all your data</p>
+                                        </div>
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-download"></i>
+                                            Download
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="setting-item danger">
+                                        <div class="setting-info">
+                                            <h4>Delete Account</h4>
+                                            <p>Permanently delete your account and all data</p>
+                                        </div>
+                                        <button class="btn btn-danger btn-sm">Delete Account</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Accessibility Settings -->
+                        <div class="settings-panel" id="accessibility-panel">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2>Accessibility Options</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>High Contrast Mode</h4>
+                                            <p>Increase contrast for better visibility</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Larger Text</h4>
+                                            <p>Increase text size throughout the app</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Reduce Motion</h4>
+                                            <p>Minimize animations and motion effects</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Screen Reader Support</h4>
+                                            <p>Optimize for screen readers</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="setting-item">
+                                        <div class="setting-info">
+                                            <h4>Keyboard Navigation</h4>
+                                            <p>Enable enhanced keyboard navigation</p>
+                                        </div>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <style>
+        .settings-container {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .settings-tabs {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        
+        .settings-tab {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+        
+        .settings-tab:hover {
+            border-color: var(--primary);
+        }
+        
+        .settings-tab.active {
+            background: var(--gradient-primary);
+            color: #fff;
+            border-color: transparent;
+        }
+        
+        .settings-tab i {
+            width: 20px;
+        }
+        
+        .settings-content {
+            flex: 1;
+        }
+        
+        .settings-panel {
+            display: none;
+        }
+        
+        .settings-panel.active {
+            display: block;
+        }
+        
+        .profile-photo-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .photo-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .photo-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-item.danger {
+            padding-top: 30px;
+            margin-top: 10px;
+            border-top: 1px solid var(--danger);
+            border-bottom: none;
+        }
+        
+        .setting-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .setting-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--bg-tertiary);
+            border-radius: 26px;
+            transition: 0.3s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .switch input:checked + .slider {
+            background: var(--primary);
+        }
+        
+        .switch input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        @media (max-width: 992px) {
+            .settings-container {
+                flex-direction: column;
+            }
+            
+            .settings-tabs {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .settings-tab {
+                flex: 1;
+                min-width: 150px;
+                margin-bottom: 0;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .settings-tab span {
+                display: none;
+            }
+            
+            .settings-tab {
+                min-width: auto;
+                flex: none;
+                width: 50px;
+                justify-content: center;
+            }
+            
+            .profile-photo-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+    
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Settings tab switching
+        document.querySelectorAll('.settings-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+                
+                this.classList.add('active');
+                const tabId = this.dataset.tab;
+                document.getElementById(tabId + '-panel').classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

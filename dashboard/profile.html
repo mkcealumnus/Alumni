@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - SignBridge AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main</div>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="translate.html" class="nav-item">
+                    <i class="fas fa-language"></i>
+                    <span>Translator</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Translation History</span>
+                </a>
+                
+                <div class="nav-section">Learning</div>
+                <a href="learn.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn Signs</span>
+                    <span class="nav-badge success">New</span>
+                </a>
+                <a href="practice.html" class="nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>My Progress</span>
+                </a>
+                
+                <div class="nav-section">Account</div>
+                <a href="subscription.html" class="nav-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="support.html" class="nav-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Free Plan</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="dropdown">
+                        <div class="header-profile">
+                            <div class="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john@example.com</p>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <!-- Profile Header -->
+                <div class="profile-header-card mb-30">
+                    <div class="profile-cover"></div>
+                    <div class="profile-info-section">
+                        <div class="profile-avatar-large">JD</div>
+                        <div class="profile-details">
+                            <h1>John Doe</h1>
+                            <p>john@example.com</p>
+                            <div class="profile-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> San Francisco, CA</span>
+                                <span><i class="fas fa-calendar"></i> Joined December 2024</span>
+                                <span><i class="fas fa-crown"></i> Free Plan</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <a href="settings.html" class="btn btn-primary">
+                                <i class="fas fa-edit"></i>
+                                Edit Profile
+                            </a>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-share-alt"></i>
+                                Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats Overview -->
+                <div class="stats-grid mb-30">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>2,450</h3>
+                            <p>Total XP</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>156</h3>
+                            <p>Signs Learned</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>7</h3>
+                            <p>Day Streak</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>12</h3>
+                            <p>Achievements</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <!-- About -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-user"></i> About</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="bio-text">
+                                Passionate about learning sign language and bridging communication gaps. 
+                                Currently focusing on mastering ASL to better communicate with my deaf colleague.
+                            </p>
+                            
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="info-label">Level</span>
+                                    <span class="info-value">Intermediate Signer (Level 12)</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Primary Language</span>
+                                    <span class="info-value">ASL (American Sign Language)</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Learning Goal</span>
+                                    <span class="info-value">Conversational Fluency</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Practice Time</span>
+                                    <span class="info-value">24 hours total</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Achievements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-trophy"></i> Achievements</h2>
+                            <a href="progress.html" class="btn btn-sm btn-secondary">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="achievements-grid">
+                                <div class="achievement-badge unlocked">
+                                    <i class="fas fa-fire"></i>
+                                    <span>7-Day Streak</span>
+                                </div>
+                                <div class="achievement-badge unlocked">
+                                    <i class="fas fa-book"></i>
+                                    <span>Quick Learner</span>
+                                </div>
+                                <div class="achievement-badge unlocked">
+                                    <i class="fas fa-language"></i>
+                                    <span>ABC Master</span>
+                                </div>
+                                <div class="achievement-badge unlocked">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>First Course</span>
+                                </div>
+                                <div class="achievement-badge unlocked">
+                                    <i class="fas fa-user-check"></i>
+                                    <span>Profile Complete</span>
+                                </div>
+                                <div class="achievement-badge locked">
+                                    <i class="fas fa-crown"></i>
+                                    <span>30-Day Champ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Learning Progress -->
+                <div class="card mt-30">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-line"></i> Learning Journey</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="learning-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker completed"></div>
+                                <div class="timeline-content">
+                                    <h4>Beginner Course</h4>
+                                    <p>Completed all 12 lessons</p>
+                                    <span class="timeline-date">Nov 2024</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker completed"></div>
+                                <div class="timeline-content">
+                                    <h4>Alphabet Mastery</h4>
+                                    <p>Achieved 100% accuracy in fingerspelling</p>
+                                    <span class="timeline-date">Nov 2024</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker active"></div>
+                                <div class="timeline-content">
+                                    <h4>Elementary Course</h4>
+                                    <p>Currently on lesson 9 of 15</p>
+                                    <span class="timeline-date">In Progress</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Intermediate Course</h4>
+                                    <p>Unlock by completing Elementary</p>
+                                    <span class="timeline-date">Upcoming</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <style>
+        .profile-header-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .profile-cover {
+            height: 150px;
+            background: var(--gradient-primary);
+        }
+        
+        .profile-info-section {
+            display: flex;
+            align-items: flex-end;
+            gap: 25px;
+            padding: 0 30px 25px;
+            margin-top: -50px;
+            flex-wrap: wrap;
+        }
+        
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-primary);
+            border: 5px solid var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        
+        .profile-details {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .profile-details h1 {
+            font-size: 1.75rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-details > p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .profile-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .profile-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .bio-text {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: var(--text-muted);
+        }
+        
+        .info-value {
+            font-weight: 500;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .achievement-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px 10px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+        
+        .achievement-badge.unlocked {
+            background: rgba(108, 92, 231, 0.1);
+        }
+        
+        .achievement-badge.unlocked i {
+            color: var(--primary);
+        }
+        
+        .achievement-badge.locked {
+            opacity: 0.5;
+        }
+        
+        .achievement-badge i {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+        }
+        
+        .achievement-badge span {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .learning-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .learning-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 30px;
+        }
+        
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: -24px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+        }
+        
+        .timeline-marker.completed {
+            background: var(--success);
+            border-color: var(--success);
+        }
+        
+        .timeline-marker.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.3);
+        }
+        
+        .timeline-content h4 {
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        @media (max-width: 768px) {
+            .profile-info-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: -60px;
+            }
+            
+            .profile-meta {
+                justify-content: center;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

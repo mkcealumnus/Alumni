@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - SignBridge AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main</div>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="translate.html" class="nav-item">
+                    <i class="fas fa-language"></i>
+                    <span>Translator</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Translation History</span>
+                </a>
+                
+                <div class="nav-section">Learning</div>
+                <a href="learn.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn Signs</span>
+                    <span class="nav-badge success">New</span>
+                </a>
+                <a href="practice.html" class="nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>My Progress</span>
+                </a>
+                
+                <div class="nav-section">Account</div>
+                <a href="subscription.html" class="nav-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="support.html" class="nav-item active">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Free Plan</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search help articles...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="dropdown">
+                        <div class="header-profile">
+                            <div class="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john@example.com</p>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Help & Support</h1>
+                        <p>Get help with SignBridge AI</p>
+                    </div>
+                </div>
+                
+                <!-- Support Options -->
+                <div class="support-options mb-30">
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Documentation</h3>
+                        <p>Browse our comprehensive guides</p>
+                        <a href="#" class="btn btn-outline btn-sm">View Docs</a>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>Video Tutorials</h3>
+                        <p>Watch step-by-step tutorials</p>
+                        <a href="#" class="btn btn-outline btn-sm">Watch Now</a>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Community</h3>
+                        <p>Join our community forum</p>
+                        <a href="#" class="btn btn-outline btn-sm">Join Forum</a>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Support</h3>
+                        <p>Contact our support team</p>
+                        <a href="#" class="btn btn-outline btn-sm">Send Email</a>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <!-- Submit Ticket -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-ticket-alt"></i> Submit a Ticket</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="supportForm">
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <input type="text" class="form-input" placeholder="Brief description of your issue" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-input form-select" required>
+                                        <option value="">Select a category</option>
+                                        <option>Technical Issue</option>
+                                        <option>Billing Question</option>
+                                        <option>Feature Request</option>
+                                        <option>Account Issue</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Priority</label>
+                                    <select class="form-input form-select">
+                                        <option>Low</option>
+                                        <option selected>Medium</option>
+                                        <option>High</option>
+                                        <option>Urgent</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-input" rows="5" placeholder="Please describe your issue in detail..." required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Attachments (optional)</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="fileUpload" multiple>
+                                        <label for="fileUpload" class="file-label">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Drop files here or click to upload</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Submit Ticket
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ & My Tickets -->
+                    <div>
+                        <!-- FAQ -->
+                        <div class="card mb-20">
+                            <div class="card-header">
+                                <h2><i class="fas fa-question-circle"></i> Common Questions</h2>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="faq-list compact">
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>How do I reset my password?</span>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>Why isn't my camera working?</span>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>How do I upgrade my plan?</span>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>What languages are supported?</span>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>How do I cancel my subscription?</span>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- My Tickets -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fas fa-list"></i> My Tickets</h2>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="tickets-list">
+                                    <div class="ticket-item">
+                                        <div class="ticket-info">
+                                            <h4>#TKT-1234</h4>
+                                            <p>Camera not detecting signs</p>
+                                        </div>
+                                        <span class="badge badge-warning">In Progress</span>
+                                    </div>
+                                    <div class="ticket-item">
+                                        <div class="ticket-info">
+                                            <h4>#TKT-1189</h4>
+                                            <p>Billing question about upgrade</p>
+                                        </div>
+                                        <span class="badge badge-success">Resolved</span>
+                                    </div>
+                                    <div class="ticket-item">
+                                        <div class="ticket-info">
+                                            <h4>#TKT-1056</h4>
+                                            <p>Feature request: Add ISL support</p>
+                                        </div>
+                                        <span class="badge badge-success">Resolved</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#" class="btn btn-sm btn-secondary">View All Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="card mt-30">
+                    <div class="card-body">
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p>support@signbridgeai.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h4>Phone</h4>
+                                    <p>+1 (800) 555-0199</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h4>Hours</h4>
+                                    <p>24/7 Support Available</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <h4>Location</h4>
+                                    <p>San Francisco, CA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <style>
+        .support-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        
+        .support-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        
+        .support-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        
+        .support-card h3 {
+            margin-bottom: 10px;
+        }
+        
+        .support-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .file-upload {
+            position: relative;
+        }
+        
+        .file-upload input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 30px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .file-label:hover {
+            border-color: var(--primary);
+            background: rgba(108, 92, 231, 0.05);
+        }
+        
+        .file-label i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .file-label span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .faq-list.compact .faq-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .faq-list.compact .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-list.compact .faq-question {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+        
+        .faq-list.compact .faq-question:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .faq-list.compact .faq-question i {
+            color: var(--text-muted);
+        }
+        
+        .tickets-list {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .ticket-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .ticket-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ticket-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        
+        .ticket-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .contact-item i {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .contact-item h4 {
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-item p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+    </style>
+    
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.getElementById('supportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('Your ticket has been submitted! We\'ll get back to you soon.', 'success');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

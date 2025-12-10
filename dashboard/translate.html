@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator - SignBridge AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main</div>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="translate.html" class="nav-item active">
+                    <i class="fas fa-language"></i>
+                    <span>Translator</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Translation History</span>
+                </a>
+                
+                <div class="nav-section">Learning</div>
+                <a href="learn.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn Signs</span>
+                    <span class="nav-badge success">New</span>
+                </a>
+                <a href="practice.html" class="nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+                <a href="progress.html" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>My Progress</span>
+                </a>
+                
+                <div class="nav-section">Account</div>
+                <a href="subscription.html" class="nav-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="support.html" class="nav-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Free Plan</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search translations...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="dropdown">
+                        <div class="header-profile">
+                            <div class="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john@example.com</p>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Sign Language Translator</h1>
+                        <p>Translate between sign language and text in real-time</p>
+                    </div>
+                </div>
+                
+                <!-- Translation Mode Tabs -->
+                <div class="card mb-30">
+                    <div class="card-body p-0">
+                        <div class="translation-tabs">
+                            <button class="tab-btn active" data-tab="camera">
+                                <i class="fas fa-video"></i>
+                                Sign to Text
+                            </button>
+                            <button class="tab-btn" data-tab="text">
+                                <i class="fas fa-keyboard"></i>
+                                Text to Sign
+                            </button>
+                            <button class="tab-btn" data-tab="upload">
+                                <i class="fas fa-upload"></i>
+                                Upload Video
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Camera Translation -->
+                <div class="translation-panel" id="cameraPanel">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fas fa-video"></i> Camera Input</h2>
+                                <div class="d-flex gap-10">
+                                    <select class="form-input form-select" style="width: auto;">
+                                        <option>ASL (American)</option>
+                                        <option>BSL (British)</option>
+                                        <option>ISL (Indian)</option>
+                                        <option>Auslan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="camera-container">
+                                    <div class="camera-placeholder">
+                                        <i class="fas fa-video-slash"></i>
+                                        <h3>Camera Not Active</h3>
+                                        <p>Click the button below to start your camera</p>
+                                        <button class="btn btn-primary" id="startCamera">
+                                            <i class="fas fa-play"></i>
+                                            Start Camera
+                                        </button>
+                                    </div>
+                                    <video id="cameraFeed" style="display: none;"></video>
+                                </div>
+                                <div class="camera-controls mt-20">
+                                    <button class="btn btn-secondary" id="pauseCamera" disabled>
+                                        <i class="fas fa-pause"></i>
+                                        Pause
+                                    </button>
+                                    <button class="btn btn-danger" id="stopCamera" disabled>
+                                        <i class="fas fa-stop"></i>
+                                        Stop
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fas fa-file-alt"></i> Translation Output</h2>
+                                <div class="d-flex gap-10">
+                                    <select class="form-input form-select" style="width: auto;">
+                                        <option>English</option>
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <option>German</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="translation-output">
+                                    <div class="output-placeholder">
+                                        <i class="fas fa-language"></i>
+                                        <p>Start signing to see the translation here...</p>
+                                    </div>
+                                </div>
+                                <div class="output-actions mt-20">
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-copy"></i>
+                                        Copy
+                                    </button>
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-volume-up"></i>
+                                        Speak
+                                    </button>
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-save"></i>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text to Sign Translation -->
+                <div class="translation-panel" id="textPanel" style="display: none;">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fas fa-keyboard"></i> Text Input</h2>
+                                <select class="form-input form-select" style="width: auto;">
+                                    <option>English</option>
+                                    <option>Spanish</option>
+                                    <option>French</option>
+                                </select>
+                            </div>
+                            <div class="card-body">
+                                <textarea class="form-input" rows="8" placeholder="Type or paste text here to translate to sign language..."></textarea>
+                                <div class="mt-20">
+                                    <button class="btn btn-primary btn-lg btn-block">
+                                        <i class="fas fa-exchange-alt"></i>
+                                        Translate to Sign Language
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fas fa-hands"></i> Sign Output</h2>
+                                <select class="form-input form-select" style="width: auto;">
+                                    <option>ASL (American)</option>
+                                    <option>BSL (British)</option>
+                                    <option>ISL (Indian)</option>
+                                </select>
+                            </div>
+                            <div class="card-body">
+                                <div class="sign-output">
+                                    <div class="output-placeholder">
+                                        <i class="fas fa-hands"></i>
+                                        <p>Sign language animation will appear here...</p>
+                                    </div>
+                                </div>
+                                <div class="playback-controls mt-20">
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-backward"></i>
+                                    </button>
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="btn btn-secondary">
+                                        <i class="fas fa-forward"></i>
+                                    </button>
+                                    <input type="range" class="speed-slider" min="0.5" max="2" step="0.1" value="1">
+                                    <span>1x</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upload Video -->
+                <div class="translation-panel" id="uploadPanel" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-upload"></i> Upload Video for Translation</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h3>Drag & Drop your video here</h3>
+                                <p>or click to browse files</p>
+                                <p class="text-muted">Supported formats: MP4, MOV, AVI (Max 100MB)</p>
+                                <input type="file" accept="video/*" style="display: none;" id="videoUpload">
+                                <button class="btn btn-primary mt-20" onclick="document.getElementById('videoUpload').click()">
+                                    <i class="fas fa-folder-open"></i>
+                                    Browse Files
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Translations -->
+                <div class="card mt-30">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> Recent Translations</h2>
+                        <a href="history.html" class="btn btn-sm btn-secondary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Content</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge badge-primary"><i class="fas fa-video"></i> Video</span></td>
+                                        <td>Hello, how are you?</td>
+                                        <td>ASL</td>
+                                        <td>English</td>
+                                        <td>Today, 2:30 PM</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-secondary"><i class="fas fa-redo"></i></button>
+                                            <button class="btn btn-sm btn-secondary"><i class="fas fa-copy"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge badge-info"><i class="fas fa-keyboard"></i> Text</span></td>
+                                        <td>Thank you very much</td>
+                                        <td>English</td>
+                                        <td>ASL</td>
+                                        <td>Today, 1:15 PM</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-secondary"><i class="fas fa-redo"></i></button>
+                                            <button class="btn btn-sm btn-secondary"><i class="fas fa-copy"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge badge-primary"><i class="fas fa-video"></i> Video</span></td>
+                                        <td>Nice to meet you</td>
+                                        <td>ASL</td>
+                                        <td>English</td>
+                                        <td>Yesterday</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-secondary"><i class="fas fa-redo"></i></button>
+                                            <button class="btn btn-sm btn-secondary"><i class="fas fa-copy"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <style>
+        .translation-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 20px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn:hover {
+            color: var(--primary);
+            background: var(--bg-tertiary);
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .camera-container {
+            background: var(--bg-tertiary);
+            border-radius: 15px;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .camera-placeholder, .output-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+        }
+        
+        .camera-placeholder i, .output-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .camera-placeholder h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .camera-controls, .output-actions, .playback-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .translation-output, .sign-output {
+            background: var(--bg-tertiary);
+            border-radius: 15px;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 15px;
+            padding: 60px;
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(108, 92, 231, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .upload-area h3 {
+            margin-bottom: 10px;
+        }
+        
+        .speed-slider {
+            width: 100px;
+            accent-color: var(--primary);
+        }
+        
+        #cameraFeed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+    </style>
+    
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const tab = this.dataset.tab;
+                document.querySelectorAll('.translation-panel').forEach(p => p.style.display = 'none');
+                document.getElementById(tab + 'Panel').style.display = 'block';
+            });
+        });
+        
+        // Camera controls (placeholder functionality)
+        document.getElementById('startCamera').addEventListener('click', function() {
+            showNotification('Camera access requested. Please allow camera permissions.', 'info');
+        });
+    </script>
+</body>
+</html>

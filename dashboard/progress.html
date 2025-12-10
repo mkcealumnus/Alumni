@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Progress - SignBridge AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="sidebar-logo">
+                    <i class="fas fa-hands"></i>
+                    <span>SignBridge<span class="highlight">AI</span></span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">Main</div>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="translate.html" class="nav-item">
+                    <i class="fas fa-language"></i>
+                    <span>Translator</span>
+                </a>
+                <a href="history.html" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    <span>Translation History</span>
+                </a>
+                
+                <div class="nav-section">Learning</div>
+                <a href="learn.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Learn Signs</span>
+                    <span class="nav-badge success">New</span>
+                </a>
+                <a href="practice.html" class="nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+                <a href="progress.html" class="nav-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>My Progress</span>
+                </a>
+                
+                <div class="nav-section">Account</div>
+                <a href="subscription.html" class="nav-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Subscription</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="support.html" class="nav-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Free Plan</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="sidebar-overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <div class="dropdown">
+                        <div class="header-profile">
+                            <div class="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h4>John Doe</h4>
+                                <p>john@example.com</p>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>My Progress</h1>
+                        <p>Track your learning journey and achievements</p>
+                    </div>
+                    <select class="form-input form-select" style="width: 180px;">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last 3 Months</option>
+                        <option>All Time</option>
+                    </select>
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid mb-30">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>2,450</h3>
+                            <p>Total XP</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> +350 this week
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>156</h3>
+                            <p>Signs Mastered</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> 12 new
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>7</h3>
+                            <p>Day Streak</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-trophy"></i> Personal best!
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>24h</h3>
+                            <p>Total Practice</p>
+                            <span class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> +4.5h this week
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Level Progress -->
+                <div class="card mb-30">
+                    <div class="card-body">
+                        <div class="level-progress">
+                            <div class="level-info">
+                                <div class="level-badge">
+                                    <span>12</span>
+                                </div>
+                                <div class="level-details">
+                                    <h3>Intermediate Signer</h3>
+                                    <p>450 XP to reach Level 13</p>
+                                </div>
+                            </div>
+                            <div class="level-bar">
+                                <div class="progress-bar" style="height: 20px; border-radius: 10px;">
+                                    <div class="progress-fill" style="width: 65%; height: 100%; border-radius: 10px;"></div>
+                                </div>
+                                <div class="level-stats">
+                                    <span>2,450 XP</span>
+                                    <span>2,900 XP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-2 mb-30">
+                    <!-- Activity Chart Placeholder -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-bar"></i> Weekly Activity</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-chart">
+                                <div class="chart-bar" style="height: 60%;" data-day="Mon">
+                                    <span class="bar-value">45m</span>
+                                </div>
+                                <div class="chart-bar" style="height: 80%;" data-day="Tue">
+                                    <span class="bar-value">1h</span>
+                                </div>
+                                <div class="chart-bar" style="height: 45%;" data-day="Wed">
+                                    <span class="bar-value">30m</span>
+                                </div>
+                                <div class="chart-bar" style="height: 90%;" data-day="Thu">
+                                    <span class="bar-value">1.5h</span>
+                                </div>
+                                <div class="chart-bar" style="height: 30%;" data-day="Fri">
+                                    <span class="bar-value">20m</span>
+                                </div>
+                                <div class="chart-bar" style="height: 70%;" data-day="Sat">
+                                    <span class="bar-value">50m</span>
+                                </div>
+                                <div class="chart-bar active" style="height: 55%;" data-day="Today">
+                                    <span class="bar-value">35m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Achievements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-trophy"></i> Recent Achievements</h2>
+                            <a href="#" class="btn btn-sm btn-secondary">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="achievements-list">
+                                <div class="achievement-item unlocked">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-fire"></i>
+                                    </div>
+                                    <div class="achievement-info">
+                                        <h4>7-Day Streak</h4>
+                                        <p>Practice for 7 days in a row</p>
+                                    </div>
+                                    <span class="achievement-date">Today</span>
+                                </div>
+                                <div class="achievement-item unlocked">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="achievement-info">
+                                        <h4>Quick Learner</h4>
+                                        <p>Complete 10 lessons in one week</p>
+                                    </div>
+                                    <span class="achievement-date">3 days ago</span>
+                                </div>
+                                <div class="achievement-item unlocked">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-language"></i>
+                                    </div>
+                                    <div class="achievement-info">
+                                        <h4>Alphabet Master</h4>
+                                        <p>Master all 26 alphabet signs</p>
+                                    </div>
+                                    <span class="achievement-date">1 week ago</span>
+                                </div>
+                                <div class="achievement-item locked">
+                                    <div class="achievement-icon">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <div class="achievement-info">
+                                        <h4>30-Day Champion</h4>
+                                        <p>Maintain a 30-day streak</p>
+                                    </div>
+                                    <span class="achievement-progress">7/30</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skill Breakdown -->
+                <div class="card mb-30">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-pie"></i> Skill Breakdown</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Alphabet</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 98%"></div>
+                                </div>
+                                <span class="skill-percent">98%</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Numbers</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Greetings</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 88%"></div>
+                                </div>
+                                <span class="skill-percent">88%</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Common Phrases</span>
+                                    <span class="skill-level">Intermediate</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <span class="skill-percent">65%</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Family</span>
+                                    <span class="skill-level">Intermediate</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%"></div>
+                                </div>
+                                <span class="skill-percent">60%</span>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Conversational</span>
+                                    <span class="skill-level">Beginner</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill warning" style="width: 35%"></div>
+                                </div>
+                                <span class="skill-percent">35%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Learning Calendar -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-calendar-alt"></i> Practice Calendar</h2>
+                        <div class="d-flex gap-10">
+                            <button class="btn btn-sm btn-secondary"><i class="fas fa-chevron-left"></i></button>
+                            <span style="padding: 8px 15px; font-weight: 500;">December 2025</span>
+                            <button class="btn btn-sm btn-secondary"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="calendar-grid">
+                            <div class="calendar-header">
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                            </div>
+                            <div class="calendar-days">
+                                <div class="day empty"></div>
+                                <div class="day practiced high">1</div>
+                                <div class="day practiced medium">2</div>
+                                <div class="day practiced high">3</div>
+                                <div class="day practiced low">4</div>
+                                <div class="day practiced high">5</div>
+                                <div class="day practiced medium">6</div>
+                                <div class="day practiced high">7</div>
+                                <div class="day practiced high">8</div>
+                                <div class="day practiced medium">9</div>
+                                <div class="day today practiced">10</div>
+                                <div class="day">11</div>
+                                <div class="day">12</div>
+                                <div class="day">13</div>
+                                <div class="day">14</div>
+                                <div class="day">15</div>
+                                <div class="day">16</div>
+                                <div class="day">17</div>
+                                <div class="day">18</div>
+                                <div class="day">19</div>
+                                <div class="day">20</div>
+                                <div class="day">21</div>
+                                <div class="day">22</div>
+                                <div class="day">23</div>
+                                <div class="day">24</div>
+                                <div class="day">25</div>
+                                <div class="day">26</div>
+                                <div class="day">27</div>
+                                <div class="day">28</div>
+                                <div class="day">29</div>
+                                <div class="day">30</div>
+                                <div class="day">31</div>
+                            </div>
+                        </div>
+                        <div class="calendar-legend">
+                            <span><span class="legend-dot low"></span> Light</span>
+                            <span><span class="legend-dot medium"></span> Medium</span>
+                            <span><span class="legend-dot high"></span> Heavy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <style>
+        .level-progress {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .level-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .level-badge {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+        
+        .level-details h3 {
+            margin-bottom: 5px;
+        }
+        
+        .level-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .level-bar {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .level-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        .activity-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            padding: 20px 0;
+        }
+        
+        .chart-bar {
+            width: 40px;
+            background: var(--gradient-primary);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+        
+        .chart-bar.active {
+            background: var(--gradient-accent);
+        }
+        
+        .chart-bar::after {
+            content: attr(data-day);
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        .achievements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+        }
+        
+        .achievement-item.locked {
+            opacity: 0.6;
+        }
+        
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+        
+        .achievement-item.locked .achievement-icon {
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border-color);
+            color: var(--text-muted);
+        }
+        
+        .achievement-info {
+            flex: 1;
+        }
+        
+        .achievement-info h4 {
+            margin-bottom: 3px;
+        }
+        
+        .achievement-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .achievement-date, .achievement-progress {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .skill-header {
+            width: 150px;
+        }
+        
+        .skill-name {
+            display: block;
+            font-weight: 500;
+        }
+        
+        .skill-level {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .skill-item .progress-bar {
+            flex: 1;
+        }
+        
+        .skill-percent {
+            font-weight: 600;
+            color: var(--primary);
+            width: 45px;
+            text-align: right;
+        }
+        
+        .calendar-grid {
+            margin-bottom: 20px;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .day:hover:not(.empty) {
+            background: var(--border-color);
+        }
+        
+        .day.empty {
+            background: transparent;
+        }
+        
+        .day.today {
+            font-weight: 700;
+            border: 2px solid var(--primary);
+        }
+        
+        .day.practiced {
+            background: rgba(108, 92, 231, 0.3);
+        }
+        
+        .day.practiced.low {
+            background: rgba(108, 92, 231, 0.2);
+        }
+        
+        .day.practiced.medium {
+            background: rgba(108, 92, 231, 0.4);
+        }
+        
+        .day.practiced.high {
+            background: rgba(108, 92, 231, 0.6);
+            color: #fff;
+        }
+        
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .legend-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        .legend-dot.low { background: rgba(108, 92, 231, 0.2); }
+        .legend-dot.medium { background: rgba(108, 92, 231, 0.4); }
+        .legend-dot.high { background: rgba(108, 92, 231, 0.6); }
+    </style>
+    
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

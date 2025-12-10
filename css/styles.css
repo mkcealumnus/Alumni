@@ -286,6 +286,56 @@ body {
     transition: 0.3s;
 }
 
+/* Nav Auth Buttons */
+.nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 30px;
+}
+
+.btn-auth {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    background: var(--gradient-primary);
+    color: #fff;
+    border: none;
+}
+
+.btn-auth:hover,
+.btn-auth.active {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+}
+
+.btn-auth-outline {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: #fff;
+    border: 2px solid var(--accent-color);
+}
+
+.btn-auth-outline:hover,
+.btn-auth-outline.active {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+}
+
 /* Mobile Menu Overlay */
 .nav-overlay {
     display: none;
@@ -1238,6 +1288,10 @@ body {
     .hamburger {
         display: flex;
         z-index: 1002;
+    }
+
+    .nav-auth {
+        display: none;
     }
 
     .hamburger.active span:nth-child(1) {
