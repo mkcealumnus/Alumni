@@ -63,20 +63,30 @@ const ContactFooter: React.FC = () => {
           <div className="footer-links">
             <div className="footer-column">
               <h4>Platform</h4>
+              <Link to="/platform">Platform Overview</Link>
+              <Link to="/solutions">Solutions</Link>
               <Link to="/services">Services</Link>
-              <Link to="/labs">Labs</Link>
-              <Link to="/technology">Technology</Link>
+              <Link to="/pricing">Pricing</Link>
+            </div>
+            <div className="footer-column">
+              <h4>Developers</h4>
+              <Link to="/developers">Documentation</Link>
+              <Link to="/security">Security</Link>
+              <Link to="/research">Research</Link>
+              <Link to="/labs">Innovation Labs</Link>
             </div>
             <div className="footer-column">
               <h4>Company</h4>
               <Link to="/about">About Us</Link>
-              <Link to="#">Careers</Link>
-              <Link to="/about">Contact</Link>
+              <Link to="/careers">Careers</Link>
+              <Link to="/customers">Customers</Link>
+              <Link to="/blog">Blog</Link>
+              <Link to="/contact">Contact</Link>
             </div>
             <div className="footer-column">
               <h4>Legal</h4>
-              <Link to="#">Privacy Policy</Link>
-              <Link to="#">Terms of Service</Link>
+              <Link to="/privacy">Privacy Policy</Link>
+              <Link to="/terms">Terms of Service</Link>
             </div>
           </div>
         </div>

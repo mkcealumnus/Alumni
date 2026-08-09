@@ -26,11 +26,12 @@ const Navbar: React.FC = () => {
         </Link>
 
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
-          <NavLink to="/services" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Services</NavLink>
-          <NavLink to="/labs" onClick={closeMenu} className={({isActive}) => `highlight-link ${isActive ? 'active-nav-link' : ''}`}>SignBridge Labs</NavLink>
-          <NavLink to="/technology" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Technology</NavLink>
+          <NavLink to="/platform" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Platform</NavLink>
           <NavLink to="/solutions" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Solutions</NavLink>
-          <NavLink to="/about" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>About</NavLink>
+          <NavLink to="/services" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Services</NavLink>
+          <NavLink to="/developers" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Developers</NavLink>
+          <NavLink to="/company" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Company</NavLink>
+          <NavLink to="/pricing" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Pricing</NavLink>
         </div>
 
         <div className="navbar-actions">
