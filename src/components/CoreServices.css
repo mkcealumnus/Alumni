@@ -1,0 +1,116 @@
+.section-padding {
+  padding: var(--spacing-2xl) 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.section-subtitle {
+  color: var(--color-primary-light);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.875rem;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(200px, auto);
+  gap: var(--spacing-md);
+}
+
+.service-card {
+  position: relative;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  group: hover;
+}
+
+/* Grid Layout Assignments */
+.col-span-2 { grid-column: span 2; }
+.col-span-1 { grid-column: span 1; }
+.row-span-2 { grid-row: span 2; }
+.row-span-1 { grid-row: span 1; }
+
+.service-icon {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-md);
+  background: rgba(6, 182, 212, 0.1);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  transition: all var(--transition-normal);
+}
+
+.service-card:hover .service-icon {
+  background: rgba(99, 102, 241, 0.2);
+  color: var(--color-primary-light);
+  border-color: var(--color-primary-glow);
+  transform: scale(1.05);
+}
+
+.service-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.service-description {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  flex-grow: 1;
+}
+
+.service-hover-effect {
+  position: absolute;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all var(--transition-normal);
+  color: var(--color-primary-light);
+}
+
+.service-card:hover .service-hover-effect {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (max-width: 992px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .col-span-2 { grid-column: span 2; }
+  .col-span-1 { grid-column: span 1; }
+  /* Adjust row spans on medium devices so cards don't look stretched */
+  .row-span-2 { grid-row: span 1; }
+}
+
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .col-span-2, .col-span-1 {
+    grid-column: span 1;
+  }
+  
+  .row-span-2, .row-span-1 {
+    grid-row: span 1;
+  }
+}
