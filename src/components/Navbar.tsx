@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Network, Menu, X } from 'lucide-react';
+import { Network, Menu, X, ChevronDown } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
@@ -26,12 +26,38 @@ const Navbar: React.FC = () => {
         </Link>
 
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
-          <NavLink to="/platform" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Platform</NavLink>
-          <NavLink to="/solutions" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Solutions</NavLink>
-          <NavLink to="/services" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Services</NavLink>
-          <NavLink to="/developers" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Developers</NavLink>
-          <NavLink to="/company" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Company</NavLink>
-          <NavLink to="/pricing" onClick={closeMenu} className={({isActive}) => isActive ? 'active-nav-link' : ''}>Pricing</NavLink>
+          
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Platform <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <NavLink to="/platform" onClick={closeMenu}>Platform Overview</NavLink>
+              <NavLink to="/solutions" onClick={closeMenu}>Solutions</NavLink>
+              <NavLink to="/services" onClick={closeMenu}>Services</NavLink>
+              <NavLink to="/pricing" onClick={closeMenu}>Pricing</NavLink>
+            </div>
+          </div>
+
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Developers <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <NavLink to="/developers" onClick={closeMenu}>Documentation</NavLink>
+              <NavLink to="/security" onClick={closeMenu}>Security</NavLink>
+              <NavLink to="/research" onClick={closeMenu}>Research</NavLink>
+              <NavLink to="/labs" onClick={closeMenu}>Innovation Labs</NavLink>
+            </div>
+          </div>
+
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Company <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
+              <NavLink to="/careers" onClick={closeMenu}>Careers</NavLink>
+              <NavLink to="/customers" onClick={closeMenu}>Customers</NavLink>
+              <NavLink to="/blog" onClick={closeMenu}>Blog</NavLink>
+              <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
+            </div>
+          </div>
+
         </div>
 
         <div className="navbar-actions">
