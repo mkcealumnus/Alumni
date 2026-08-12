@@ -5,9 +5,7 @@ const Hero: React.FC = () => {
   return (
     <section className="hero" id="hero">
       <div className="bg-mesh"></div>
-      <div className="glow-blob glow-blob-primary"></div>
-      <div className="glow-blob glow-blob-secondary"></div>
-      
+
       {/* Node Graphic Overlay */}
       <div className="hero-graphic">
         <div className="node node-1"></div>
@@ -29,33 +27,33 @@ const Hero: React.FC = () => {
             <span className="badge-icon">✨</span>
             <span className="badge-text">AI-FIRST • PREMIUM • ACCESSIBLE</span>
           </div>
-          
+
           <h1 className="hero-title">
             Designing the future <br />
             of <span className="text-gradient">digital communication.</span>
           </h1>
-          
+
           <p className="hero-subtitle" style={{ fontWeight: '500', color: 'var(--color-text-primary)', marginBottom: '1rem' }}>
             Premium websites, intelligent products, and growth-focused branding for ambitious founders and modern teams.
           </p>
-          
+
           <p style={{ color: 'var(--color-text-secondary)', maxWidth: '700px', margin: '0 auto 2rem', fontSize: '1.05rem', lineHeight: '1.7' }}>
             SignBridge creates elegant digital experiences that feel fast, polished, and built for real-world growth. From launch-ready sites to AI-enhanced product journeys, we help brands stand out with clarity and confidence.
           </p>
 
           {/* Bullet features */}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
-            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', color: 'var(--color-primary)' }}>
               <span style={{ fontSize: '1.2rem' }}>⚡</span> Lightning-fast launch
             </div>
-            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', color: 'var(--color-primary)' }}>
               <span style={{ fontSize: '1.2rem' }}>♿</span> Accessible by default
             </div>
-            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', color: 'var(--color-primary)' }}>
               <span style={{ fontSize: '1.2rem' }}>📈</span> Built for growth
             </div>
           </div>
-          
+
           <div className="hero-actions">
             <Link to="/contact" className="btn btn-primary btn-large">Build With Us</Link>
             <Link to="/#portfolio" className="btn btn-secondary btn-large">Explore Studio</Link>

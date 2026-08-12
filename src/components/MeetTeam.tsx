@@ -55,21 +55,15 @@ const MeetTeam: React.FC = () => {
 
         <div className="team-grid">
           {team.map((member, index) => (
-            <div 
-              key={index} 
-              className={`glass-card team-card ${index % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`} 
-              style={{ padding: 0 }}
-            >
-              
+            <div key={index} className="glass-card team-card" style={{ padding: 0 }}>
+
               {/* Photo Above the Card Details */}
-              <div className="team-card-image-wrapper">
-                <img 
-                  src={member.image} 
-                  alt={`${member.name} - ${member.role}`} 
-                  className="team-card-image"
-                />
-              </div>
-              
+              <img
+                src={member.image}
+                alt={`${member.name} - ${member.role}`}
+                className="team-card-image"
+              />
+
               {/* Card Details Block */}
               <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
                 <div>
@@ -79,17 +73,17 @@ const MeetTeam: React.FC = () => {
                   <p style={{ fontSize: '0.875rem', color: 'var(--color-primary)', fontWeight: '600', marginBottom: '0.5rem' }}>
                     {member.role}
                   </p>
-                  
+
                   {/* Location Hub */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '0.75rem' }}>
                     <MapPin size={14} style={{ color: 'var(--color-primary)' }} />
                     <span>{member.location}</span>
                   </div>
 
-                  <p style={{ 
-                    color: 'var(--color-text-secondary)', 
-                    fontSize: '0.875rem', 
-                    lineHeight: '1.5', 
+                  <p style={{
+                    color: 'var(--color-text-secondary)',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5',
                     margin: '0 0 1rem 0'
                   }}>
                     {member.description}
@@ -100,11 +94,11 @@ const MeetTeam: React.FC = () => {
                   {/* Skills Tags */}
                   <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                     {member.skills.map((skill, sIdx) => (
-                      <span key={sIdx} style={{ 
-                        fontSize: '0.7rem', 
-                        fontWeight: '600', 
-                        padding: '0.2rem 0.5rem', 
-                        borderRadius: '4px', 
+                      <span key={sIdx} style={{
+                        fontSize: '0.7rem',
+                        fontWeight: '600',
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '4px',
                         background: sIdx % 2 === 0 ? 'rgba(var(--color-primary-rgb), 0.08)' : 'rgba(var(--color-secondary-rgb), 0.08)',
                         color: sIdx % 2 === 0 ? 'var(--color-primary)' : 'var(--color-secondary)',
                         border: sIdx % 2 === 0 ? '1px solid rgba(var(--color-primary-rgb), 0.12)' : '1px solid rgba(var(--color-secondary-rgb), 0.12)'
@@ -119,7 +113,7 @@ const MeetTeam: React.FC = () => {
                     <a href="#" style={{ color: 'var(--color-primary)', fontSize: '0.8rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none' }}>
                       View Portfolio →
                     </a>
-                    
+
                     <div style={{ display: 'flex', gap: '0.75rem', color: 'var(--color-text-secondary)' }}>
                       <Code size={16} style={{ cursor: 'pointer' }} />
                       <Briefcase size={16} style={{ cursor: 'pointer' }} />

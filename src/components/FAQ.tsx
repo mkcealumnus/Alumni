@@ -71,14 +71,13 @@ const FAQ: React.FC = () => {
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
-              <div 
-                key={index} 
-                className={`glass-card ${isOpen ? 'card-glow-primary' : (index % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary')}`} 
-                style={{ 
-                  borderRadius: '16px', 
-                  overflow: 'hidden', 
+              <div
+                key={index}
+                className="glass-card"
+                style={{
+                  borderRadius: '16px',
+                  overflow: 'hidden',
                   border: isOpen ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
-                  boxShadow: isOpen ? '0 4px 20px var(--color-primary-glow)' : 'none',
                   transition: 'all var(--transition-normal)'
                 }}
               >
@@ -107,7 +106,7 @@ const FAQ: React.FC = () => {
                     <ChevronDown size={20} style={{ color: 'var(--color-text-secondary)' }} />
                   )}
                 </button>
-                
+
                 <div
                   style={{
                     maxHeight: isOpen ? '200px' : '0px',
@@ -115,12 +114,12 @@ const FAQ: React.FC = () => {
                     transition: 'all var(--transition-normal)'
                   }}
                 >
-                  <p style={{ 
-                    padding: '0 1.5rem 1.5rem 1.5rem', 
-                    margin: 0, 
-                    color: 'var(--color-text-secondary)', 
+                  <p style={{
+                    padding: '0 1.5rem 1.5rem 1.5rem',
+                    margin: 0,
+                    color: 'var(--color-text-secondary)',
                     fontSize: '0.95rem',
-                    lineHeight: '1.6' 
+                    lineHeight: '1.6'
                   }}>
                     {faq.answer}
                   </p>

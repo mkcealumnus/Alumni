@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 const PricingPage = () => {
   return (
     <div className="pricing-page">
-      <PageHeader 
-        title="Transparent Pricing" 
-        subtitle="From consumption-based API access to custom enterprise engagements." 
-        badge="PRICING" 
+      <PageHeader
+        title="Transparent Pricing"
+        subtitle="From consumption-based API access to custom enterprise engagements."
+        badge="PRICING"
       />
-      
+
       <div className="container" style={{ paddingBottom: '6rem' }}>
-        
+
         <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>API & Cloud Infrastructure</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem', marginBottom: '5rem' }}>
-          
-          <div className="glass-card card-glow-secondary" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-border)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '5rem' }}>
+
+          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Developer</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>$0<span style={{ fontSize: '1rem', color: 'var(--color-text-secondary)' }}>/mo</span></h2>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', color: 'var(--color-text-secondary)', flex: 1 }}>
@@ -28,8 +28,8 @@ const PricingPage = () => {
             <Link to="/contact" className="btn btn-outline" style={{ textAlign: 'center' }}>Get Started Free</Link>
           </div>
 
-          <div className="glass-card card-glow-primary" style={{ padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', border: '2px solid var(--color-primary)', transform: 'scale(1.05)', zIndex: 1, boxShadow: '0 0 40px rgba(16, 185, 129, 0.25)', background: 'rgba(16, 185, 129, 0.03)' }}>
-            <div style={{ background: 'var(--color-primary)', color: 'white', fontSize: '0.8rem', padding: '0.25rem 0.75rem', borderRadius: '20px', alignSelf: 'flex-start', marginBottom: '1rem', fontWeight: '700', letterSpacing: '0.5px' }}>MOST POPULAR</div>
+          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-primary)', transform: 'scale(1.05)', zIndex: 1, boxShadow: '0 0 30px var(--color-primary-glow)' }}>
+            <div style={{ background: 'var(--color-primary)', color: 'white', fontSize: '0.8rem', padding: '0.25rem 0.75rem', borderRadius: '20px', alignSelf: 'flex-start', marginBottom: '1rem' }}>MOST POPULAR</div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Scale</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>$250<span style={{ fontSize: '1rem', color: 'var(--color-text-secondary)' }}>/mo</span></h2>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', color: 'var(--color-text-secondary)', flex: 1 }}>
@@ -42,7 +42,7 @@ const PricingPage = () => {
             <Link to="/contact" className="btn btn-primary" style={{ textAlign: 'center' }}>Scale Now</Link>
           </div>
 
-          <div className="glass-card card-glow-secondary" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-border)' }}>
+          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Enterprise</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>Custom</h2>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', color: 'var(--color-text-secondary)', flex: 1 }}>
@@ -53,18 +53,18 @@ const PricingPage = () => {
             </ul>
             <Link to="/contact" className="btn btn-outline" style={{ textAlign: 'center' }}>Contact Sales</Link>
           </div>
-          
+
         </div>
 
         <hr style={{ borderColor: 'var(--color-border)', marginBottom: '5rem' }} />
 
         <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Consulting & Engineering Retainers</h2>
         <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0 auto 3rem' }}>For custom LLM fine-tuning, architecture reviews, and full-stack enterprise platform development.</p>
-        
+
         <div className="glass-card" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-           <h3 style={{ marginBottom: '1.5rem' }}>Engagement Model</h3>
-           <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem', lineHeight: '1.6' }}>Our consulting engagements start with a 1-2 week Discovery & Architecture phase, followed by milestone-based production engineering. Rates are assessed per project scope.</p>
-           <Link to="/contact" className="btn btn-primary" style={{ padding: '1rem 2rem' }}>Request Architecture Review</Link>
+          <h3 style={{ marginBottom: '1.5rem' }}>Engagement Model</h3>
+          <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem', lineHeight: '1.6' }}>Our consulting engagements start with a 1-2 week Discovery & Architecture phase, followed by milestone-based production engineering. Rates are assessed per project scope.</p>
+          <Link to="/contact" className="btn btn-primary" style={{ padding: '1rem 2rem' }}>Request Architecture Review</Link>
         </div>
 
       </div>

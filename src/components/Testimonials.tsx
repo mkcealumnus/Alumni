@@ -40,14 +40,10 @@ const Testimonials: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
           {reviews.map((review, index) => (
-            <div 
-              key={index} 
-              className={`glass-card ${index % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`} 
-              style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%', border: '1px solid var(--color-border)' }}
-            >
-              
+            <div key={index} className="glass-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%' }}>
+
               {/* Stars rating */}
               <div style={{ display: 'flex', gap: '4px' }}>
                 {[...Array(5)].map((_, i) => (
@@ -55,26 +51,26 @@ const Testimonials: React.FC = () => {
                 ))}
               </div>
 
-              <p style={{ 
-                color: 'var(--color-text-primary)', 
-                fontSize: '1.05rem', 
-                lineHeight: '1.6', 
+              <p style={{
+                color: 'var(--color-text-primary)',
+                fontSize: '1.05rem',
+                lineHeight: '1.6',
                 fontStyle: 'italic',
                 margin: 0,
-                flexGrow: 1 
+                flexGrow: 1
               }}>
                 {review.text}
               </p>
 
               {/* Author Info */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', borderTop: '1px solid var(--color-border)', paddingTop: '1.25rem' }}>
-                <div style={{ 
-                  width: '44px', 
-                  height: '44px', 
-                  borderRadius: '50%', 
-                  background: 'rgba(var(--color-secondary-rgb), 0.08)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                <div style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'rgba(var(--color-secondary-rgb), 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: '600',
                   color: 'var(--color-secondary)',

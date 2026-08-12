@@ -37,7 +37,7 @@ const processes = [
 const ProcessTimeline: React.FC = () => {
   return (
     <section className="process section-padding" id="process">
-      <div className="container">
+      <div className="container" style={{ maxWidth: '1400px' }}>
         <div className="section-header">
           <h2 className="section-title">Our Workflow</h2>
           <p className="section-subtitle">Step-by-step methodology</p>
@@ -49,7 +49,7 @@ const ProcessTimeline: React.FC = () => {
         <div className="timeline-container">
           <div className="timeline-line"></div>
           
-          <div className="timeline-steps" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+          <div className="timeline-steps">
             {processes.map((process, index) => (
               <div key={index} className="timeline-step">
                 <div className="step-marker">

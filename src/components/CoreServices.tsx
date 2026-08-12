@@ -63,17 +63,14 @@ const CoreServices: React.FC = () => {
             We design, build, and optimize high-end digital products tailored for rapid growth, strong branding, and polished user experiences.
           </p>
         </div>
-        
+
         <div className="bento-grid">
           {services.map((service) => (
-            <div 
-              key={service.id} 
-              className={`glass-card service-card ${service.gridClass} ${service.id % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`}
-            >
+            <div key={service.id} className={`glass-card service-card ${service.gridClass}`}>
               <div className="service-icon">{service.icon}</div>
               <h3 className="service-title">{service.title}</h3>
               <p className="service-description" style={{ marginBottom: '1rem' }}>{service.description}</p>
-              
+
               <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', margin: '0 0 1.5rem 0', padding: 0 }}>
                 {service.bullets.map((bullet, idx) => (
                   <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
@@ -81,7 +78,7 @@ const CoreServices: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              
+
               <div className="service-hover-effect">
                 <span className="arrow-icon">→</span>
               </div>

@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 const SolutionsPage = () => {
   return (
     <div className="solutions-page">
-      <PageHeader 
-        title="Industry Solutions" 
-        subtitle="Built for Scale. Tailored tech solutions for highly regulated sectors." 
-        badge="SOLUTIONS" 
+      <PageHeader
+        title="Industry Solutions"
+        subtitle="Built for Scale. Tailored tech solutions for highly regulated sectors."
+        badge="SOLUTIONS"
       />
-      
+
       <div className="container" style={{ paddingBottom: '6rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-          
+
           {/* Healthcare */}
           <div className="solution-section" style={{ display: 'flex', gap: '3rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{ flex: '1 1 400px' }}>
@@ -30,9 +30,9 @@ const SolutionsPage = () => {
                 <li>• EMR/EHR Systems Integration</li>
               </ul>
             </div>
-            <div className="glass-card card-glow-secondary" style={{ flex: '1 1 400px', padding: '2.5rem', background: 'linear-gradient(145deg, var(--color-secondary-glow) 0%, var(--color-bg-card) 100%)', border: '1px solid var(--color-border)' }}>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}><Activity size={24} className="text-secondary" /> <h4>Compliance First</h4></div>
-               <p style={{ color: 'var(--color-text-secondary)' }}>Full PHI redaction modules and SOC2/HIPAA certified deployment architectures.</p>
+            <div className="glass-card" style={{ flex: '1 1 400px', background: 'linear-gradient(145deg, var(--color-secondary-glow) 0%, var(--color-bg-card) 100%)', border: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}><Activity size={24} className="text-secondary" /> <h4>Compliance First</h4></div>
+              <p style={{ color: 'var(--color-text-secondary)' }}>Full PHI redaction modules and SOC2/HIPAA certified deployment architectures.</p>
             </div>
           </div>
 
@@ -54,9 +54,9 @@ const SolutionsPage = () => {
                 <li>• Secure Multi-Party Computation</li>
               </ul>
             </div>
-            <div className="glass-card card-glow-primary" style={{ flex: '1 1 400px', padding: '2.5rem', background: 'linear-gradient(145deg, var(--color-primary-glow) 0%, var(--color-bg-card) 100%)', border: '1px solid var(--color-border)' }}>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}><ShieldCheck size={24} className="text-primary" /> <h4>Bank-Grade Security</h4></div>
-               <p style={{ color: 'var(--color-text-secondary)' }}>End-to-end encryption, VPC peering, and strict RBAC controls to meet FINRA standards.</p>
+            <div className="glass-card" style={{ flex: '1 1 400px', background: 'linear-gradient(145deg, var(--color-primary-glow) 0%, var(--color-bg-card) 100%)', border: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}><ShieldCheck size={24} className="text-primary" /> <h4>Bank-Grade Security</h4></div>
+              <p style={{ color: 'var(--color-text-secondary)' }}>End-to-end encryption, VPC peering, and strict RBAC controls to meet FINRA standards.</p>
             </div>
           </div>
 
@@ -78,9 +78,9 @@ const SolutionsPage = () => {
                 <li>• IoT Edge Connectivity</li>
               </ul>
             </div>
-            <div className="glass-card card-glow-primary" style={{ flex: '1 1 400px', padding: '2.5rem', background: 'linear-gradient(145deg, var(--color-primary-glow) 0%, var(--color-bg-card) 100%)', border: '1px solid var(--color-border)' }}>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}><Cpu size={24} className="text-primary" /> <h4>Developer Ready</h4></div>
-               <p style={{ color: 'var(--color-text-secondary)' }}>RESTful APIs, WebSocket streams, and native SDKs for seamless integration.</p>
+            <div className="glass-card" style={{ flex: '1 1 400px', background: 'linear-gradient(145deg, var(--color-primary-glow) 0%, var(--color-bg-card) 100%)', border: '1px solid var(--color-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}><Cpu size={24} className="text-primary" /> <h4>Developer Ready</h4></div>
+              <p style={{ color: 'var(--color-text-secondary)' }}>RESTful APIs, WebSocket streams, and native SDKs for seamless integration.</p>
             </div>
           </div>
 

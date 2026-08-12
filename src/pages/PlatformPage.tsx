@@ -5,16 +5,16 @@ import { Link } from 'react-router-dom';
 const PlatformPage = () => {
   return (
     <div className="platform-page">
-      <PageHeader 
-        title="SignBridge Platform" 
-        subtitle="The unified infrastructure for enterprise intelligence. Bare-metal performance with modern abstractions." 
-        badge="INFRASTRUCTURE" 
+      <PageHeader
+        title="SignBridge Platform"
+        subtitle="The unified infrastructure for enterprise intelligence. Bare-metal performance with modern abstractions."
+        badge="INFRASTRUCTURE"
       />
-      
+
       <div className="container" style={{ paddingBottom: '6rem' }}>
-        <div className="bento-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem' }}>
-          
-          <div className="bento-card glass-card card-glow-primary">
+        <div className="bento-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+
+          <div className="bento-card glass-card">
             <div className="bento-icon-wrapper"><Server size={24} className="text-primary" /></div>
             <h3>Distributed Compute</h3>
             <p>Our hybrid cloud architecture provides resilient, elastic compute spanning across AWS, GCP, and specialized bare-metal GPU clusters for demanding AI workloads.</p>
@@ -25,7 +25,7 @@ const PlatformPage = () => {
             </ul>
           </div>
 
-          <div className="bento-card glass-card card-glow-secondary">
+          <div className="bento-card glass-card">
             <div className="bento-icon-wrapper"><Database size={24} className="text-primary" /></div>
             <h3>High-Speed Storage</h3>
             <p>Petabyte-scale, high-throughput storage optimized for massive vector databases and unstructured enterprise data lakes.</p>
@@ -36,7 +36,7 @@ const PlatformPage = () => {
             </ul>
           </div>
 
-          <div className="bento-card glass-card card-glow-primary">
+          <div className="bento-card glass-card">
             <div className="bento-icon-wrapper"><Shield size={24} className="text-primary" /></div>
             <h3>Secure Networking</h3>
             <p>Zero-trust architecture ensuring that your data in transit and at rest remains entirely within your control.</p>
@@ -47,19 +47,19 @@ const PlatformPage = () => {
             </ul>
           </div>
 
-          <div className="bento-card glass-card card-glow-secondary">
+          <div className="bento-card glass-card">
             <div className="bento-icon-wrapper"><Cpu size={24} className="text-primary" /></div>
             <h3>Hardware Acceleration</h3>
             <p>Custom CUDA kernels and optimized tensor runtimes extract maximum performance from NVIDIA hardware.</p>
           </div>
 
-          <div className="bento-card glass-card card-glow-primary">
+          <div className="bento-card glass-card">
             <div className="bento-icon-wrapper"><Zap size={24} className="text-primary" /></div>
             <h3>Real-Time Event Bus</h3>
             <p>High-throughput message brokers enabling complex multi-agent architectures and event-driven microservices.</p>
           </div>
 
-          <div className="bento-card glass-card card-glow-secondary">
+          <div className="bento-card glass-card">
             <div className="bento-icon-wrapper"><Network size={24} className="text-primary" /></div>
             <h3>Edge Synchronization</h3>
             <p>Seamlessly deploy lightweight models and data sync protocols to IoT and edge devices.</p>
