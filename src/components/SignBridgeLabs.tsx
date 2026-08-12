@@ -1,6 +1,5 @@
 import React from 'react';
 import { Beaker, ArrowRight, Zap, Bot, Microchip } from 'lucide-react';
-import './SignBridgeLabs.css';
 
 const labProducts = [
   {

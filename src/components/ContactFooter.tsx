@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Send, Network } from 'lucide-react';
-import './ContactFooter.css';
 
 const ContactFooter: React.FC = () => {
   return (

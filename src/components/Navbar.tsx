@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Network, Menu, X, ChevronDown } from 'lucide-react';
-import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);

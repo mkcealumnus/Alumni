@@ -1,6 +1,5 @@
 import React from 'react';
 import { Globe, Smartphone, BrainCircuit, Cpu, CloudCog, Workflow } from 'lucide-react';
-import './CoreServices.css';
 
 const services = [
   {
