@@ -2,16 +2,12 @@ import React from 'react';
 
 const techStacks = [
   {
-    category: 'Software Engineering',
-    items: ['Python', 'Node.js', 'React / React Native', 'TypeScript', 'Docker', 'Kubernetes', 'GraphQL']
+    category: 'Frontend & UI/UX',
+    items: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Figma', 'UI/UX', 'Tailwind CSS']
   },
   {
-    category: 'Hardware & IoT',
-    items: ['ESP32', 'MQTT', 'BLE', 'Edge AI', 'Embedded C/C++', 'Sensor Networks']
-  },
-  {
-    category: 'Cloud & Data',
-    items: ['AWS', 'Google Cloud', 'PostgreSQL', 'MongoDB', 'Time-Series DBs', 'Serverless']
+    category: 'Backend & Intelligence',
+    items: ['Node.js', 'Python', 'Firebase', 'MongoDB', 'TensorFlow', 'AI / ML', 'REST APIs', 'GitHub']
   }
 ];
 
