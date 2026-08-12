@@ -37,9 +37,16 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <Link to="/#why-choose-us" onClick={closeMenu}>Why Choose Us</Link>
           <Link to="/#portfolio" onClick={closeMenu}>Portfolio</Link>
-          <Link to="/#process" onClick={closeMenu}>Process</Link>
+
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Why Us <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <Link to="/#why-choose-us" onClick={closeMenu}>Why Choose Us</Link>
+              <Link to="/#process" onClick={closeMenu}>Our Process</Link>
+              <Link to="/#reviews" onClick={closeMenu}>Reviews</Link>
+            </div>
+          </div>
 
           <div className="nav-dropdown">
             <button className="nav-dropdown-btn">Developers <ChevronDown size={14} /></button>
@@ -61,8 +68,6 @@ const Navbar: React.FC = () => {
               <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
             </div>
           </div>
-
-          <Link to="/#reviews" onClick={closeMenu}>Reviews</Link>
         </div>
 
         <div className="navbar-actions">
