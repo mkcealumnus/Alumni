@@ -19,22 +19,22 @@ const ContactPage = () => {
             <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
               <div className="form-group" style={{ marginBottom: '1.5rem' }}>
                 <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-secondary)' }}>Full Name</label>
-                <input type="text" id="name" required style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '4px' }} />
+                <input type="text" id="name" required style={{ width: '100%' }} />
               </div>
               
               <div className="form-group" style={{ marginBottom: '1.5rem' }}>
                 <label htmlFor="company" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-secondary)' }}>Company</label>
-                <input type="text" id="company" required style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '4px' }} />
+                <input type="text" id="company" required style={{ width: '100%' }} />
               </div>
 
               <div className="form-group" style={{ marginBottom: '1.5rem' }}>
                 <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-secondary)' }}>Work Email</label>
-                <input type="email" id="email" required style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '4px' }} />
+                <input type="email" id="email" required style={{ width: '100%' }} />
               </div>
               
               <div className="form-group" style={{ marginBottom: '2rem' }}>
                 <label htmlFor="usecase" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-secondary)' }}>Use Case / Requirements</label>
-                <textarea id="usecase" rows={5} required style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '4px', resize: 'vertical' }}></textarea>
+                <textarea id="usecase" rows={5} required style={{ width: '100%', resize: 'vertical' }}></textarea>
               </div>
               
               <button type="submit" className="btn btn-primary" style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', padding: '1rem' }}>

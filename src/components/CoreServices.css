@@ -46,20 +46,20 @@
 .service-icon {
   color: var(--color-secondary);
   margin-bottom: var(--spacing-md);
-  background: rgba(6, 182, 212, 0.1);
+  background: rgba(var(--color-secondary-rgb), 0.08);
   width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  border: 1px solid rgba(6, 182, 212, 0.2);
+  border: 1px solid rgba(var(--color-secondary-rgb), 0.15);
   transition: all var(--transition-normal);
 }
 
 .service-card:hover .service-icon {
-  background: rgba(99, 102, 241, 0.2);
-  color: var(--color-primary-light);
+  background: rgba(var(--color-primary-rgb), 0.12);
+  color: var(--color-primary);
   border-color: var(--color-primary-glow);
   transform: scale(1.05);
 }

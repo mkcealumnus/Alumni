@@ -18,7 +18,7 @@ const DevelopersPage = () => {
             <div className="bento-icon-wrapper"><Terminal size={24} className="text-primary" /></div>
             <h3>SignBridge CLI</h3>
             <p>Manage deployments, environments, and secrets directly from your terminal.</p>
-            <div style={{ marginTop: '1rem', background: '#000', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', color: '#0f0' }}>
+            <div style={{ marginTop: '1rem', background: '#0F172A', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', color: '#34D399' }}>
               $ npm install -g signbridge-cli<br />
               $ signbridge deploy --env prod
             </div>
@@ -28,7 +28,7 @@ const DevelopersPage = () => {
             <div className="bento-icon-wrapper"><Code size={24} className="text-primary" /></div>
             <h3>Native SDKs</h3>
             <p>Type-safe libraries for Python, Node.js, and Go. Seamlessly integrate our models and services.</p>
-            <div style={{ marginTop: '1rem', background: '#000', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', color: '#a5d6ff' }}>
+            <div style={{ marginTop: '1rem', background: '#0F172A', padding: '1rem', borderRadius: '8px', fontFamily: 'monospace', color: '#2DD4BF' }}>
               import { '{' } SignBridgeClient { '}' } from '@signbridge/sdk';<br /><br />
               const client = new SignBridgeClient(key);<br />
               await client.inference.create(...);

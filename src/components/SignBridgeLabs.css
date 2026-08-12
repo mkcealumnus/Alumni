@@ -1,5 +1,5 @@
 .labs {
-  background-color: #0c0d12;
+  background-color: var(--color-bg-dark);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
   position: relative;
@@ -36,8 +36,8 @@
   margin-bottom: var(--spacing-md);
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(var(--color-primary-rgb), 0.08);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.15);
 }
 
 .labs-subtitle {
@@ -78,8 +78,8 @@
 .labs-card:hover {
   transform: translateY(-5px);
   background: var(--color-bg-card-hover);
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 20px rgba(99, 102, 241, 0.1);
+  border-color: var(--color-border-glow);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), 0 0 20px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .labs-card:hover::before {
@@ -95,7 +95,7 @@
 
 .labs-icon-wrapper {
   color: var(--color-text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(var(--color-primary-rgb), 0.05);
   padding: 0.75rem;
   border-radius: 12px;
 }
@@ -122,9 +122,9 @@
 }
 
 .status-dev {
-  background: rgba(99, 102, 241, 0.15);
-  color: var(--color-primary-light);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
 }
 
 .labs-card-title {

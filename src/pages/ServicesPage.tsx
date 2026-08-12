@@ -15,7 +15,7 @@ const ServicesPage: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
           
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'var(--color-primary-light)', color: 'var(--color-bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(var(--color-primary-rgb), 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Monitor size={24} />
             </div>
             <h3>Website Development</h3>
@@ -28,7 +28,7 @@ const ServicesPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'var(--color-primary-light)', color: 'var(--color-bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(var(--color-primary-rgb), 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ShoppingBag size={24} />
             </div>
             <h3>E-Commerce Solutions</h3>
@@ -41,7 +41,7 @@ const ServicesPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'var(--color-primary-light)', color: 'var(--color-bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(var(--color-primary-rgb), 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Palette size={24} />
             </div>
             <h3>Logo Design & Branding</h3>
@@ -54,7 +54,7 @@ const ServicesPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'var(--color-primary-light)', color: 'var(--color-bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(var(--color-primary-rgb), 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FileText size={24} />
             </div>
             <h3>Landing Pages</h3>
@@ -67,7 +67,7 @@ const ServicesPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'var(--color-primary-light)', color: 'var(--color-bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(var(--color-primary-rgb), 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <PenTool size={24} />
             </div>
             <h3>UI/UX Design</h3>
@@ -80,7 +80,7 @@ const ServicesPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'var(--color-primary-light)', color: 'var(--color-bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(var(--color-primary-rgb), 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Shield size={24} />
             </div>
             <h3>Website Maintenance</h3>

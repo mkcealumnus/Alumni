@@ -28,7 +28,7 @@ const PricingPage = () => {
             <Link to="/contact" className="btn btn-outline" style={{ textAlign: 'center' }}>Get Started Free</Link>
           </div>
 
-          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid rgba(99,102,241,0.5)', transform: 'scale(1.05)', zIndex: 1, boxShadow: '0 0 30px rgba(99,102,241,0.1)' }}>
+          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-primary)', transform: 'scale(1.05)', zIndex: 1, boxShadow: '0 0 30px var(--color-primary-glow)' }}>
             <div style={{ background: 'var(--color-primary)', color: 'white', fontSize: '0.8rem', padding: '0.25rem 0.75rem', borderRadius: '20px', alignSelf: 'flex-start', marginBottom: '1rem' }}>MOST POPULAR</div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Scale</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>$250<span style={{ fontSize: '1rem', color: 'var(--color-text-secondary)' }}>/mo</span></h2>
@@ -56,7 +56,7 @@ const PricingPage = () => {
           
         </div>
 
-        <hr style={{ borderColor: 'rgba(255,255,255,0.05)', marginBottom: '5rem' }} />
+        <hr style={{ borderColor: 'var(--color-border)', marginBottom: '5rem' }} />
 
         <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Consulting & Engineering Retainers</h2>
         <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0 auto 3rem' }}>For custom LLM fine-tuning, architecture reviews, and full-stack enterprise platform development.</p>

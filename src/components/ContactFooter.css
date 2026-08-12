@@ -56,7 +56,7 @@
 .form-group input,
 .form-group select,
 .form-group textarea {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0.75rem 1rem;
@@ -72,7 +72,7 @@
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px var(--color-primary-glow);
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--color-bg-card);
 }
 
 .form-group select {

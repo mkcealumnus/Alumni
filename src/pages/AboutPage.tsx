@@ -29,7 +29,7 @@ const AboutPage = () => {
 
         {/* Timeline */}
         <div className="glass-card" style={{ padding: '3rem', marginBottom: '4rem' }}>
-          <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>System Initialization</h3>
+          <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem' }}>System Initialization</h3>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div style={{ display: 'flex', gap: '2rem' }}>

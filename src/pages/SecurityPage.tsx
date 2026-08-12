@@ -40,7 +40,7 @@ const SecurityPage = () => {
 
         </div>
 
-        <div className="glass-card" style={{ padding: '3rem', border: '1px solid rgba(6, 182, 212, 0.2)', background: 'linear-gradient(145deg, rgba(6,182,212,0.05) 0%, rgba(10,10,12,0.8) 100%)' }}>
+        <div className="glass-card" style={{ padding: '3rem', border: '1px solid var(--color-border)', background: 'linear-gradient(145deg, var(--color-secondary-glow) 0%, var(--color-bg-card) 100%)' }}>
           <h2 style={{ marginBottom: '1.5rem' }}>Data Sovereignty Guarantee</h2>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '1.1rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
             We believe that your data is yours. SignBridge operates on a strict zero-retention policy for our enterprise inference APIs. We do not use your proprietary data to train our foundational models.

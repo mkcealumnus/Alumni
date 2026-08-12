@@ -17,7 +17,7 @@ const CompanyPage = () => {
           <Link to="/about" style={{ textDecoration: 'none' }}>
             <div className="bento-card glass-card" style={{ height: '100%', transition: 'transform 0.3s ease', cursor: 'pointer' }}>
               <div className="bento-icon-wrapper"><Users size={24} className="text-primary" /></div>
-              <h3 style={{ color: 'var(--color-text)' }}>About Us</h3>
+              <h3 style={{ color: 'var(--color-text-primary)' }}>About Us</h3>
               <p style={{ color: 'var(--color-text-secondary)' }}>Learn about our founding timeline, core principles, and leadership team.</p>
             </div>
           </Link>
@@ -25,7 +25,7 @@ const CompanyPage = () => {
           <Link to="/careers" style={{ textDecoration: 'none' }}>
             <div className="bento-card glass-card" style={{ height: '100%', transition: 'transform 0.3s ease', cursor: 'pointer' }}>
               <div className="bento-icon-wrapper"><Briefcase size={24} className="text-secondary" /></div>
-              <h3 style={{ color: 'var(--color-text)' }}>Careers</h3>
+              <h3 style={{ color: 'var(--color-text-primary)' }}>Careers</h3>
               <p style={{ color: 'var(--color-text-secondary)' }}>Join a team of 100% engineer-led innovators building the future of enterprise tech.</p>
             </div>
           </Link>
@@ -33,7 +33,7 @@ const CompanyPage = () => {
           <Link to="/blog" style={{ textDecoration: 'none' }}>
             <div className="bento-card glass-card" style={{ height: '100%', transition: 'transform 0.3s ease', cursor: 'pointer' }}>
               <div className="bento-icon-wrapper"><FileText size={24} className="text-primary" /></div>
-              <h3 style={{ color: 'var(--color-text)' }}>Blog</h3>
+              <h3 style={{ color: 'var(--color-text-primary)' }}>Blog</h3>
               <p style={{ color: 'var(--color-text-secondary)' }}>Read our engineering deep-dives, architecture patterns, and technical changelogs.</p>
             </div>
           </Link>
@@ -41,7 +41,7 @@ const CompanyPage = () => {
           <Link to="/contact" style={{ textDecoration: 'none' }}>
             <div className="bento-card glass-card" style={{ height: '100%', transition: 'transform 0.3s ease', cursor: 'pointer' }}>
               <div className="bento-icon-wrapper"><Send size={24} className="text-secondary" /></div>
-              <h3 style={{ color: 'var(--color-text)' }}>Contact</h3>
+              <h3 style={{ color: 'var(--color-text-primary)' }}>Contact</h3>
               <p style={{ color: 'var(--color-text-secondary)' }}>Get in touch with our global offices in San Francisco, London, and Singapore.</p>
             </div>
           </Link>

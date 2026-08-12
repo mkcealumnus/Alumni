@@ -28,7 +28,7 @@ const CareersPage = () => {
           </div>
         </div>
 
-        <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Open Positions</h3>
+        <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem' }}>Open Positions</h3>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           

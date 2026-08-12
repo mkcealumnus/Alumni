@@ -64,14 +64,14 @@ ul {
 }
 
 .text-gradient-light {
-  background: linear-gradient(135deg, #FFFFFF, var(--color-text-secondary));
+  background: linear-gradient(135deg, var(--color-text-primary), var(--color-text-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .glass-card {
-  background: rgba(17, 19, 24, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
@@ -83,7 +83,7 @@ ul {
   transform: translateY(-4px);
   border-color: var(--color-border-glow);
   box-shadow: 0 8px 32px var(--color-primary-glow);
-  background: rgba(26, 28, 35, 0.7);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .btn {
@@ -107,20 +107,54 @@ ul {
 }
 
 .btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+  box-shadow: 0 6px 20px rgba(var(--color-primary-rgb), 0.4);
   transform: translateY(-2px);
 }
 
-.btn-secondary {
+.btn-secondary, .btn-outline {
   background: transparent;
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover, .btn-outline:hover {
   border-color: var(--color-primary);
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(var(--color-primary-rgb), 0.08);
   transform: translateY(-2px);
+}
+
+/* Helper Utilities */
+.text-primary {
+  color: var(--color-primary) !important;
+}
+
+.text-secondary {
+  color: var(--color-secondary) !important;
+}
+
+/* Global Forms Styling */
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-glow);
+  background: var(--color-bg-card);
 }
 
 /* Animations */
@@ -148,7 +182,7 @@ ul {
   height: 100vh;
   z-index: -1;
   background-image: 
-    radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08), transparent 25%);
+    radial-gradient(circle at 15% 50%, rgba(var(--color-primary-rgb), 0.06), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(var(--color-secondary-rgb), 0.06), transparent 25%);
   pointer-events: none;
 }

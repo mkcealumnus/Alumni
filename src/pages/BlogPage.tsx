@@ -13,8 +13,8 @@ const BlogPage = () => {
       
       <div className="container" style={{ paddingBottom: '6rem' }}>
         
-        <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Featured Post</h3>
-        <div className="glass-card" style={{ padding: '3rem', marginBottom: '4rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(99,102,241,0.3)', background: 'linear-gradient(145deg, rgba(99,102,241,0.1) 0%, rgba(10,10,12,0.8) 100%)' }}>
+        <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem' }}>Featured Post</h3>
+        <div className="glass-card" style={{ padding: '3rem', marginBottom: '4rem', display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid var(--color-border)', background: 'linear-gradient(145deg, var(--color-primary-glow) 0%, var(--color-bg-card) 100%)' }}>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <span style={{ color: 'var(--color-primary)', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '1px', fontWeight: 'bold' }}>Architecture &bull; Featured</span>
             <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>August 12, 2026</span>
@@ -26,7 +26,7 @@ const BlogPage = () => {
           <Link to="#" className="btn btn-outline" style={{ alignSelf: 'flex-start', marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>Read Article <ArrowRight size={16}/></Link>
         </div>
 
-        <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Recent Articles</h3>
+        <h3 style={{ marginBottom: '2rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem' }}>Recent Articles</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           
           <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>

@@ -64,8 +64,8 @@
 
 .timeline-step:hover .step-icon-wrapper {
   border-color: var(--color-primary);
-  color: var(--color-primary-light);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
   transform: scale(1.1);
 }
 
@@ -80,14 +80,14 @@
 
 .timeline-step:hover .step-content {
   background: var(--color-bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--color-border-glow);
 }
 
 .step-number {
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.05);
+  color: rgba(var(--color-primary-rgb), 0.08);
   margin-bottom: -15px;
   text-align: left;
 }

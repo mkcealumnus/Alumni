@@ -2,20 +2,22 @@
 
 :root {
   /* Colors */
-  --color-bg-dark: #0A0A0C;
-  --color-bg-card: #111318;
-  --color-bg-card-hover: #1A1C23;
-  --color-primary: #6366F1;
-  --color-primary-light: #8B5CF6;
-  --color-primary-glow: rgba(99, 102, 241, 0.3);
-  --color-secondary: #06B6D4;
-  --color-secondary-light: #3B82F6;
-  --color-secondary-glow: rgba(6, 182, 212, 0.3);
+  --color-bg-dark: #F4FAF6;
+  --color-bg-card: #FFFFFF;
+  --color-bg-card-hover: #EEF8F3;
+  --color-primary: #059669;
+  --color-primary-light: #34D399;
+  --color-primary-glow: rgba(5, 150, 105, 0.15);
+  --color-primary-rgb: 5, 150, 105;
+  --color-secondary: #0D9488;
+  --color-secondary-light: #2DD4BF;
+  --color-secondary-glow: rgba(13, 148, 136, 0.15);
+  --color-secondary-rgb: 13, 148, 136;
   
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #94A3B8;
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-glow: rgba(99, 102, 241, 0.5);
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-border: #E2E8F0;
+  --color-border-glow: rgba(5, 150, 105, 0.4);
 
   /* Typography */
   --font-primary: 'Inter', sans-serif;
