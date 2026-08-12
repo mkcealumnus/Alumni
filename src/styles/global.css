@@ -1260,3 +1260,19 @@ select:focus {
     text-align: center;
   }
 }
+
+/* ==========================================================================
+   MeetTeam Component Styles (4:3 aspect ratio)
+   ========================================================================== */
+.team-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .team-card {
+    aspect-ratio: 4 / 3;
+  }
+}

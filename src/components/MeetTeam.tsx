@@ -44,67 +44,69 @@ const MeetTeam: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
           {team.map((member, index) => (
-            <div key={index} className="glass-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
-              
-              {/* Profile Avatar Frame */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ 
-                  width: '50px', 
-                  height: '50px', 
-                  borderRadius: '12px', 
-                  background: 'rgba(var(--color-primary-rgb), 0.08)', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  border: '1px solid rgba(var(--color-primary-rgb), 0.15)',
-                  fontSize: '1.25rem',
-                  fontWeight: '700',
-                  color: 'var(--color-primary)',
-                  fontFamily: 'var(--font-display)'
-                }}>
-                  {member.name.charAt(0)}
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1.15rem', margin: 0, color: 'var(--color-text-primary)' }}>{member.name}</h3>
-                  <p style={{ fontSize: '0.85rem', margin: '2px 0 0 0', color: 'var(--color-primary)', fontWeight: '600' }}>{member.role}</p>
-                </div>
-              </div>
-
-              <p style={{ 
-                color: 'var(--color-text-secondary)', 
-                fontSize: '0.925rem', 
-                lineHeight: '1.6', 
-                margin: '0 0 1.5rem 0',
-                flexGrow: 1
-              }}>
-                {member.description}
-              </p>
-
-              {/* Skills Tags */}
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: 'auto' }}>
-                {member.skills.map((skill, sIdx) => (
-                  <span key={sIdx} style={{ 
-                    fontSize: '0.75rem', 
-                    fontWeight: '600', 
-                    padding: '0.25rem 0.6rem', 
-                    borderRadius: '6px', 
-                    background: sIdx % 2 === 0 ? 'rgba(var(--color-primary-rgb), 0.08)' : 'rgba(var(--color-secondary-rgb), 0.08)',
-                    color: sIdx % 2 === 0 ? 'var(--color-primary)' : 'var(--color-secondary)',
-                    border: sIdx % 2 === 0 ? '1px solid rgba(var(--color-primary-rgb), 0.12)' : '1px solid rgba(var(--color-secondary-rgb), 0.12)'
+            <div key={index} className="glass-card team-card" style={{ padding: '2.25rem' }}>
+              <div>
+                {/* Profile Avatar Frame */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+                  <div style={{ 
+                    width: '46px', 
+                    height: '46px', 
+                    borderRadius: '10px', 
+                    background: 'rgba(var(--color-primary-rgb), 0.08)', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    border: '1px solid rgba(var(--color-primary-rgb), 0.15)',
+                    fontSize: '1.15rem',
+                    fontWeight: '700',
+                    color: 'var(--color-primary)',
+                    fontFamily: 'var(--font-display)',
+                    flexShrink: 0
                   }}>
-                    {skill}
-                  </span>
-                ))}
+                    {member.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', margin: 0, color: 'var(--color-text-primary)' }}>{member.name}</h3>
+                    <p style={{ fontSize: '0.8rem', margin: '2px 0 0 0', color: 'var(--color-primary)', fontWeight: '600' }}>{member.role}</p>
+                  </div>
+                </div>
+
+                <p style={{ 
+                  color: 'var(--color-text-secondary)', 
+                  fontSize: '0.875rem', 
+                  lineHeight: '1.5', 
+                  margin: '0 0 1rem 0'
+                }}>
+                  {member.description}
+                </p>
               </div>
 
-              <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-                <a href="#" style={{ color: 'var(--color-primary)', fontSize: '0.875rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  View Portfolio →
-                </a>
-              </div>
+              <div>
+                {/* Skills Tags */}
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                  {member.skills.map((skill, sIdx) => (
+                    <span key={sIdx} style={{ 
+                      fontSize: '0.7rem', 
+                      fontWeight: '600', 
+                      padding: '0.2rem 0.5rem', 
+                      borderRadius: '4px', 
+                      background: sIdx % 2 === 0 ? 'rgba(var(--color-primary-rgb), 0.08)' : 'rgba(var(--color-secondary-rgb), 0.08)',
+                      color: sIdx % 2 === 0 ? 'var(--color-primary)' : 'var(--color-secondary)',
+                      border: sIdx % 2 === 0 ? '1px solid rgba(var(--color-primary-rgb), 0.12)' : '1px solid rgba(var(--color-secondary-rgb), 0.12)'
+                    }}>
+                      {skill}
+                    </span>
+                  ))}
+                </div>
 
+                <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '0.75rem' }}>
+                  <a href="#" style={{ color: 'var(--color-primary)', fontSize: '0.8rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none' }}>
+                    View Portfolio →
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </div>
