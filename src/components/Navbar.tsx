@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Network, Menu, X } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Network, Menu, X, ChevronDown } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -26,12 +26,43 @@ const Navbar: React.FC = () => {
 
         <div className={`navbar-links ${mobileMenuOpen ? 'active' : ''}`}>
           <Link to="/" onClick={closeMenu}>Home</Link>
-          <Link to="/#services" onClick={closeMenu}>Services</Link>
+          
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Platform <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <NavLink to="/platform" onClick={closeMenu}>Platform Overview</NavLink>
+              <NavLink to="/solutions" onClick={closeMenu}>Solutions</NavLink>
+              <NavLink to="/services" onClick={closeMenu}>Services</NavLink>
+              <NavLink to="/pricing" onClick={closeMenu}>Pricing</NavLink>
+            </div>
+          </div>
+
           <Link to="/#why-choose-us" onClick={closeMenu}>Why Choose Us</Link>
           <Link to="/#portfolio" onClick={closeMenu}>Portfolio</Link>
           <Link to="/#process" onClick={closeMenu}>Process</Link>
+
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Developers <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <NavLink to="/developers" onClick={closeMenu}>Documentation</NavLink>
+              <NavLink to="/security" onClick={closeMenu}>Security</NavLink>
+              <NavLink to="/research" onClick={closeMenu}>Research</NavLink>
+              <NavLink to="/labs" onClick={closeMenu}>Innovation Labs</NavLink>
+            </div>
+          </div>
+
+          <div className="nav-dropdown">
+            <button className="nav-dropdown-btn">Company <ChevronDown size={14} /></button>
+            <div className="nav-dropdown-menu">
+              <NavLink to="/about" onClick={closeMenu}>About Us</NavLink>
+              <NavLink to="/careers" onClick={closeMenu}>Careers</NavLink>
+              <NavLink to="/customers" onClick={closeMenu}>Customers</NavLink>
+              <NavLink to="/blog" onClick={closeMenu}>Blog</NavLink>
+              <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
+            </div>
+          </div>
+
           <Link to="/#reviews" onClick={closeMenu}>Reviews</Link>
-          <Link to="/#contact" onClick={closeMenu}>Get in Touch</Link>
         </div>
 
         <div className="navbar-actions">
