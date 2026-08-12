@@ -73,11 +73,12 @@ const FAQ: React.FC = () => {
             return (
               <div 
                 key={index} 
-                className="glass-card" 
+                className={`glass-card ${isOpen ? 'card-glow-primary' : (index % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary')}`} 
                 style={{ 
                   borderRadius: '16px', 
                   overflow: 'hidden', 
                   border: isOpen ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
+                  boxShadow: isOpen ? '0 4px 20px var(--color-primary-glow)' : 'none',
                   transition: 'all var(--transition-normal)'
                 }}
               >

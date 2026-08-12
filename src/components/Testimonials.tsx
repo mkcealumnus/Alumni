@@ -40,9 +40,13 @@ const Testimonials: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '2rem' }}>
           {reviews.map((review, index) => (
-            <div key={index} className="glass-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%' }}>
+            <div 
+              key={index} 
+              className={`glass-card ${index % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`} 
+              style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%', border: '1px solid var(--color-border)' }}
+            >
               
               {/* Stars rating */}
               <div style={{ display: 'flex', gap: '4px' }}>

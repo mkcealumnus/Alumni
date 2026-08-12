@@ -2,22 +2,22 @@
 
 :root {
   /* Colors */
-  --color-bg-dark: #F4FAF6;
-  --color-bg-card: #FFFFFF;
-  --color-bg-card-hover: #EEF8F3;
-  --color-primary: #059669;
+  --color-bg-dark: #07090E;
+  --color-bg-card: rgba(17, 24, 39, 0.45);
+  --color-bg-card-hover: rgba(22, 30, 49, 0.65);
+  --color-primary: #10B981;
   --color-primary-light: #34D399;
-  --color-primary-glow: rgba(5, 150, 105, 0.15);
-  --color-primary-rgb: 5, 150, 105;
-  --color-secondary: #0D9488;
-  --color-secondary-light: #2DD4BF;
-  --color-secondary-glow: rgba(13, 148, 136, 0.15);
-  --color-secondary-rgb: 13, 148, 136;
+  --color-primary-glow: rgba(16, 185, 129, 0.15);
+  --color-primary-rgb: 16, 185, 129;
+  --color-secondary: #06B6D4;
+  --color-secondary-light: #22D3EE;
+  --color-secondary-glow: rgba(6, 182, 212, 0.15);
+  --color-secondary-rgb: 6, 182, 212;
   
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-border: #E2E8F0;
-  --color-border-glow: rgba(5, 150, 105, 0.4);
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-glow: rgba(16, 185, 129, 0.35);
 
   /* Typography */
   --font-primary: 'Inter', sans-serif;
@@ -112,9 +112,9 @@ ul {
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(13, 18, 30, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-border);
   border-radius: 16px;
   transition: all var(--transition-normal);
@@ -124,7 +124,7 @@ ul {
   transform: translateY(-4px);
   border-color: var(--color-border-glow);
   box-shadow: 0 8px 32px var(--color-primary-glow);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(22, 30, 49, 0.65);
 }
 
 .btn {
@@ -243,11 +243,11 @@ select:focus {
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(7, 9, 14, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
   padding: 0.75rem 0;
 }
 
@@ -368,7 +368,7 @@ select:focus {
     top: 70px;
     left: 0;
     width: 100%;
-    background: var(--color-bg-card);
+    background: #0B0F19;
     flex-direction: column;
     padding: var(--spacing-lg) 0;
     gap: var(--spacing-md);
@@ -1262,16 +1262,13 @@ select:focus {
 }
 
 /* ==========================================================================
-   MeetTeam Component Styles (Contiguous Squared Design)
+/* ==========================================================================
+   MeetTeam Component Styles (Modern Floating Design)
    ========================================================================== */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
+  gap: 2rem;
 }
 
 .team-card {
@@ -1281,47 +1278,185 @@ select:focus {
   box-sizing: border-box;
   overflow: hidden;
   height: 100%;
-  background: transparent !important;
-  border-radius: 0 !important;
-  border: none !important;
-  border-right: 1px solid var(--color-border) !important;
+  background: rgba(13, 18, 30, 0.45) !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--color-border) !important;
+  transition: all var(--transition-normal);
 }
 
-.team-card:last-child {
-  border-right: none !important;
+.team-card:hover {
+  transform: translateY(-5px);
+}
+
+.team-card-image-wrapper {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
 }
 
 .team-card-image {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
   border-bottom: 1px solid var(--color-border);
+  transition: transform var(--transition-slow);
+}
+
+.team-card:hover .team-card-image {
+  transform: scale(1.05);
 }
 
 @media (max-width: 1024px) {
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .team-card {
-    border-bottom: 1px solid var(--color-border) !important;
-  }
-  .team-card:nth-child(2n) {
-    border-right: none !important;
-  }
-  .team-card:nth-last-child(-n+2) {
-    border-bottom: none !important;
+    gap: 1.5rem;
   }
 }
 
 @media (max-width: 600px) {
   .team-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  .team-card {
-    border-right: none !important;
-    border-bottom: 1px solid var(--color-border) !important;
-  }
-  .team-card:last-child {
-    border-bottom: none !important;
-  }
+}
+
+/* ==========================================================================
+   Edge-Cutting Extra Custom Utilities
+   ========================================================================== */
+.card-glow-primary:hover {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(16, 185, 129, 0.25);
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.card-glow-secondary:hover {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(6, 182, 212, 0.25);
+  border-color: rgba(6, 182, 212, 0.5) !important;
+}
+
+/* Terminal Card Styling */
+.terminal-card {
+  background: #090E17 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.terminal-header {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background: #FF5F56; }
+.terminal-dot.yellow { background: #FFBD2E; }
+.terminal-dot.green { background: #27C93F; }
+
+.terminal-body {
+  padding: 1.25rem;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #34D399;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glowing background blobs */
+.glow-blob {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.15;
+  animation: float 10s ease-in-out infinite;
+}
+
+.glow-blob-primary {
+  background: var(--color-primary);
+  top: 10%;
+  left: 5%;
+}
+
+.glow-blob-secondary {
+  background: var(--color-secondary);
+  bottom: 15%;
+  right: 5%;
+  animation-delay: -5s;
+}
+
+/* Redesigned Bento Cards */
+.bento-card {
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.bento-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+  transition: all var(--transition-normal);
+}
+
+.glass-card:hover .bento-icon-wrapper {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+  transform: scale(1.05);
+}
+
+/* Stats Dashboard Panel */
+.dashboard-panel {
+  background: rgba(13, 18, 30, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Styles Dark Mode Overrides */
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+  background: rgba(13, 18, 30, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px var(--color-primary-glow) !important;
 }

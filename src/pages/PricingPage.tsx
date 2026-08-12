@@ -14,9 +14,9 @@ const PricingPage = () => {
       <div className="container" style={{ paddingBottom: '6rem' }}>
         
         <h2 style={{ textAlign: 'center', marginBottom: '3rem' }}>API & Cloud Infrastructure</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem', marginBottom: '5rem' }}>
           
-          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+          <div className="glass-card card-glow-secondary" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-border)' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Developer</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>$0<span style={{ fontSize: '1rem', color: 'var(--color-text-secondary)' }}>/mo</span></h2>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', color: 'var(--color-text-secondary)', flex: 1 }}>
@@ -28,8 +28,8 @@ const PricingPage = () => {
             <Link to="/contact" className="btn btn-outline" style={{ textAlign: 'center' }}>Get Started Free</Link>
           </div>
 
-          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-primary)', transform: 'scale(1.05)', zIndex: 1, boxShadow: '0 0 30px var(--color-primary-glow)' }}>
-            <div style={{ background: 'var(--color-primary)', color: 'white', fontSize: '0.8rem', padding: '0.25rem 0.75rem', borderRadius: '20px', alignSelf: 'flex-start', marginBottom: '1rem' }}>MOST POPULAR</div>
+          <div className="glass-card card-glow-primary" style={{ padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', border: '2px solid var(--color-primary)', transform: 'scale(1.05)', zIndex: 1, boxShadow: '0 0 40px rgba(16, 185, 129, 0.25)', background: 'rgba(16, 185, 129, 0.03)' }}>
+            <div style={{ background: 'var(--color-primary)', color: 'white', fontSize: '0.8rem', padding: '0.25rem 0.75rem', borderRadius: '20px', alignSelf: 'flex-start', marginBottom: '1rem', fontWeight: '700', letterSpacing: '0.5px' }}>MOST POPULAR</div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Scale</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>$250<span style={{ fontSize: '1rem', color: 'var(--color-text-secondary)' }}>/mo</span></h2>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', color: 'var(--color-text-secondary)', flex: 1 }}>
@@ -42,7 +42,7 @@ const PricingPage = () => {
             <Link to="/contact" className="btn btn-primary" style={{ textAlign: 'center' }}>Scale Now</Link>
           </div>
 
-          <div className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+          <div className="glass-card card-glow-secondary" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', border: '1px solid var(--color-border)' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Enterprise</h3>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>Custom</h2>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', color: 'var(--color-text-secondary)', flex: 1 }}>

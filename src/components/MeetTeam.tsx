@@ -55,14 +55,20 @@ const MeetTeam: React.FC = () => {
 
         <div className="team-grid">
           {team.map((member, index) => (
-            <div key={index} className="glass-card team-card" style={{ padding: 0 }}>
+            <div 
+              key={index} 
+              className={`glass-card team-card ${index % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`} 
+              style={{ padding: 0 }}
+            >
               
               {/* Photo Above the Card Details */}
-              <img 
-                src={member.image} 
-                alt={`${member.name} - ${member.role}`} 
-                className="team-card-image"
-              />
+              <div className="team-card-image-wrapper">
+                <img 
+                  src={member.image} 
+                  alt={`${member.name} - ${member.role}`} 
+                  className="team-card-image"
+                />
+              </div>
               
               {/* Card Details Block */}
               <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>

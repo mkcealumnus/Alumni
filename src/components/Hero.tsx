@@ -5,6 +5,8 @@ const Hero: React.FC = () => {
   return (
     <section className="hero" id="hero">
       <div className="bg-mesh"></div>
+      <div className="glow-blob glow-blob-primary"></div>
+      <div className="glow-blob glow-blob-secondary"></div>
       
       {/* Node Graphic Overlay */}
       <div className="hero-graphic">
@@ -42,14 +44,14 @@ const Hero: React.FC = () => {
           </p>
 
           {/* Bullet features */}
-          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', color: 'var(--color-primary)' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
               <span style={{ fontSize: '1.2rem' }}>⚡</span> Lightning-fast launch
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', color: 'var(--color-primary)' }}>
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
               <span style={{ fontSize: '1.2rem' }}>♿</span> Accessible by default
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', color: 'var(--color-primary)' }}>
+            <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.08)' }}>
               <span style={{ fontSize: '1.2rem' }}>📈</span> Built for growth
             </div>
           </div>

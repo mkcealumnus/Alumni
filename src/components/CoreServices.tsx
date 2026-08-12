@@ -66,7 +66,10 @@ const CoreServices: React.FC = () => {
         
         <div className="bento-grid">
           {services.map((service) => (
-            <div key={service.id} className={`glass-card service-card ${service.gridClass}`}>
+            <div 
+              key={service.id} 
+              className={`glass-card service-card ${service.gridClass} ${service.id % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`}
+            >
               <div className="service-icon">{service.icon}</div>
               <h3 className="service-title">{service.title}</h3>
               <p className="service-description" style={{ marginBottom: '1rem' }}>{service.description}</p>

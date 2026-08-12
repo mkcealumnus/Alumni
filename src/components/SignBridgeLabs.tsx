@@ -48,7 +48,7 @@ const SignBridgeLabs: React.FC = () => {
 
         <div className="labs-grid">
           {labProducts.map((product) => (
-            <div key={product.id} className="labs-card">
+            <div key={product.id} className={`glass-card labs-card ${product.id % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`}>
               <div className="labs-card-top">
                 <div className="labs-icon-wrapper">{product.icon}</div>
                 <div className={`status-badge ${product.statusColor}`}>{product.status}</div>

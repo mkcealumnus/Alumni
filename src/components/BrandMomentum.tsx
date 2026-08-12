@@ -59,7 +59,7 @@ const BrandMomentum: React.FC = () => {
           </div>
           
           {/* Right Column: Featured Metric Card */}
-          <div className="glass-card" style={{ padding: '3rem', border: '1px solid var(--color-border)', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
+          <div className="glass-card card-glow-primary" style={{ padding: '3rem', border: '1px solid var(--color-border)', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
             <div style={{ display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: '99px', background: 'rgba(var(--color-primary-rgb), 0.08)', border: '1px solid rgba(var(--color-primary-rgb), 0.15)', color: 'var(--color-primary)', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1.5rem' }}>
               Featured conversion
             </div>
@@ -70,14 +70,30 @@ const BrandMomentum: React.FC = () => {
             </p>
             
             {/* Metric Displays */}
-            <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '2.75rem', fontWeight: '700', color: 'var(--color-primary)', fontFamily: 'var(--font-display)', lineHeight: '1' }}>38%</span>
-                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500', marginTop: '0.5rem' }}>Uplift in clarity</span>
+            <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                background: 'rgba(16, 185, 129, 0.04)', 
+                border: '1px solid rgba(16, 185, 129, 0.1)', 
+                padding: '1.25rem 2rem', 
+                borderRadius: '16px',
+                flex: '1 1 180px' 
+              }}>
+                <span style={{ fontSize: '2.75rem', fontWeight: '800', background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'var(--font-display)', lineHeight: '1' }}>38%</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '600', marginTop: '0.5rem' }}>Uplift in clarity</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '2.75rem', fontWeight: '700', color: 'var(--color-secondary)', fontFamily: 'var(--font-display)', lineHeight: '1' }}>24/7</span>
-                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '500', marginTop: '0.5rem' }}>Support-ready structure</span>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                background: 'rgba(6, 182, 212, 0.04)', 
+                border: '1px solid rgba(6, 182, 212, 0.1)', 
+                padding: '1.25rem 2rem', 
+                borderRadius: '16px',
+                flex: '1 1 180px' 
+              }}>
+                <span style={{ fontSize: '2.75rem', fontWeight: '800', background: 'linear-gradient(135deg, var(--color-secondary), var(--color-secondary-light))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: 'var(--font-display)', lineHeight: '1' }}>24/7</span>
+                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: '600', marginTop: '0.5rem' }}>Support-ready</span>
               </div>
             </div>
           </div>

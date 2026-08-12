@@ -32,9 +32,13 @@ const CaseStudies: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '2.5rem' }}>
           {projects.map((project) => (
-            <div key={project.id} className="glass-card" style={{ display: 'flex', flexDirection: 'column', borderRadius: '24px', overflow: 'hidden', height: '100%' }}>
+            <div 
+              key={project.id} 
+              className={`glass-card ${project.id % 2 === 0 ? 'card-glow-primary' : 'card-glow-secondary'}`} 
+              style={{ display: 'flex', flexDirection: 'column', borderRadius: '24px', overflow: 'hidden', height: '100%', border: '1px solid var(--color-border)' }}
+            >
               
               {/* Graphic Header Panel */}
               <div style={{ 
