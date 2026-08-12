@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="navbar-actions">
-          <Link to="/#contact" className="btn btn-primary start-project-btn" onClick={closeMenu}>Start Your Project</Link>
+          <Link to="/contact" className="btn btn-primary start-project-btn" onClick={closeMenu}>Start Your Project</Link>
           <button className="mobile-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

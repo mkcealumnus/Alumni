@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
           </div>
           
           <div className="hero-actions">
-            <Link to="/#contact" className="btn btn-primary btn-large">Build With Us</Link>
+            <Link to="/contact" className="btn btn-primary btn-large">Build With Us</Link>
             <Link to="/#portfolio" className="btn btn-secondary btn-large">Explore Studio</Link>
           </div>
 
