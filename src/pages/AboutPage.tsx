@@ -82,12 +82,12 @@ const AboutPage = () => {
             <h3 style={{ marginBottom: '2rem' }}>Leadership</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <li>
-                <strong>Jayanthan Senthilkumar</strong><br />
-                <span style={{ color: 'var(--color-text-secondary)' }}>Founder, CEO & Lead Software Director</span>
+                <strong>Surya V M</strong><br />
+                <span style={{ color: 'var(--color-text-secondary)' }}>Founder & CEO</span>
               </li>
               <li>
-                <strong>Surya V M</strong><br />
-                <span style={{ color: 'var(--color-text-secondary)' }}>Co-Founder</span>
+                <strong>Jayanthan Senthilkumar</strong><br />
+                <span style={{ color: 'var(--color-text-secondary)' }}>Co-Founder & Lead Software Director</span>
               </li>
               <li>
                 <span style={{ color: 'var(--color-primary)' }}>Open Positions</span><br />
@@ -96,19 +96,11 @@ const AboutPage = () => {
             </ul>
           </div>
           <div className="glass-card" style={{ flex: '1 1 300px', padding: '3rem' }}>
-            <h3 style={{ marginBottom: '2rem' }}>Global Presence</h3>
+            <h3 style={{ marginBottom: '2rem' }}>Our Presence</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <li>
-                <strong>San Francisco</strong><br />
-                <span style={{ color: 'var(--color-text-secondary)' }}>Global Headquarters</span>
-              </li>
-              <li>
-                <strong>London</strong><br />
-                <span style={{ color: 'var(--color-text-secondary)' }}>European Engineering Hub</span>
-              </li>
-              <li>
-                <strong>Singapore</strong><br />
-                <span style={{ color: 'var(--color-text-secondary)' }}>APAC Operations</span>
+                <strong>India (HQ)</strong><br />
+                <span style={{ color: 'var(--color-text-secondary)' }}>188/2 KokkarayanPettai, Erode, Tamil Nadu</span>
               </li>
             </ul>
           </div>

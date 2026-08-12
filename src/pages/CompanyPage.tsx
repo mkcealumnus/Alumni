@@ -42,7 +42,7 @@ const CompanyPage = () => {
             <div className="bento-card glass-card" style={{ height: '100%', transition: 'transform 0.3s ease', cursor: 'pointer' }}>
               <div className="bento-icon-wrapper"><Send size={24} className="text-secondary" /></div>
               <h3 style={{ color: 'var(--color-text-primary)' }}>Contact</h3>
-              <p style={{ color: 'var(--color-text-secondary)' }}>Get in touch with our global offices in San Francisco, London, and Singapore.</p>
+              <p style={{ color: 'var(--color-text-secondary)' }}>Get in touch with our headquarters in Erode, Tamil Nadu, India.</p>
             </div>
           </Link>
 

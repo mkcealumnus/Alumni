@@ -4,7 +4,7 @@ import { User, Shield, PenTool, Database } from 'lucide-react';
 const team = [
   {
     name: 'Surya V M',
-    role: 'Founder & Full Stack Developer',
+    role: 'Founder & CEO',
     description: "Leads SignBridge's vision, architecture, and full-stack development with a focus on AI, accessibility, and world-class product design.",
     skills: ['Full Stack', 'AI', 'Firebase', 'React'],
     icon: <User size={24} className="text-primary" />
