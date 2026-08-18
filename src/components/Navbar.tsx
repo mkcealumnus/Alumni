@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Network, Menu, X, ChevronDown } from 'lucide-react';
+import { Network, Menu, X, ChevronDown, Sun, Moon } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Initialize theme based on saved preference or system preference
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme;
+    const userMedia = window.matchMedia('(prefers-color-scheme: dark)');
+    if (userMedia.matches) return 'dark';
+    return 'light';
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,6 +93,9 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="navbar-actions">
+          <button className="theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle Theme" title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}>
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
           <Link to="/contact" className="btn btn-primary start-project-btn" onClick={closeMenu}>Start Your Project</Link>
           <button className="mobile-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
