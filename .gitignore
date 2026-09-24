@@ -1,0 +1,15 @@
+/node_modules
+/dist
+
+node_modules
+dist
+.vite
+.env
+.env.local
+
+*.db
+*.log
+
+.DS_Store
+
+mkce_alumni_blueprint.md
