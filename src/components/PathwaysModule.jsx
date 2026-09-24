@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PATHWAYS } from '../data/mockData';
-import { Code, Brain, Cpu, CheckCircle, Layers } from 'lucide-react';
+import { Code, Brain, Cpu, CheckCircle2, Circle, ChevronDown, ChevronUp, Layers, Sparkles, Trophy, Download } from 'lucide-react';
 
 const iconMap = {
   Code,
@@ -10,7 +10,26 @@ const iconMap = {
 
 export default function PathwaysModule() {
   const [selectedPathwayId, setSelectedPathwayId] = useState(PATHWAYS[0].id);
+  const [completedTopics, setCompletedTopics] = useState({});
+  const [expandedMilestones, setExpandedMilestones] = useState({ '1st Year': true, '2nd Year': true, '3rd Year': true, '4th Year': true });
+
   const activePathway = PATHWAYS.find(p => p.id === selectedPathwayId) || PATHWAYS[0];
+
+  // Calculate overall completed topics for active pathway
+  const totalTopicsCount = activePathway.milestones.reduce((acc, m) => acc + m.topics.length, 0);
+  const completedCount = activePathway.milestones.reduce((acc, m) => {
+    return acc + m.topics.filter(t => completedTopics[`${activePathway.id}-${t.name}`]).length;
+  }, 0);
+  const progressPercent = Math.round((completedCount / totalTopicsCount) * 100);
+
+  const toggleTopic = (topicName) => {
+    const key = `${activePathway.id}-${topicName}`;
+    setCompletedTopics(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const toggleMilestone = (year) => {
+    setExpandedMilestones(prev => ({ ...prev, [year]: !prev[year] }));
+  };
 
   return (
     <section id="pathways" className="py-20 bg-slate-50 relative border-t border-slate-200/80">
@@ -19,18 +38,18 @@ export default function PathwaysModule() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-semibold">
-            <Layers className="w-3.5 h-3.5" /> Structured Career Roadmaps
+            <Layers className="w-3.5 h-3.5" /> Interactive Domain Roadmaps
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
             From <span className="gradient-text">1st Year Beginner</span> to High-Paying Placement
           </h2>
           <p className="text-slate-600 text-sm sm:text-base">
-            Detailed, step-by-step engineering domain paths curated by MKCE alumni working in top tech companies.
+            Track your year-by-year technical milestone progress. Check off skills as you learn them!
           </p>
         </div>
 
         {/* Branch / Pathway Selector Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
           {PATHWAYS.map((path) => {
             const Icon = iconMap[path.icon] || Code;
             const isSelected = path.id === selectedPathwayId;
@@ -56,59 +75,144 @@ export default function PathwaysModule() {
           })}
         </div>
 
-        {/* Active Pathway Details Header */}
-        <div className="glass-card p-6 sm:p-8 rounded-2xl border border-indigo-200 mb-8 bg-gradient-to-r from-indigo-50/60 via-white to-purple-50/60">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wider">Target Domain Roadmap</span>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">{activePathway.title}</h3>
-              <p className="text-slate-600 text-sm mt-1 max-w-2xl">{activePathway.description}</p>
+        {/* Active Pathway Details Header & Interactive Progress Bar */}
+        <div className="glass-card p-6 sm:p-8 rounded-2xl border border-indigo-200 mb-8 bg-gradient-to-r from-indigo-50/70 via-white to-purple-50/70 shadow-sm">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-indigo-600 text-white">
+                  Target Roadmap
+                </span>
+                <span className="text-xs font-semibold text-slate-600">
+                  Branches: {activePathway.branch}
+                </span>
+                <span className="text-xs font-extrabold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  Avg Package: {activePathway.avgPackage}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900">{activePathway.title}</h3>
+              <p className="text-slate-600 text-sm max-w-2xl">{activePathway.description}</p>
+              
+              {/* Target Roles */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <span className="text-xs font-bold text-slate-500">Target Roles:</span>
+                {activePathway.targetRoles.map((role, idx) => (
+                  <span key={idx} className="text-[10px] px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 font-semibold shadow-2xs">
+                    {role}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700 border border-indigo-200">
-                Branches: {activePathway.branch}
-              </span>
+
+            {/* Live Interactive Progress Card */}
+            <div className="w-full lg:w-72 p-4 rounded-xl bg-white border border-indigo-100 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-indigo-600" />
+                  <span className="text-xs font-bold text-slate-900">Your Learning Progress</span>
+                </div>
+                <span className="text-xs font-black text-indigo-600">{progressPercent}%</span>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-indigo-600 to-purple-600 transition-all duration-500 rounded-full"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] text-slate-500">
+                <span>{completedCount} of {totalTopicsCount} skills completed</span>
+                {progressPercent === 100 && (
+                  <span className="text-emerald-600 font-bold flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> Completed!
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Timeline Grid (1st Year to 4th Year) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {activePathway.milestones.map((milestone, idx) => (
-            <div
-              key={idx}
-              className="glass-card glass-card-hover p-6 rounded-2xl flex flex-col justify-between border-slate-200 bg-white relative group"
-            >
-              {/* Year Tag */}
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  {milestone.year}
-                </span>
-                <span className="text-xs text-slate-400 font-semibold">Phase {idx + 1}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {activePathway.milestones.map((milestone, idx) => {
+            const isExpanded = expandedMilestones[milestone.year];
+            return (
+              <div
+                key={idx}
+                className="glass-card p-6 rounded-2xl border-slate-200 bg-white flex flex-col justify-between shadow-sm"
+              >
+                <div>
+                  {/* Year Tag & Toggle */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        {milestone.year}
+                      </span>
+                      <span className="text-xs font-bold text-slate-400">Phase {idx + 1}</span>
+                    </div>
+
+                    <button
+                      onClick={() => toggleMilestone(milestone.year)}
+                      className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                    >
+                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </button>
+                  </div>
+
+                  {/* Title */}
+                  <h4 className="text-lg font-bold text-slate-900 mb-1">
+                    {milestone.title}
+                  </h4>
+                  <p className="text-xs text-slate-500 mb-4">{milestone.description}</p>
+
+                  {/* Topics List with Interactive Checkboxes */}
+                  {isExpanded && (
+                    <div className="space-y-3 mb-4 animate-in fade-in duration-200">
+                      {milestone.topics.map((topic, i) => {
+                        const isDone = completedTopics[`${activePathway.id}-${topic.name}`];
+                        return (
+                          <div
+                            key={i}
+                            onClick={() => toggleTopic(topic.name)}
+                            className={`p-3 rounded-xl border text-xs cursor-pointer transition-all flex items-start gap-3 ${
+                              isDone
+                                ? 'bg-emerald-50/60 border-emerald-200 text-slate-800'
+                                : 'bg-slate-50/70 border-slate-200 text-slate-700 hover:bg-indigo-50/40 hover:border-indigo-200'
+                            }`}
+                          >
+                            <button className="mt-0.5 shrink-0">
+                              {isDone ? (
+                                <CheckCircle2 className="w-4 h-4 text-emerald-600 fill-emerald-100" />
+                              ) : (
+                                <Circle className="w-4 h-4 text-slate-400 hover:text-indigo-600" />
+                              )}
+                            </button>
+                            <div className="flex-1">
+                              <span className={`font-semibold block ${isDone ? 'line-through text-slate-500' : 'text-slate-900'}`}>
+                                {topic.name}
+                              </span>
+                              <span className="text-[11px] text-slate-500 block mt-0.5">{topic.description}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Footer */}
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                  <span>Pace: 2-3 hrs/day</span>
+                  <span className="text-indigo-600 font-semibold">
+                    {milestone.topics.filter(t => completedTopics[`${activePathway.id}-${t.name}`]).length} / {milestone.topics.length} Done
+                  </span>
+                </div>
+
               </div>
-
-              {/* Title */}
-              <h4 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">
-                {milestone.title}
-              </h4>
-
-              {/* Topics List */}
-              <ul className="space-y-2.5 mb-6 flex-1">
-                {milestone.topics.map((topic, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{topic}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Status Indicator */}
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                <span>Recommended Pace</span>
-                <span className="text-indigo-600 font-semibold">2-3 hrs/day</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>
