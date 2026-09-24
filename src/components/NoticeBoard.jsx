@@ -1,21 +1,21 @@
 import React from 'react';
 import { EVENTS } from '../data/mockData';
-import { Calendar, Clock, UserCheck, Video, BellRing, ArrowUpRight } from 'lucide-react';
+import { Clock, UserCheck, Video, BellRing, ArrowUpRight } from 'lucide-react';
 
 export default function NoticeBoard() {
   return (
-    <section id="notice-board" className="py-20 bg-[#0B0F19] relative border-t border-slate-800/60">
+    <section id="notice-board" className="py-20 bg-slate-50 relative border-t border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
             <BellRing className="w-3.5 h-3.5 animate-bounce" /> Live Notice Board
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
             Upcoming Webinars & <span className="gradient-text">Mock Drives</span>
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base">
+          <p className="text-slate-600 text-sm sm:text-base">
             Participate in live interactive sessions hosted by MKCE alumni across the globe.
           </p>
         </div>
@@ -25,42 +25,42 @@ export default function NoticeBoard() {
           {EVENTS.map((event) => (
             <div
               key={event.id}
-              className="glass-card glass-card-hover p-6 rounded-2xl border-slate-800 relative overflow-hidden flex flex-col justify-between"
+              className="glass-card glass-card-hover p-6 rounded-2xl border-slate-200 bg-white relative overflow-hidden flex flex-col justify-between shadow-sm"
             >
               {/* Gradient Banner Accent */}
               <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${event.bannerColor}`} />
 
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4 mt-1">
-                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center gap-1.5">
-                    <Video className="w-3 h-3 text-cyan-400" />
+                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center gap-1.5">
+                    <Video className="w-3 h-3 text-cyan-600" />
                     {event.type}
                   </span>
-                  <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
                     {event.status}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-3 hover:text-indigo-300 transition-colors">
+                <h3 className="text-xl font-bold text-slate-900 mb-3 hover:text-indigo-600 transition-colors">
                   {event.title}
                 </h3>
 
-                <div className="space-y-2 text-xs text-slate-300 mb-6">
+                <div className="space-y-2 text-xs text-slate-600 mb-6">
                   <div className="flex items-center gap-2">
-                    <UserCheck className="w-4 h-4 text-indigo-400 shrink-0" />
-                    <span className="font-medium text-slate-200">{event.speaker}</span>
+                    <UserCheck className="w-4 h-4 text-indigo-600 shrink-0" />
+                    <span className="font-semibold text-slate-800">{event.speaker}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <Clock className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-slate-500">
+                    <Clock className="w-4 h-4 text-cyan-600 shrink-0" />
                     <span>{event.date}</span>
                   </div>
                 </div>
               </div>
 
               {/* Action Footer */}
-              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                <span className="text-xs text-slate-400">
-                  <strong className="text-white">{event.registrations}</strong> students registered
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-xs text-slate-500">
+                  <strong className="text-slate-900">{event.registrations}</strong> students registered
                 </span>
                 
                 <button

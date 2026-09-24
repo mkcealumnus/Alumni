@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RESOURCES } from '../data/mockData';
-import { Search, Download, Star, Filter, FileText, ExternalLink, Bookmark, Sparkles } from 'lucide-react';
+import { Search, Download, Star, FileText } from 'lucide-react';
 
 export default function ResourceLibrary() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,19 +16,19 @@ export default function ResourceLibrary() {
   });
 
   return (
-    <section id="resources" className="py-20 bg-[#0B0F19] relative border-t border-slate-800/60">
+    <section id="resources" className="py-20 bg-slate-50 relative border-t border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 text-xs font-semibold mb-3">
               <FileText className="w-3.5 h-3.5" /> Curated Resource Repository
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
               Free Placement & <span className="gradient-text">Study Materials</span>
             </h2>
-            <p className="text-slate-400 text-sm sm:text-base mt-1 max-w-xl">
+            <p className="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
               Cheat sheets, ATS resume templates, and domain notes verified by MKCE alumni.
             </p>
           </div>
@@ -41,7 +41,7 @@ export default function ResourceLibrary() {
               placeholder="Search resources, DSA, resume..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 shadow-sm transition-all"
             />
           </div>
         </div>
@@ -54,8 +54,8 @@ export default function ResourceLibrary() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
                 selectedCategory === cat
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
-                  : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-300 shadow-sm'
               }`}
             >
               {cat}
@@ -68,31 +68,31 @@ export default function ResourceLibrary() {
           {filteredResources.map((res) => (
             <div
               key={res.id}
-              className="glass-card glass-card-hover p-6 rounded-2xl border-slate-800 flex flex-col justify-between"
+              className="glass-card glass-card-hover p-6 rounded-2xl border-slate-200 bg-white flex flex-col justify-between shadow-sm"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">
                     {res.category}
                   </span>
-                  <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
+                  <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                     <Star className="w-3.5 h-3.5 fill-amber-400" />
                     <span>{res.rating}</span>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2 hover:text-indigo-300 transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 hover:text-indigo-600 transition-colors">
                   {res.title}
                 </h3>
 
-                <p className="text-xs text-slate-400 mb-4">
-                  Shared by <span className="text-slate-200 font-medium">{res.author}</span>
+                <p className="text-xs text-slate-500 mb-4">
+                  Shared by <span className="text-slate-800 font-medium">{res.author}</span>
                 </p>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 mb-6">
                   {res.tags.map((tag, i) => (
-                    <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700/50">
+                    <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                       #{tag}
                     </span>
                   ))}
@@ -100,9 +100,9 @@ export default function ResourceLibrary() {
               </div>
 
               {/* Card Footer */}
-              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                  <Download className="w-3.5 h-3.5 text-slate-500" />
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <Download className="w-3.5 h-3.5 text-slate-400" />
                   <span>{res.downloads} downloads</span>
                 </div>
                 
