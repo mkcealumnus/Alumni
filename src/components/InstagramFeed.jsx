@@ -1,6 +1,35 @@
 import React from 'react';
-import { INSTAGRAM_POSTS } from '../data/mockData';
 import { Instagram, Heart, MessageCircle, ExternalLink } from 'lucide-react';
+
+const INSTAGRAM_POSTS = [
+  {
+    id: 1,
+    caption: '🚀 5 Essential DSA Patterns every MKCE student must master before 3rd Year Placements!',
+    likes: 890,
+    comments: 45,
+    tag: 'PlacementTips',
+    date: '3 days ago',
+    link: 'https://instagram.com/mkce.alumni'
+  },
+  {
+    id: 2,
+    caption: '💡 Alumni Spotlight: Meet Swetha (Batch 2022) sharing her journey from Karur campus to Google SDE 2!',
+    likes: 1240,
+    comments: 88,
+    tag: 'AlumniSpotlight',
+    date: '5 days ago',
+    link: 'https://instagram.com/mkce.alumni'
+  },
+  {
+    id: 3,
+    caption: '📚 Free Download: Resume Template that got 40+ MKCE engineering students shortlisted in 2025.',
+    likes: 1560,
+    comments: 112,
+    tag: 'FreeResource',
+    date: '1 week ago',
+    link: 'https://instagram.com/mkce.alumni'
+  }
+];
 
 export default function InstagramFeed() {
   return (
