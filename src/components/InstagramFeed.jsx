@@ -6,18 +6,18 @@ export default function InstagramFeed({ initialPosts }) {
   const posts = initialPosts && initialPosts.length > 0 ? initialPosts : INITIAL_INSTAGRAM_POSTS;
 
   return (
-    <section className="py-20 bg-[#fcfcfc] relative border-b border-slate-200/80 overflow-hidden">
+    <section className="py-16 sm:py-20 3xl:py-24 bg-[#fcfcfc] relative border-b border-slate-200/80 overflow-hidden">
       
       {/* Background Soft Glow */}
       <div className="absolute top-1/2 right-10 w-[400px] h-[400px] bg-pink-400/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12 relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <p className="label-mono text-xs text-pink-600 font-bold mb-1">Social Community Integration</p>
-            <h2 className="text-3xl sm:text-5xl font-normal text-slate-900 font-sans tracking-tight">
+            <h2 className="text-3xl sm:text-5xl 3xl:text-6xl font-normal text-slate-900 font-sans tracking-tight">
               Follow Us On <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-purple-600 to-orange-600 font-sans">Instagram @mkce.alumni</span>
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
@@ -29,7 +29,7 @@ export default function InstagramFeed({ initialPosts }) {
             href="https://instagram.com/mkce.alumni"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 via-purple-600 to-orange-600 hover:opacity-95 text-white text-xs font-semibold shadow-md shadow-pink-600/15 transition-all hover:scale-[1.02] cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 via-purple-600 to-orange-600 hover:opacity-95 text-white text-xs font-semibold shadow-md shadow-pink-600/15 transition-all hover:scale-[1.02] cursor-pointer shrink-0"
           >
             <Instagram className="w-4 h-4 text-white" />
             <span>Visit @mkce.alumni</span>
@@ -49,7 +49,7 @@ export default function InstagramFeed({ initialPosts }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-6">
             {posts.map((post) => (
               <div
                 key={post.id}

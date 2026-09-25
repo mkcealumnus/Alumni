@@ -11,7 +11,7 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
 
   return (
     <div className="bg-slate-950 text-slate-200 text-xs border-b border-slate-800 backdrop-blur-md relative z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col md:flex-row md:items-center justify-between gap-2">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12 py-2 flex flex-col md:flex-row md:items-center justify-between gap-2">
         
         {/* Top Left Announcement / Institutional Identification */}
         <div className="flex items-center gap-2.5 flex-wrap">
@@ -29,16 +29,16 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
         <div className="flex items-center justify-between md:justify-end gap-3">
           
           {/* Search Shortcut */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-initial">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search pathways, alumni, resources..."
+              placeholder="Search pathways, alumni..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-8 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-200 text-[11px] placeholder:text-slate-500 focus:outline-none focus:border-orange-500/60 w-44 sm:w-60 transition-all font-mono"
+              className="pl-8 pr-8 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-200 text-[11px] placeholder:text-slate-500 focus:outline-none focus:border-orange-500/60 w-full sm:w-56 md:w-64 transition-all font-mono"
             />
-            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">⌘K</span>
+            <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700 hidden sm:inline">⌘K</span>
           </div>
 
           {/* Notifications Toggle */}
@@ -87,7 +87,7 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
               className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-mono text-[11px] font-semibold transition-all shadow-md shadow-orange-500/20 cursor-pointer"
             >
               <UserCheck className="w-3 h-3 text-orange-200" />
-              <span>View: {currentRole}</span>
+              <span>{currentRole}</span>
               <ChevronDown className="w-3 h-3 text-orange-200" />
             </button>
 

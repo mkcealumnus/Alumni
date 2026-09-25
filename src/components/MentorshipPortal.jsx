@@ -60,14 +60,14 @@ export default function MentorshipPortal({ initialQueries, currentRole }) {
   };
 
   return (
-    <section id="mentorship" className="py-20 bg-[#fcfcfc] relative border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="mentorship" className="py-16 sm:py-20 3xl:py-24 bg-[#fcfcfc] relative border-b border-slate-200/80">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <p className="label-mono text-xs text-orange-600 font-bold mb-1">Live Mentorship Forum</p>
-            <h2 className="text-3xl sm:text-5xl font-normal text-slate-900 font-sans tracking-tight">
+            <h2 className="text-3xl sm:text-5xl 3xl:text-6xl font-normal text-slate-900 font-sans tracking-tight">
               Ask Questions, Get <span className="font-serif italic text-orange-600">Verified Alumni Advice</span>
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
@@ -87,13 +87,13 @@ export default function MentorshipPortal({ initialQueries, currentRole }) {
 
         {/* Filter Toolbar */}
         <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+          {/* Category Tabs - Scrollable on Mobile */}
+          <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 no-scrollbar">
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold transition-all cursor-pointer shrink-0 ${
                   selectedCategory === cat
                     ? 'bg-orange-600 text-white shadow-md shadow-orange-500/20 border border-orange-500/30'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80'

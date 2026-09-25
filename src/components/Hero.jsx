@@ -26,21 +26,21 @@ export default function Hero({ onExploreClick }) {
   ];
 
   return (
-    <section className="relative py-16 lg:py-24 overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-[#fcfcfc] via-[#f8fafc] to-[#f1f5f9]">
+    <section className="relative py-12 sm:py-16 lg:py-24 3xl:py-28 overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-[#fcfcfc] via-[#f8fafc] to-[#f1f5f9]">
       
       {/* Background Radial Glows & Grain Texture */}
       <div className="grain pointer-events-none absolute inset-0 opacity-30" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-orange-400/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] 3xl:w-[1000px] h-[700px] 3xl:h-[1000px] bg-orange-400/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-amber-300/15 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-rose-300/15 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12 relative z-10">
         
         {/* Main Hero Split Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Left Column: Headline & Action Buttons */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
             
             {/* Top Pill Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50/90 px-3.5 py-1 text-xs font-mono font-semibold text-orange-700 shadow-xs">
@@ -49,20 +49,20 @@ export default function Hero({ onExploreClick }) {
             </div>
 
             {/* Main Display Title with Italic Serif Accent */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal leading-[1.05] text-slate-900 tracking-tight font-sans">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-normal leading-[1.08] text-slate-900 tracking-tight font-sans">
               Bridging <span className="font-serif italic text-orange-600 font-normal">MKCE Students</span> to Top Tech Careers
             </h1>
 
             {/* Subtitle */}
-            <p className="max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
+            <p className="max-w-2xl text-sm sm:text-base lg:text-lg 3xl:text-xl leading-relaxed text-slate-600 font-normal">
               100% free domain roadmaps, ATS resume templates, placement cheat-sheets, and 1-on-1 mentorship directly from successful M.Kumarasamy College of Engineering alumni.
             </p>
 
             {/* Call to Actions */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
               <button
                 onClick={onExploreClick}
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-orange-500/20 transition-all hover:opacity-95 hover:scale-[1.02] cursor-pointer"
+                className="w-full xs:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-orange-500/20 transition-all hover:opacity-95 hover:scale-[1.02] cursor-pointer"
               >
                 <Compass className="w-4 h-4 text-amber-200" />
                 <span>Explore Domain Roadmaps</span>
@@ -73,7 +73,7 @@ export default function Hero({ onExploreClick }) {
                 href="https://instagram.com/mkce.alumni"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-800 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300"
+                className="w-full xs:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-800 shadow-sm transition-all hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300"
               >
                 <Instagram className="w-4 h-4 text-pink-600" />
                 <span>Join @mkce.alumni</span>
@@ -100,7 +100,7 @@ export default function Hero({ onExploreClick }) {
 
           {/* Right Column: Live Proof & Interactive Card Preview */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl border border-slate-200/90 bg-white/95 p-6 sm:p-7 shadow-2xl space-y-5 backdrop-blur-xl">
+            <div className="relative rounded-3xl border border-slate-200/90 bg-white/95 p-5 sm:p-7 shadow-2xl space-y-5 backdrop-blur-xl">
               
               {/* Card Header Bar */}
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -114,7 +114,7 @@ export default function Hero({ onExploreClick }) {
               <div>
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-bold text-slate-900">MKCE Career Hub</h3>
-                  <span className="flex items-center gap-1 text-amber-600 text-xs font-mono font-bold bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                  <span className="flex items-center gap-1 text-amber-700 text-xs font-mono font-bold bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" /> 5.0 Rating
                   </span>
                 </div>
@@ -168,18 +168,18 @@ export default function Hero({ onExploreClick }) {
         </div>
 
         {/* Stats Grid */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl 3xl:max-w-6xl mx-auto">
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
               <div
                 key={idx}
-                className="glass-card glass-card-hover p-6 rounded-2xl text-center flex flex-col items-center justify-center gap-2 border-slate-200 bg-white/90 shadow-sm"
+                className="glass-card glass-card-hover p-5 sm:p-6 rounded-2xl text-center flex flex-col items-center justify-center gap-2 border-slate-200 bg-white/90 shadow-sm"
               >
                 <div className={`p-3 rounded-xl border mb-1 ${stat.bg}`}>
                   <Icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
-                <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-sans">{stat.value}</span>
+                <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-sans">{stat.value}</span>
                 <span className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider">{stat.label}</span>
               </div>
             );

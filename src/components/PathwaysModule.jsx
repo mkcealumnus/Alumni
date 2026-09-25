@@ -29,13 +29,13 @@ export default function PathwaysModule({ initialPathways }) {
   };
 
   return (
-    <section id="pathways" className="py-20 bg-[#fcfcfc] relative border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="pathways" className="py-16 sm:py-20 3xl:py-24 bg-[#fcfcfc] relative border-b border-slate-200/80">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
           <p className="label-mono text-xs text-orange-600 font-bold">Structured Engineering Roadmaps</p>
-          <h2 className="text-3xl sm:text-5xl font-normal text-slate-900 font-sans tracking-tight">
+          <h2 className="text-3xl sm:text-5xl 3xl:text-6xl font-normal text-slate-900 font-sans tracking-tight">
             From <span className="font-serif italic text-orange-600">1st Year Beginner</span> to Tier-1 Placement
           </h2>
           <p className="text-slate-600 text-sm sm:text-base">
@@ -43,8 +43,8 @@ export default function PathwaysModule({ initialPathways }) {
           </p>
         </div>
 
-        {/* Branch / Pathway Selector Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
+        {/* Branch / Pathway Selector Tabs - Scrollable on Mobile */}
+        <div className="flex items-center justify-start md:justify-center gap-3 mb-8 sm:mb-10 overflow-x-auto pb-3 pt-1 no-scrollbar">
           {pathways.map((path) => {
             const Icon = iconMap[path.icon] || Code;
             const isSelected = path.id === selectedPathwayId;
@@ -52,9 +52,9 @@ export default function PathwaysModule({ initialPathways }) {
               <button
                 key={path.id}
                 onClick={() => setSelectedPathwayId(path.id)}
-                className={`flex items-center gap-3 px-6 py-3.5 rounded-2xl font-semibold text-xs transition-all duration-300 cursor-pointer ${
+                className={`flex items-center gap-3 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl font-semibold text-xs transition-all duration-300 cursor-pointer shrink-0 ${
                   isSelected
-                    ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md shadow-orange-500/20 scale-[1.03]'
+                    ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md shadow-orange-500/20 scale-[1.02]'
                     : 'bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-orange-300 shadow-2xs'
                 }`}
               >
@@ -62,7 +62,7 @@ export default function PathwaysModule({ initialPathways }) {
                   <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-orange-600'}`} />
                 </div>
                 <div className="text-left">
-                  <div className="font-bold text-sm">{path.title}</div>
+                  <div className="font-bold text-xs sm:text-sm">{path.title}</div>
                   <div className={`text-[10px] font-mono ${isSelected ? 'text-orange-100' : 'text-slate-500'}`}>{path.branch || (path.target_branches ? path.target_branches.join(' / ') : '')}</div>
                 </div>
               </button>
@@ -134,9 +134,9 @@ export default function PathwaysModule({ initialPathways }) {
           </div>
         )}
 
-        {/* Timeline Grid (1st Year to 4th Year) */}
+        {/* Timeline Grid (1st Year to 4th Year) - 4 Column Row on Ultrawides */}
         {activePathway && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-4 gap-6">
             {(activePathway.milestones || []).map((milestone, idx) => {
               const isExpanded = expandedMilestones[milestone.year];
               return (

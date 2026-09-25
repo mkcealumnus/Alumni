@@ -61,14 +61,14 @@ export default function NoticeBoard({ initialEvents, currentRole }) {
   };
 
   return (
-    <section id="notice-board" className="py-20 bg-[#fcfcfc] relative border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="notice-board" className="py-16 sm:py-20 3xl:py-24 bg-[#fcfcfc] relative border-b border-slate-200/80">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <p className="label-mono text-xs text-orange-600 font-bold mb-1">Live Institutional Notice Board</p>
-            <h2 className="text-3xl sm:text-5xl font-normal text-slate-900 font-sans tracking-tight">
+            <h2 className="text-3xl sm:text-5xl 3xl:text-6xl font-normal text-slate-900 font-sans tracking-tight">
               Upcoming Webinars & <span className="font-serif italic text-orange-600">Mock Drives</span>
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
@@ -97,7 +97,7 @@ export default function NoticeBoard({ initialEvents, currentRole }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 4xl:grid-cols-5 gap-6">
             {events.map((event) => {
               const currentRegs = registrationsCount[event.id] || event.registrations || 10;
               return (

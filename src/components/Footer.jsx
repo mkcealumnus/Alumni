@@ -13,7 +13,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-slate-200/90 bg-white pt-16 pb-12 text-slate-600 text-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12 space-y-12">
         
         {/* Top Handle Claim & Institutional Box */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start border-b border-slate-200/80 pb-12">

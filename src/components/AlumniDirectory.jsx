@@ -16,14 +16,14 @@ export default function AlumniDirectory({ initialMentors }) {
   });
 
   return (
-    <section id="alumni-network" className="py-20 bg-[#fcfcfc] relative border-b border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="alumni-network" className="py-16 sm:py-20 3xl:py-24 bg-[#fcfcfc] relative border-b border-slate-200/80">
+      <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <p className="label-mono text-xs text-orange-600 font-bold mb-1">Institutional Mentorship Directory</p>
-            <h2 className="text-3xl sm:text-5xl font-normal text-slate-900 font-sans tracking-tight">
+            <h2 className="text-3xl sm:text-5xl 3xl:text-6xl font-normal text-slate-900 font-sans tracking-tight">
               Connect With <span className="font-serif italic text-orange-600">Verified MKCE Alumni</span>
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
@@ -31,13 +31,13 @@ export default function AlumniDirectory({ initialMentors }) {
             </p>
           </div>
 
-          {/* Branch Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Branch Filter Tabs - Scrollable on Mobile */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
             {branches.map(b => (
               <button
                 key={b}
                 onClick={() => setSelectedBranch(b)}
-                className={`px-4 py-2 rounded-full text-xs font-mono font-semibold transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-full text-xs font-mono font-semibold transition-all cursor-pointer shrink-0 ${
                   selectedBranch === b
                     ? 'bg-orange-600 text-white shadow-md shadow-orange-500/20 border border-orange-500/30'
                     : 'bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-orange-300 shadow-2xs'
@@ -61,7 +61,7 @@ export default function AlumniDirectory({ initialMentors }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
             {filteredMentors.map((mentor) => {
               const name = mentor.full_name || mentor.name || 'MKCE Alumni';
               const role = mentor.designation || mentor.role || 'Software Engineer';
