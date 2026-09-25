@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sparkles, Bell, Search, UserCheck, ShieldCheck, ChevronDown, CheckCircle2, X } from 'lucide-react';
 
 export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, setSearchQuery, onNavigate }) {
@@ -9,14 +9,48 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
     { id: 2, title: 'Resource Updated', text: 'FAANG-Approved Overleaf ATS Resume Template updated by Jayanthan S.', time: '1h ago', unread: false }
   ]);
 
+  // Auto-dismiss popovers when user scrolls the page, uses mousewheel, touches, or presses Escape
+  useEffect(() => {
+    const dismissPopovers = () => {
+      setShowNotifications(false);
+      setShowRoleDropdown(false);
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        dismissPopovers();
+      }
+    };
+
+    window.addEventListener('scroll', dismissPopovers, { capture: true, passive: true });
+    window.addEventListener('wheel', dismissPopovers, { passive: true });
+    window.addEventListener('touchmove', dismissPopovers, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('scroll', dismissPopovers, { capture: true });
+      window.removeEventListener('wheel', dismissPopovers);
+      window.removeEventListener('touchmove', dismissPopovers);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className="bg-slate-950 text-slate-200 text-xs border-b border-slate-800 backdrop-blur-md relative z-[60]">
       
-      {/* Invisible backdrop to dismiss popovers on click outside */}
+      {/* Invisible backdrop to dismiss popovers on click or scroll outside */}
       {(showNotifications || showRoleDropdown) && (
         <div
           className="fixed inset-0 z-[65] bg-transparent"
           onClick={() => {
+            setShowNotifications(false);
+            setShowRoleDropdown(false);
+          }}
+          onWheel={() => {
+            setShowNotifications(false);
+            setShowRoleDropdown(false);
+          }}
+          onTouchMove={() => {
             setShowNotifications(false);
             setShowRoleDropdown(false);
           }}
@@ -69,7 +103,7 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
               )}
             </button>
 
-            {/* Notifications Popover floating ABOVE sticky navbar */}
+            {/* Notifications Popover */}
             {showNotifications && (
               <div className="absolute right-0 mt-2.5 w-80 sm:w-88 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-800 p-3.5 z-[75] animate-in fade-in slide-in-from-top-2">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-2.5">

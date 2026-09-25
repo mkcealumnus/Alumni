@@ -39,17 +39,17 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#fcfcfc] text-slate-900 flex flex-col selection:bg-orange-500 selection:text-white relative font-sans">
       
-      {/* Top Institutional Header Bar */}
-      <HeaderBar
-        currentRole={currentRole}
-        setCurrentRole={setCurrentRole}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onNavigate={scrollToSection}
-      />
-
-      {/* Main Sticky Navigation Bar */}
-      <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
+      {/* Top Combined Sticky Header Wrapper */}
+      <header className="sticky top-0 z-[60] shadow-sm">
+        <HeaderBar
+          currentRole={currentRole}
+          setCurrentRole={setCurrentRole}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onNavigate={scrollToSection}
+        />
+        <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
+      </header>
 
       {/* Role Banner Indicator if Alumni Mentor View */}
       {currentRole === 'Alumni Mentor' && (
