@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Bell, Search, UserCheck, ShieldCheck, ChevronDown, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Bell, Search, UserCheck, ShieldCheck, ChevronDown, CheckCircle2, X } from 'lucide-react';
 
 export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, setSearchQuery, onNavigate }) {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -10,7 +10,19 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
   ]);
 
   return (
-    <div className="bg-slate-950 text-slate-200 text-xs border-b border-slate-800 backdrop-blur-md relative z-40">
+    <div className="bg-slate-950 text-slate-200 text-xs border-b border-slate-800 backdrop-blur-md relative z-[60]">
+      
+      {/* Invisible backdrop to dismiss popovers on click outside */}
+      {(showNotifications || showRoleDropdown) && (
+        <div
+          className="fixed inset-0 z-[65] bg-transparent"
+          onClick={() => {
+            setShowNotifications(false);
+            setShowRoleDropdown(false);
+          }}
+        />
+      )}
+
       <div className="max-w-7xl 3xl:max-w-[1700px] 4xl:max-w-[2200px] mx-auto px-4 sm:px-6 lg:px-8 3xl:px-12 py-2 flex flex-col md:flex-row md:items-center justify-between gap-2">
         
         {/* Top Left Announcement / Institutional Identification */}
@@ -42,9 +54,12 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
           </div>
 
           {/* Notifications Toggle */}
-          <div className="relative">
+          <div className="relative z-[70]">
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
+              onClick={() => {
+                setShowNotifications(!showNotifications);
+                setShowRoleDropdown(false);
+              }}
               className="p-1.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-orange-500/40 relative transition-all cursor-pointer"
               title="Notifications"
             >
@@ -54,20 +69,29 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
               )}
             </button>
 
-            {/* Notifications Popover */}
+            {/* Notifications Popover floating ABOVE sticky navbar */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-800 p-3 z-50 animate-in fade-in slide-in-from-top-2">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-2">
-                  <span className="font-bold text-xs text-slate-900 font-mono">Platform Updates</span>
-                  <span className="text-[10px] bg-orange-50 text-orange-700 border border-orange-200 font-mono font-semibold px-2 py-0.5 rounded-full">{notifications.length} New</span>
+              <div className="absolute right-0 mt-2.5 w-80 sm:w-88 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-800 p-3.5 z-[75] animate-in fade-in slide-in-from-top-2">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-2.5">
+                  <div className="flex items-center gap-1.5">
+                    <Bell className="w-4 h-4 text-orange-600" />
+                    <span className="font-bold text-xs text-slate-900 font-mono">Platform Updates</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] bg-orange-50 text-orange-700 border border-orange-200 font-mono font-semibold px-2 py-0.5 rounded-full">{notifications.length} New</span>
+                    <button onClick={() => setShowNotifications(false)} className="text-slate-400 hover:text-slate-700 text-xs font-bold p-0.5 cursor-pointer">
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
+
                 {notifications.length === 0 ? (
                   <p className="text-xs text-slate-500 py-3 text-center">No new notifications</p>
                 ) : (
                   <div className="space-y-2">
                     {notifications.map(n => (
-                      <div key={n.id} className={`p-2.5 rounded-xl text-left transition-colors ${n.unread ? 'bg-orange-50/80 border border-orange-200' : 'bg-slate-50 border border-slate-100'}`}>
-                        <div className="flex items-center justify-between mb-0.5">
+                      <div key={n.id} className={`p-2.5 rounded-xl text-left transition-colors ${n.unread ? 'bg-orange-50/90 border border-orange-200/90' : 'bg-slate-50 border border-slate-100'}`}>
+                        <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-xs text-slate-900">{n.title}</span>
                           <span className="text-[9px] font-mono text-slate-400">{n.time}</span>
                         </div>
@@ -81,9 +105,12 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
           </div>
 
           {/* Role Switcher Pill */}
-          <div className="relative">
+          <div className="relative z-[70]">
             <button
-              onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+              onClick={() => {
+                setShowRoleDropdown(!showRoleDropdown);
+                setShowNotifications(false);
+              }}
               className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-mono text-[11px] font-semibold transition-all shadow-md shadow-orange-500/20 cursor-pointer"
             >
               <UserCheck className="w-3 h-3 text-orange-200" />
@@ -92,7 +119,7 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
             </button>
 
             {showRoleDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-800 p-1.5 z-50">
+              <div className="absolute right-0 mt-2.5 w-48 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-800 p-1.5 z-[75] animate-in fade-in slide-in-from-top-2">
                 <button
                   onClick={() => { setCurrentRole('Student'); setShowRoleDropdown(false); }}
                   className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${currentRole === 'Student' ? 'bg-orange-50 text-orange-700 border border-orange-200' : 'hover:bg-slate-50 text-slate-700'}`}
