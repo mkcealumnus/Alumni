@@ -4,13 +4,12 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        background: '#09090b',
-        card: '#121318',
-        border: 'rgba(255, 255, 255, 0.08)',
+        background: '#fcfcfc',
+        card: '#ffffff',
+        border: 'rgba(226, 232, 240, 0.8)',
         brand: {
           50: '#fff7ed',
           100: '#ffedd5',
@@ -18,7 +17,7 @@ export default {
           600: '#ea580c',
           700: '#c2410c',
           900: '#431407',
-          950: '#09090b',
+          950: '#fcfcfc',
         },
         accent: {
           orange: '#ea580c',

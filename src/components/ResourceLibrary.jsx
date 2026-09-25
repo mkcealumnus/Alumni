@@ -77,17 +77,17 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
   };
 
   return (
-    <section id="resources" className="py-20 bg-[#09090b] relative border-b border-white/10">
+    <section id="resources" className="py-20 bg-[#fcfcfc] relative border-b border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
-            <p className="label-mono text-xs text-orange-400 font-bold mb-1">Placement Repository</p>
-            <h2 className="text-3xl sm:text-5xl font-normal text-white font-sans tracking-tight">
-              Free Placement & <span className="font-serif italic text-orange-500">Study Materials</span>
+            <p className="label-mono text-xs text-orange-600 font-bold mb-1">Placement Repository</p>
+            <h2 className="text-3xl sm:text-5xl font-normal text-slate-900 font-sans tracking-tight">
+              Free Placement & <span className="font-serif italic text-orange-600">Study Materials</span>
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base mt-2 max-w-xl">
+            <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
               Cheat-sheets, Overleaf ATS resume templates, and domain notes shared by alumni.
             </p>
           </div>
@@ -96,29 +96,29 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
             <button
               onClick={() => setShowUploadModal(true)}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-semibold shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-semibold shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
               <Upload className="w-4 h-4" />
               <span>Upload Resource</span>
             </button>
 
             <div className="relative w-full sm:w-64">
-              <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search resources, DSA, resume..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-full bg-zinc-900 border border-white/10 text-zinc-200 text-xs placeholder:text-zinc-500 focus:outline-none focus:border-orange-500/50 shadow-inner font-mono"
+                className="w-full pl-10 pr-4 py-2.5 rounded-full bg-white border border-slate-300 text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:border-orange-600 font-mono shadow-xs"
               />
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              <SlidersHorizontal className="w-4 h-4 text-zinc-500 shrink-0" />
+              <SlidersHorizontal className="w-4 h-4 text-slate-500 shrink-0" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full sm:w-auto px-3.5 py-2.5 rounded-full bg-zinc-900 border border-white/10 text-zinc-300 text-xs font-mono font-semibold focus:outline-none"
+                className="w-full sm:w-auto px-3.5 py-2.5 rounded-full bg-white border border-slate-300 text-slate-700 text-xs font-mono font-semibold focus:outline-none shadow-xs"
               >
                 <option value="downloads">Sort by Downloads</option>
                 <option value="rating">Sort by Rating</option>
@@ -135,8 +135,8 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-full text-xs font-mono font-semibold transition-all duration-200 cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25 border border-orange-400/30'
-                  : 'bg-[#121318] border border-white/10 text-zinc-400 hover:text-white hover:border-orange-500/30'
+                  ? 'bg-orange-600 text-white shadow-md shadow-orange-500/20 border border-orange-500/30'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-orange-300 shadow-2xs'
               }`}
             >
               {cat}
@@ -146,12 +146,12 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
 
         {/* Resources Grid */}
         {filteredResources.length === 0 ? (
-          <div className="py-16 text-center bg-[#121318] rounded-3xl border border-white/10 p-8 max-w-md mx-auto space-y-3 shadow-xl">
-            <div className="w-12 h-12 rounded-full bg-orange-500/10 text-orange-400 flex items-center justify-center mx-auto border border-orange-500/20">
+          <div className="py-16 text-center bg-white rounded-3xl border border-slate-200 p-8 max-w-md mx-auto space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center mx-auto border border-orange-200">
               <FileText className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-bold text-white">No Resources Found</h3>
-            <p className="text-xs text-zinc-400">
+            <h3 className="text-base font-bold text-slate-900">No Resources Found</h3>
+            <p className="text-xs text-slate-500">
               No study materials matching your search. Click 'Upload Resource' to add one.
             </p>
           </div>
@@ -162,36 +162,36 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
               return (
                 <div
                   key={res.id}
-                  className="glass-card glass-card-hover p-6 rounded-3xl border-white/10 bg-[#121318] flex flex-col justify-between shadow-xl relative group"
+                  className="glass-card glass-card-hover p-6 rounded-3xl border-slate-200/90 bg-white flex flex-col justify-between shadow-sm relative group"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="text-[10px] font-mono font-bold px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                      <span className="text-[10px] font-mono font-bold px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
                         {res.category}
                       </span>
-                      <div className="flex items-center gap-1 text-amber-400 text-xs font-mono font-bold bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20">
-                        <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <div className="flex items-center gap-1 text-amber-700 text-xs font-mono font-bold bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
                         <span>{res.rating || 5.0}</span>
                       </div>
                     </div>
 
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-orange-400 transition-colors leading-snug">
+                    <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors leading-snug">
                       {res.title}
                     </h3>
 
-                    <p className="text-xs text-zinc-400 mb-3">
-                      Shared by <span className="text-zinc-200 font-semibold">{res.author}</span>
-                      <span className="text-[10px] text-orange-400 block font-mono font-medium">{res.author_role || res.authorRole}</span>
+                    <p className="text-xs text-slate-500 mb-3">
+                      Shared by <span className="text-slate-900 font-semibold">{res.author}</span>
+                      <span className="text-[10px] text-orange-600 block font-mono font-semibold">{res.author_role || res.authorRole}</span>
                     </p>
 
-                    <p className="text-xs text-zinc-400 leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-xs text-slate-600 leading-relaxed mb-4 line-clamp-2">
                       {res.description}
                     </p>
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1.5 mb-6">
                       {(res.tags || []).map((tag, i) => (
-                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 border border-white/5">
+                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 font-medium">
                           #{tag}
                         </span>
                       ))}
@@ -199,23 +199,23 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
                   </div>
 
                   {/* Card Footer */}
-                  <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-zinc-400">
-                      <Download className="w-3.5 h-3.5 text-zinc-500" />
-                      <span className="font-semibold text-zinc-200">{currentDownloads}</span> downloads
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-500">
+                      <Download className="w-3.5 h-3.5 text-slate-400" />
+                      <span className="font-semibold text-slate-800">{currentDownloads}</span> downloads
                     </div>
                     
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setActivePreviewResource(res)}
-                        className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-xs font-semibold transition-all border border-white/5 cursor-pointer"
+                        className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all border border-slate-200 cursor-pointer"
                         title="Quick Preview"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDownload(res)}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-semibold shadow-md shadow-orange-500/20 transition-all cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span>Download</span>
@@ -231,44 +231,44 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
 
         {/* Upload Resource Modal */}
         {showUploadModal && (
-          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="bg-[#121318] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-white/10 space-y-4 animate-in fade-in zoom-in-95">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
-                  <Upload className="w-5 h-5 text-orange-400" />
-                  <h3 className="text-base font-bold text-white">Upload Resource</h3>
+                  <Upload className="w-5 h-5 text-orange-600" />
+                  <h3 className="text-base font-bold text-slate-900">Upload Resource</h3>
                 </div>
-                <button onClick={() => setShowUploadModal(false)} className="text-zinc-500 hover:text-white font-bold text-sm cursor-pointer">✕</button>
+                <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-700 font-bold text-sm cursor-pointer">✕</button>
               </div>
 
               {uploadSuccess ? (
                 <div className="py-6 text-center space-y-2">
-                  <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/20">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">Resource Published Successfully!</h4>
+                  <h4 className="font-bold text-slate-900 text-sm">Resource Published Successfully!</h4>
                 </div>
               ) : (
                 <form onSubmit={handleUploadSubmit} className="space-y-3">
                   <div>
-                    <label className="block text-xs font-mono font-semibold text-zinc-300 mb-1">Resource Title</label>
+                    <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">Resource Title</label>
                     <input
                       type="text"
                       placeholder="e.g. Master System Design Interview Kit 2026"
                       value={uploadTitle}
                       onChange={(e) => setUploadTitle(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-600"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-mono font-semibold text-zinc-300 mb-1">Category</label>
+                      <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">Category</label>
                       <select
                         value={uploadCategory}
                         onChange={(e) => setUploadCategory(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-zinc-100 focus:outline-none focus:border-orange-500/50 font-mono"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-orange-600 font-mono"
                       >
                         <option value="Interview Prep">Interview Prep</option>
                         <option value="Resume">Resume</option>
@@ -278,11 +278,11 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-mono font-semibold text-zinc-300 mb-1">Target Branch</label>
+                      <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">Target Branch</label>
                       <select
                         value={uploadBranch}
                         onChange={(e) => setUploadBranch(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-zinc-100 focus:outline-none focus:border-orange-500/50 font-mono"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-orange-600 font-mono"
                       >
                         <option value="All Branches">All Branches</option>
                         <option value="CSE/IT">CSE/IT</option>
@@ -293,42 +293,42 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono font-semibold text-zinc-300 mb-1">Author Name / Role</label>
+                    <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">Author Name / Role</label>
                     <input
                       type="text"
                       placeholder="e.g. Karthik Raja (SDE @ Amazon)"
                       value={uploadAuthor}
                       onChange={(e) => setUploadAuthor(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-600"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono font-semibold text-zinc-300 mb-1">Description</label>
+                    <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">Description</label>
                     <textarea
                       rows={3}
                       placeholder="Brief overview of what engineering students will learn..."
                       value={uploadDesc}
                       onChange={(e) => setUploadDesc(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-600"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono font-semibold text-zinc-300 mb-1">Tags (comma separated)</label>
+                    <label className="block text-xs font-mono font-semibold text-slate-700 mb-1">Tags (comma separated)</label>
                     <input
                       type="text"
                       placeholder="e.g. DSA, SystemDesign, Overleaf"
                       value={uploadTags}
                       onChange={(e) => setUploadTags(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/10 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/50"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-600"
                     />
                   </div>
 
                   <div className="pt-2 flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowUploadModal(false)} className="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-semibold cursor-pointer">Cancel</button>
-                    <button type="submit" className="px-5 py-2 rounded-xl bg-orange-500 text-white text-xs font-bold shadow-md cursor-pointer">Publish Resource</button>
+                    <button type="button" onClick={() => setShowUploadModal(false)} className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold cursor-pointer">Cancel</button>
+                    <button type="submit" className="px-5 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold shadow-md cursor-pointer">Publish Resource</button>
                   </div>
                 </form>
               )}
@@ -338,43 +338,43 @@ export default function ResourceLibrary({ initialResources, searchQuery, setSear
 
         {/* Resource Preview Modal */}
         {activePreviewResource && (
-          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="bg-[#121318] rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-white/10 space-y-4 animate-in fade-in zoom-in-95">
-              <div className="flex items-start justify-between border-b border-white/10 pb-3">
+          <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95">
+              <div className="flex items-start justify-between border-b border-slate-100 pb-3">
                 <div>
-                  <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                  <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
                     {activePreviewResource.category}
                   </span>
-                  <h3 className="text-lg font-bold text-white mt-1.5">{activePreviewResource.title}</h3>
+                  <h3 className="text-lg font-bold text-slate-900 mt-1.5">{activePreviewResource.title}</h3>
                 </div>
-                <button onClick={() => setActivePreviewResource(null)} className="text-zinc-500 hover:text-white font-bold text-sm cursor-pointer">✕</button>
+                <button onClick={() => setActivePreviewResource(null)} className="text-slate-400 hover:text-slate-700 font-bold text-sm cursor-pointer">✕</button>
               </div>
 
-              <div className="space-y-3 text-xs text-zinc-300">
-                <div className="p-3.5 rounded-2xl bg-zinc-900 border border-white/10 space-y-1.5 font-mono">
-                  <div className="flex justify-between text-zinc-400">
+              <div className="space-y-3 text-xs text-slate-700">
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5 font-mono">
+                  <div className="flex justify-between text-slate-500">
                     <span>Contributor:</span>
-                    <strong className="text-white">{activePreviewResource.author}</strong>
+                    <strong className="text-slate-900">{activePreviewResource.author}</strong>
                   </div>
-                  <div className="flex justify-between text-zinc-400">
+                  <div className="flex justify-between text-slate-500">
                     <span>Role:</span>
-                    <strong className="text-orange-400">{activePreviewResource.author_role || activePreviewResource.authorRole}</strong>
+                    <strong className="text-orange-600">{activePreviewResource.author_role || activePreviewResource.authorRole}</strong>
                   </div>
-                  <div className="flex justify-between text-zinc-400">
+                  <div className="flex justify-between text-slate-500">
                     <span>File Details:</span>
-                    <strong className="text-zinc-200">{activePreviewResource.type || 'PDF Guide'} ({activePreviewResource.size || '5 MB'})</strong>
+                    <strong className="text-slate-900">{activePreviewResource.type || 'PDF Guide'} ({activePreviewResource.size || '5 MB'})</strong>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-white mb-1">Resource Overview</h4>
-                  <p className="text-zinc-400 leading-relaxed">{activePreviewResource.description}</p>
+                  <h4 className="font-bold text-slate-900 mb-1">Resource Overview</h4>
+                  <p className="text-slate-600 leading-relaxed">{activePreviewResource.description}</p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
-                <button onClick={() => setActivePreviewResource(null)} className="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-semibold cursor-pointer">Close</button>
-                <button onClick={() => { handleDownload(activePreviewResource); setActivePreviewResource(null); }} className="px-5 py-2 rounded-xl bg-orange-500 text-white text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer">
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                <button onClick={() => setActivePreviewResource(null)} className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold cursor-pointer">Close</button>
+                <button onClick={() => { handleDownload(activePreviewResource); setActivePreviewResource(null); }} className="px-5 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer">
                   <Download className="w-3.5 h-3.5" />
                   <span>Download Resource</span>
                 </button>

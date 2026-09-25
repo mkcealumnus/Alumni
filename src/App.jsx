@@ -37,7 +37,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-100 flex flex-col selection:bg-orange-500 selection:text-white relative font-sans">
+    <div className="min-h-screen bg-[#fcfcfc] text-slate-900 flex flex-col selection:bg-orange-500 selection:text-white relative font-sans">
       
       {/* Top Institutional Header Bar */}
       <HeaderBar
