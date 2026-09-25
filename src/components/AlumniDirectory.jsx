@@ -1,106 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { dbService } from '../lib/supabase';
-import { Users, Briefcase, MapPin, Star, MessageSquare, CheckCircle2, UserPlus, Loader2 } from 'lucide-react';
-
-const DEFAULT_ALUMNI = [
-  {
-    id: 1,
-    full_name: 'Karthik Raja',
-    name: 'Karthik Raja',
-    batch: 'Batch of 2023',
-    graduation_year: 2023,
-    role: 'Software Development Engineer II',
-    designation: 'Software Development Engineer II',
-    company: 'Amazon',
-    company_or_college: 'Amazon',
-    branch: 'CSE',
-    location: 'Bengaluru, India',
-    avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    skills: ['Data Structures', 'System Design', 'Java', 'AWS'],
-    queries_answered: 48,
-    queriesAnswered: 48,
-    rating: 4.9
-  },
-  {
-    id: 2,
-    full_name: 'Priya Dharshini',
-    name: 'Priya Dharshini',
-    batch: 'Batch of 2022',
-    graduation_year: 2022,
-    role: 'Hardware Design Engineer',
-    designation: 'Hardware Design Engineer',
-    company: 'Qualcomm',
-    company_or_college: 'Qualcomm',
-    branch: 'ECE',
-    location: 'Hyderabad, India',
-    avatar_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-    skills: ['Verilog HDL', 'VLSI', 'Digital Design', 'STA'],
-    queries_answered: 35,
-    queriesAnswered: 35,
-    rating: 5.0
-  },
-  {
-    id: 3,
-    full_name: 'Vigneshwaran R.',
-    name: 'Vigneshwaran R.',
-    batch: 'Batch of 2021',
-    graduation_year: 2021,
-    role: 'Senior Software Engineer',
-    designation: 'Senior Software Engineer',
-    company: 'Freshworks',
-    company_or_college: 'Freshworks',
-    branch: 'IT',
-    location: 'Chennai, India',
-    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-    skills: ['React.js', 'Node.js', 'System Architecture', 'PostgreSQL'],
-    queries_answered: 62,
-    queriesAnswered: 62,
-    rating: 4.9
-  },
-  {
-    id: 4,
-    full_name: 'Anand Kumar',
-    name: 'Anand Kumar',
-    batch: 'Batch of 2020',
-    graduation_year: 2020,
-    role: 'Analog & Mixed Signal Engineer',
-    designation: 'Analog & Mixed Signal Engineer',
-    company: 'Texas Instruments',
-    company_or_college: 'Texas Instruments',
-    branch: 'EEE',
-    location: 'Bengaluru, India',
-    avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-    skills: ['Circuit Design', 'Microcontrollers', 'Embedded C', 'GATE ECE'],
-    queries_answered: 29,
-    queriesAnswered: 29,
-    rating: 4.8
-  }
-];
+import React, { useState } from 'react';
+import { Users, Briefcase, MapPin, Star, MessageSquare, CheckCircle2 } from 'lucide-react';
 
 export default function AlumniDirectory() {
   const [mentors, setMentors] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedBranch, setSelectedBranch] = useState('All');
   const [selectedMentor, setSelectedMentor] = useState(null);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
-
-  useEffect(() => {
-    async function loadMentors() {
-      setLoading(true);
-      const data = await dbService.getAlumniMentors();
-      if (data && data.length > 0) {
-        setMentors(data);
-      } else {
-        setMentors(DEFAULT_ALUMNI);
-      }
-      setLoading(false);
-    }
-    loadMentors();
-  }, []);
 
   const branches = ['All', 'CSE', 'ECE', 'IT', 'EEE', 'AI & DS'];
 
@@ -117,7 +22,7 @@ export default function AlumniDirectory() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-semibold mb-3">
-              <Users className="w-3.5 h-3.5" /> Supabase Alumni Directory
+              <Users className="w-3.5 h-3.5" /> Alumni Directory
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
               Connect With <span className="gradient-text">Verified MKCE Alumni</span>
@@ -145,11 +50,16 @@ export default function AlumniDirectory() {
           </div>
         </div>
 
-        {/* Mentors Cards Grid / Loader */}
-        {loading ? (
-          <div className="py-12 flex flex-col items-center justify-center gap-3 text-slate-500 text-xs font-semibold">
-            <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-            <span>Loading alumni mentors from Supabase database...</span>
+        {/* Mentors Cards Grid / Empty state */}
+        {filteredMentors.length === 0 ? (
+          <div className="py-16 text-center bg-white rounded-2xl border border-slate-200 p-8 max-w-md mx-auto space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto">
+              <Users className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Alumni Mentors Found</h3>
+            <p className="text-xs text-slate-500">
+              No alumni mentors match your current branch filter.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -265,7 +175,7 @@ export default function AlumniDirectory() {
                   <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h4 className="text-base font-bold text-slate-900">Request Logged in Supabase!</h4>
+                  <h4 className="text-base font-bold text-slate-900">Request Submitted Successfully!</h4>
                   <p className="text-xs text-slate-600 max-w-xs mx-auto">
                     {selectedMentor.full_name || selectedMentor.name} will receive your request and session invite shortly.
                   </p>
@@ -278,10 +188,9 @@ export default function AlumniDirectory() {
                 </div>
               ) : (
                 <form
-                  onSubmit={async (e) => {
+                  onSubmit={(e) => {
                     e.preventDefault();
                     setRequestSubmitted(true);
-                    await dbService.submitMentorshipRequest(selectedMentor.id, '3rd Year CSE', 'Resume Audit');
                   }}
                   className="space-y-3"
                 >
@@ -309,7 +218,7 @@ export default function AlumniDirectory() {
                     type="submit"
                     className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold shadow-md shadow-indigo-500/20"
                   >
-                    Request 1-on-1 Session via Supabase
+                    Request 1-on-1 Session
                   </button>
                 </form>
               )}

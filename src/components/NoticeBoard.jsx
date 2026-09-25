@@ -1,49 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { dbService } from '../lib/supabase';
-import { Clock, UserCheck, Video, BellRing, ArrowUpRight, CheckCircle2, Ticket, Plus, Loader2 } from 'lucide-react';
-
-const DEFAULT_EVENTS = [
-  {
-    id: 1,
-    title: 'Crack Top SDE Roles: Resume & Coding Strategy 2026',
-    speaker: 'Surya Narayanan',
-    speaker_role: 'Senior Software Engineer @ Microsoft (Batch 2019)',
-    date: 'Oct 12, 2026 • 6:30 PM IST',
-    type: 'Live Webinar',
-    status: 'Upcoming',
-    banner_color: 'from-indigo-600 to-blue-600',
-    registrations: 340,
-    agenda: ['15 DSA Patterns to Master', 'ATS Resume Audit live sample', 'Q&A session with Microsoft SDEs']
-  },
-  {
-    id: 2,
-    title: '1-on-1 Mock Interview Drive with Verified Alumni Mentors',
-    speaker: '15+ MKCE Alumni Mentors',
-    speaker_role: 'Amazon, Qualcomm, ZoHo, Freshworks',
-    date: 'Oct 18, 2026 • Full Day (10:00 AM - 5:00 PM)',
-    type: 'Mock Interview Drive',
-    status: 'Registration Open',
-    banner_color: 'from-purple-600 to-pink-600',
-    registrations: 180,
-    agenda: ['45-min live technical coding or core VLSI round', '15-min personalized feedback & resume score card']
-  },
-  {
-    id: 3,
-    title: 'Semiconductor & Embedded Career Roadmap Workshop',
-    speaker: 'Priya Dharshini',
-    speaker_role: 'Hardware Engineer @ Qualcomm (Batch 2022)',
-    date: 'Oct 25, 2026 • 5:00 PM IST',
-    type: 'Domain Workshop',
-    status: 'Registration Open',
-    banner_color: 'from-amber-600 to-orange-600',
-    registrations: 210,
-    agenda: ['Breakdown of RTL & STA interviews', 'How to get off-campus core hardware internships']
-  }
-];
+import React, { useState } from 'react';
+import { Clock, UserCheck, Video, BellRing, ArrowUpRight, CheckCircle2, Ticket, Plus } from 'lucide-react';
 
 export default function NoticeBoard() {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
   
   // Registration Modal
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -61,39 +20,21 @@ export default function NoticeBoard() {
   const [eventType, setEventType] = useState('Live Webinar');
   const [eventCreatedSuccess, setEventCreatedSuccess] = useState(false);
 
-  useEffect(() => {
-    async function loadEvents() {
-      setLoading(true);
-      const data = await dbService.getEvents();
-      if (data && data.length > 0) {
-        setEvents(data);
-      } else {
-        setEvents(DEFAULT_EVENTS);
-      }
-      setLoading(false);
-    }
-    loadEvents();
-  }, []);
-
-  const handleRegisterSubmit = async (e) => {
+  const handleRegisterSubmit = (e) => {
     e.preventDefault();
     setTicketGenerated(true);
     if (selectedEvent) {
-      const newCount = (registrationsCount[selectedEvent.id] || selectedEvent.registrations || 100) + 1;
+      const newCount = (registrationsCount[selectedEvent.id] || selectedEvent.registrations || 0) + 1;
       setRegistrationsCount(prev => ({ ...prev, [selectedEvent.id]: newCount }));
-      await dbService.registerForEvent({
-        event_id: selectedEvent.id,
-        student_name: studentName,
-        student_email: studentEmail
-      });
     }
   };
 
-  const handleCreateEvent = async (e) => {
+  const handleCreateEvent = (e) => {
     e.preventDefault();
     if (!eventTitle.trim()) return;
 
-    const newEv = await dbService.createEvent({
+    const newEv = {
+      id: Date.now(),
       title: eventTitle,
       speaker: eventSpeaker || 'MKCE Alumni Speaker',
       speaker_role: eventSpeakerRole || 'Verified Industry Leader',
@@ -101,25 +42,11 @@ export default function NoticeBoard() {
       type: eventType,
       status: 'Upcoming',
       banner_color: 'from-indigo-600 to-purple-600',
-      registrations: 1
-    });
+      registrations: 1,
+      agenda: ['Interactive Domain Talk', 'Live Q&A Session']
+    };
 
-    if (newEv) {
-      setEvents([newEv, ...events]);
-    } else {
-      setEvents([{
-        id: Date.now(),
-        title: eventTitle,
-        speaker: eventSpeaker || 'MKCE Alumni Speaker',
-        speaker_role: eventSpeakerRole || 'Verified Industry Leader',
-        date: eventDate || 'Upcoming Session',
-        type: eventType,
-        status: 'Upcoming',
-        banner_color: 'from-indigo-600 to-purple-600',
-        registrations: 1,
-        agenda: ['Interactive Domain Talk', 'Live Q&A Session']
-      }, ...events]);
-    }
+    setEvents(prev => [newEv, ...prev]);
 
     setEventCreatedSuccess(true);
     setTimeout(() => {
@@ -140,7 +67,7 @@ export default function NoticeBoard() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold mb-3">
-              <BellRing className="w-3.5 h-3.5 animate-bounce text-emerald-600" /> Supabase Connected Notice Board
+              <BellRing className="w-3.5 h-3.5 animate-bounce text-emerald-600" /> Live Notice Board
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
               Upcoming Webinars & <span className="gradient-text">Mock Drives</span>
@@ -155,15 +82,20 @@ export default function NoticeBoard() {
             className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md transition-all shrink-0"
           >
             <Plus className="w-4 h-4" />
-            <span>Publish Session to Supabase</span>
+            <span>Publish Session</span>
           </button>
         </div>
 
-        {/* Events Grid / Loader */}
-        {loading ? (
-          <div className="py-12 flex flex-col items-center justify-center gap-3 text-slate-500 text-xs font-semibold">
-            <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-            <span>Fetching upcoming sessions from Supabase...</span>
+        {/* Events Grid / Empty State */}
+        {events.length === 0 ? (
+          <div className="py-16 text-center bg-white rounded-2xl border border-slate-200 p-8 max-w-md mx-auto space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
+              <BellRing className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Upcoming Sessions</h3>
+            <p className="text-xs text-slate-500">
+              No sessions or webinars published yet. Click 'Publish Session' above to add one.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -248,7 +180,7 @@ export default function NoticeBoard() {
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
                   <Plus className="w-5 h-5 text-indigo-600" />
-                  <h3 className="text-base font-bold text-slate-900">Publish Session to Supabase</h3>
+                  <h3 className="text-base font-bold text-slate-900">Publish Session</h3>
                 </div>
                 <button onClick={() => setShowCreateEventModal(false)} className="text-slate-400 hover:text-slate-700 font-bold text-sm">✕</button>
               </div>
@@ -258,7 +190,7 @@ export default function NoticeBoard() {
                   <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm">Session Saved to Supabase Database!</h4>
+                  <h4 className="font-bold text-slate-900 text-sm">Session Published Successfully!</h4>
                 </div>
               ) : (
                 <form onSubmit={handleCreateEvent} className="space-y-3">
@@ -326,7 +258,7 @@ export default function NoticeBoard() {
 
                   <div className="pt-2 flex justify-end gap-2">
                     <button type="button" onClick={() => setShowCreateEventModal(false)} className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold">Cancel</button>
-                    <button type="submit" className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-indigo-600 text-white text-xs font-bold shadow-md">Publish to Supabase</button>
+                    <button type="submit" className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-indigo-600 text-white text-xs font-bold shadow-md">Publish Session</button>
                   </div>
                 </form>
               )}
@@ -372,7 +304,7 @@ export default function NoticeBoard() {
                   </div>
 
                   <p className="text-xs text-slate-600 text-center">
-                    Saved to Supabase registrations! Joining link sent to <strong>{studentEmail || 'student@mkce.ac.in'}</strong>.
+                    Registration pass generated! Joining link sent to <strong>{studentEmail || 'student@mkce.ac.in'}</strong>.
                   </p>
 
                   <button onClick={() => setSelectedEvent(null)} className="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-md">Done & Close</button>

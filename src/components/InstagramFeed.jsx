@@ -1,37 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Instagram, Heart, MessageCircle, ExternalLink } from 'lucide-react';
 
-const INSTAGRAM_POSTS = [
-  {
-    id: 1,
-    caption: '🚀 5 Essential DSA Patterns every MKCE student must master before 3rd Year Placements!',
-    likes: 890,
-    comments: 45,
-    tag: 'PlacementTips',
-    date: '3 days ago',
-    link: 'https://instagram.com/mkce.alumni'
-  },
-  {
-    id: 2,
-    caption: '💡 Alumni Spotlight: Meet Swetha (Batch 2022) sharing her journey from Karur campus to Google SDE 2!',
-    likes: 1240,
-    comments: 88,
-    tag: 'AlumniSpotlight',
-    date: '5 days ago',
-    link: 'https://instagram.com/mkce.alumni'
-  },
-  {
-    id: 3,
-    caption: '📚 Free Download: Resume Template that got 40+ MKCE engineering students shortlisted in 2025.',
-    likes: 1560,
-    comments: 112,
-    tag: 'FreeResource',
-    date: '1 week ago',
-    link: 'https://instagram.com/mkce.alumni'
-  }
-];
-
 export default function InstagramFeed() {
+  const [posts] = useState([]);
+
   return (
     <section className="py-20 bg-slate-50 relative border-t border-slate-200/80 overflow-hidden">
       
@@ -66,59 +38,80 @@ export default function InstagramFeed() {
           </a>
         </div>
 
-        {/* Posts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {INSTAGRAM_POSTS.map((post) => (
-            <div
-              key={post.id}
-              className="glass-card glass-card-hover p-6 rounded-2xl border-slate-200 bg-white flex flex-col justify-between shadow-sm"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-0.5">
-                      <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                        <Instagram className="w-3.5 h-3.5 text-pink-600" />
-                      </div>
-                    </div>
-                    <span className="text-xs font-bold text-slate-900">@mkce.alumni</span>
-                  </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-pink-50 text-pink-700 font-semibold border border-pink-200">
-                    #{post.tag}
-                  </span>
-                </div>
-
-                <p className="text-xs text-slate-700 leading-relaxed mb-6 font-normal">
-                  {post.caption}
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-4 text-xs text-slate-600">
-                  <div className="flex items-center gap-1.5 text-pink-600 font-medium">
-                    <Heart className="w-3.5 h-3.5 fill-pink-50" />
-                    <span>{post.likes}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-indigo-600 font-medium">
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>{post.comments}</span>
-                  </div>
-                </div>
-
-                <a
-                  href={post.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
-                >
-                  <span>View Post</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-
+        {/* Posts Grid / Empty State */}
+        {posts.length === 0 ? (
+          <div className="py-16 text-center bg-white rounded-2xl border border-slate-200 p-8 max-w-md mx-auto space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-pink-50 text-pink-600 flex items-center justify-center mx-auto">
+              <Instagram className="w-6 h-6" />
             </div>
-          ))}
-        </div>
+            <h3 className="text-base font-bold text-slate-900">Join Our Instagram Page</h3>
+            <p className="text-xs text-slate-500">
+              Follow @mkce.alumni on Instagram for real-time posts, career tips, and alumni updates.
+            </p>
+            <a
+              href="https://instagram.com/mkce.alumni"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs font-bold shadow-md"
+            >
+              <Instagram className="w-4 h-4" />
+              <span>Follow @mkce.alumni</span>
+            </a>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {posts.map((post) => (
+              <div
+                key={post.id}
+                className="glass-card glass-card-hover p-6 rounded-2xl border-slate-200 bg-white flex flex-col justify-between shadow-sm"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-0.5">
+                        <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                          <Instagram className="w-3.5 h-3.5 text-pink-600" />
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold text-slate-900">@mkce.alumni</span>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-pink-50 text-pink-700 font-semibold border border-pink-200">
+                      #{post.tag}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-slate-700 leading-relaxed mb-6 font-normal">
+                    {post.caption}
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <div className="flex items-center gap-4 text-xs text-slate-600">
+                    <div className="flex items-center gap-1.5 text-pink-600 font-medium">
+                      <Heart className="w-3.5 h-3.5 fill-pink-50" />
+                      <span>{post.likes}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-indigo-600 font-medium">
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>{post.comments}</span>
+                    </div>
+                  </div>
+
+                  <a
+                    href={post.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                  >
+                    <span>View Post</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+              </div>
+            ))}
+          </div>
+        )}
 
       </div>
     </section>

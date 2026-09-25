@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { dbService } from '../lib/supabase';
-import { MessageSquare, Send, ThumbsUp, CheckCircle2, HelpCircle, Plus, Search } from 'lucide-react';
+import React, { useState } from 'react';
+import { MessageSquare, ThumbsUp, CheckCircle2, HelpCircle, Plus, Search } from 'lucide-react';
 
 export default function MentorshipPortal() {
   const [queries, setQueries] = useState([]);
@@ -15,14 +14,6 @@ export default function MentorshipPortal() {
   const [studentYear, setStudentYear] = useState('3rd Year CSE');
   const [category, setCategory] = useState('Career Transition');
   const [submittedMessage, setSubmittedMessage] = useState(false);
-
-  useEffect(() => {
-    async function loadData() {
-      const data = await dbService.getStudentQueries();
-      setQueries(data);
-    }
-    loadData();
-  }, []);
 
   const categories = ['All', 'Career Transition', 'Placement Strategy', 'Core & Higher Studies'];
 
@@ -39,18 +30,21 @@ export default function MentorshipPortal() {
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!newQuestion.trim()) return;
 
-    const newObj = await dbService.submitQuery({
-      name: studentName,
-      year: studentYear,
+    const newObj = {
+      id: Date.now(),
+      student_name: studentName || 'MKCE Student',
+      student_year: studentYear || '3rd Year CSE',
       question: newQuestion,
-      category: category
-    });
+      category: category || 'Career Transition',
+      likes_count: 0,
+      status: 'Pending'
+    };
 
-    setQueries([newObj, ...queries]);
+    setQueries(prev => [newObj, ...prev]);
     setNewQuestion('');
     setSubmittedMessage(true);
     setTimeout(() => {
@@ -59,9 +53,8 @@ export default function MentorshipPortal() {
     }, 2000);
   };
 
-  const handleLike = async (id) => {
-    setQueries(queries.map(q => q.id === id ? { ...q, likes: (q.likes || q.likes_count || 0) + 1 } : q));
-    await dbService.upvoteQuery(id);
+  const handleLike = (id) => {
+    setQueries(prev => prev.map(q => q.id === id ? { ...q, likes_count: (q.likes_count || q.likes || 0) + 1 } : q));
   };
 
   return (
@@ -72,7 +65,7 @@ export default function MentorshipPortal() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200 text-xs font-semibold mb-3">
-              <MessageSquare className="w-3.5 h-3.5" /> Supabase Live Alumni Ask Portal
+              <MessageSquare className="w-3.5 h-3.5" /> Live Alumni Ask Portal
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
               Ask Questions, Get <span className="gradient-text">Verified Alumni Advice</span>
@@ -136,9 +129,20 @@ export default function MentorshipPortal() {
           </div>
         </div>
 
-        {/* Q&A Thread Stream Grid */}
-        <div className="space-y-6 max-w-4xl mx-auto">
-          {filteredQueries.map((q) => (
+        {/* Q&A Thread Stream Grid / Empty State */}
+        {filteredQueries.length === 0 ? (
+          <div className="py-16 text-center bg-white rounded-2xl border border-slate-200 p-8 max-w-md mx-auto space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mx-auto">
+              <HelpCircle className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Questions Found</h3>
+            <p className="text-xs text-slate-500">
+              No questions posted yet. Click 'Ask Alumni A Question' to start a discussion.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-6 max-w-4xl mx-auto">
+            {filteredQueries.map((q) => (
             <div key={q.id} className="glass-card p-6 rounded-2xl border-slate-200 bg-white space-y-4 shadow-sm">
               
               {/* Question Header */}
@@ -196,6 +200,7 @@ export default function MentorshipPortal() {
             </div>
           ))}
         </div>
+        )}
 
         {/* Question Submission Modal */}
         {showSubmitModal && (
@@ -205,7 +210,7 @@ export default function MentorshipPortal() {
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
                   <HelpCircle className="w-5 h-5 text-indigo-600" />
-                  <h3 className="text-base font-bold text-slate-900">Ask Question to Supabase Database</h3>
+                  <h3 className="text-base font-bold text-slate-900">Ask Alumni A Question</h3>
                 </div>
                 <button
                   onClick={() => setShowSubmitModal(false)}
@@ -220,7 +225,7 @@ export default function MentorshipPortal() {
                   <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm">Saved directly to Supabase Database!</h4>
+                  <h4 className="font-bold text-slate-900 text-sm">Question Posted Successfully!</h4>
                   <p className="text-xs text-slate-600">Alumni mentors will be notified and respond shortly.</p>
                 </div>
               ) : (
@@ -289,7 +294,7 @@ export default function MentorshipPortal() {
                       type="submit"
                       className="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold shadow-md"
                     >
-                      Post Question to Supabase
+                      Post Question
                     </button>
                   </div>
                 </form>

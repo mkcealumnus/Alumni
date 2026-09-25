@@ -1,69 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { dbService } from '../lib/supabase';
-import { Search, Download, Star, FileText, Eye, Upload, SlidersHorizontal, Loader2, Plus, CheckCircle2 } from 'lucide-react';
-
-const DEFAULT_RESOURCES = [
-  {
-    id: 1,
-    title: 'Complete SDE Interview Master Kit 2026',
-    category: 'Interview Prep',
-    target_branch: 'CSE/IT',
-    type: 'PDF Guide',
-    author: 'Karthik Raja',
-    author_role: 'SDE-2 @ Amazon (MKCE Batch 2023)',
-    downloads_count: 1420,
-    rating: 4.9,
-    size: '14.2 MB',
-    tags: ['DSA', 'System Design', 'Behavioral', 'LeetCode'],
-    description: 'Comprehensive 120-page hand-written notes covering 15 key DSA patterns, Top 50 System Design questions, and Amazon Leadership Principles STAR templates.'
-  },
-  {
-    id: 2,
-    title: 'Official ATS-Friendly Engineering Resume Templates',
-    category: 'Resume',
-    target_branch: 'All Branches',
-    type: 'Overleaf / Word',
-    author: 'MKCE Placement Cell & Alumni',
-    author_role: 'Verified Institutional Resource',
-    downloads_count: 3890,
-    rating: 5.0,
-    size: '2.8 MB',
-    tags: ['Resume', 'Overleaf', 'Placement', 'ATS 95+'],
-    description: 'Clean LaTeX & Word templates optimized for ATS parsers (TCS, ZoHo, Wipro, Amazon). Includes bullet point action verbs and project formatting guidelines.'
-  },
-  {
-    id: 3,
-    title: 'VLSI Physical Design & Verilog Interview Handbook',
-    category: 'Core Eng',
-    target_branch: 'ECE/EEE',
-    type: 'Study Guide',
-    author: 'Priya Dharshini',
-    author_role: 'Hardware Engineer @ Qualcomm (Batch 2022)',
-    downloads_count: 850,
-    rating: 4.8,
-    size: '8.5 MB',
-    tags: ['Verilog', 'VLSI', 'Digital Design', 'STA'],
-    description: 'RTL coding syntax cheatsheet, FSM state machines, Setup/Hold slack calculation problems, and Qualcomm interview round questions.'
-  },
-  {
-    id: 4,
-    title: 'Top 50 SQL & Relational Database Query Deck',
-    category: 'Database',
-    target_branch: 'All Branches',
-    type: 'Practice Deck',
-    author: 'Sanjay Kumar',
-    author_role: 'Data Analyst @ ZoHo (Batch 2024)',
-    downloads_count: 2150,
-    rating: 4.9,
-    size: '4.1 MB',
-    tags: ['SQL', 'DBMS', 'Joins', 'LeetCode SQL'],
-    description: 'Frequently asked SQL queries in technical rounds: Nth highest salary, window functions, group by HAVING, indexing performance, and schema design.'
-  }
-];
+import React, { useState } from 'react';
+import { Search, Download, Star, FileText, Eye, Upload, SlidersHorizontal, Plus, CheckCircle2 } from 'lucide-react';
 
 export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
   const [resources, setResources] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('downloads');
   const [activePreviewResource, setActivePreviewResource] = useState(null);
@@ -77,20 +16,6 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
   const [uploadDesc, setUploadDesc] = useState('');
   const [uploadTags, setUploadTags] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState(false);
-
-  useEffect(() => {
-    async function loadResources() {
-      setLoading(true);
-      const data = await dbService.getResources();
-      if (data && data.length > 0) {
-        setResources(data);
-      } else {
-        setResources(DEFAULT_RESOURCES);
-      }
-      setLoading(false);
-    }
-    loadResources();
-  }, []);
 
   const categories = ['All', 'Interview Prep', 'Resume', 'Core Eng', 'Database', 'Full-Stack'];
 
@@ -111,48 +36,34 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
     filteredResources.sort((a, b) => (b.rating || 5) - (a.rating || 5));
   }
 
-  const handleDownload = async (res) => {
+  const handleDownload = (res) => {
     const updatedCount = (res.downloads_count || res.downloads || 0) + 1;
     setResources(prev => prev.map(r => r.id === res.id ? { ...r, downloads_count: updatedCount } : r));
-    await dbService.incrementDownload(res.id, updatedCount);
-    alert(`Downloading resource: "${res.title}" from Supabase storage!\nProvided free by MKCE Alumni.`);
+    alert(`Downloading resource: "${res.title}"!\nProvided free by MKCE Alumni.`);
   };
 
-  const handleUploadSubmit = async (e) => {
+  const handleUploadSubmit = (e) => {
     e.preventDefault();
     if (!uploadTitle.trim()) return;
 
     const tagsArray = uploadTags.split(',').map(t => t.trim()).filter(Boolean);
 
-    const newRes = await dbService.uploadResource({
+    const newRes = {
+      id: Date.now(),
       title: uploadTitle,
       category: uploadCategory,
       target_branch: uploadBranch,
+      type: 'PDF Guide',
       author: uploadAuthor || 'MKCE Alumni',
       author_role: 'Verified Alumni Contributor',
-      description: uploadDesc,
+      downloads_count: 0,
+      rating: 5.0,
+      size: '4.5 MB',
       tags: tagsArray,
-      size: '4.5 MB'
-    });
+      description: uploadDesc
+    };
 
-    if (newRes) {
-      setResources([newRes, ...resources]);
-    } else {
-      setResources([{
-        id: Date.now(),
-        title: uploadTitle,
-        category: uploadCategory,
-        target_branch: uploadBranch,
-        type: 'PDF Guide',
-        author: uploadAuthor || 'MKCE Alumni',
-        author_role: 'Verified Alumni Contributor',
-        downloads_count: 1,
-        rating: 5.0,
-        size: '4.5 MB',
-        tags: tagsArray,
-        description: uploadDesc
-      }, ...resources]);
-    }
+    setResources(prev => [newRes, ...prev]);
 
     setUploadSuccess(true);
     setTimeout(() => {
@@ -172,13 +83,13 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 text-xs font-semibold mb-3">
-              <FileText className="w-3.5 h-3.5" /> Supabase Connected Repository
+              <FileText className="w-3.5 h-3.5" /> Resource Repository
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
               Free Placement & <span className="gradient-text">Study Materials</span>
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-              Cheat sheets, ATS resume templates, and domain notes saved directly in Supabase.
+              Cheat sheets, ATS resume templates, and domain notes shared by alumni.
             </p>
           </div>
 
@@ -189,7 +100,7 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
               className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white text-xs font-bold shadow-md flex items-center justify-center gap-2 shrink-0"
             >
               <Upload className="w-3.5 h-3.5" />
-              <span>Upload Resource to Supabase</span>
+              <span>Upload Resource</span>
             </button>
 
             <div className="relative w-full sm:w-64">
@@ -234,11 +145,16 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
           ))}
         </div>
 
-        {/* Resources Grid / Loader */}
-        {loading ? (
-          <div className="py-12 flex flex-col items-center justify-center gap-3 text-slate-500 text-xs font-semibold">
-            <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-            <span>Fetching resources from Supabase database...</span>
+        {/* Resources Grid / Empty State */}
+        {filteredResources.length === 0 ? (
+          <div className="py-16 text-center bg-white rounded-2xl border border-slate-200 p-8 max-w-md mx-auto space-y-3 shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center mx-auto">
+              <FileText className="w-6 h-6" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">No Resources Found</h3>
+            <p className="text-xs text-slate-500">
+              No study materials uploaded yet. Click 'Upload Resource' to add one.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -321,7 +237,7 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
                   <Upload className="w-5 h-5 text-indigo-600" />
-                  <h3 className="text-base font-bold text-slate-900">Upload Resource to Supabase</h3>
+                  <h3 className="text-base font-bold text-slate-900">Upload Resource</h3>
                 </div>
                 <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-700 font-bold text-sm">✕</button>
               </div>
@@ -331,7 +247,7 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
                   <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm">Resource Published to Supabase!</h4>
+                  <h4 className="font-bold text-slate-900 text-sm">Resource Published Successfully!</h4>
                 </div>
               ) : (
                 <form onSubmit={handleUploadSubmit} className="space-y-3">
@@ -413,7 +329,7 @@ export default function ResourceLibrary({ searchQuery, setSearchQuery }) {
 
                   <div className="pt-2 flex justify-end gap-2">
                     <button type="button" onClick={() => setShowUploadModal(false)} className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold">Cancel</button>
-                    <button type="submit" className="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 text-white text-xs font-bold shadow-md">Upload to Supabase</button>
+                    <button type="submit" className="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 text-white text-xs font-bold shadow-md">Upload Resource</button>
                   </div>
                 </form>
               )}

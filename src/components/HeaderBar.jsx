@@ -4,12 +4,7 @@ import { Sparkles, Bell, Search, UserCheck, ShieldCheck, ExternalLink, ChevronDo
 export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, setSearchQuery, onNavigate }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
-
-  const notifications = [
-    { id: 1, title: 'Mock Interview Drive Open', text: '15+ Alumni mentors available for 1-on-1 mock drives.', time: '10m ago', unread: true },
-    { id: 2, title: 'New Resource Added', text: 'Karthik Raja added SDE Interview Master Kit 2026.', time: '1h ago', unread: true },
-    { id: 3, title: 'Query Answered', text: 'Vigneshwaran R. answered your question on SDE transition.', time: '1d ago', unread: false },
-  ];
+  const [notifications] = useState([]);
 
   return (
     <div className="bg-slate-900 text-slate-200 text-xs border-b border-slate-800">
@@ -49,7 +44,9 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
               title="Notifications"
             >
               <Bell className="w-3.5 h-3.5" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
+              {notifications.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
+              )}
             </button>
 
             {/* Notifications Popover */}
@@ -57,19 +54,23 @@ export default function HeaderBar({ currentRole, setCurrentRole, searchQuery, se
               <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200 text-slate-800 p-3 z-50 animate-in fade-in slide-in-from-top-2">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2 mb-2">
                   <span className="font-bold text-xs text-slate-900">Notifications</span>
-                  <span className="text-[10px] bg-indigo-50 text-indigo-700 font-semibold px-2 py-0.5 rounded-full">2 New</span>
+                  <span className="text-[10px] bg-indigo-50 text-indigo-700 font-semibold px-2 py-0.5 rounded-full">{notifications.length} New</span>
                 </div>
-                <div className="space-y-2">
-                  {notifications.map(n => (
-                    <div key={n.id} className={`p-2 rounded-lg text-left transition-colors ${n.unread ? 'bg-indigo-50/60 border border-indigo-100' : 'bg-slate-50'}`}>
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="font-bold text-xs text-slate-900">{n.title}</span>
-                        <span className="text-[9px] text-slate-400">{n.time}</span>
+                {notifications.length === 0 ? (
+                  <p className="text-xs text-slate-500 py-3 text-center">No new notifications</p>
+                ) : (
+                  <div className="space-y-2">
+                    {notifications.map(n => (
+                      <div key={n.id} className={`p-2 rounded-lg text-left transition-colors ${n.unread ? 'bg-indigo-50/60 border border-indigo-100' : 'bg-slate-50'}`}>
+                        <div className="flex items-center justify-between mb-0.5">
+                          <span className="font-bold text-xs text-slate-900">{n.title}</span>
+                          <span className="text-[9px] text-slate-400">{n.time}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-600 leading-tight">{n.text}</p>
                       </div>
-                      <p className="text-[11px] text-slate-600 leading-tight">{n.text}</p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
