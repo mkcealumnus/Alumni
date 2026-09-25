@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, BookOpen, MessageSquare, Calendar, Instagram, Menu, X, Sparkles, ChevronRight } from 'lucide-react';
+import { Compass, BookOpen, MessageSquare, Calendar, Instagram, Menu, X, Sparkles, ChevronRight, Users } from 'lucide-react';
 
 export default function Navbar({ activeSection, setActiveSection }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,41 +14,44 @@ export default function Navbar({ activeSection, setActiveSection }) {
   }, []);
 
   const navItems = [
-    { id: 'pathways', label: 'Career Roadmaps', icon: Compass },
+    { id: 'pathways', label: 'Domain Roadmaps', icon: Compass },
+    { id: 'alumni-network', label: 'Alumni Directory', icon: Users },
     { id: 'resources', label: 'Resource Hub', icon: BookOpen },
     { id: 'mentorship', label: 'Ask Alumni', icon: MessageSquare },
     { id: 'notice-board', label: 'Notice Board', icon: Calendar },
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3 shadow-md shadow-slate-200/50' : 'bg-slate-50/80 backdrop-blur-sm py-4'
+    <header className={`sticky top-0 z-40 transition-all duration-300 ${
+      isScrolled ? 'bg-[#09090b]/90 backdrop-blur-xl border-b border-white/10 py-3.5 shadow-2xl shadow-black/50' : 'bg-[#09090b]/70 backdrop-blur-md border-b border-white/5 py-4'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-md shadow-indigo-500/15 group-hover:scale-105 transition-transform duration-300">
-              <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
-                <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg">
+          {/* Brand Logo */}
+          <a href="#" className="flex items-center gap-3 group select-none">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-600 via-amber-500 to-rose-500 p-0.5 shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
+              <div className="w-full h-full bg-[#09090b] rounded-[14px] flex items-center justify-center">
+                <span className="font-extrabold text-orange-500 text-sm font-mono tracking-tighter">
                   MK
                 </span>
               </div>
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-lg text-slate-900 tracking-tight">MKCE Alumni</span>
-                <span className="bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-indigo-600 animate-pulse" /> 100% Free
+                <span className="font-extrabold text-lg tracking-tight text-white font-sans">
+                  MKCE<span className="text-orange-500">.alumni</span>
+                </span>
+                <span className="bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-orange-400 animate-pulse" /> 100% Free
                 </span>
               </div>
-              <p className="text-xs text-slate-500 hidden sm:block">Career Pathways & Mentorship Portal</p>
+              <p className="text-[11px] text-zinc-400 font-mono hidden sm:block">Career Pathways & Mentorship</p>
             </div>
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 bg-white/80 border border-slate-200/90 shadow-sm shadow-slate-100 px-3 py-1.5 rounded-full">
+          {/* Desktop Navigation Pills */}
+          <nav className="hidden lg:flex items-center gap-1 bg-[#121318]/90 border border-white/10 p-1.5 rounded-full shadow-inner">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
@@ -59,26 +62,26 @@ export default function Navbar({ activeSection, setActiveSection }) {
                     setActiveSection(item.id);
                     document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                     isActive 
-                      ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200' 
-                      : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-100/70'
+                      ? 'bg-orange-500 text-white font-semibold shadow-md shadow-orange-500/25 scale-[1.02]' 
+                      : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                  {item.label}
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-zinc-400'}`} />
+                  <span>{item.label}</span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Social CTA & Action Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Social CTA Button */}
+          <div className="hidden sm:flex items-center gap-3">
             <a
               href="https://instagram.com/mkce.alumni"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:to-indigo-500 shadow-md shadow-pink-500/15 hover:shadow-pink-500/25 transition-all duration-300 hover:-translate-y-0.5"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-pink-600 via-purple-600 to-orange-600 hover:opacity-95 shadow-lg shadow-pink-600/20 transition-all duration-300 hover:scale-[1.03]"
             >
               <Instagram className="w-4 h-4 text-white" />
               <span>@mkce.alumni</span>
@@ -86,21 +89,21 @@ export default function Navbar({ activeSection, setActiveSection }) {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-2">
+          {/* Mobile Menu Toggle Button */}
+          <div className="lg:hidden flex items-center gap-2">
             <a
               href="https://instagram.com/mkce.alumni"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-pink-50 text-pink-600 border border-pink-200"
+              className="p-2 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20"
             >
-              <Instagram className="w-5 h-5" />
+              <Instagram className="w-4 h-4" />
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-700 bg-white border border-slate-200 hover:text-indigo-600"
+              className="p-2 rounded-xl text-zinc-300 bg-zinc-900 border border-white/10 hover:text-orange-400"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
 
@@ -109,9 +112,10 @@ export default function Navbar({ activeSection, setActiveSection }) {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-xl border-b border-slate-200 px-4 pt-4 pb-6 mt-2 space-y-2 shadow-lg">
+        <div className="lg:hidden bg-[#121318]/95 backdrop-blur-2xl border-b border-white/10 px-4 pt-4 pb-6 mt-2 space-y-2 shadow-2xl animate-in fade-in slide-in-from-top-2">
           {navItems.map((item) => {
             const Icon = item.icon;
+            const isActive = activeSection === item.id;
             return (
               <button
                 key={item.id}
@@ -120,13 +124,17 @@ export default function Navbar({ activeSection, setActiveSection }) {
                   setMobileMenuOpen(false);
                   document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-sm font-medium text-slate-700 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-colors"
+                className={`w-full flex items-center justify-between p-3.5 rounded-xl border text-xs font-semibold transition-all ${
+                  isActive 
+                    ? 'bg-orange-500/15 border-orange-500/40 text-orange-400' 
+                    : 'bg-zinc-900/80 border-white/5 text-zinc-300 hover:bg-zinc-800 hover:text-white'
+                }`}
               >
                 <div className="flex items-center gap-3">
-                  <Icon className="w-4 h-4 text-indigo-600" />
+                  <Icon className="w-4 h-4 text-orange-400" />
                   <span>{item.label}</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <ChevronRight className="w-4 h-4 text-zinc-500" />
               </button>
             );
           })}
