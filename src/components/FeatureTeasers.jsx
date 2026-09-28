@@ -71,14 +71,14 @@ export default function FeatureTeasers() {
     <div className="w-full max-w-6xl mx-auto my-12 px-4">
       {/* Section Title */}
       <div className="text-center max-w-3xl mx-auto mb-12">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-800 text-xs font-mono font-semibold mb-3">
-          <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-200 text-xs font-mono font-bold mb-3">
+          <Sparkles className="w-3.5 h-3.5 text-orange-600" />
           WHAT'S COMING TO MKCEALUMNI.ORG
         </span>
-        <h3 className="text-2xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">
+        <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900 font-sans tracking-tight">
           Designed for <span className="gradient-text">MKCE Engineers & Graduates</span>
         </h3>
-        <p className="text-xs sm:text-sm text-slate-400 mt-2">
+        <p className="text-xs sm:text-sm text-slate-600 mt-2 font-medium">
           An ecosystem crafted to bridge current MKCE students with our global alumni network launching Jan 14, 2027.
         </p>
       </div>
@@ -99,32 +99,32 @@ export default function FeatureTeasers() {
               <div>
                 {/* Header Badge */}
                 <div className="flex items-center justify-between gap-2 mb-4">
-                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.color} p-0.5 shadow-md`}>
-                    <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center text-white">
-                      <IconComponent className="w-5.5 h-5.5" />
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.color} p-0.5 shadow-md shadow-slate-200`}>
+                    <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center text-slate-900">
+                      <IconComponent className="w-5.5 h-5.5 text-orange-600" />
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-mono font-semibold text-slate-300">
+                  <span className="px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-700">
                     {item.badge}
                   </span>
                 </div>
 
                 {/* Content */}
-                <h4 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors">
+                <h4 className="text-lg font-bold text-slate-900 group-hover:text-orange-600 transition-colors">
                   {item.title}
                 </h4>
-                <p className="text-xs font-mono text-orange-400/90 mt-0.5 mb-2 font-medium">
+                <p className="text-xs font-mono text-orange-600 mt-0.5 mb-2 font-bold">
                   {item.tagline}
                 </p>
-                <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                <p className="text-xs text-slate-600 leading-relaxed line-clamp-3 font-medium">
                   {item.description}
                 </p>
               </div>
 
               {/* Bottom Card Footer */}
-              <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 font-medium">
+              <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 font-medium">
                 <span>Preview Details</span>
-                <span className="flex items-center gap-1 text-orange-400 group-hover:translate-x-0.5 transition-transform">
+                <span className="flex items-center gap-1 text-orange-600 font-bold group-hover:translate-x-0.5 transition-transform">
                   Explore <ArrowUpRight className="w-3.5 h-3.5" />
                 </span>
               </div>
@@ -135,51 +135,51 @@ export default function FeatureTeasers() {
 
       {/* Feature Preview Modal */}
       {selectedFeature && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
+          <div className="relative w-full max-w-xl bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden">
             
             <button
               onClick={() => setSelectedFeature(null)}
-              className="absolute top-5 right-5 p-2 rounded-full bg-slate-950 text-slate-400 hover:text-white border border-slate-800 cursor-pointer"
+              className="absolute top-5 right-5 p-2 rounded-full bg-slate-100 text-slate-500 hover:text-slate-900 border border-slate-200 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-3 mb-4">
-              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${selectedFeature.color} p-0.5`}>
-                <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-white">
-                  <selectedFeature.icon className="w-6 h-6" />
+              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${selectedFeature.color} p-0.5 shadow-xs`}>
+                <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-slate-900">
+                  <selectedFeature.icon className="w-6 h-6 text-orange-600" />
                 </div>
               </div>
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-orange-400 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-orange-600 font-bold">
                   {selectedFeature.badge}
                 </span>
-                <h3 className="text-xl font-bold text-white">{selectedFeature.title}</h3>
+                <h3 className="text-xl font-bold text-slate-900">{selectedFeature.title}</h3>
               </div>
             </div>
 
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+            <p className="text-sm text-slate-600 leading-relaxed mb-6 font-medium">
               {selectedFeature.description}
             </p>
 
-            <div className="space-y-2 bg-slate-950 p-4 rounded-2xl border border-slate-800/80 mb-6">
-              <h5 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <div className="space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-6">
+              <h5 className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider mb-2">
                 Module Key Features:
               </h5>
               {selectedFeature.highlights.map((item, idx) => (
-                <div key={idx} className="flex items-start gap-2 text-xs text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div key={idx} className="flex items-start gap-2 text-xs text-slate-800 font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </div>
               ))}
             </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-200 font-medium">
               <span className="font-mono">Launch Date: Jan 14, 2027</span>
               <button
                 onClick={() => setSelectedFeature(null)}
-                className="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-slate-950 font-bold cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold cursor-pointer shadow-xs"
               >
                 Close Preview
               </button>
