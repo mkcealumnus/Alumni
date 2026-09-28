@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Sparkles, ShieldCheck } from 'lucide-react';
+import { Calendar, Sparkles, ShieldCheck, Code2 } from 'lucide-react';
 
 export default function Header({ onNavigate, onOpenCalendarModal }) {
   return (
@@ -35,7 +35,15 @@ export default function Header({ onNavigate, onOpenCalendarModal }) {
         </div>
 
         {/* Live Status Pill & Quick Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <button
+            onClick={() => onNavigate('developers-section')}
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-all cursor-pointer"
+          >
+            <Code2 className="w-3.5 h-3.5 text-orange-600" />
+            <span>Developers</span>
+          </button>
+
           <button
             onClick={onOpenCalendarModal}
             className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/90 hover:border-orange-500/40 transition-all cursor-pointer group shadow-2xs"

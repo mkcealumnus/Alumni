@@ -3,6 +3,7 @@ import Header from './components/Header';
 import CountdownTimer from './components/CountdownTimer';
 import NotifyForm from './components/NotifyForm';
 import FeatureTeasers from './components/FeatureTeasers';
+import KeyDevelopers from './components/KeyDevelopers';
 import CalendarAddModal from './components/CalendarAddModal';
 import FaqSection from './components/FaqSection';
 import ShareBar from './components/ShareBar';
@@ -137,6 +138,11 @@ export default function App() {
         {/* Feature Teasers */}
         <section>
           <FeatureTeasers />
+        </section>
+
+        {/* Key Developers Showcase */}
+        <section>
+          <KeyDevelopers />
         </section>
 
         {/* Social Share Bar */}
