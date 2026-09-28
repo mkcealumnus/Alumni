@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Mail, Globe, ShieldCheck, Code2 } from 'lucide-react';
+import { MapPin, Mail, Globe, ShieldCheck, Compass } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -46,7 +46,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-2 text-slate-600">
               <Globe className="w-4 h-4 text-orange-600 shrink-0" />
-              <a href="https://mkce.ac.in" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600 transition-colors">
+              <a href="https://mkce.ac.in" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">
                 www.mkce.ac.in
               </a>
             </div>
@@ -64,11 +64,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Key Developers Attribution Bar */}
+        {/* Key Initiators Attribution Bar */}
         <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
           <div className="flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-orange-600" />
-            <span className="font-bold text-slate-700">Platform Architects & Key Developers:</span>
+            <Compass className="w-4 h-4 text-orange-600" />
+            <span className="font-bold text-slate-700">Key Initiators:</span>
           </div>
           <div className="flex flex-wrap items-center gap-3 font-medium">
             <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800">
