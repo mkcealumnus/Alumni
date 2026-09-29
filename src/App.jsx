@@ -3,7 +3,7 @@ import Header from './components/Header';
 import CountdownTimer from './components/CountdownTimer';
 import NotifyForm from './components/NotifyForm';
 import FeatureTeasers from './components/FeatureTeasers';
-import KeyInitiators from './components/KeyInitiators';
+// import KeyInitiators from './components/KeyInitiators';
 import CalendarAddModal from './components/CalendarAddModal';
 import FaqSection from './components/FaqSection';
 import ShareBar from './components/ShareBar';
@@ -141,9 +141,9 @@ export default function App() {
         </section>
 
         {/* Key Initiators Showcase */}
-        <section>
+        {/* <section>
           <KeyInitiators />
-        </section>
+        </section> */}
 
         {/* Social Share Bar */}
         <section>
