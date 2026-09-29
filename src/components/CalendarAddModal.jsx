@@ -6,13 +6,13 @@ export default function CalendarAddModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  // Launch Details: Jan 14, 2027 00:00:00 IST
+  // Launch Details: Feb 01, 2027 00:00:00 IST
   const eventTitle = encodeURIComponent('MKCE Alumni Portal Official Launch (mkcealumni.org)');
   const eventDetails = encodeURIComponent('Grand online launch of the official M. Kumarasamy College of Engineering Alumni Network portal at https://mkcealumni.org.');
   const eventLocation = encodeURIComponent('https://mkcealumni.org (Online Launch)');
 
-  const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=20270113T183000Z/20270113T203000Z&details=${eventDetails}&location=${eventLocation}`;
-  const outlookCalUrl = `https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=${eventTitle}&startdt=2027-01-14T00:00:00&enddt=2027-01-14T02:00:00&body=${eventDetails}&location=${eventLocation}`;
+  const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=20270131T183000Z/20270131T203000Z&details=${eventDetails}&location=${eventLocation}`;
+  const outlookCalUrl = `https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=${eventTitle}&startdt=2027-02-01T00:00:00&enddt=2027-02-01T02:00:00&body=${eventDetails}&location=${eventLocation}`;
 
   const downloadIcsFile = () => {
     const icsContent = `BEGIN:VCALENDAR
@@ -24,8 +24,8 @@ BEGIN:VEVENT
 SUMMARY:MKCE Alumni Portal Official Launch (mkcealumni.org)
 DESCRIPTION:Grand online launch of the official M. Kumarasamy College of Engineering Alumni Network portal at https://mkcealumni.org.
 LOCATION:https://mkcealumni.org
-DTSTART:20270113T183000Z
-DTEND:20270113T203000Z
+DTSTART:20270131T183000Z
+DTEND:20270131T203000Z
 STATUS:CONFIRMED
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -39,7 +39,7 @@ END:VCALENDAR`;
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'MKCE_Alumni_Launch_Jan_14_2027.ics');
+    link.setAttribute('download', 'MKCE_Alumni_Launch_Feb_01_2027.ics');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -77,7 +77,7 @@ END:VCALENDAR`;
         </div>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-medium">
-          Save <strong className="text-slate-900">Thursday, January 14, 2027</strong> to your personal calendar so you don't miss the official launch of <span className="text-orange-600 font-bold">mkcealumni.org</span>.
+          Save <strong className="text-slate-900">Monday, February 1, 2027</strong> to your personal calendar so you don't miss the official launch of <span className="text-orange-600 font-bold">mkcealumni.org</span>.
         </p>
 
         {/* Calendar Provider Buttons */}

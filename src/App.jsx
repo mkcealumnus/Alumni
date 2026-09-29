@@ -46,7 +46,7 @@ export default function App() {
             <span className="text-slate-300">•</span>
             <span className="text-slate-800">mkcealumni.org</span>
             <span className="text-slate-300">•</span>
-            <span className="text-emerald-600 font-extrabold">JAN 14, 2027</span>
+            <span className="text-emerald-600 font-extrabold">FEB 01, 2027</span>
           </div>
 
           {/* Main Headline */}

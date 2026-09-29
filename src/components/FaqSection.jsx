@@ -7,7 +7,7 @@ export default function FaqSection() {
   const faqs = [
     {
       question: 'When will mkcealumni.org officially launch?',
-      answer: 'The official platform launches on Thursday, January 14, 2027 at 00:00 IST. Register your email on this page to get priority early access.'
+      answer: 'The official platform launches on Monday, February 1, 2027 at 00:00 IST. Register your email on this page to get priority early access.'
     },
     {
       question: 'Who can register on the MKCE Alumni Network?',
@@ -19,7 +19,7 @@ export default function FaqSection() {
     },
     {
       question: 'How do I claim my Verified Alumnus Badge?',
-      answer: 'Upon launch on Jan 14, 2027, you can sign up with your MKCE graduation roll number or college email address. Once verified against official academic records, your account receives the verified green badge.'
+      answer: 'Upon launch on Feb 01, 2027, you can sign up with your MKCE graduation roll number or college email address. Once verified against official academic records, your account receives the verified green badge.'
     },
     {
       question: 'Can current MKCE students connect with senior alumni?',

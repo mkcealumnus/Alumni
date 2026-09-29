@@ -49,7 +49,7 @@ export default function Header({ onNavigate, onOpenCalendarModal }) {
             className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/90 hover:border-orange-500/40 transition-all cursor-pointer group shadow-2xs"
           >
             <Calendar className="w-3.5 h-3.5 text-orange-600 group-hover:scale-110 transition-transform" />
-            <span>Launch: <span className="text-orange-600 font-mono font-bold">Jan 14, 2027</span></span>
+            <span>Launch: <span className="text-orange-600 font-mono font-bold">Feb 01, 2027</span></span>
           </button>
 
           <button

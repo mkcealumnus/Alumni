@@ -56,7 +56,7 @@ export default function NotifyForm() {
             Get Priority Access to <span className="gradient-text">mkcealumni.org</span>
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed font-medium">
-            Be the first to claim your verified alumnus badge, access placement question archives, and connect with MKCE seniors across top global companies on January 14, 2027.
+            Be the first to claim your verified alumnus badge, access placement question archives, and connect with MKCE seniors across top global companies on February 1, 2027.
           </p>
         </div>
 
@@ -77,7 +77,7 @@ export default function NotifyForm() {
               <span className="text-orange-600 font-bold truncate max-w-[200px]">{formData.email}</span>
             </div>
             <p className="text-xs text-slate-500 italic font-medium">
-              📅 Mark your calendar: Launch Day is January 14, 2027.
+              📅 Mark your calendar: Launch Day is February 1, 2027.
             </p>
             <button
               onClick={() => {

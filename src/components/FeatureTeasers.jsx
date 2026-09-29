@@ -79,7 +79,7 @@ export default function FeatureTeasers() {
           Designed for <span className="gradient-text">MKCE Engineers & Graduates</span>
         </h3>
         <p className="text-xs sm:text-sm text-slate-600 mt-2 font-medium">
-          An ecosystem crafted to bridge current MKCE students with our global alumni network launching Jan 14, 2027.
+          An ecosystem crafted to bridge current MKCE students with our global alumni network launching Feb 01, 2027.
         </p>
       </div>
 
@@ -176,7 +176,7 @@ export default function FeatureTeasers() {
             </div>
 
             <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-200 font-medium">
-              <span className="font-mono">Launch Date: Jan 14, 2027</span>
+              <span className="font-mono">Launch Date: Feb 01, 2027</span>
               <button
                 onClick={() => setSelectedFeature(null)}
                 className="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold cursor-pointer shadow-xs"

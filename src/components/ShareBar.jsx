@@ -5,7 +5,7 @@ export default function ShareBar() {
   const [copied, setCopied] = useState(false);
 
   const siteUrl = 'https://mkcealumni.org';
-  const shareText = 'The official MKCE Alumni Network (mkcealumni.org) is launching on January 14, 2027! Connect with alumni, get career roadmaps & mentorship:';
+  const shareText = 'The official MKCE Alumni Network (mkcealumni.org) is launching on February 1, 2027! Connect with alumni, get career roadmaps & mentorship:';
 
   const copyLink = () => {
     navigator.clipboard.writeText(siteUrl);

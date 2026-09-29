@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Clock, Calendar, Globe, Sparkles, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export default function CountdownTimer({ onOpenCalendarModal }) {
-  // Target Date: January 14, 2027 00:00:00 IST (UTC+05:30)
-  const TARGET_DATE_STRING = '2027-01-14T00:00:00+05:30';
+  // Target Date: February 1, 2027 00:00:00 IST (UTC+05:30)
+  const TARGET_DATE_STRING = '2027-02-01T00:00:00+05:30';
   const targetDate = new Date(TARGET_DATE_STRING).getTime();
 
   // Campaign Start Date for progress bar calculation (Jan 1, 2026)
@@ -71,13 +71,13 @@ export default function CountdownTimer({ onOpenCalendarModal }) {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-200 text-xs font-mono font-bold mb-2">
               <Clock className="w-3.5 h-3.5 text-orange-600 animate-spin-slow" />
-              COUNTDOWN TO LAUNCH • JAN 14, 2027
+              COUNTDOWN TO LAUNCH • FEB 01, 2027
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-sans tracking-tight">
               Platform Go-Live Timer
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-              Official Launch at 00:00 IST on Thursday, January 14, 2027
+              Official Launch at 00:00 IST on Monday, February 1, 2027
             </p>
           </div>
 
@@ -143,7 +143,7 @@ export default function CountdownTimer({ onOpenCalendarModal }) {
               Deployment Pipeline Readiness
             </span>
             <span className="font-mono text-orange-600 font-bold">
-              {progressPercent}% Complete • Target: Jan 14, 2027
+              {progressPercent}% Complete • Target: Feb 01, 2027
             </span>
           </div>
 
@@ -170,7 +170,7 @@ export default function CountdownTimer({ onOpenCalendarModal }) {
             </div>
             <div className="flex items-center gap-1.5 text-orange-700">
               <AlertCircle className="w-3.5 h-3.5 shrink-0 text-orange-600" />
-              <span>Go-Live (Jan 14 '27)</span>
+              <span>Go-Live (Feb 01 '27)</span>
             </div>
           </div>
         </div>

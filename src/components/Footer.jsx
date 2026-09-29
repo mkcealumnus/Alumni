@@ -56,7 +56,7 @@ export default function Footer() {
           <div className="space-y-2 text-right md:text-right w-full md:w-auto border-t md:border-t-0 pt-4 md:pt-0 border-slate-200">
             <div className="p-3 bg-white rounded-xl border border-slate-200 inline-block text-left shadow-2xs">
               <span className="block text-[10px] font-mono text-slate-500 uppercase font-bold">Target Go-Live</span>
-              <span className="block font-mono text-sm font-bold text-orange-600">January 14, 2027</span>
+              <span className="block font-mono text-sm font-bold text-orange-600">February 1, 2027</span>
             </div>
             <p className="text-slate-500 text-[11px] font-medium">
               © {new Date().getFullYear()} MKCE Alumni Association. All rights reserved.
