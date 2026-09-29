@@ -131,7 +131,7 @@ export default function NotifyForm() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g., Jayanth S."
+                    placeholder="e.g., Anu."
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition-all shadow-2xs font-medium"
