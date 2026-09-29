@@ -10,8 +10,8 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="space-y-3 max-w-sm">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 border border-orange-200 flex items-center justify-center font-bold font-serif text-base">
-                MK
+              <div className="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 border border-orange-200 flex items-center justify-center font-bold font-serif text-[13px] tracking-wider shrink-0">
+                MKCE
               </div>
               <span className="text-base font-extrabold text-slate-900 font-sans tracking-tight">
                 MKCE Alumni Association

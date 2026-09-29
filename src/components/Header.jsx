@@ -8,15 +8,15 @@ export default function Header({ onNavigate, onOpenCalendarModal }) {
         
         {/* Brand Logo & Domain */}
         <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 via-amber-500 to-amber-400 p-0.5 shadow-md shadow-orange-500/20">
-            <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center font-bold text-orange-600 font-serif text-xl tracking-wider">
-              MK
+          {/* <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-tr from-orange-600 via-amber-500 to-amber-400 p-0.5 shadow-md shadow-orange-500/20 shrink-0">
+            <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center font-bold text-orange-600 font-serif text-[15px] tracking-wider">
+              MKCE
             </div>
             <span className="absolute -top-1 -right-1 flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
             </span>
-          </div>
+          </div> */}
 
           <div>
             <div className="flex items-center gap-2">
