@@ -65,7 +65,7 @@ export default function Footer() {
         </div>
 
         {/* Key Initiators Attribution Bar */}
-        <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+        {/* <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
           <div className="flex items-center gap-2">
             <Compass className="w-4 h-4 text-orange-600" />
             <span className="font-bold text-slate-700">Key Initiators:</span>
@@ -78,7 +78,7 @@ export default function Footer() {
               <strong className="text-orange-600">Jayanthan Senthilkumar</strong> (AI & ML 2022-2026)
             </span>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </footer>
