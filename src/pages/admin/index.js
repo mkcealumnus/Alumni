@@ -1,14 +1,6 @@
 export { default as AdminDashboard } from './AdminDashboard';
 export { default as AdminProfile } from './AdminProfile';
 export { default as AdminSettings } from './AdminSettings';
-export { default as CoursesOverview } from './CoursesOverview';
 export { default as ManageRequests } from './ManageRequests';
 export { default as ManageStudents } from './ManageStudents';
-export { default as PerformanceAnalytics } from './PerformanceAnalytics';
-export { default as SystemReports } from './SystemReports';
-export { default as AdminCareerGuidance } from './AdminCareerGuidance';
-export { default as AdminOneOnOneMentorship } from './AdminOneOnOneMentorship';
-export { default as AdminGroupMentorship } from './AdminGroupMentorship';
-export { default as AdminRoadmaps } from './AdminRoadmaps';
-export { default as AdminWorkshops } from './AdminWorkshops';
-export { default as AdminJobPortal } from './AdminJobPortal';
+export { default as ManageAlumni } from './ManageAlumni';

@@ -429,3 +429,23 @@ iframe {
   box-shadow: none !important;
   margin: 0 !important;
 }
+@layer utilities {
+  .bg-300% {
+    background-size: 300% 300%;
+  }
+}
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  animation: gradient 8s ease infinite;
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
+}

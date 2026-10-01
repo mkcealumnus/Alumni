@@ -10,21 +10,13 @@ import AuthPage from '@/pages/auth/AuthPage'
 // Admin
 import AdminDashboard from '@/pages/admin/AdminDashboard'
 import AdminSettings from '@/pages/admin/AdminSettings'
-import SystemReports from '@/pages/admin/SystemReports'
-import PerformanceAnalytics from '@/pages/admin/PerformanceAnalytics'
+
 import ManageStudents from '@/pages/admin/ManageStudents'
 import ManageAlumni from '@/pages/admin/ManageAlumni'
 import AdminProfile from '@/pages/admin/AdminProfile'
 import ManageRequests from '@/pages/admin/ManageRequests'
 
-import {
-  AdminCareerGuidance,
-  AdminOneOnOneMentorship,
-  AdminGroupMentorship,
-  AdminRoadmaps,
-  AdminWorkshops,
-  AdminJobPortal
-} from '@/pages/admin'
+
 
 
 // Alumni
@@ -105,19 +97,13 @@ function App() {
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminSettings /></ProtectedRoute>} />
-          <Route path="/admin/system-reports" element={<ProtectedRoute allowedRoles={['admin']}><SystemReports /></ProtectedRoute>} />
-          <Route path="/admin/performance-analytics" element={<ProtectedRoute allowedRoles={['admin']}><PerformanceAnalytics /></ProtectedRoute>} />
+
           <Route path="/admin/manage-students" element={<ProtectedRoute allowedRoles={['admin']}><ManageStudents /></ProtectedRoute>} />
           <Route path="/admin/manage-alumni" element={<ProtectedRoute allowedRoles={['admin']}><ManageAlumni /></ProtectedRoute>} />
           <Route path="/admin/profile" element={<ProtectedRoute allowedRoles={['admin']}><AdminProfile /></ProtectedRoute>} />
           <Route path="/admin/manage-requests" element={<ProtectedRoute allowedRoles={['admin']}><ManageRequests /></ProtectedRoute>} />
 
-          <Route path="/admin/career-guidance" element={<ProtectedRoute allowedRoles={['admin']}><AdminCareerGuidance role="admin" /></ProtectedRoute>} />
-          <Route path="/admin/mentorship" element={<ProtectedRoute allowedRoles={['admin']}><AdminOneOnOneMentorship role="admin" /></ProtectedRoute>} />
-          <Route path="/admin/groups" element={<ProtectedRoute allowedRoles={['admin']}><AdminGroupMentorship role="admin" /></ProtectedRoute>} />
-          <Route path="/admin/roadmaps" element={<ProtectedRoute allowedRoles={['admin']}><AdminRoadmaps role="admin" /></ProtectedRoute>} />
-          <Route path="/admin/workshops" element={<ProtectedRoute allowedRoles={['admin']}><AdminWorkshops role="admin" /></ProtectedRoute>} />
-          <Route path="/admin/jobs" element={<ProtectedRoute allowedRoles={['admin']}><AdminJobPortal role="admin" /></ProtectedRoute>} />
+
 
 
           {/* Alumni Routes */}

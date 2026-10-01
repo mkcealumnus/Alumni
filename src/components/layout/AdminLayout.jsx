@@ -76,20 +76,8 @@ const AdminLayout = ({ children, pageTitle }) => {
   const navItems = [
     { path: '/admin', icon: 'ri-dashboard-line', label: 'Dashboard' },
     { path: '/admin/manage-students', icon: 'ri-user-line', label: 'Students' },
-    { path: '/admin/manage-mentors', icon: 'ri-team-line', label: 'Mentors' },
-    { type: 'separator', label: 'Platform Management' },
-    { path: '/admin/career-guidance', icon: 'ri-compass-3-line', label: 'Career Guidance' },
-    { path: '/admin/mentorship', icon: 'ri-user-star-line', label: '1-on-1 Mentorship' },
-    { path: '/admin/groups', icon: 'ri-team-line', label: 'Alumni Groups' },
-    { path: '/admin/roadmaps', icon: 'ri-map-pin-time-line', label: 'Roadmaps' },
-    { path: '/admin/workshops', icon: 'ri-calendar-event-line', label: 'Workshops' },
-    { path: '/admin/jobs', icon: 'ri-briefcase-4-line', label: 'Job Portal' },
-
-    { type: 'separator', label: 'Reports & Settings' },
-
-    { path: '/admin/performance-analytics', icon: 'ri-line-chart-line', label: 'Analytics' },
-    { path: '/admin/system-reports', icon: 'ri-file-chart-line', label: 'Reports' },
-    { path: '/admin/manage-requests', icon: 'ri-git-pull-request-line', label: 'Requests' },
+    { path: '/admin/manage-alumni', icon: 'ri-team-line', label: 'Alumni' },
+    { path: '/admin/manage-requests', icon: 'ri-shield-check-line', label: 'Verifications' },
     { path: '/admin/settings', icon: 'ri-settings-line', label: 'Settings' },
   ];
 

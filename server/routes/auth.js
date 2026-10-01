@@ -1,5 +1,4 @@
 import { Router } from "express";
-import bcrypt from "bcryptjs";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -232,8 +231,8 @@ router.post("/login", async (req, res) => {
         });
     }
 
-    // Check password (supports plain text and legacy bcrypt hashes)
-    const isMatch = (password === user.password) || (user.password && user.password.startsWith('$2') && await bcrypt.compare(password, user.password));
+    // Check password (supports plain text)
+    const isMatch = password === user.password;
     if (!isMatch) {
       return res
         .status(401)
@@ -538,7 +537,7 @@ router.put("/change-password", authenticate, async (req, res) => {
       "SELECT password FROM users WHERE id = ?",
       [req.user.id],
     );
-    const isMatch = (currentPassword === users[0].password) || (users[0].password && users[0].password.startsWith('$2') && await bcrypt.compare(currentPassword, users[0].password));
+    const isMatch = currentPassword === users[0].password;
 
     if (!isMatch) {
       return res
