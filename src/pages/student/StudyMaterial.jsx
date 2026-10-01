@@ -253,7 +253,7 @@ even_squares = [x**2 for x in numbers if x % 2 == 0]
 print(even_squares) # [0, 4, 16, 36, 64]
 
 # Character count dictionary
-word = 'sowberry'
+word = 'nextstep'
 char_count = {char: word.count(char) for char in set(word)}`
       }
     ],

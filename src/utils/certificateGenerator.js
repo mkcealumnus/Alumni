@@ -7,7 +7,7 @@ import { jsPDF } from 'jspdf';
  * @param {string} data.courseTitle
  * @param {string} [data.courseCode]
  * @param {string} [data.category]
- * @param {string} [data.mentorName]
+ * @param {string} [data.alumniName]
  * @param {string} [data.completedAt]
  * @param {string} [data.enrolledAt]
  */
@@ -123,7 +123,7 @@ export const generateCertificate = (data) => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(60, 60, 60);
-  doc.text(data.mentorName || 'Instructor', w / 2 - 60, bottomY + 6, { align: 'center' });
+  doc.text(data.alumniName || 'Instructor', w / 2 - 60, bottomY + 6, { align: 'center' });
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(140, 140, 140);
@@ -134,7 +134,7 @@ export const generateCertificate = (data) => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(201, 100, 66);
-  doc.text('Sowberry', w / 2 + 60, bottomY + 6, { align: 'center' });
+  doc.text('NextStep', w / 2 + 60, bottomY + 6, { align: 'center' });
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(140, 140, 140);
@@ -148,6 +148,6 @@ export const generateCertificate = (data) => {
   doc.text(`Certificate ID: ${certId}`, w / 2, h - 18, { align: 'center' });
 
   // Download
-  const fileName = `Sowberry_Certificate_${(data.courseTitle || 'Course').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+  const fileName = `NextStep_Certificate_${(data.courseTitle || 'Course').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
   doc.save(fileName);
 };

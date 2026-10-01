@@ -135,18 +135,18 @@ const CoursesOverview = () => {
   const pending = courses.filter(c => c.status === 'pending');
 
   const getExportData = () => {
-    const columns = ['Title', 'Code', 'Mentor', 'Category', 'Type', 'Difficulty', 'Status', 'Enrolled'];
+    const columns = ['Title', 'Code', 'Alumni', 'Category', 'Type', 'Difficulty', 'Status', 'Enrolled'];
     const rows = filtered.map(c => [
       c.title,
       c.courseCode,
-      c.mentorName || '—',
+      c.alumniName || '—',
       c.category || '—',
       c.courseType,
       c.difficulty,
       c.status,
       c.enrollmentCount || 0,
     ]);
-    return { title: 'Courses Report', columns, rows, fileName: 'Sowberry_Courses' };
+    return { title: 'Courses Report', columns, rows, fileName: 'NextStep_Courses' };
   };
 
   // ===================== DETAIL VIEW =====================
@@ -165,7 +165,7 @@ const CoursesOverview = () => {
                   <h2 className="text-xl font-bold text-gray-900 dark-theme:text-gray-100">{detailCourse.title}</h2>
                   <div className="flex items-center gap-3 mt-2 text-sm text-gray-500 dark-theme:text-gray-400">
                     {detailCourse.courseCode && <span className="bg-primary/10 dark-theme:bg-primary/20 text-primary-dark dark-theme:text-primary-light px-2 py-0.5 rounded text-xs font-mono">{detailCourse.courseCode}</span>}
-                    <span><i className="ri-user-star-line mr-1"></i>{detailCourse.mentorName}</span>
+                    <span><i className="ri-user-star-line mr-1"></i>{detailCourse.alumniName}</span>
                     <span><i className="ri-team-line mr-1"></i>{detailCourse.enrollmentCount || 0} enrolled</span>
                     {detailCourse.contentCount > 0 && <span><i className="ri-file-text-line mr-1"></i>{detailCourse.contentCount} content items</span>}
                   </div>
@@ -360,7 +360,7 @@ const CoursesOverview = () => {
                   </div>
                   <p className="text-sm text-gray-500 dark-theme:text-gray-400 line-clamp-2 mb-3">{c.description || 'No description'}</p>
                   <div className="flex items-center gap-3 text-xs text-gray-500 dark-theme:text-gray-400 mb-4 flex-wrap">
-                    <span><i className="ri-user-star-line mr-1"></i>{c.mentorName || 'Unassigned'}</span>
+                    <span><i className="ri-user-star-line mr-1"></i>{c.alumniName || 'Unassigned'}</span>
                     <span><i className="ri-team-line mr-1"></i>{c.enrollmentCount || 0} enrolled</span>
                     {c.difficulty && <span className="capitalize">{c.difficulty}</span>}
                     {c.subjectCount > 0 && <span><i className="ri-book-2-line mr-1"></i>{c.subjectCount} subjects</span>}

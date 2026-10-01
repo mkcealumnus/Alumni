@@ -156,10 +156,7 @@ const AuthPage = () => {
     if (isAuthenticated && user) {
       let redirectPath = '/student';
       if (user.role === 'admin') redirectPath = '/admin';
-      else if (user.role === 'instructor' || user.role === 'mentor') redirectPath = '/mentor';
-      else if (user.role === 'creator') redirectPath = '/creator';
-      else if (user.role === 'manager') redirectPath = '/manager';
-      else if (user.role === 'observer') redirectPath = '/observer';
+      else if (user.role === 'alumni') redirectPath = '/alumni';
 
       navigate(redirectPath, { replace: true });
     }
@@ -663,7 +660,7 @@ const AuthPage = () => {
       if (res.success) {
         login(res.token, res.user);
         await Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Welcome back!', text: `Logged in as ${res.user.fullName}`, timer: 1500, showConfirmButton: false});
-        const path = res.user.role === 'admin' ? '/admin' : res.user.role === 'mentor' ? '/mentor' : '/student';
+        const path = res.user.role === 'admin' ? '/admin' : res.user.role === 'alumni' ? '/alumni' : '/student';
         navigate(path);
       } else {
         Swal.fire({ ...getSwalOpts(), icon: 'error', title: 'Login Failed', text: res.message || 'Invalid credentials'});
@@ -818,7 +815,7 @@ const AuthPage = () => {
           <div className="w-20 h-20 mx-auto rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center mb-4">
             <i className="ri-seedling-fill text-4xl"></i>
           </div>
-          <h1 className="text-4xl font-bold">Sowberry</h1>
+          <h1 className="text-4xl font-bold">NextStep</h1>
           <p className="text-white/70 text-lg">Grow your skills, bloom your future</p>
         </div>
       </div>
@@ -833,7 +830,7 @@ const AuthPage = () => {
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
               <i className="ri-seedling-fill text-white text-xl"></i>
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Sowberry</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">NextStep</h1>
           </div>
 
           {/* Login Form */}

@@ -87,7 +87,7 @@ const Home = () => {
           <div className="absolute top-0 left-0 right-0 flex justify-center gap-6 py-3 text-sm text-gray-500 dark-theme:text-gray-400 z-10">
             <div className="flex items-center gap-2">
               <i className="ri-mail-line text-primary"></i>
-              <span>berries@sowberry.app</span>
+              <span>berries@nextstep.app</span>
             </div>
             <div className="hidden sm:flex items-center gap-2">
               <i className="ri-phone-line text-primary"></i>
@@ -108,7 +108,7 @@ const Home = () => {
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark-theme:text-gray-100 leading-[1.1] tracking-tight mb-6">
                 Grow with{' '}
                 <span className="relative inline-block">
-                  <span className="text-gradient">Sowberry</span>
+                  <span className="text-gradient">NextStep</span>
                   <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 8" fill="none">
                     <path d="M2 6C50 2 150 2 198 6" stroke="url(#underline-grad)" strokeWidth="3" strokeLinecap="round" />
                     <defs>
@@ -181,7 +181,7 @@ const Home = () => {
                 <i className="ri-seedling-line"></i> Our Story
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark-theme:text-gray-100">
-                About <span className="relative inline-block"><span className="text-gradient">Sowberry</span><svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 200 8" fill="none"><path d="M2 6C50 2 150 2 198 6" stroke="url(#underline-grad-about)" strokeWidth="3" strokeLinecap="round" /><defs><linearGradient id="underline-grad-about" x1="0" y1="0" x2="200" y2="0"><stop offset="0%" stopColor="#c96442" /><stop offset="100%" stopColor="#a78058" /></linearGradient></defs></svg></span>
+                About <span className="relative inline-block"><span className="text-gradient">NextStep</span><svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 200 8" fill="none"><path d="M2 6C50 2 150 2 198 6" stroke="url(#underline-grad-about)" strokeWidth="3" strokeLinecap="round" /><defs><linearGradient id="underline-grad-about" x1="0" y1="0" x2="200" y2="0"><stop offset="0%" stopColor="#c96442" /><stop offset="100%" stopColor="#a78058" /></linearGradient></defs></svg></span>
               </h2>
               <p className="mt-4 text-gray-500 dark-theme:text-gray-400 max-w-2xl mx-auto">A learning platform built by students, for students — making quality tech education accessible to everyone.</p>
             </div>
@@ -218,12 +218,12 @@ const Home = () => {
 
               {/* Text Side */}
               <div className="space-y-6">
-                <h3 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">What is Sowberry?</h3>
+                <h3 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">What is NextStep?</h3>
                 <p className="text-gray-500 dark-theme:text-gray-400 leading-relaxed">
-                  Sowberry is a free online learning platform that offers certification courses, hands-on coding practice, aptitude training, and personalized mentorship. We believe that financial barriers should never stand in the way of learning, so every course and resource on Sowberry is completely free.
+                  NextStep is a free online learning platform that offers certification courses, hands-on coding practice, aptitude training, and personalized mentorship. We believe that financial barriers should never stand in the way of learning, so every course and resource on NextStep is completely free.
                 </p>
                 <p className="text-gray-500 dark-theme:text-gray-400 leading-relaxed">
-                  Whether you're a complete beginner taking your first step into technology or someone looking to sharpen your skills, Sowberry provides the tools, guidance, and community to help you grow.
+                  Whether you're a complete beginner taking your first step into technology or someone looking to sharpen your skills, NextStep provides the tools, guidance, and community to help you grow.
                 </p>
                 <div className="space-y-3">
                   {[
@@ -340,7 +340,7 @@ const Home = () => {
                   <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
                     <i className="ri-seedling-fill text-primary text-sm"></i>
                   </div>
-                  <span className="text-sm font-semibold text-gray-800 dark-theme:text-gray-200">The Sowberry Team</span>
+                  <span className="text-sm font-semibold text-gray-800 dark-theme:text-gray-200">The NextStep Team</span>
                 </div>
               </div>
             </div>
@@ -381,7 +381,7 @@ const Home = () => {
                   Finding quality learning material that was structured, beginner-friendly, and free felt nearly impossible. We spent countless hours searching for the right tutorials, figuring things out on our own, and wishing someone had made this path easier for us.
                 </p>
                 <p className="text-gray-500 dark-theme:text-gray-400 leading-relaxed">
-                  That's exactly why we built <span className="font-semibold text-gray-700 dark-theme:text-gray-200">Sowberry</span>. We wanted to create the platform we wish we had when we started — a place where anyone can learn coding, practice aptitude, earn certifications, and get mentorship, all for <span className="font-semibold text-primary">completely free</span>.
+                  That's exactly why we built <span className="font-semibold text-gray-700 dark-theme:text-gray-200">NextStep</span>. We wanted to create the platform we wish we had when we started — a place where anyone can learn coding, practice aptitude, earn certifications, and get mentorship, all for <span className="font-semibold text-primary">completely free</span>.
                 </p>
                 <p className="text-gray-500 dark-theme:text-gray-400 leading-relaxed">
                   We understand the struggle because we lived it. And now we are here to make sure no one else has to go through it alone.
@@ -408,7 +408,7 @@ const Home = () => {
                   },
                   {
                     icon: 'ri-hammer-line',
-                    title: 'We Built Sowberry',
+                    title: 'We Built NextStep',
                     text: 'As developers who learned the hard way, we poured everything we know into building a platform that makes learning free and accessible.',
                     color: 'bg-sage/15 text-sage',
                     accent: 'border-l-sage',
@@ -606,7 +606,7 @@ const Home = () => {
                   <div className="space-y-5">
                     {[
                       { icon: 'ri-map-pin-line', title: 'Our Location', lines: ['Yelahanka', 'Bangalore, Karnataka 560064'], color: 'bg-primary/15' },
-                      { icon: 'ri-mail-line', title: 'Email Us', lines: ['berries@sowberry.app', 'ceo@sowberry.app'], color: 'bg-sage/15' },
+                      { icon: 'ri-mail-line', title: 'Email Us', lines: ['berries@nextstep.app', 'ceo@nextstep.app'], color: 'bg-sage/15' },
                       { icon: 'ri-phone-line', title: 'Call Us', lines: ['+91 7010707678'], color: 'bg-amber/15' },
                       { icon: 'ri-time-line', title: 'Office Hours', lines: ['Mon - Fri: 9:00 AM - 6:00 PM', 'Sat: 9:00 AM - 1:00 PM'], color: 'bg-blush/15' },
                     ].map((item, i) => (
@@ -715,7 +715,7 @@ const Home = () => {
                 <div className="w-9 h-9 rounded-lg bg-primary/15 flex items-center justify-center">
                   <i className="ri-seedling-fill text-lg text-primary-light"></i>
                 </div>
-                <h2 className="text-lg font-bold">Sowberry <span className="text-primary-light">Academy</span></h2>
+                <h2 className="text-lg font-bold">NextStep <span className="text-primary-light">Academy</span></h2>
               </div>
               <p className="text-gray-500 text-sm leading-relaxed mb-6">Free certification courses, coding practice, and mentorship — built by students who know the struggle of starting out in tech.</p>
 
@@ -769,7 +769,7 @@ const Home = () => {
               <h3 className="text-sm font-semibold mb-5 uppercase tracking-wider text-gray-400">Get In Touch</h3>
               <ul className="space-y-3 text-sm text-gray-500 mb-6">
                 <li className="flex gap-3"><i className="ri-map-pin-line text-primary-light mt-0.5"></i><span>Yelahanka, Bangalore<br />Karnataka - 560064</span></li>
-                <li className="flex gap-3"><i className="ri-mail-line text-primary-light"></i><span>berries@sowberry.com</span></li>
+                <li className="flex gap-3"><i className="ri-mail-line text-primary-light"></i><span>berries@nextstep.com</span></li>
                 <li className="flex gap-3"><i className="ri-phone-line text-primary-light"></i><span>+91 8825756388</span></li>
               </ul>
 
@@ -787,7 +787,7 @@ const Home = () => {
         {/* Bottom */}
         <div className="border-t border-white/5 py-4">
           <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-600">&copy; {currentYear} Sowberry Academy. All Rights Reserved.</p>
+            <p className="text-xs text-gray-600">&copy; {currentYear} NextStep. All Rights Reserved.</p>
             <div className="flex gap-4">
               {['Privacy Policy', 'Terms of Service'].map((link, i) => (
                 <a key={i} href="#" className="text-xs text-gray-600 hover:text-primary-light transition-colors">{link}</a>

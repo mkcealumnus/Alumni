@@ -27,7 +27,7 @@ const MyGrades = () => {
       studentInfo: user,
       summary,
       grades,
-      fileName: `Sowberry_Grade_Transcript_${user.rollNumber || 'Student'}`
+      fileName: `NextStep_Grade_Transcript_${user.rollNumber || 'Student'}`
     });
   };
 
@@ -88,9 +88,9 @@ const MyGrades = () => {
           data={grades}
           loading={loading}
           searchPlaceholder="Search grades..."
-          storageKey="sowberry_grades_cols"
+          storageKey="nextstep_grades_cols"
           exportTitle="My Grades Report"
-          exportFileName="Sowberry_My_Grades"
+          exportFileName="NextStep_My_Grades"
           emptyIcon="ri-bar-chart-box-line"
           emptyMessage="No grades yet"
         />

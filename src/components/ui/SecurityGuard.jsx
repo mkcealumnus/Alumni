@@ -321,7 +321,7 @@ const SecurityGuard = () => {
             Fullscreen Mode Required
           </h2>
           <p className="text-slate-300 max-w-lg text-sm leading-relaxed mb-8">
-            Sowberry platform requires full screen mode for secure learning, assessment integrity, and seamless navigation.
+            NextStep platform requires full screen mode for secure learning, assessment integrity, and seamless navigation.
           </p>
           <button
             onClick={requestFullscreen}
@@ -343,7 +343,7 @@ const SecurityGuard = () => {
             Developer Tools Restricted
           </h2>
           <p className="text-slate-300 max-w-lg text-sm leading-relaxed mb-8">
-            Developer Tools (Inspect Element, Console) are disabled to protect course materials, tests, and intellectual property. Please close Developer Tools to continue using Sowberry.
+            Developer Tools (Inspect Element, Console) are disabled to protect course materials, tests, and intellectual property. Please close Developer Tools to continue using NextStep.
           </p>
           <button
             onClick={() => {

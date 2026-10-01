@@ -12,14 +12,14 @@ const __dirname = path.dirname(__filename);
 
 const router = Router();
 
-// All admin & manager routes require authentication + admin or manager role
-router.use(authenticate, authorize('admin', 'manager'));
+// All admin & admin routes require authentication + admin or admin role
+router.use(authenticate, authorize('admin', 'admin'));
 
 // ──────────────── DASHBOARD STATS ────────────────
 router.get('/dashboard', async (req, res) => {
   try {
     const [totalStudents] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'student'");
-    const [totalMentors] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'mentor'");
+    const [totalAlumnis] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'alumni'");
     const [totalCourses] = await pool.query("SELECT COUNT(*) as count FROM courses");
     const [totalEnrollments] = await pool.query("SELECT COUNT(*) as count FROM courseEnrollments");
     const [avgCompletion] = await pool.query("SELECT COALESCE(AVG(completionPercentage), 0) as avg FROM courseEnrollments");
@@ -55,7 +55,7 @@ router.get('/dashboard', async (req, res) => {
       data: {
         stats: {
           totalStudents: totalStudents[0].count,
-          totalMentors: totalMentors[0].count,
+          totalAlumnis: totalAlumnis[0].count,
           totalCourses: totalCourses[0].count,
           totalEnrollments: totalEnrollments[0].count,
           avgCompletion: Math.round(avgCompletion[0].avg),
@@ -223,13 +223,13 @@ router.delete('/students/:id', async (req, res) => {
   }
 });
 
-// ──────────────── MANAGE MENTORS ────────────────
-router.get('/mentors', async (req, res) => {
+// ──────────────── MANAGE ALUMNIS ────────────────
+router.get('/alumnis', async (req, res) => {
   try {
     const { search, page = 1, limit = 20 } = req.query;
     const offset = (page - 1) * limit;
 
-    let query = "SELECT id, email, username, fullName, phone, profileImage, isVerified, isActive, createdAt FROM users WHERE role = 'mentor'";
+    let query = "SELECT id, email, username, fullName, phone, profileImage, isVerified, isActive, createdAt FROM users WHERE role = 'alumni'";
     const params = [];
 
     if (search) {
@@ -242,53 +242,53 @@ router.get('/mentors', async (req, res) => {
     query += ' ORDER BY createdAt DESC LIMIT ? OFFSET ?';
     params.push(Number(limit), Number(offset));
 
-    const [mentors] = await pool.query(query, params);
+    const [alumnis] = await pool.query(query, params);
 
-    // Get course counts per mentor
-    for (const mentor of mentors) {
-      const [courses] = await pool.query('SELECT COUNT(*) as count FROM courses WHERE mentorId = ?', [mentor.id]);
-      mentor.totalCourses = courses[0].count;
+    // Get course counts per alumni
+    for (const alumni of alumnis) {
+      const [courses] = await pool.query('SELECT COUNT(*) as count FROM courses WHERE alumniId = ?', [alumni.id]);
+      alumni.totalCourses = courses[0].count;
 
       const [students] = await pool.query(`
         SELECT COUNT(DISTINCT ce.studentId) as count
         FROM courseEnrollments ce
         JOIN courses c ON ce.courseId = c.id
-        WHERE c.mentorId = ?
-      `, [mentor.id]);
-      mentor.totalStudents = students[0].count;
+        WHERE c.alumniId = ?
+      `, [alumni.id]);
+      alumni.totalStudents = students[0].count;
     }
 
     res.json({
       success: true,
-      data: { mentors, total: countResult[0].total, page: Number(page), limit: Number(limit) }
+      data: { alumnis, total: countResult[0].total, page: Number(page), limit: Number(limit) }
     });
   } catch (error) {
-    console.error('Get mentors error:', error);
+    console.error('Get alumnis error:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
-router.get('/mentors/:id', async (req, res) => {
+router.get('/alumnis/:id', async (req, res) => {
   try {
-    const [mentors] = await pool.query(
-      "SELECT id, email, username, fullName, phone, profileImage, isVerified, isActive, createdAt FROM users WHERE id = ? AND role = 'mentor'",
+    const [alumnis] = await pool.query(
+      "SELECT id, email, username, fullName, phone, profileImage, isVerified, isActive, createdAt FROM users WHERE id = ? AND role = 'alumni'",
       [req.params.id]
     );
 
-    if (mentors.length === 0) {
-      return res.status(404).json({ success: false, message: 'Mentor not found.' });
+    if (alumnis.length === 0) {
+      return res.status(404).json({ success: false, message: 'Alumni not found.' });
     }
 
-    const [courses] = await pool.query('SELECT * FROM courses WHERE mentorId = ?', [req.params.id]);
+    const [courses] = await pool.query('SELECT * FROM courses WHERE alumniId = ?', [req.params.id]);
 
-    res.json({ success: true, data: { mentor: mentors[0], courses } });
+    res.json({ success: true, data: { alumni: alumnis[0], courses } });
   } catch (error) {
-    console.error('Get mentor error:', error);
+    console.error('Get alumni error:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
-router.post('/mentors', async (req, res) => {
+router.post('/alumnis', async (req, res) => {
   try {
     const { email, username, fullName, password, phone, countryCode } = req.body;
 
@@ -303,21 +303,21 @@ router.post('/mentors', async (req, res) => {
 
     const [result] = await pool.query(
       `INSERT INTO users (email, username, fullName, password, phone, countryCode, role, isVerified, isActive)
-       VALUES (?, ?, ?, ?, ?, ?, 'mentor', 1, 1)`,
+       VALUES (?, ?, ?, ?, ?, ?, 'alumni', 1, 1)`,
       [email.toLowerCase(), username.toLowerCase(), fullName, password, phone || null, countryCode || '+91']
     );
 
     await pool.query('INSERT INTO activityLogs (userId, action, description) VALUES (?, ?, ?)',
-      [req.user.id, 'admin_create_mentor', `Admin created mentor: ${fullName}`]);
+      [req.user.id, 'admin_create_alumni', `Admin created alumni: ${fullName}`]);
 
-    res.status(201).json({ success: true, message: 'Mentor created successfully.', data: { id: result.insertId } });
+    res.status(201).json({ success: true, message: 'Alumni created successfully.', data: { id: result.insertId } });
   } catch (error) {
-    console.error('Create mentor error:', error);
+    console.error('Create alumni error:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
-router.put('/mentors/:id', async (req, res) => {
+router.put('/alumnis/:id', async (req, res) => {
   try {
     const { fullName, email, username, password, phone, isActive, isVerified } = req.body;
     await pool.query(
@@ -329,22 +329,22 @@ router.put('/mentors/:id', async (req, res) => {
         phone = COALESCE(?, phone),
         isActive = COALESCE(?, isActive),
         isVerified = COALESCE(?, isVerified)
-       WHERE id = ? AND role = 'mentor'`,
+       WHERE id = ? AND role = 'alumni'`,
       [fullName || null, email ? email.toLowerCase() : null, username ? username.toLowerCase() : null, password || null, phone || null, isActive !== undefined ? isActive : null, isVerified !== undefined ? isVerified : null, req.params.id]
     );
-    res.json({ success: true, message: 'Mentor updated successfully.' });
+    res.json({ success: true, message: 'Alumni updated successfully.' });
   } catch (error) {
-    console.error('Update mentor error:', error);
+    console.error('Update alumni error:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
-router.delete('/mentors/:id', async (req, res) => {
+router.delete('/alumnis/:id', async (req, res) => {
   try {
-    await pool.query("DELETE FROM users WHERE id = ? AND role = 'mentor'", [req.params.id]);
-    res.json({ success: true, message: 'Mentor deleted successfully.' });
+    await pool.query("DELETE FROM users WHERE id = ? AND role = 'alumni'", [req.params.id]);
+    res.json({ success: true, message: 'Alumni deleted successfully.' });
   } catch (error) {
-    console.error('Delete mentor error:', error);
+    console.error('Delete alumni error:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
@@ -353,13 +353,13 @@ router.delete('/mentors/:id', async (req, res) => {
 router.get('/courses', async (req, res) => {
   try {
     const [courses] = await pool.query(`
-      SELECT c.*, u.fullName as mentorName, ap.fullName as approverName,
+      SELECT c.*, u.fullName as alumniName, ap.fullName as approverName,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as enrollmentCount,
         (SELECT COALESCE(AVG(completionPercentage), 0) FROM courseEnrollments WHERE courseId = c.id) as avgCompletion,
         (SELECT COUNT(*) FROM courseSubjects WHERE courseId = c.id) as subjectCount,
         (SELECT COUNT(*) FROM courseContent WHERE courseId = c.id AND status = 'active') as contentCount
       FROM courses c
-      JOIN users u ON c.mentorId = u.id
+      JOIN users u ON c.alumniId = u.id
       LEFT JOIN users ap ON c.approvedBy = ap.id
       ORDER BY c.createdAt DESC
     `);
@@ -375,11 +375,11 @@ router.get('/courses', async (req, res) => {
 router.get('/courses/:id', async (req, res) => {
   try {
     const [courses] = await pool.query(`
-      SELECT c.*, u.fullName as mentorName, ap.fullName as approverName,
+      SELECT c.*, u.fullName as alumniName, ap.fullName as approverName,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as enrollmentCount,
         (SELECT COUNT(*) FROM courseContent WHERE courseId = c.id AND status = 'active') as contentCount
       FROM courses c
-      JOIN users u ON c.mentorId = u.id
+      JOIN users u ON c.alumniId = u.id
       LEFT JOIN users ap ON c.approvedBy = ap.id
       WHERE c.id = ?
     `, [req.params.id]);
@@ -478,12 +478,12 @@ router.put('/courses/:id/status', async (req, res) => {
 // Create a course (admin)
 router.post('/courses', async (req, res) => {
   try {
-    const { title, courseCode, description, image, duration, mentorId, category, courseType, difficulty, semester, regulation, academicYear, maxStudents, subjects } = req.body;
+    const { title, courseCode, description, image, duration, alumniId, category, courseType, difficulty, semester, regulation, academicYear, maxStudents, subjects } = req.body;
     if (!title) return res.status(400).json({ success: false, message: 'Course title is required.' });
     const [result] = await pool.query(
-      `INSERT INTO courses (title, courseCode, description, image, duration, mentorId, category, courseType, difficulty, semester, regulation, academicYear, maxStudents, isPublished, status)
+      `INSERT INTO courses (title, courseCode, description, image, duration, alumniId, category, courseType, difficulty, semester, regulation, academicYear, maxStudents, isPublished, status)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 'active')`,
-      [title, courseCode, description, image, duration, mentorId || req.user.id, category, courseType || 'theory', difficulty || 'beginner', semester, regulation, academicYear, maxStudents || 100]
+      [title, courseCode, description, image, duration, alumniId || req.user.id, category, courseType || 'theory', difficulty || 'beginner', semester, regulation, academicYear, maxStudents || 100]
     );
     if (subjects && Array.isArray(subjects)) {
       for (let i = 0; i < subjects.length; i++) {
@@ -522,10 +522,10 @@ router.put('/courses/:id', async (req, res) => {
 router.get('/courses/:id/detail', async (req, res) => {
   try {
     const [courses] = await pool.query(`
-      SELECT c.*, u.fullName as mentorName,
+      SELECT c.*, u.fullName as alumniName,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as enrollmentCount,
         (SELECT COUNT(*) FROM courseContent WHERE courseId = c.id AND status = 'active') as contentCount
-      FROM courses c JOIN users u ON c.mentorId = u.id WHERE c.id = ?
+      FROM courses c JOIN users u ON c.alumniId = u.id WHERE c.id = ?
     `, [req.params.id]);
     if (courses.length === 0) return res.status(404).json({ success: false, message: 'Course not found.' });
     const course = courses[0];
@@ -639,12 +639,12 @@ router.delete('/content/:id', async (req, res) => {
 router.get('/doubts', async (req, res) => {
   try {
     const [doubts] = await pool.query(`
-      SELECT d.*, u.fullName as studentName, c.title as courseTitle, m.fullName as mentorName,
+      SELECT d.*, u.fullName as studentName, c.title as courseTitle, m.fullName as alumniName,
         (SELECT COUNT(*) FROM doubtReplies WHERE doubtId = d.id) as replyCount
       FROM doubts d
       JOIN users u ON d.studentId = u.id
       LEFT JOIN courses c ON d.courseId = c.id
-      LEFT JOIN users m ON d.assignedMentorId = m.id
+      LEFT JOIN users m ON d.assignedAlumniId = m.id
       ORDER BY d.createdAt DESC
     `);
     res.json({ success: true, data: { doubts } });
@@ -659,7 +659,7 @@ router.get('/analytics', async (req, res) => {
   try {
     // Summary counts
     const [totalStudents] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'student'");
-    const [totalMentors] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'mentor'");
+    const [totalAlumnis] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'alumni'");
     const [totalCourses] = await pool.query("SELECT COUNT(*) as count FROM courses");
     const [avgCompletion] = await pool.query("SELECT COALESCE(AVG(completionPercentage), 0) as avg FROM courseEnrollments");
 
@@ -689,16 +689,16 @@ router.get('/analytics', async (req, res) => {
       LIMIT 10
     `);
 
-    // Mentor stats
-    const [mentorStats] = await pool.query(`
+    // Alumni stats
+    const [alumniStats] = await pool.query(`
       SELECT u.fullName,
         COUNT(DISTINCT c.id) as totalCourses,
         COUNT(DISTINCT ce.studentId) as totalStudents,
         COALESCE(AVG(c.rating), 0) as avgRating
       FROM users u
-      LEFT JOIN courses c ON u.id = c.mentorId
+      LEFT JOIN courses c ON u.id = c.alumniId
       LEFT JOIN courseEnrollments ce ON c.id = ce.courseId
-      WHERE u.role = 'mentor'
+      WHERE u.role = 'alumni'
       GROUP BY u.id
       ORDER BY avgRating DESC
     `);
@@ -707,7 +707,7 @@ router.get('/analytics', async (req, res) => {
     const [registrationTrends] = await pool.query(`
       SELECT DATE_FORMAT(createdAt, '%Y-%m') as month,
         SUM(CASE WHEN role = 'student' THEN 1 ELSE 0 END) as newStudents,
-        SUM(CASE WHEN role = 'mentor' THEN 1 ELSE 0 END) as mentors,
+        SUM(CASE WHEN role = 'alumni' THEN 1 ELSE 0 END) as alumnis,
         COUNT(*) as enrollments
       FROM users
       WHERE createdAt >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
@@ -718,12 +718,12 @@ router.get('/analytics', async (req, res) => {
       success: true,
       data: {
         totalStudents: totalStudents[0].count,
-        totalMentors: totalMentors[0].count,
+        totalAlumnis: totalAlumnis[0].count,
         totalCourses: totalCourses[0].count,
         completionRate: Math.round(avgCompletion[0].avg),
         courseCompletion,
         topStudents,
-        mentorStats,
+        alumniStats,
         registrationTrends
       }
     });

@@ -6,7 +6,7 @@ import Swal, { getSwalOpts } from '../../utils/swal';
 import { studentApi } from '../../utils/api';
 
 // ════════════════════════════════════════════════════════════════
-//     Sowberry — Aptitude Tests (DB-driven)
+//     NextStep — Aptitude Tests (DB-driven)
 // ════════════════════════════════════════════════════════════════
 
 const CATEGORIES = ['All', 'Quantitative', 'Logical', 'Verbal', 'Technical', 'Data'];

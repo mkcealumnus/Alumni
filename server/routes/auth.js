@@ -114,7 +114,7 @@ router.post("/register", async (req, res) => {
         .json({ success: false, message: "Email or username already exists." });
     }
 
-    const validRoles = ['admin', 'instructor', 'mentor', 'student', 'creator', 'manager', 'observer'];
+    const validRoles = ['admin', 'alumni', 'student'];
     const userRole = req.body.role && validRoles.includes(req.body.role) ? req.body.role : 'student';
 
     // Insert user with plain text password
@@ -480,7 +480,7 @@ router.put("/profile", authenticate, async (req, res) => {
       return res.status(403).json({ success: false, message: 'Students must raise an edit request to admin.' });
     }
 
-    // Admin & Mentor can edit all profile fields directly
+    // Admin & Alumni can edit all profile fields directly
     const { fullName, phone, countryCode, profileImage, college, department, year, gender, dateOfBirth, address, bio, github, linkedin, hackerrank, leetcode } = req.body;
 
     await pool.query(

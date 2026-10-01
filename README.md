@@ -1,12 +1,12 @@
 <div align="center">
 
-  <h1>🌱 Sowberry Academy</h1>
+  <h1>🌱 NextStep</h1>
   <p><b>An Enterprise-Grade Multi-Role Learning Management System & EdTech Ecosystem</b></p>
 
-  <img src="https://github-repo-readme-stats.vercel.app/api?username=jayanthansenthilkumar&repo=Sowberry&theme=dark" alt="Sowberry Repo Stats" />
+  <img src="https://github-repo-readme-stats.vercel.app/api?username=jayanthansenthilkumar&repo=NextStep&theme=dark" alt="NextStep Repo Stats" />
 
   <p>
-    <a href="https://sowberry.prisoltech.app"><b>Live Application</b></a> •
+    <a href="https://nextstep.prisoltech.app"><b>Live Application</b></a> •
     <a href="#-getting-started"><b>Quick Start</b></a> •
     <a href="#-role-based-permissions--workflows"><b>Role Permissions</b></a> •
     <a href="#-api-documentation"><b>API Reference</b></a>
@@ -18,7 +18,7 @@
 
 ## 📌 Overview
 
-**Sowberry Academy** is an all-in-one, multi-role **Learning Management System (LMS)** designed to deliver high-quality technical education, interactive coding assessments, gamified learning, and institutional management. Built on modern web technologies (**React 19**, **Node.js**, **Express**, **MySQL**, **CodeMirror 6**, and **Three.js**), Sowberry provides an end-to-end platform for students, mentors, content creators, academic managers, observers, and administrators.
+**NextStep** is an all-in-one, multi-role **Learning Management System (LMS)** designed to deliver high-quality technical education, interactive coding assessments, gamified learning, and institutional management. Built on modern web technologies (**React 19**, **Node.js**, **Express**, **MySQL**, **CodeMirror 6**, and **Three.js**), NextStep provides an end-to-end platform for students, mentors, content creators, academic managers, observers, and administrators.
 
 ---
 
@@ -42,7 +42,7 @@
 
 ## 👥 Role-Based Permissions & Workflows
 
-Sowberry features a granular **7-Role Permission Model** to ensure distinct access levels across educational and administrative workflows:
+NextStep features a granular **7-Role Permission Model** to ensure distinct access levels across educational and administrative workflows:
 
 | Role | Primary Purpose | Key Accessible Modules |
 | :--- | :--- | :--- |
@@ -81,10 +81,10 @@ Sowberry features a granular **7-Role Permission Model** to ensure distinct acce
 ## 📂 Project Structure
 
 ```
-Sowberry/
+NextStep/
 ├── public/                     # Static assets and site icons
 ├── schema/                     # Production MySQL Schema Dump
-│   └── sowberry.sql            # Full SQL schema & seed script (6.5MB)
+│   └── nextstep.sql            # Full SQL schema & seed script (6.5MB)
 ├── server/                     # Backend Node.js Express Application
 │   ├── config/                 # Database connection & setup scripts
 │   │   ├── db.js               # MySQL pool configuration
@@ -179,8 +179,8 @@ The MySQL database consists of **32 interconnected tables**:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/jayanthansenthilkumar/Sowberry.git
-   cd Sowberry
+   git clone https://github.com/jayanthansenthilkumar/NextStep.git
+   cd NextStep
    ```
 
 2. **Install Root & Backend Dependencies**
@@ -201,10 +201,10 @@ The MySQL database consists of **32 interconnected tables**:
    DB_PORT=3306
    DB_USER=root
    DB_PASSWORD=your_mysql_password
-   DB_NAME=sowberry
+   DB_NAME=nextstep
 
    # Authentication Secret
-   JWT_SECRET=sowberry_super_secret_jwt_key_2026
+   JWT_SECRET=nextstep_super_secret_jwt_key_2026
 
    # CORS Client URL
    CLIENT_URL=http://localhost:5173
@@ -223,7 +223,7 @@ The MySQL database consists of **32 interconnected tables**:
    # Or run directly:
    cd server && npm run db:setup
    ```
-   *Alternatively, import `schema/sowberry.sql` directly into your MySQL server using MySQL Workbench or CLI.*
+   *Alternatively, import `schema/nextstep.sql` directly into your MySQL server using MySQL Workbench or CLI.*
 
 5. **Start Development Environment**
    Launch both frontend and backend concurrently from the root directory:
@@ -243,12 +243,12 @@ The database setup script automatically seeds default users for testing each rol
 
 | Role | Email | Password | Username |
 | :--- | :--- | :--- | :--- |
-| **🛡️ Admin** | `jayanthan@sowberry.com` | `Vishu@2008` | `jayanthan` |
-| **👩‍🏫 Instructor / Mentor** | `janasruthi@sowberry.com` | `Vishu@2008` | `janasruthi` |
-| **🎓 Student** | `vishalini@sowberry.com` | `Vishu@2008` | `vishalini` |
-| **🎨 Creator** | `creator@sowberry.com` | `Vishu@2008` | `creator_sow` |
-| **📊 Manager** | `manager@sowberry.com` | `Vishu@2008` | `manager_sow` |
-| **🔍 Observer** | `observer@sowberry.com` | `Vishu@2008` | `observer_sow` |
+| **🛡️ Admin** | `jayanthan@nextstep.com` | `Vishu@2008` | `jayanthan` |
+| **👩‍🏫 Instructor / Mentor** | `janasruthi@nextstep.com` | `Vishu@2008` | `janasruthi` |
+| **🎓 Student** | `vishalini@nextstep.com` | `Vishu@2008` | `vishalini` |
+| **🎨 Creator** | `creator@nextstep.com` | `Vishu@2008` | `creator_sow` |
+| **📊 Manager** | `manager@nextstep.com` | `Vishu@2008` | `manager_sow` |
+| **🔍 Observer** | `observer@nextstep.com` | `Vishu@2008` | `observer_sow` |
 
 ---
 
@@ -285,5 +285,5 @@ NODE_ENV=production npm start
 
 ## 📄 License
 
-This repository is proprietary software of **Sowberry Academy**. All rights reserved.
+This repository is proprietary software of **NextStep**. All rights reserved.
 

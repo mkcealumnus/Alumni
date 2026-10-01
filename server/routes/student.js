@@ -31,10 +31,10 @@ router.get('/dashboard', async (req, res) => {
 
     // Current courses with progress
     const [currentCourses] = await pool.query(`
-      SELECT c.title, c.category, c.image, ce.completionPercentage, ce.status, u.fullName as mentorName
+      SELECT c.title, c.category, c.image, ce.completionPercentage, ce.status, u.fullName as alumniName
       FROM courseEnrollments ce
       JOIN courses c ON ce.courseId = c.id
-      JOIN users u ON c.mentorId = u.id
+      JOIN users u ON c.alumniId = u.id
       WHERE ce.studentId = ?
       ORDER BY ce.enrolledAt DESC LIMIT 5
     `, [studentId]);
@@ -52,9 +52,9 @@ router.get('/dashboard', async (req, res) => {
 
     // Upcoming events
     const [upcomingEvents] = await pool.query(`
-      SELECT e.id, e.title, e.eventType, e.startDate, e.location, u.fullName as mentorName
+      SELECT e.id, e.title, e.eventType, e.startDate, e.location, u.fullName as alumniName
       FROM events e
-      JOIN users u ON e.mentorId = u.id
+      JOIN users u ON e.alumniId = u.id
       WHERE e.isPublished = 1 AND e.startDate > NOW()
       ORDER BY e.startDate ASC LIMIT 5
     `, [studentId]);
@@ -86,12 +86,12 @@ router.get('/courses', async (req, res) => {
     const [courses] = await pool.query(`
       SELECT c.*, ce.completionPercentage, ce.status as enrollmentStatus, ce.enrolledAt, ce.id as enrollmentId,
         ce.completedTopics,
-        u.fullName as mentorName,
+        u.fullName as alumniName,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as totalStudents,
         (SELECT COUNT(*) FROM courseContent WHERE courseId = c.id AND status = 'active') as contentCount
       FROM courseEnrollments ce
       JOIN courses c ON ce.courseId = c.id
-      JOIN users u ON c.mentorId = u.id
+      JOIN users u ON c.alumniId = u.id
       WHERE ce.studentId = ?
       ORDER BY ce.enrolledAt DESC
     `, [req.user.id]);
@@ -109,13 +109,13 @@ router.get('/courses/browse', async (req, res) => {
     const { category, difficulty, search } = req.query;
 
     let query = `
-      SELECT c.*, u.fullName as mentorName,
+      SELECT c.*, u.fullName as alumniName,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as totalStudents,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id AND studentId = ?) as isEnrolled,
         (SELECT COUNT(*) FROM courseContent WHERE courseId = c.id AND status = 'active') as contentCount,
         (SELECT COUNT(*) FROM courseSubjects WHERE courseId = c.id) as subjectCount
       FROM courses c
-      JOIN users u ON c.mentorId = u.id
+      JOIN users u ON c.alumniId = u.id
       WHERE c.isPublished = 1 AND c.status = 'active'
     `;
     const params = [req.user.id];
@@ -201,8 +201,8 @@ router.get('/courses/:id/view', async (req, res) => {
     }
 
     const [courses] = await pool.query(`
-      SELECT c.*, u.fullName as mentorName
-      FROM courses c JOIN users u ON c.mentorId = u.id WHERE c.id = ?
+      SELECT c.*, u.fullName as alumniName
+      FROM courses c JOIN users u ON c.alumniId = u.id WHERE c.id = ?
     `, [req.params.id]);
 
     if (courses.length === 0) return res.status(404).json({ success: false, message: 'Course not found.' });
@@ -301,11 +301,11 @@ router.get('/certificate/:courseId', async (req, res) => {
       SELECT ce.completionPercentage, ce.status as enrollmentStatus, ce.completedAt, ce.enrolledAt,
         c.title as courseTitle, c.courseCode, c.category,
         u.fullName as studentName,
-        m.fullName as mentorName
+        m.fullName as alumniName
       FROM courseEnrollments ce
       JOIN courses c ON ce.courseId = c.id
       JOIN users u ON ce.studentId = u.id
-      JOIN users m ON c.mentorId = m.id
+      JOIN users m ON c.alumniId = m.id
       WHERE ce.courseId = ? AND ce.studentId = ?
     `, [req.params.courseId, req.user.id]);
 
@@ -322,7 +322,7 @@ router.get('/certificate/:courseId', async (req, res) => {
         courseTitle: enrollment.courseTitle,
         courseCode: enrollment.courseCode,
         category: enrollment.category,
-        mentorName: enrollment.mentorName,
+        alumniName: enrollment.alumniName,
         completedAt: enrollment.completedAt,
         enrolledAt: enrollment.enrolledAt,
       }
@@ -829,7 +829,7 @@ async function executeLocally(language, code, stdin = '') {
 
   // Create temp directory
   const execId = Date.now() + '-' + Math.random().toString(36).slice(2, 8);
-  const execDir = path.join(os.tmpdir(), 'sowberry-exec', execId);
+  const execDir = path.join(os.tmpdir(), 'nextstep-exec', execId);
   fs.mkdirSync(execDir, { recursive: true });
 
   try {
@@ -1217,12 +1217,12 @@ router.get('/aptitude-tests', async (req, res) => {
     const [tests] = await pool.query(`
       SELECT at.id, at.title, at.description, at.category, at.difficulty, at.icon,
              at.duration, at.totalQuestions, at.totalMarks, at.createdAt,
-             u.fullName as mentorName,
+             u.fullName as alumniName,
         (SELECT COUNT(*) FROM aptitudeTestAttempts WHERE testId = at.id AND studentId = ?) as myAttempts,
         (SELECT score FROM aptitudeTestAttempts WHERE testId = at.id AND studentId = ? ORDER BY startedAt DESC LIMIT 1) as lastScore,
         (SELECT MAX(score) FROM aptitudeTestAttempts WHERE testId = at.id AND studentId = ? AND status = 'completed') as bestScore
       FROM aptitudeTests at
-      JOIN users u ON at.mentorId = u.id
+      JOIN users u ON at.alumniId = u.id
       WHERE at.isPublished = 1
       ORDER BY at.category, at.difficulty, at.createdAt DESC
     `, [req.user.id, req.user.id, req.user.id]);
@@ -1404,10 +1404,10 @@ router.get('/study-materials', async (req, res) => {
     const { category } = req.query;
 
     let query = `
-      SELECT sm.*, c.title as courseTitle, u.fullName as mentorName
+      SELECT sm.*, c.title as courseTitle, u.fullName as alumniName
       FROM studyMaterials sm
       LEFT JOIN courses c ON sm.courseId = c.id
-      JOIN users u ON sm.mentorId = u.id
+      JOIN users u ON sm.alumniId = u.id
       WHERE sm.courseId IN (SELECT courseId FROM courseEnrollments WHERE studentId = ?)
          OR sm.courseId IS NULL
     `;
@@ -1428,11 +1428,11 @@ router.get('/study-materials', async (req, res) => {
 router.get('/events', async (req, res) => {
   try {
     const [events] = await pool.query(`
-      SELECT e.*, u.fullName as mentorName,
+      SELECT e.*, u.fullName as alumniName,
         (SELECT COUNT(*) FROM eventRegistrations WHERE eventId = e.id) as registrationCount,
         (SELECT COUNT(*) FROM eventRegistrations WHERE eventId = e.id AND studentId = ?) as isRegistered
       FROM events e
-      JOIN users u ON e.mentorId = u.id
+      JOIN users u ON e.alumniId = u.id
       WHERE e.isPublished = 1
       ORDER BY e.startDate ASC
     `, [req.user.id]);
@@ -1530,11 +1530,11 @@ router.get('/notifications', async (req, res) => {
 router.get('/doubts', async (req, res) => {
   try {
     const [doubts] = await pool.query(`
-      SELECT d.*, c.title as courseTitle, m.fullName as mentorName,
+      SELECT d.*, c.title as courseTitle, m.fullName as alumniName,
         (SELECT COUNT(*) FROM doubtReplies WHERE doubtId = d.id) as replyCount
       FROM doubts d
       LEFT JOIN courses c ON d.courseId = c.id
-      LEFT JOIN users m ON d.assignedMentorId = m.id
+      LEFT JOIN users m ON d.assignedAlumniId = m.id
       WHERE d.studentId = ?
       ORDER BY d.createdAt DESC
     `, [req.user.id]);
@@ -1554,7 +1554,7 @@ router.post('/doubts', async (req, res) => {
       'INSERT INTO doubts (studentId, courseId, title, description, priority) VALUES (?, ?, ?, ?, ?)',
       [req.user.id, courseId || null, title, description || null, priority || 'medium']
     );
-    res.status(201).json({ success: true, message: 'Doubt posted successfully. A mentor will respond soon.', data: { id: result.insertId } });
+    res.status(201).json({ success: true, message: 'Doubt posted successfully. A alumni will respond soon.', data: { id: result.insertId } });
   } catch (error) {
     console.error('Student create doubt error:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
@@ -1565,10 +1565,10 @@ router.post('/doubts', async (req, res) => {
 router.get('/doubts/:id', async (req, res) => {
   try {
     const [doubts] = await pool.query(`
-      SELECT d.*, c.title as courseTitle, m.fullName as mentorName
+      SELECT d.*, c.title as courseTitle, m.fullName as alumniName
       FROM doubts d
       LEFT JOIN courses c ON d.courseId = c.id
-      LEFT JOIN users m ON d.assignedMentorId = m.id
+      LEFT JOIN users m ON d.assignedAlumniId = m.id
       WHERE d.id = ? AND d.studentId = ?
     `, [req.params.id, req.user.id]);
     if (doubts.length === 0) return res.status(404).json({ success: false, message: 'Doubt not found.' });

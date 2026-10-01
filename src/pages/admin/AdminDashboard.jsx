@@ -8,13 +8,13 @@ import { useAuth } from '../../context/AuthContext';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const [stats, setStats] = useState({ totalStudents: 0, totalMentors: 0, totalCourses: 0, totalEnrollments: 0, avgCompletion: 0, activeStudents: 0, recentActivities: [], pendingVerifications: 0 });
+  const [stats, setStats] = useState({ totalStudents: 0, totalAlumnis: 0, totalCourses: 0, totalEnrollments: 0, avgCompletion: 0, activeStudents: 0, recentActivities: [], pendingVerifications: 0 });
   const [activeLearnersCount, setActiveLearnersCount] = useState(0);
   const [uploadInfo, setUploadInfo] = useState({ count: 0, totalSize: 0, files: [] });
   const [downloadingUploads, setDownloadingUploads] = useState(false);
   
   const studentsChartRef = useRef(null);
-  const mentorChartRef = useRef(null);
+  const alumniChartRef = useRef(null);
   const completionChartRef = useRef(null);
 
   // Initialize charts and counters
@@ -100,8 +100,8 @@ const AdminDashboard = () => {
     if (completionChartRef.current) {
       charts.push(createChart(completionChartRef.current, monthlyData.completion, '#b5552f'));
     }
-    if (mentorChartRef.current) {
-      charts.push(createChart(mentorChartRef.current, monthlyData.students, '#e8a98a'));
+    if (alumniChartRef.current) {
+      charts.push(createChart(alumniChartRef.current, monthlyData.students, '#e8a98a'));
     }
 
     // Animate counter function
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
   const handleDownloadUploads = async () => {
     setDownloadingUploads(true);
     try {
-      const token = localStorage.getItem('sowberry_token');
+      const token = localStorage.getItem('nextstep_token');
       const res = await fetch(adminApi.downloadUploads(), {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -182,8 +182,8 @@ const AdminDashboard = () => {
               <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-4">
                 <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-xl"><i className="ri-team-line"></i></div>
                 <div>
-                  <p className="text-white/60 text-sm">Total Mentors</p>
-                  <p className="text-xl font-bold">{stats.totalMentors}</p>
+                  <p className="text-white/60 text-sm">Total Alumnis</p>
+                  <p className="text-xl font-bold">{stats.totalAlumnis}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-4">
@@ -212,12 +212,12 @@ const AdminDashboard = () => {
         </div>
         <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-gray-500 dark-theme:text-gray-400">Mentor Performance</h3>
+            <h3 className="text-sm font-semibold text-gray-500 dark-theme:text-gray-400">Alumni Performance</h3>
             <i className="ri-team-line text-cyan-500 text-xl"></i>
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 dark-theme:text-gray-100 mb-4">{stats.totalMentors || 0}</h2>
+          <h2 className="text-3xl font-bold text-gray-800 dark-theme:text-gray-100 mb-4">{stats.totalAlumnis || 0}</h2>
           <div className="h-40">
-            <canvas ref={mentorChartRef}></canvas>
+            <canvas ref={alumniChartRef}></canvas>
           </div>
         </div>
         <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800">
@@ -240,7 +240,7 @@ const AdminDashboard = () => {
             <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-cream dark-theme:hover:bg-gray-800 transition-colors">
               <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><i className="ri-user-add-line"></i></div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200 truncate">New Mentor Application: John Smith</p>
+                <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200 truncate">New Alumni Application: John Smith</p>
                 <span className="text-xs text-gray-400">30 minutes ago</span>
               </div>
             </div>
@@ -254,7 +254,7 @@ const AdminDashboard = () => {
             <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-cream dark-theme:hover:bg-gray-800 transition-colors">
               <div className="w-10 h-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center"><i className="ri-user-star-line"></i></div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200 truncate">Mentor Rating Update: Sarah Johnson</p>
+                <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200 truncate">Alumni Rating Update: Sarah Johnson</p>
                 <span className="text-xs text-gray-400">2 hours ago</span>
               </div>
             </div>
@@ -266,7 +266,7 @@ const AdminDashboard = () => {
             <div className="flex items-center gap-4 p-3 rounded-xl bg-red-50 dark-theme:bg-red-900/20 border border-red-100 dark-theme:border-red-800/30">
               <div className="w-10 h-10 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center"><i className="ri-error-warning-line"></i></div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200">3 Pending Mentor Applications</p>
+                <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200">3 Pending Alumni Applications</p>
                 <span className="text-xs text-red-500">Requires Review</span>
               </div>
             </div>

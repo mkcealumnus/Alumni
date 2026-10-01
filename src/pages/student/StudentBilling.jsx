@@ -65,7 +65,7 @@ const StudentBilling = () => {
         <body>
           <div class="header">
             <div>
-              <div class="logo">Sowberry</div>
+              <div class="logo">NextStep</div>
               <div>Grow your skills, bloom your future</div>
             </div>
             <div style="text-align: right;">
@@ -88,7 +88,7 @@ const StudentBilling = () => {
             </tbody>
           </table>
           <div class="total">Total Paid: ₹${Number(tx.amount).toLocaleString('en-IN')}</div>
-          <div class="footer">Thank you for choosing Sowberry Platform! This is a computer-generated tax invoice receipt.</div>
+          <div class="footer">Thank you for choosing NextStep Platform! This is a computer-generated tax invoice receipt.</div>
         </body>
       </html>
     `);

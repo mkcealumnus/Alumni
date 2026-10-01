@@ -6,7 +6,7 @@ import Swal, { getSwalOpts } from '../../utils/swal';
 import { authApi, getImageUrl } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
-const MentorProfile = () => {
+const AlumniProfile = () => {
   const { user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('personal');
   const [loading, setLoading] = useState(false);
@@ -110,7 +110,7 @@ const MentorProfile = () => {
 
   if (fetching) {
     return (
-      <DashboardLayout pageTitle="My Profile" role="mentor">
+      <DashboardLayout pageTitle="My Profile" role="alumni">
         <Loader fullPage text="Loading profile..." />
       </DashboardLayout>
     );
@@ -118,14 +118,14 @@ const MentorProfile = () => {
 
 
   return (
-    <DashboardLayout pageTitle="My Profile" role="mentor">
+    <DashboardLayout pageTitle="My Profile" role="alumni">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Profile Header */}
         <div className="bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 p-6">
           <div className="flex flex-col sm:flex-row items-center gap-5">
             <div className="relative group">
               <img
-                src={profile.profileImage ? getImageUrl(profile.profileImage) : `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.fullName || 'Mentor')}&size=96&background=c96442&color=fff&bold=true`}
+                src={profile.profileImage ? getImageUrl(profile.profileImage) : `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.fullName || 'Alumni')}&size=96&background=c96442&color=fff&bold=true`}
                 alt="Profile"
                 className="w-24 h-24 rounded-xl object-cover border-2 border-sand dark-theme:border-gray-700"
               />
@@ -135,9 +135,9 @@ const MentorProfile = () => {
               </label>
             </div>
             <div className="text-center sm:text-left">
-              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-white">{profile.fullName || 'Mentor'}</h2>
+              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-white">{profile.fullName || 'Alumni'}</h2>
               <p className="text-sm text-gray-500 dark-theme:text-gray-400">{profile.email}</p>
-              <span className="inline-block mt-1.5 px-2.5 py-0.5 bg-blue-500/10 text-blue-600 dark-theme:text-blue-400 text-[11px] font-semibold rounded-full uppercase">Mentor</span>
+              <span className="inline-block mt-1.5 px-2.5 py-0.5 bg-blue-500/10 text-blue-600 dark-theme:text-blue-400 text-[11px] font-semibold rounded-full uppercase">Alumni</span>
             </div>
           </div>
         </div>
@@ -277,4 +277,4 @@ const MentorProfile = () => {
   );
 };
 
-export default MentorProfile;
+export default AlumniProfile;

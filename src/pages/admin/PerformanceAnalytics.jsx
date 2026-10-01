@@ -64,7 +64,7 @@ const PerformanceAnalytics = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: 'Total Students', value: analytics?.totalStudents || 0, icon: 'ri-user-line', color: 'primary', change: '+12%' },
-            { label: 'Total Mentors', value: analytics?.totalMentors || 0, icon: 'ri-team-line', color: 'blue-500', change: '+5%' },
+            { label: 'Total Alumnis', value: analytics?.totalAlumnis || 0, icon: 'ri-team-line', color: 'blue-500', change: '+5%' },
             { label: 'Active Courses', value: analytics?.totalCourses || 0, icon: 'ri-book-open-line', color: 'green-500', change: '+8%' },
             { label: 'Completion Rate', value: `${analytics?.completionRate || 0}%`, icon: 'ri-medal-line', color: 'amber-500', change: '+3%' },
           ].map((m, i) => (
@@ -89,7 +89,7 @@ const PerformanceAnalytics = () => {
               loading={false}
               searchPlaceholder="Search courses..."
               exportTitle="Top Courses by Enrollment"
-              exportFileName="Sowberry_Top_Courses"
+              exportFileName="NextStep_Top_Courses"
               emptyIcon="ri-book-open-line"
               emptyMessage="No course data available"
               columnToggle={false}
@@ -105,7 +105,7 @@ const PerformanceAnalytics = () => {
               loading={false}
               searchPlaceholder="Search months..."
               exportTitle="Monthly Trends Report"
-              exportFileName="Sowberry_Monthly_Trends"
+              exportFileName="NextStep_Monthly_Trends"
               emptyIcon="ri-line-chart-line"
               emptyMessage="No trend data available"
               columnToggle={false}

@@ -4,47 +4,47 @@ import DataTable from '@/components/ui/DataTable';
 import Swal, { getSwalOpts } from '../../utils/swal';
 import { adminApi, getImageUrl } from '../../utils/api';
 
-const ManageMentors = () => {
-  const [mentors, setMentors] = useState([]);
+const ManageAlumnis = () => {
+  const [alumnis, setAlumnis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [editMentor, setEditMentor] = useState(null);
+  const [editAlumni, setEditAlumni] = useState(null);
   const [form, setForm] = useState({ email: '', username: '', fullName: '', phone: '', password: '' });
 
-  const fetchMentors = async () => {
+  const fetchAlumnis = async () => {
     setLoading(true);
-    const res = await adminApi.getMentors('');
-    if (res.success) setMentors(res.mentors || []);
+    const res = await adminApi.getAlumnis('');
+    if (res.success) setAlumnis(res.alumnis || []);
     setLoading(false);
   };
 
-  useEffect(() => { fetchMentors(); }, []);
+  useEffect(() => { fetchAlumnis(); }, []);
 
-  const openCreate = () => { setEditMentor(null); setForm({ email: '', username: '', fullName: '', phone: '', password: '' }); setShowModal(true); };
-  const openEdit = (m) => { setEditMentor(m); setForm({ email: m.email, username: m.username, fullName: m.fullName, phone: m.phone || '', password: '' }); setShowModal(true); };
+  const openCreate = () => { setEditAlumni(null); setForm({ email: '', username: '', fullName: '', phone: '', password: '' }); setShowModal(true); };
+  const openEdit = (m) => { setEditAlumni(m); setForm({ email: m.email, username: m.username, fullName: m.fullName, phone: m.phone || '', password: '' }); setShowModal(true); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editMentor) {
+    if (editAlumni) {
       const body = { ...form }; if (!body.password) delete body.password;
-      const res = await adminApi.updateMentor(editMentor.id, body);
-      if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Updated!', timer: 1500, showConfirmButton: false }); setShowModal(false); fetchMentors(); }
+      const res = await adminApi.updateAlumni(editAlumni.id, body);
+      if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Updated!', timer: 1500, showConfirmButton: false }); setShowModal(false); fetchAlumnis(); }
       else Swal.fire({ ...getSwalOpts(), icon: 'error', title: 'Error', text: res.message });
     } else {
-      const res = await adminApi.createMentor({ ...form, role: 'mentor' });
-      if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Mentor Created!', timer: 1500, showConfirmButton: false }); setShowModal(false); fetchMentors(); }
+      const res = await adminApi.createAlumni({ ...form, role: 'alumni' });
+      if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Alumni Created!', timer: 1500, showConfirmButton: false }); setShowModal(false); fetchAlumnis(); }
       else Swal.fire({ ...getSwalOpts(), icon: 'error', title: 'Error', text: res.message });
     }
   };
 
   const handleDelete = (id, name) => {
-    Swal.fire({ ...getSwalOpts(), title: 'Delete Mentor?', text: `Remove ${name}? This cannot be undone.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
-      .then(async (r) => { if (r.isConfirmed) { const res = await adminApi.deleteMentor(id); if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Deleted!', timer: 1500, showConfirmButton: false }); fetchMentors(); } } });
+    Swal.fire({ ...getSwalOpts(), title: 'Delete Alumni?', text: `Remove ${name}? This cannot be undone.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
+      .then(async (r) => { if (r.isConfirmed) { const res = await adminApi.deleteAlumni(id); if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Deleted!', timer: 1500, showConfirmButton: false }); fetchAlumnis(); } } });
   };
 
   const handleToggleStatus = async (m) => {
-    const res = await adminApi.updateMentor(m.id, { isActive: !m.isActive });
-    if (res.success) fetchMentors();
+    const res = await adminApi.updateAlumni(m.id, { isActive: !m.isActive });
+    if (res.success) fetchAlumnis();
   };
 
   const columns = [
@@ -76,26 +76,26 @@ const ManageMentors = () => {
   ];
 
   return (
-    <AdminLayout pageTitle="Manage Mentors">
+    <AdminLayout pageTitle="Manage Alumnis">
       <div className="space-y-5">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Manage Mentors</h1>
-          <p className="text-sm text-gray-500 dark-theme:text-gray-400 mt-1">{mentors.length} total mentors</p>
+          <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Manage Alumnis</h1>
+          <p className="text-sm text-gray-500 dark-theme:text-gray-400 mt-1">{alumnis.length} total alumnis</p>
         </div>
 
         <DataTable
           columns={columns}
-          data={mentors}
+          data={alumnis}
           loading={loading}
-          searchPlaceholder="Search mentors..."
-          storageKey="sowberry_mentors_cols"
-          exportTitle="Mentors Report"
-          exportFileName="Sowberry_Mentors"
+          searchPlaceholder="Search alumnis..."
+          storageKey="nextstep_alumnis_cols"
+          exportTitle="Alumnis Report"
+          exportFileName="NextStep_Alumnis"
           emptyIcon="ri-team-line"
-          emptyMessage="No mentors found"
+          emptyMessage="No alumnis found"
           headerActions={
             <button onClick={openCreate} className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors flex items-center gap-2">
-              <i className="ri-add-line"></i> Add Mentor
+              <i className="ri-add-line"></i> Add Alumni
             </button>
           }
         />
@@ -105,7 +105,7 @@ const ManageMentors = () => {
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
           <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 w-full max-w-md mx-4 border border-sand dark-theme:border-gray-800">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">{editMentor ? 'Edit Mentor' : 'Add Mentor'}</h3>
+              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">{editAlumni ? 'Edit Alumni' : 'Add Alumni'}</h3>
               <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 dark-theme:hover:bg-gray-800 flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -113,10 +113,10 @@ const ManageMentors = () => {
               <input type="text" placeholder="Username" required value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
               <input type="text" placeholder="Full Name" required value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
               <input type="tel" placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
-              <input type="password" placeholder={editMentor ? 'New Password (leave blank to keep)' : 'Password'} required={!editMentor} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
+              <input type="password" placeholder={editAlumni ? 'New Password (leave blank to keep)' : 'Password'} required={!editAlumni} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand dark-theme:border-gray-700 text-sm font-medium text-gray-600 dark-theme:text-gray-400 hover:bg-gray-50 dark-theme:hover:bg-gray-800">Cancel</button>
-                <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">{editMentor ? 'Update' : 'Create'}</button>
+                <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">{editAlumni ? 'Update' : 'Create'}</button>
               </div>
             </form>
           </div>
@@ -125,4 +125,4 @@ const ManageMentors = () => {
     </AdminLayout>
   );
 };
-export default ManageMentors;
+export default ManageAlumnis;

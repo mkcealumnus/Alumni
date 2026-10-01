@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/layout/AdminLayout';
 import Swal, { getSwalOpts } from '../../utils/swal';
-import { mentorApi } from '../../utils/api';
+import { alumniApi } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
-const MentorDiscussion = () => {
+const AlumniDiscussion = () => {
   const { user } = useAuth();
   const [discussions, setDiscussions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ const MentorDiscussion = () => {
 
   const fetchDiscussions = async () => {
     setLoading(true);
-    const res = await mentorApi.getDiscussions();
+    const res = await alumniApi.getDiscussions();
     if (res.success) setDiscussions(res.discussions || []);
     setLoading(false);
   };
@@ -25,13 +25,13 @@ const MentorDiscussion = () => {
 
   const openThread = async (id) => {
     setSelectedThread(id);
-    const res = await mentorApi.getDiscussion(id);
+    const res = await alumniApi.getDiscussion(id);
     if (res.success) setThreadData({ ...res.discussion, replies: res.replies || [] });
   };
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    const res = await mentorApi.createDiscussion(form);
+    const res = await alumniApi.createDiscussion(form);
     if (res.success) {
       Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Discussion Created!', timer: 1500, showConfirmButton: false});
       setShowCreate(false); setForm({ title: '', content: '' }); fetchDiscussions();
@@ -41,7 +41,7 @@ const MentorDiscussion = () => {
   const handleReply = async (e) => {
     e.preventDefault();
     if (!replyText.trim()) return;
-    const res = await mentorApi.replyDiscussion(selectedThread, { content: replyText });
+    const res = await alumniApi.replyDiscussion(selectedThread, { content: replyText });
     if (res.success) { setReplyText(''); openThread(selectedThread); }
     else Swal.fire({ ...getSwalOpts(), icon: 'error', title: 'Error', text: res.message});
   };
@@ -126,4 +126,4 @@ const MentorDiscussion = () => {
     </AdminLayout>
   );
 };
-export default MentorDiscussion;
+export default AlumniDiscussion;

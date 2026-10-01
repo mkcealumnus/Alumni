@@ -3,7 +3,7 @@ export { default as AdminProfile } from './AdminProfile';
 export { default as AdminRevenue } from './AdminRevenue';
 export { default as AdminSettings } from './AdminSettings';
 export { default as CoursesOverview } from './CoursesOverview';
-export { default as ManageMentors } from './ManageMentors';
+export { default as ManageAlumnis } from './ManageAlumnis';
 export { default as ManageRequests } from './ManageRequests';
 export { default as ManageStudents } from './ManageStudents';
 export { default as PerformanceAnalytics } from './PerformanceAnalytics';

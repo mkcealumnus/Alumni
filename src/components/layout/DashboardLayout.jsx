@@ -18,42 +18,15 @@ const studentNav = [
   { path: '/student/profile', icon: 'ri-user-settings-line', label: 'My Profile' },
 ];
 
-const mentorNav = [
-  { path: '/mentor', icon: 'ri-dashboard-line', label: 'Dashboard' },
-  { path: '/mentor/doubts', icon: 'ri-chat-3-line', label: 'Student Doubts' },
-  { path: '/mentor/students-progress', icon: 'ri-line-chart-line', label: 'Student Progress' },
-  { path: '/mentor/problem-solving', icon: 'ri-code-s-slash-line', label: 'Coding Problems' },
-  { path: '/mentor/aptitude', icon: 'ri-question-answer-line', label: 'Aptitude Tests' },
-  { path: '/mentor/events', icon: 'ri-calendar-event-line', label: 'Events' },
-  { path: '/mentor/discussion', icon: 'ri-discuss-line', label: 'Discussion' },
-  { path: '/mentor/profile', icon: 'ri-user-settings-line', label: 'Profile' },
-];
-
-const creatorNav = [
-  { path: '/creator', icon: 'ri-dashboard-line', label: 'Creator Studio' },
-  { path: '/creator/courses', icon: 'ri-layout-masonry-line', label: 'Course Studio' },
-  { path: '/creator/problem-solving', icon: 'ri-code-box-line', label: 'Coding Problems' },
-  { path: '/creator/aptitude', icon: 'ri-question-answer-line', label: 'Aptitude Bank' },
-  { path: '/creator/study-material', icon: 'ri-file-text-line', label: 'Study Materials' },
-  { path: '/creator/profile', icon: 'ri-user-settings-line', label: 'Profile' },
-];
-
-const managerNav = [
-  { path: '/manager', icon: 'ri-dashboard-line', label: 'Manager Overview' },
-  { path: '/manager/analytics', icon: 'ri-bar-chart-grouped-line', label: 'Analytics' },
-  { path: '/manager/cohort-progress', icon: 'ri-group-line', label: 'Cohort Progress' },
-  { path: '/manager/curriculum', icon: 'ri-book-open-line', label: 'Curriculum' },
-  { path: '/manager/reports', icon: 'ri-file-chart-line', label: 'System Reports' },
-  { path: '/manager/profile', icon: 'ri-user-settings-line', label: 'Profile' },
-];
-
-const observerNav = [
-  { path: '/observer', icon: 'ri-dashboard-line', label: 'Observer Portal' },
-  { path: '/observer/catalog', icon: 'ri-compass-3-line', label: 'Course Catalog' },
-  { path: '/observer/aptitude', icon: 'ri-lightbulb-line', label: 'Aptitude Demos' },
-  { path: '/observer/games', icon: 'ri-gamepad-line', label: 'Learning Games' },
-  { path: '/observer/materials', icon: 'ri-file-search-line', label: 'Reference Guides' },
-  { path: '/observer/profile', icon: 'ri-user-settings-line', label: 'Profile' },
+const alumniNav = [
+  { path: '/alumni', icon: 'ri-dashboard-line', label: 'Dashboard' },
+  { path: '/alumni/doubts', icon: 'ri-chat-3-line', label: 'Student Doubts' },
+  { path: '/alumni/students-progress', icon: 'ri-line-chart-line', label: 'Student Progress' },
+  { path: '/alumni/problem-solving', icon: 'ri-code-s-slash-line', label: 'Coding Problems' },
+  { path: '/alumni/aptitude', icon: 'ri-question-answer-line', label: 'Aptitude Tests' },
+  { path: '/alumni/events', icon: 'ri-calendar-event-line', label: 'Events' },
+  { path: '/alumni/discussion', icon: 'ri-discuss-line', label: 'Discussion' },
+  { path: '/alumni/profile', icon: 'ri-user-settings-line', label: 'Profile' },
 ];
 
 const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
@@ -84,15 +57,8 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
 
   const getNavItems = () => {
     switch (role) {
-      case 'instructor':
-      case 'mentor':
-        return mentorNav;
-      case 'creator':
-        return creatorNav;
-      case 'manager':
-        return managerNav;
-      case 'observer':
-        return observerNav;
+      case 'alumni':
+        return alumniNav;
       default:
         return studentNav;
     }
@@ -137,7 +103,7 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
             <i className="ri-seedling-fill text-primary-light text-lg"></i>
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-[15px] text-white leading-tight">Sowberry</span>
+            <span className="font-bold text-[15px] text-white leading-tight">NextStep</span>
             <span className="text-[10px] font-medium tracking-wider text-gray-500 uppercase">{roleBadgeLabel}</span>
           </div>
         </div>
@@ -163,7 +129,7 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
 
         {/* Sidebar Footer */}
         <div className="px-3 py-4 border-t border-white/10 space-y-0.5">
-          {user?.role === 'admin' && (role === 'mentor' || role === 'instructor') && (
+          {user?.role === 'admin' && role === 'alumni' && (
             <Link
               to="/admin"
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-primary-light hover:bg-white/5 hover:text-white transition-all duration-150"
@@ -237,10 +203,7 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
                   <Link
                     to={
                       role === 'admin' ? '/admin/profile' :
-                      (role === 'mentor' || role === 'instructor') ? '/mentor/profile' :
-                      role === 'creator' ? '/creator/profile' :
-                      role === 'manager' ? '/manager/profile' :
-                      role === 'observer' ? '/observer/profile' :
+                      role === 'alumni' ? '/alumni/profile' :
                       '/student/profile'
                     }
                     className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-gray-700 dark-theme:text-gray-300 hover:bg-cream dark-theme:hover:bg-gray-800 transition-colors"

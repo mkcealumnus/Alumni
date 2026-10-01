@@ -2,20 +2,20 @@ import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import AdminLayout from '@/components/layout/AdminLayout';
 import DataTable from '@/components/ui/DataTable';
-import { mentorApi } from '../../utils/api';
+import { alumniApi } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
 const StudentsProgress = () => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
   const Layout = isAdmin ? AdminLayout : DashboardLayout;
-  const layoutProps = isAdmin ? {} : { pageTitle: 'Student Progress', role: 'mentor' };
+  const layoutProps = isAdmin ? {} : { pageTitle: 'Student Progress', role: 'alumni' };
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await mentorApi.getStudentsProgress();
+      const res = await alumniApi.getStudentsProgress();
       if (res.success) setStudents(res.students || []);
       setLoading(false);
     };
@@ -51,9 +51,9 @@ const StudentsProgress = () => {
           data={students}
           loading={loading}
           searchPlaceholder="Search students or courses..."
-          storageKey="sowberry_students_progress_cols"
+          storageKey="nextstep_students_progress_cols"
           exportTitle="Student Progress Report"
-          exportFileName="Sowberry_Student_Progress"
+          exportFileName="NextStep_Student_Progress"
           emptyIcon="ri-line-chart-line"
           emptyMessage="No student data available"
         />

@@ -238,10 +238,10 @@ router.get('/courses', async (req, res) => {
   try {
     const [courses] = await pool.query(`
       SELECT c.id, c.title, c.description, c.image, c.duration, c.category, c.difficulty, c.rating, c.price, c.isPremium,
-        u.fullName as mentorName,
+        u.fullName as alumniName,
         (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as totalStudents
       FROM courses c
-      JOIN users u ON c.mentorId = u.id
+      JOIN users u ON c.alumniId = u.id
       WHERE c.isPublished = 1
       ORDER BY c.rating DESC, c.createdAt DESC
     `);

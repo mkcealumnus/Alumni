@@ -3,7 +3,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Loader from '@/components/ui/Loader';
 import Swal, { getSwalOpts } from '../../utils/swal';
 
-import { mentorApi } from '../../utils/api';
+import { alumniApi } from '../../utils/api';
 
 const NewProblemSolving = () => {
   const [problems, setProblems] = useState([]);
@@ -14,7 +14,7 @@ const NewProblemSolving = () => {
 
   const fetchProblems = async () => {
     setLoading(true);
-    const res = await mentorApi.getProblems();
+    const res = await alumniApi.getProblems();
     if (res.success) setProblems(res.problems || []);
     setLoading(false);
   };
@@ -26,7 +26,7 @@ const NewProblemSolving = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = editItem ? await mentorApi.updateProblem(editItem.id, form) : await mentorApi.createProblem(form);
+    const res = editItem ? await alumniApi.updateProblem(editItem.id, form) : await alumniApi.createProblem(form);
     if (res.success) {
       Swal.fire({ ...getSwalOpts(), icon: 'success', title: editItem ? 'Updated!' : 'Created!', timer: 1500, showConfirmButton: false});
       setShowModal(false); fetchProblems();
@@ -35,7 +35,7 @@ const NewProblemSolving = () => {
 
   const handleDelete = (id) => {
     Swal.fire({ ...getSwalOpts(), title: 'Delete Problem?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete'})
-      .then(async r => { if (r.isConfirmed) { await mentorApi.deleteProblem(id); fetchProblems(); } });
+      .then(async r => { if (r.isConfirmed) { await alumniApi.deleteProblem(id); fetchProblems(); } });
   };
 
   const diffColors = { easy: 'bg-green-100 text-green-700', medium: 'bg-amber-100 text-amber-700', hard: 'bg-red-100 text-red-700' };

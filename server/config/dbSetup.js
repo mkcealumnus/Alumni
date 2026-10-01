@@ -1,6 +1,6 @@
 /*
-  Sowberry Database Setup Script
-  Database: sowberry (MySQL)
+  NextStep Database Setup Script
+  Database: nextstep (MySQL)
   Naming: camelCase
 
   Run: node config/dbSetup.js
@@ -16,7 +16,7 @@ import { seedHtmlCourse } from '../data/seedHtmlCourse.js';
 
 dotenv.config();
 
-const DB_NAME = process.env.DB_NAME || 'sowberry';
+const DB_NAME = process.env.DB_NAME || 'nextstep';
 
 async function setup() {
   // Connect without database first to create it
@@ -46,7 +46,7 @@ async function setup() {
       password VARCHAR(255) NOT NULL,
       phone VARCHAR(20) DEFAULT NULL,
       countryCode VARCHAR(10) DEFAULT '+91',
-      role ENUM('admin', 'instructor', 'mentor', 'student', 'creator', 'manager', 'observer') NOT NULL DEFAULT 'student',
+      role ENUM('admin', 'alumni', 'alumni', 'student', 'alumni', 'admin', 'alumni') NOT NULL DEFAULT 'student',
       profileImage VARCHAR(500) DEFAULT NULL,
       college VARCHAR(255) DEFAULT NULL,
       department VARCHAR(255) DEFAULT NULL,
@@ -95,7 +95,7 @@ async function setup() {
       thumbnail VARCHAR(500) DEFAULT NULL,
       syllabus VARCHAR(500) DEFAULT NULL,
       duration VARCHAR(50) DEFAULT NULL,
-      mentorId INT NOT NULL,
+      alumniId INT NOT NULL,
       category VARCHAR(100) DEFAULT NULL,
       courseType ENUM('theory', 'practical', 'lab') DEFAULT 'theory',
       difficulty ENUM('beginner', 'intermediate', 'advanced') DEFAULT 'beginner',
@@ -111,9 +111,9 @@ async function setup() {
       rating DECIMAL(2,1) DEFAULT 0.0,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (mentorId) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (alumniId) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (approvedBy) REFERENCES users(id) ON DELETE SET NULL,
-      INDEX idx_mentor (mentorId),
+      INDEX idx_alumni (alumniId),
       INDEX idx_published (isPublished),
       INDEX idx_status (status)
     ) ENGINE=InnoDB
@@ -210,7 +210,7 @@ async function setup() {
     CREATE TABLE IF NOT EXISTS assignments (
       id INT AUTO_INCREMENT PRIMARY KEY,
       courseId INT NOT NULL,
-      mentorId INT NOT NULL,
+      alumniId INT NOT NULL,
       title VARCHAR(255) NOT NULL,
       description TEXT,
       dueDate DATETIME NOT NULL,
@@ -219,9 +219,9 @@ async function setup() {
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE,
-      FOREIGN KEY (mentorId) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (alumniId) REFERENCES users(id) ON DELETE CASCADE,
       INDEX idx_course (courseId),
-      INDEX idx_mentor (mentorId)
+      INDEX idx_alumni (alumniId)
     ) ENGINE=InnoDB
   `);
 
@@ -250,7 +250,7 @@ async function setup() {
   await connection.query(`
     CREATE TABLE IF NOT EXISTS aptitudeTests (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      mentorId INT NOT NULL,
+      alumniId INT NOT NULL,
       title VARCHAR(255) NOT NULL,
       description TEXT,
       category VARCHAR(100) DEFAULT 'Quantitative',
@@ -262,8 +262,8 @@ async function setup() {
       isPublished TINYINT(1) DEFAULT 1,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (mentorId) REFERENCES users(id) ON DELETE CASCADE,
-      INDEX idx_mentor (mentorId),
+      FOREIGN KEY (alumniId) REFERENCES users(id) ON DELETE CASCADE,
+      INDEX idx_alumni (alumniId),
       INDEX idx_category (category)
     ) ENGINE=InnoDB
   `);
@@ -321,7 +321,7 @@ async function setup() {
   await connection.query(`
     CREATE TABLE IF NOT EXISTS codingProblems (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      mentorId INT NOT NULL,
+      alumniId INT NOT NULL,
       title VARCHAR(255) NOT NULL,
       description TEXT,
       difficulty ENUM('easy', 'medium', 'hard') DEFAULT 'easy',
@@ -335,8 +335,8 @@ async function setup() {
       testCases JSON DEFAULT NULL,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (mentorId) REFERENCES users(id) ON DELETE CASCADE,
-      INDEX idx_mentor (mentorId),
+      FOREIGN KEY (alumniId) REFERENCES users(id) ON DELETE CASCADE,
+      INDEX idx_alumni (alumniId),
       INDEX idx_difficulty (difficulty)
     ) ENGINE=InnoDB
   `);
@@ -398,7 +398,7 @@ async function setup() {
   await connection.query(`
     CREATE TABLE IF NOT EXISTS events (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      mentorId INT NOT NULL,
+      alumniId INT NOT NULL,
       title VARCHAR(255) NOT NULL,
       description TEXT,
       eventType ENUM('webinar', 'workshop', 'liveSession', 'hackathon', 'other') DEFAULT 'liveSession',
@@ -409,8 +409,8 @@ async function setup() {
       isPublished TINYINT(1) DEFAULT 0,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      FOREIGN KEY (mentorId) REFERENCES users(id) ON DELETE CASCADE,
-      INDEX idx_mentor (mentorId)
+      FOREIGN KEY (alumniId) REFERENCES users(id) ON DELETE CASCADE,
+      INDEX idx_alumni (alumniId)
     ) ENGINE=InnoDB
   `);
 
@@ -463,7 +463,7 @@ async function setup() {
     CREATE TABLE IF NOT EXISTS studyMaterials (
       id INT AUTO_INCREMENT PRIMARY KEY,
       courseId INT DEFAULT NULL,
-      mentorId INT NOT NULL,
+      alumniId INT NOT NULL,
       title VARCHAR(255) NOT NULL,
       description TEXT,
       fileUrl VARCHAR(500) DEFAULT NULL,
@@ -471,7 +471,7 @@ async function setup() {
       category VARCHAR(100) DEFAULT NULL,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE SET NULL,
-      FOREIGN KEY (mentorId) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (alumniId) REFERENCES users(id) ON DELETE CASCADE,
       INDEX idx_course (courseId)
     ) ENGINE=InnoDB
   `);
@@ -584,15 +584,15 @@ async function setup() {
       title VARCHAR(255) NOT NULL,
       description TEXT,
       status ENUM('open', 'in-progress', 'resolved', 'closed') DEFAULT 'open',
-      assignedMentorId INT DEFAULT NULL,
+      assignedAlumniId INT DEFAULT NULL,
       priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       FOREIGN KEY (studentId) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE SET NULL,
-      FOREIGN KEY (assignedMentorId) REFERENCES users(id) ON DELETE SET NULL,
+      FOREIGN KEY (assignedAlumniId) REFERENCES users(id) ON DELETE SET NULL,
       INDEX idx_student (studentId),
-      INDEX idx_mentor (assignedMentorId),
+      INDEX idx_alumni (assignedAlumniId),
       INDEX idx_status (status)
     ) ENGINE=InnoDB
   `);
@@ -698,7 +698,7 @@ async function setup() {
     "ALTER TABLE courses ADD COLUMN IF NOT EXISTS approvedAt DATETIME DEFAULT NULL AFTER approvedBy",
     "ALTER TABLE courses ADD COLUMN IF NOT EXISTS rejectionReason TEXT DEFAULT NULL AFTER approvedAt",
     "ALTER TABLE courses ADD COLUMN IF NOT EXISTS price DECIMAL(10,2) DEFAULT 999.00 AFTER rating",
-    "ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'instructor', 'mentor', 'student', 'creator', 'manager', 'observer') NOT NULL DEFAULT 'student'",
+    "ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'alumni', 'alumni', 'student', 'alumni', 'admin', 'alumni') NOT NULL DEFAULT 'student'",
     "ALTER TABLE courses ADD COLUMN IF NOT EXISTS isPremium TINYINT(1) DEFAULT 1 AFTER price",
     "ALTER TABLE courseEnrollments ADD COLUMN IF NOT EXISTS completedTopics JSON DEFAULT ('[]') AFTER status",
   ];
@@ -735,12 +735,12 @@ async function setup() {
 
   // Seed Initial 6 Users (1 for each role)
   const initialUsers = [
-    ['jayanthan@sowberry.com', 'jayanthan', 'Jayanthan', 'Vishu@2008', '8825756388', '+91', 'admin'],
-    ['janasruthi@sowberry.com', 'janasruthi', 'Jana Sruthi', 'Vishu@2008', '8825756381', '+91', 'instructor'],
-    ['vishalini@sowberry.com', 'vishalini', 'Vishalini', 'Vishu@2008', '9442556781', '+91', 'student'],
-    ['creator@sowberry.com', 'creator_sow', 'Course Creator', 'Vishu@2008', '9442556784', '+91', 'creator'],
-    ['manager@sowberry.com', 'manager_sow', 'Supervisor Manager', 'Vishu@2008', '9442556785', '+91', 'manager'],
-    ['observer@sowberry.com', 'observer_sow', 'Guest Observer', 'Vishu@2008', '9442556786', '+91', 'observer'],
+    ['jayanthan@nextstep.com', 'jayanthan', 'Jayanthan', 'Vishu@2008', '8825756388', '+91', 'admin'],
+    ['janasruthi@nextstep.com', 'janasruthi', 'Jana Sruthi', 'Vishu@2008', '8825756381', '+91', 'alumni'],
+    ['vishalini@nextstep.com', 'vishalini', 'Vishalini', 'Vishu@2008', '9442556781', '+91', 'student'],
+    ['alumni@nextstep.com', 'alumni_sow', 'Course Creator', 'Vishu@2008', '9442556784', '+91', 'alumni'],
+    ['admin@nextstep.com', 'admin_sow', 'Supervisor Manager', 'Vishu@2008', '9442556785', '+91', 'admin'],
+    ['alumni@nextstep.com', 'alumni_sow', 'Guest Observer', 'Vishu@2008', '9442556786', '+91', 'alumni'],
   ];
 
   for (const u of initialUsers) {
@@ -751,12 +751,12 @@ async function setup() {
   }
 
   console.log('✅ Initial 6 seed users created');
-  console.log('   Admin:      jayanthan@sowberry.com  / Vishu@2008 (Username: jayanthan)');
-  console.log('   Instructor: janasruthi@sowberry.com / Vishu@2008 (Username: janasruthi)');
-  console.log('   Student:    vishalini@sowberry.com  / Vishu@2008 (Username: vishalini)');
-  console.log('   Creator:    creator@sowberry.com    / Vishu@2008 (Username: creator_sow)');
-  console.log('   Manager:    manager@sowberry.com    / Vishu@2008 (Username: manager_sow)');
-  console.log('   Observer:   observer@sowberry.com   / Vishu@2008 (Username: observer_sow)');
+  console.log('   Admin:      jayanthan@nextstep.com  / Vishu@2008 (Username: jayanthan)');
+  console.log('   Instructor: janasruthi@nextstep.com / Vishu@2008 (Username: janasruthi)');
+  console.log('   Student:    vishalini@nextstep.com  / Vishu@2008 (Username: vishalini)');
+  console.log('   Creator:    alumni@nextstep.com    / Vishu@2008 (Username: alumni_sow)');
+  console.log('   Manager:    admin@nextstep.com    / Vishu@2008 (Username: admin_sow)');
+  console.log('   Observer:   alumni@nextstep.com   / Vishu@2008 (Username: alumni_sow)');
 
   // Seed Subscription Plans
   const plans = [
@@ -773,11 +773,11 @@ async function setup() {
     ],
     [
       'Pro Scholar', 'pro', 499.00, 3999.00, 
-      'Full access to all skill tracks, interactive code compilers, and 1-on-1 mentor guidance.',
+      'Full access to all skill tracks, interactive code compilers, and 1-on-1 alumni guidance.',
       JSON.stringify([
         'Unlimited access to ALL courses',
         'Advanced Code Editor & Multi-language runner',
-        'Unlimited Doubt Submissions & Priority Mentor Replies',
+        'Unlimited Doubt Submissions & Priority Alumni Replies',
         'Full Learning Games & Skill Badges',
         'Downloadable Verified Course Certificates',
         'Full Mock Aptitude & Assessment Analytics'
@@ -791,7 +791,7 @@ async function setup() {
         'Everything in Pro Scholar',
         'Custom College Syllabus & Department Tracks',
         'Placement Cell Mock Interviews & Resume Review',
-        'Direct Mentor 1-on-1 Office Hours',
+        'Direct Alumni 1-on-1 Office Hours',
         'Verified Performance Transcript for HODs'
       ]),
       0, 1
@@ -806,16 +806,16 @@ async function setup() {
   }
   console.log('✅ Subscription plans seeded');
 
-  const [mentorRows] = await connection.query(`SELECT id FROM users WHERE role = 'mentor' LIMIT 1`);
+  const [alumniRows] = await connection.query(`SELECT id FROM users WHERE role = 'alumni' LIMIT 1`);
 
-  if (mentorRows.length > 0) {
+  if (alumniRows.length > 0) {
     // Seed Aptitude Tests & 10,000 Unique Questions
     console.log('  🌱 Seeding Aptitude Questions across Tests (25 Qs/set)...');
     const generatedTests = generate25000AptitudeQuestions();
     for (const tData of generatedTests) {
       const [existing] = await connection.query(
-        `SELECT id FROM aptitudeTests WHERE title = ? AND mentorId = ?`,
-        [tData.title, mentorRows[0].id]
+        `SELECT id FROM aptitudeTests WHERE title = ? AND alumniId = ?`,
+        [tData.title, alumniRows[0].id]
       );
       let testId;
       if (existing.length > 0) {
@@ -826,9 +826,9 @@ async function setup() {
         );
       } else {
         const [insertRes] = await connection.query(
-          `INSERT INTO aptitudeTests (mentorId, title, description, category, difficulty, icon, duration, totalQuestions, totalMarks, isPublished)
+          `INSERT INTO aptitudeTests (alumniId, title, description, category, difficulty, icon, duration, totalQuestions, totalMarks, isPublished)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
-          [mentorRows[0].id, tData.title, tData.description, tData.category, tData.difficulty, tData.icon, tData.duration, tData.questions.length, tData.questions.length]
+          [alumniRows[0].id, tData.title, tData.description, tData.category, tData.difficulty, tData.icon, tData.duration, tData.questions.length, tData.questions.length]
         );
         testId = insertRes.insertId;
       }
@@ -856,11 +856,11 @@ async function setup() {
 
     // Seed Coding Problems (All 300)
     try { await connection.query("ALTER TABLE codingProblems ADD COLUMN boilerplate TEXT DEFAULT NULL AFTER sampleOutput"); } catch {}
-    const mid = mentorRows[0].id;
+    const mid = alumniRows[0].id;
     const all300Problems = [...all150CodingProblems, ...extra150CodingProblems];
     for (const p of all300Problems) {
       await connection.query(
-        `INSERT INTO codingProblems (id, mentorId, title, description, difficulty, category, inputFormat, outputFormat, \`constraints\`, sampleInput, sampleOutput, testCases, boilerplate) 
+        `INSERT INTO codingProblems (id, alumniId, title, description, difficulty, category, inputFormat, outputFormat, \`constraints\`, sampleInput, sampleOutput, testCases, boilerplate) 
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE 
            title = VALUES(title), 
@@ -880,13 +880,13 @@ async function setup() {
 
   // Seed System Settings
   const settings = [
-    ['siteName', 'Sowberry Academy'],
-    ['siteEmail', 'berries@sowberry.com'],
+    ['siteName', 'NextStep'],
+    ['siteEmail', 'berries@nextstep.com'],
     ['sitePhone', '+91 8825756388'],
     ['maxFileUploadSize', '10'],
     ['maintenanceMode', 'false'],
     ['studentRegistration', 'true'],
-    ['mentorRegistration', 'true'],
+    ['alumniRegistration', 'true'],
   ];
 
   for (const s of settings) {
@@ -897,15 +897,15 @@ async function setup() {
 
   console.log('✅ Seed data inserted');
   console.log('');
-  console.log('🌱 Sowberry database setup complete!');
+  console.log('🌱 NextStep database setup complete!');
   console.log('─────────────────────────────────────');
-  console.log('Database: sowberry');
+  console.log('Database: nextstep');
   console.log('Tables: 28');
   console.log('');
   console.log('Login Credentials:');
-  console.log('  Admin:   jayanthan@sowberry.com  / Vishu@2008 (Username: jayanthan)');
-  console.log('  Mentor:  janasruthi@sowberry.com / Vishu@2008 (Username: janasruthi)');
-  console.log('  Student: vishalini@sowberry.com  / Vishu@2008 (Username: vishalini)');
+  console.log('  Admin:   jayanthan@nextstep.com  / Vishu@2008 (Username: jayanthan)');
+  console.log('  Alumni:  janasruthi@nextstep.com / Vishu@2008 (Username: janasruthi)');
+  console.log('  Student: vishalini@nextstep.com  / Vishu@2008 (Username: vishalini)');
 
   await connection.end();
   process.exit(0);

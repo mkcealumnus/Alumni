@@ -4,7 +4,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Loader from '@/components/ui/Loader';
 import Swal, { getSwalOpts } from '../../utils/swal';
 
-import { mentorApi } from '../../utils/api';
+import { alumniApi } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 
 const POLL_INTERVAL = 3000;
@@ -21,11 +21,11 @@ const relativeTime = (dateStr) => {
   return date.toLocaleDateString();
 };
 
-const MentorDoubts = () => {
+const AlumniDoubts = () => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
   const Layout = isAdmin ? AdminLayout : DashboardLayout;
-  const layoutProps = isAdmin ? {} : { pageTitle: 'Student Doubts', role: 'mentor' };
+  const layoutProps = isAdmin ? {} : { pageTitle: 'Student Doubts', role: 'alumni' };
   const [doubts, setDoubts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDoubt, setSelectedDoubt] = useState(null);
@@ -57,7 +57,7 @@ const MentorDoubts = () => {
 
   const fetchDoubts = async () => {
     setLoading(true);
-    const res = await mentorApi.getDoubts();
+    const res = await alumniApi.getDoubts();
     if (res.success) setDoubts(res.doubts || []);
     setLoading(false);
   };
@@ -68,7 +68,7 @@ const MentorDoubts = () => {
     const doubt = selectedDoubtRef.current;
     if (!doubt) return;
     try {
-      const res = await mentorApi.getDoubt(doubt.id);
+      const res = await alumniApi.getDoubt(doubt.id);
       if (res.success) {
         const newReplies = res.replies || [];
         setReplies(prev => {
@@ -97,7 +97,7 @@ const MentorDoubts = () => {
     setSelectedDoubt(doubt);
     setReplies([]);
     setReplyText('');
-    const res = await mentorApi.getDoubt(doubt.id);
+    const res = await alumniApi.getDoubt(doubt.id);
     if (res.success) {
       setSelectedDoubt(res.doubt);
       setReplies(res.replies || []);
@@ -112,13 +112,13 @@ const MentorDoubts = () => {
     setReplyText('');
     setSending(true);
 
-    const wasUnassigned = !selectedDoubt.assignedMentorId;
+    const wasUnassigned = !selectedDoubt.assignedAlumniId;
 
     // Optimistic update
     const optimisticReply = {
       id: `temp-${Date.now()}`,
       authorName: user?.fullName || 'You',
-      authorRole: user?.role || 'mentor',
+      authorRole: user?.role || 'alumni',
       content: messageContent,
       createdAt: new Date().toISOString(),
       _sending: true
@@ -126,7 +126,7 @@ const MentorDoubts = () => {
     setReplies(prev => [...prev, optimisticReply]);
     setTimeout(() => scrollToBottom(), 50);
 
-    const res = await mentorApi.replyDoubt(selectedDoubt.id, { content: messageContent });
+    const res = await alumniApi.replyDoubt(selectedDoubt.id, { content: messageContent });
     setSending(false);
     if (res.success) {
       if (wasUnassigned) {
@@ -162,7 +162,7 @@ const MentorDoubts = () => {
       confirmButtonText: 'Yes, Resolve'
     });
     if (result.isConfirmed) {
-      const res = await mentorApi.resolveDoubt(selectedDoubt.id);
+      const res = await alumniApi.resolveDoubt(selectedDoubt.id);
       if (res.success) {
         Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Resolved!', timer: 1500, showConfirmButton: false });
         setSelectedDoubt(prev => ({ ...prev, status: 'resolved' }));
@@ -243,12 +243,12 @@ const MentorDoubts = () => {
                   <p className="mt-2 text-sm text-gray-500 dark-theme:text-gray-400 line-clamp-2">{selectedDoubt.description}</p>
                 )}
                 <div className="mt-2 flex items-center gap-2 text-xs flex-wrap">
-                  {selectedDoubt.mentorName && (
+                  {selectedDoubt.alumniName && (
                     <span className="bg-blue-50 dark-theme:bg-blue-900/20 text-blue-700 dark-theme:text-blue-300 px-2 py-0.5 rounded font-medium">
-                      <i className="ri-user-star-line mr-1"></i>Assigned: {selectedDoubt.mentorName}
+                      <i className="ri-user-star-line mr-1"></i>Assigned: {selectedDoubt.alumniName}
                     </span>
                   )}
-                  {!selectedDoubt.assignedMentorId && (
+                  {!selectedDoubt.assignedAlumniId && (
                     <span className="bg-amber-50 dark-theme:bg-amber-900/20 text-amber-700 dark-theme:text-amber-300 px-2 py-0.5 rounded font-medium animate-pulse">
                       <i className="ri-alert-line mr-1"></i>Unassigned — reply to claim
                     </span>
@@ -296,7 +296,7 @@ const MentorDoubts = () => {
                               <p className={`text-xs font-medium mb-1 ${!isStudent ? 'text-right text-primary/70' : 'text-gray-500 dark-theme:text-gray-400'}`}>
                                 {r.authorName}
                                 {r.authorRole === 'student' && ' · Student'}
-                                {r.authorRole === 'mentor' && ' · Mentor'}
+                                {r.authorRole === 'alumni' && ' · Alumni'}
                                 {r.authorRole === 'admin' && ' · Admin'}
                               </p>
                             )}
@@ -316,7 +316,7 @@ const MentorDoubts = () => {
                             </p>
                           </div>
 
-                          {/* Avatar for mentor/admin (me) */}
+                          {/* Avatar for alumni/admin (me) */}
                           {!isStudent && (
                             <div className="flex-shrink-0 ml-2 mt-auto">
                               {showAvatar ? (
@@ -355,7 +355,7 @@ const MentorDoubts = () => {
                       value={replyText}
                       onChange={e => setReplyText(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder={selectedDoubt.assignedMentorId ? 'Type a message...' : 'Reply to claim this doubt...'}
+                      placeholder={selectedDoubt.assignedAlumniId ? 'Type a message...' : 'Reply to claim this doubt...'}
                       rows={1}
                       className="flex-1 px-4 py-2.5 border rounded-2xl dark-theme:bg-gray-700 dark-theme:border-gray-600 dark-theme:text-gray-100 focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-sm max-h-32 overflow-y-auto"
                       style={{ minHeight: '42px' }}
@@ -414,7 +414,7 @@ const MentorDoubts = () => {
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark-theme:text-gray-100">Student Doubts</h1>
           <p className="text-gray-500 dark-theme:text-gray-400 text-sm mt-1">
-            Answer student questions — first mentor to reply gets auto-assigned
+            Answer student questions — first alumni to reply gets auto-assigned
           </p>
         </div>
 
@@ -472,7 +472,7 @@ const MentorDoubts = () => {
                     <div className="flex items-center gap-3 mb-1 flex-wrap">
                       <h3 className="font-semibold text-gray-900 dark-theme:text-gray-100 truncate group-hover:text-primary transition">{d.title}</h3>
                       <span className={priorityColor(d.priority)}><i className="ri-flag-fill text-sm"></i></span>
-                      {!d.assignedMentorId && (
+                      {!d.assignedAlumniId && (
                         <span className="bg-amber-100 dark-theme:bg-amber-900/30 text-amber-600 dark-theme:text-amber-400 text-xs px-2 py-0.5 rounded-full font-medium">
                           Unassigned
                         </span>
@@ -498,4 +498,4 @@ const MentorDoubts = () => {
   );
 };
 
-export default MentorDoubts;
+export default AlumniDoubts;

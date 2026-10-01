@@ -1,7 +1,7 @@
 {
-  "name": "sowberry-backend",
+  "name": "nextstep-backend",
   "version": "1.0.0",
-  "description": "Sowberry Academy Backend API",
+  "description": "NextStep Backend API",
   "main": "server.js",
   "type": "module",
   "scripts": {

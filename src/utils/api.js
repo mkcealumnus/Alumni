@@ -11,21 +11,21 @@ export const getImageUrl = (path) => {
 };
 
 // ──────────────── TOKEN MANAGEMENT ────────────────
-export const getToken = () => localStorage.getItem('sowberry_token');
-export const setToken = (token) => localStorage.setItem('sowberry_token', token);
-export const removeToken = () => localStorage.removeItem('sowberry_token');
+export const getToken = () => localStorage.getItem('nextstep_token');
+export const setToken = (token) => localStorage.setItem('nextstep_token', token);
+export const removeToken = () => localStorage.removeItem('nextstep_token');
 
 export const getUser = () => {
   try {
-    const user = localStorage.getItem('sowberry_user');
+    const user = localStorage.getItem('nextstep_user');
     return user ? JSON.parse(user) : null;
   } catch {
-    localStorage.removeItem('sowberry_user');
+    localStorage.removeItem('nextstep_user');
     return null;
   }
 };
-export const setUser = (user) => localStorage.setItem('sowberry_user', JSON.stringify(user));
-export const removeUser = () => localStorage.removeItem('sowberry_user');
+export const setUser = (user) => localStorage.setItem('nextstep_user', JSON.stringify(user));
+export const removeUser = () => localStorage.removeItem('nextstep_user');
 
 export const logout = () => {
   removeToken();
@@ -115,12 +115,12 @@ export const adminApi = {
   createStudent: (body) => apiCall('/admin/students', { method: 'POST', body: JSON.stringify(body) }),
   updateStudent: (id, body) => apiCall(`/admin/students/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
   deleteStudent: (id) => apiCall(`/admin/students/${id}`, { method: 'DELETE' }),
-  // Mentors
-  getMentors: (params = '') => apiCall(`/admin/mentors${params ? '?' + params : ''}`),
-  getMentor: (id) => apiCall(`/admin/mentors/${id}`),
-  createMentor: (body) => apiCall('/admin/mentors', { method: 'POST', body: JSON.stringify(body) }),
-  updateMentor: (id, body) => apiCall(`/admin/mentors/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteMentor: (id) => apiCall(`/admin/mentors/${id}`, { method: 'DELETE' }),
+  // Alumnis
+  getAlumnis: (params = '') => apiCall(`/admin/alumnis${params ? '?' + params : ''}`),
+  getAlumni: (id) => apiCall(`/admin/alumnis/${id}`),
+  createAlumni: (body) => apiCall('/admin/alumnis', { method: 'POST', body: JSON.stringify(body) }),
+  updateAlumni: (id, body) => apiCall(`/admin/alumnis/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteAlumni: (id) => apiCall(`/admin/alumnis/${id}`, { method: 'DELETE' }),
   // Courses
   getCourses: () => apiCall('/admin/courses'),
   getCourse: (id) => apiCall(`/admin/courses/${id}`),
@@ -168,63 +168,63 @@ export const adminApi = {
   updatePricingPlan: (id, body) => apiCall(`/admin/pricing-plans/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
 };
 
-// ──────────────── MENTOR API ────────────────
-export const mentorApi = {
-  getDashboard: () => apiCall('/mentor/dashboard'),
+// ──────────────── ALUMNI API ────────────────
+export const alumniApi = {
+  getDashboard: () => apiCall('/alumni/dashboard'),
   // Courses
-  getCourses: () => apiCall('/mentor/courses'),
-  createCourse: (body) => apiCall('/mentor/courses', { method: 'POST', body: JSON.stringify(body) }),
-  updateCourse: (id, body) => apiCall(`/mentor/courses/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteCourse: (id) => apiCall(`/mentor/courses/${id}`, { method: 'DELETE' }),
-  getCourseDetail: (id) => apiCall(`/mentor/courses/${id}/detail`),
+  getCourses: () => apiCall('/alumni/courses'),
+  createCourse: (body) => apiCall('/alumni/courses', { method: 'POST', body: JSON.stringify(body) }),
+  updateCourse: (id, body) => apiCall(`/alumni/courses/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteCourse: (id) => apiCall(`/alumni/courses/${id}`, { method: 'DELETE' }),
+  getCourseDetail: (id) => apiCall(`/alumni/courses/${id}/detail`),
   // Subjects (Units)
-  getSubjects: (courseId) => apiCall(`/mentor/courses/${courseId}/subjects`),
-  addSubject: (courseId, body) => apiCall(`/mentor/courses/${courseId}/subjects`, { method: 'POST', body: JSON.stringify(body) }),
-  updateSubject: (id, body) => apiCall(`/mentor/subjects/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteSubject: (id) => apiCall(`/mentor/subjects/${id}`, { method: 'DELETE' }),
+  getSubjects: (courseId) => apiCall(`/alumni/courses/${courseId}/subjects`),
+  addSubject: (courseId, body) => apiCall(`/alumni/courses/${courseId}/subjects`, { method: 'POST', body: JSON.stringify(body) }),
+  updateSubject: (id, body) => apiCall(`/alumni/subjects/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteSubject: (id) => apiCall(`/alumni/subjects/${id}`, { method: 'DELETE' }),
   // Topics
-  getTopics: (subjectId) => apiCall(`/mentor/subjects/${subjectId}/topics`),
-  addTopic: (subjectId, body) => apiCall(`/mentor/subjects/${subjectId}/topics`, { method: 'POST', body: JSON.stringify(body) }),
-  deleteTopic: (id) => apiCall(`/mentor/topics/${id}`, { method: 'DELETE' }),
+  getTopics: (subjectId) => apiCall(`/alumni/subjects/${subjectId}/topics`),
+  addTopic: (subjectId, body) => apiCall(`/alumni/subjects/${subjectId}/topics`, { method: 'POST', body: JSON.stringify(body) }),
+  deleteTopic: (id) => apiCall(`/alumni/topics/${id}`, { method: 'DELETE' }),
   // Course Content
-  getCourseContent: (courseId) => apiCall(`/mentor/courses/${courseId}/content`),
-  addContent: (courseId, body) => apiCall(`/mentor/courses/${courseId}/content`, { method: 'POST', body: JSON.stringify(body) }),
-  updateContent: (id, body) => apiCall(`/mentor/content/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteContent: (id) => apiCall(`/mentor/content/${id}`, { method: 'DELETE' }),
+  getCourseContent: (courseId) => apiCall(`/alumni/courses/${courseId}/content`),
+  addContent: (courseId, body) => apiCall(`/alumni/courses/${courseId}/content`, { method: 'POST', body: JSON.stringify(body) }),
+  updateContent: (id, body) => apiCall(`/alumni/content/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteContent: (id) => apiCall(`/alumni/content/${id}`, { method: 'DELETE' }),
   // Students Progress
-  getStudentsProgress: () => apiCall('/mentor/students-progress'),
+  getStudentsProgress: () => apiCall('/alumni/students-progress'),
 
   // Problems
-  getProblems: () => apiCall('/mentor/problems'),
-  createProblem: (body) => apiCall('/mentor/problems', { method: 'POST', body: JSON.stringify(body) }),
-  updateProblem: (id, body) => apiCall(`/mentor/problems/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteProblem: (id) => apiCall(`/mentor/problems/${id}`, { method: 'DELETE' }),
+  getProblems: () => apiCall('/alumni/problems'),
+  createProblem: (body) => apiCall('/alumni/problems', { method: 'POST', body: JSON.stringify(body) }),
+  updateProblem: (id, body) => apiCall(`/alumni/problems/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteProblem: (id) => apiCall(`/alumni/problems/${id}`, { method: 'DELETE' }),
   // Aptitude Tests
-  getAptitudeTests: () => apiCall('/mentor/aptitude-tests'),
-  createAptitudeTest: (body) => apiCall('/mentor/aptitude-tests', { method: 'POST', body: JSON.stringify(body) }),
-  updateAptitudeTest: (id, body) => apiCall(`/mentor/aptitude-tests/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  getAptitudeTest: (id) => apiCall(`/mentor/aptitude-tests/${id}`),
-  deleteAptitudeTest: (id) => apiCall(`/mentor/aptitude-tests/${id}`, { method: 'DELETE' }),
+  getAptitudeTests: () => apiCall('/alumni/aptitude-tests'),
+  createAptitudeTest: (body) => apiCall('/alumni/aptitude-tests', { method: 'POST', body: JSON.stringify(body) }),
+  updateAptitudeTest: (id, body) => apiCall(`/alumni/aptitude-tests/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  getAptitudeTest: (id) => apiCall(`/alumni/aptitude-tests/${id}`),
+  deleteAptitudeTest: (id) => apiCall(`/alumni/aptitude-tests/${id}`, { method: 'DELETE' }),
   // Events
-  getEvents: () => apiCall('/mentor/events'),
-  createEvent: (body) => apiCall('/mentor/events', { method: 'POST', body: JSON.stringify(body) }),
-  updateEvent: (id, body) => apiCall(`/mentor/events/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteEvent: (id) => apiCall(`/mentor/events/${id}`, { method: 'DELETE' }),
+  getEvents: () => apiCall('/alumni/events'),
+  createEvent: (body) => apiCall('/alumni/events', { method: 'POST', body: JSON.stringify(body) }),
+  updateEvent: (id, body) => apiCall(`/alumni/events/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteEvent: (id) => apiCall(`/alumni/events/${id}`, { method: 'DELETE' }),
   // Discussions
-  getDiscussions: () => apiCall('/mentor/discussions'),
-  createDiscussion: (body) => apiCall('/mentor/discussions', { method: 'POST', body: JSON.stringify(body) }),
-  getDiscussion: (id) => apiCall(`/mentor/discussions/${id}`),
-  replyDiscussion: (id, body) => apiCall(`/mentor/discussions/${id}/reply`, { method: 'POST', body: JSON.stringify(body) }),
+  getDiscussions: () => apiCall('/alumni/discussions'),
+  createDiscussion: (body) => apiCall('/alumni/discussions', { method: 'POST', body: JSON.stringify(body) }),
+  getDiscussion: (id) => apiCall(`/alumni/discussions/${id}`),
+  replyDiscussion: (id, body) => apiCall(`/alumni/discussions/${id}/reply`, { method: 'POST', body: JSON.stringify(body) }),
   // Study Materials
-  getStudyMaterials: () => apiCall('/mentor/study-materials'),
-  createStudyMaterial: (body) => apiCall('/mentor/study-materials', { method: 'POST', body: JSON.stringify(body) }),
-  updateStudyMaterial: (id, body) => apiCall(`/mentor/study-materials/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteStudyMaterial: (id) => apiCall(`/mentor/study-materials/${id}`, { method: 'DELETE' }),
+  getStudyMaterials: () => apiCall('/alumni/study-materials'),
+  createStudyMaterial: (body) => apiCall('/alumni/study-materials', { method: 'POST', body: JSON.stringify(body) }),
+  updateStudyMaterial: (id, body) => apiCall(`/alumni/study-materials/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteStudyMaterial: (id) => apiCall(`/alumni/study-materials/${id}`, { method: 'DELETE' }),
   // Doubts
-  getDoubts: () => apiCall('/mentor/doubts'),
-  getDoubt: (id) => apiCall(`/mentor/doubts/${id}`),
-  replyDoubt: (id, body) => apiCall(`/mentor/doubts/${id}/reply`, { method: 'POST', body: JSON.stringify(body) }),
-  resolveDoubt: (id) => apiCall(`/mentor/doubts/${id}/resolve`, { method: 'PUT' }),
+  getDoubts: () => apiCall('/alumni/doubts'),
+  getDoubt: (id) => apiCall(`/alumni/doubts/${id}`),
+  replyDoubt: (id, body) => apiCall(`/alumni/doubts/${id}/reply`, { method: 'POST', body: JSON.stringify(body) }),
+  resolveDoubt: (id) => apiCall(`/alumni/doubts/${id}/resolve`, { method: 'PUT' }),
 };
 
 // ──────────────── STUDENT API ────────────────

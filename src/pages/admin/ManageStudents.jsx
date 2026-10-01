@@ -93,9 +93,9 @@ const ManageStudents = () => {
           data={students}
           loading={loading}
           searchPlaceholder="Search students..."
-          storageKey="sowberry_students_cols"
+          storageKey="nextstep_students_cols"
           exportTitle="Students Report"
-          exportFileName="Sowberry_Students"
+          exportFileName="NextStep_Students"
           emptyIcon="ri-user-line"
           emptyMessage="No students found"
           headerActions={

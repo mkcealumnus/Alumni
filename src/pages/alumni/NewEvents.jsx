@@ -3,7 +3,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Loader from '@/components/ui/Loader';
 import Swal, { getSwalOpts } from '../../utils/swal';
 
-import { mentorApi } from '../../utils/api';
+import { alumniApi } from '../../utils/api';
 
 const NewEvents = () => {
   const [events, setEvents] = useState([]);
@@ -14,7 +14,7 @@ const NewEvents = () => {
 
   const fetchEvents = async () => {
     setLoading(true);
-    const res = await mentorApi.getEvents();
+    const res = await alumniApi.getEvents();
     if (res.success) setEvents(res.events || []);
     setLoading(false);
   };
@@ -26,7 +26,7 @@ const NewEvents = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = editing ? await mentorApi.updateEvent(editing.id, form) : await mentorApi.createEvent(form);
+    const res = editing ? await alumniApi.updateEvent(editing.id, form) : await alumniApi.createEvent(form);
     if (res.success) {
       Swal.fire({ ...getSwalOpts(), icon: 'success', title: editing ? 'Event Updated!' : 'Event Created!', timer: 1500, showConfirmButton: false});
       setShowModal(false); fetchEvents();
@@ -35,7 +35,7 @@ const NewEvents = () => {
 
   const handleDelete = (id) => {
     Swal.fire({ ...getSwalOpts(), title: 'Delete Event?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete'})
-      .then(async r => { if (r.isConfirmed) { await mentorApi.deleteEvent(id); fetchEvents(); } });
+      .then(async r => { if (r.isConfirmed) { await alumniApi.deleteEvent(id); fetchEvents(); } });
   };
 
   const typeColors = { webinar: 'bg-blue-100 text-blue-700', workshop: 'bg-purple-100 text-purple-700', 'live-session': 'bg-green-100 text-green-700', hackathon: 'bg-red-100 text-red-700', seminar: 'bg-amber-100 text-amber-700' };

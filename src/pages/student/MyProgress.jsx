@@ -71,9 +71,9 @@ const MyProgress = () => {
           data={progress}
           loading={loading}
           searchPlaceholder="Search courses..."
-          storageKey="sowberry_my_progress_cols"
+          storageKey="nextstep_my_progress_cols"
           exportTitle="My Progress Report"
-          exportFileName="Sowberry_My_Progress"
+          exportFileName="NextStep_My_Progress"
           emptyIcon="ri-line-chart-line"
           emptyMessage="No progress data yet"
         />

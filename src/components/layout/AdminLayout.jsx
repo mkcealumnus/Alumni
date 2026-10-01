@@ -122,7 +122,7 @@ const AdminLayout = ({ children, pageTitle }) => {
             <i className="ri-seedling-fill text-primary-light text-lg"></i>
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-[15px] text-white leading-tight">Sowberry</span>
+            <span className="font-bold text-[15px] text-white leading-tight">NextStep</span>
             <span className="text-[10px] font-medium tracking-wider text-gray-500 uppercase">ADMIN</span>
           </div>
         </div>

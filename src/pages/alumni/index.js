@@ -1,7 +1,7 @@
 export { default as Doubts } from './Doubts';
-export { default as MentorDashboard } from './MentorDashboard';
-export { default as MentorDiscussion } from './MentorDiscussion';
-export { default as MentorProfile } from './MentorProfile';
+export { default as AlumniDashboard } from './AlumniDashboard';
+export { default as AlumniDiscussion } from './AlumniDiscussion';
+export { default as AlumniProfile } from './AlumniProfile';
 export { default as NewAptitude } from './NewAptitude';
 export { default as NewEvents } from './NewEvents';
 

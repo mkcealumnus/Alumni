@@ -3,7 +3,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Loader from '@/components/ui/Loader';
 import Swal, { getSwalOpts } from '../../utils/swal';
 
-import { mentorApi } from '../../utils/api';
+import { alumniApi } from '../../utils/api';
 
 const NewAptitude = () => {
   const [tests, setTests] = useState([]);
@@ -13,7 +13,7 @@ const NewAptitude = () => {
 
   const fetchTests = async () => {
     setLoading(true);
-    const res = await mentorApi.getAptitudeTests();
+    const res = await alumniApi.getAptitudeTests();
     if (res.success) setTests(res.tests || []);
     setLoading(false);
   };
@@ -38,7 +38,7 @@ const NewAptitude = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = { ...form, totalQuestions: form.questions.length };
-    const res = await mentorApi.createAptitudeTest(body);
+    const res = await alumniApi.createAptitudeTest(body);
     if (res.success) {
       Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Test Created!', timer: 1500, showConfirmButton: false});
       setShowModal(false); fetchTests();
@@ -47,7 +47,7 @@ const NewAptitude = () => {
 
   const handleDelete = (id) => {
     Swal.fire({ ...getSwalOpts(), title: 'Delete Test?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete'})
-      .then(async r => { if (r.isConfirmed) { await mentorApi.deleteAptitudeTest(id); fetchTests(); } });
+      .then(async r => { if (r.isConfirmed) { await alumniApi.deleteAptitudeTest(id); fetchTests(); } });
   };
 
   return (
