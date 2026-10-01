@@ -3,6 +3,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import DataTable from '@/components/ui/DataTable';
 import Swal, { getSwalOpts } from '../../utils/swal';
 import { adminApi, getImageUrl } from '../../utils/api';
+import { Plus, Pencil, Trash2, X } from 'lucide-react';
 
 const ManageAlumnis = () => {
   const [alumnis, setAlumnis] = useState([]);
@@ -38,7 +39,7 @@ const ManageAlumnis = () => {
   };
 
   const handleDelete = (id, name) => {
-    Swal.fire({ ...getSwalOpts(), title: 'Delete Alumni?', text: `Remove ${name}? This cannot be undone.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
+    Swal.fire({ ...getSwalOpts(), title: 'Delete Alumni?', text: `Remove ${name}? This cannot be undone.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#B91C1C', confirmButtonText: 'Delete' })
       .then(async (r) => { if (r.isConfirmed) { const res = await adminApi.deleteAlumni(id); if (res.success) { Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Deleted!', timer: 1500, showConfirmButton: false }); fetchAlumnis(); } } });
   };
 
@@ -51,10 +52,10 @@ const ManageAlumnis = () => {
     { key: 'id', label: 'ID', sortable: true, visible: false },
     { key: 'fullName', label: 'Name', sortable: true, render: (_, m) => (
       <div className="flex items-center gap-2.5">
-        <img src={m.profileImage ? getImageUrl(m.profileImage) : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.fullName)}&size=36&background=c96442&color=fff`} className="w-8 h-8 rounded-lg object-cover" alt="" />
+        <img src={m.profileImage ? getImageUrl(m.profileImage) : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.fullName)}&size=36&background=12355B&color=fff`} className="w-8 h-8 rounded-lg object-cover" alt="" />
         <div>
-          <span className="font-medium text-gray-800 dark-theme:text-gray-200">{m.fullName}</span>
-          <p className="text-[11px] text-gray-400">@{m.username}</p>
+          <span className="font-medium" style={{ color: 'var(--color-text)' }}>{m.fullName}</span>
+          <p className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>@{m.username}</p>
         </div>
       </div>
     ), exportValue: (m) => m.fullName },
@@ -62,61 +63,83 @@ const ManageAlumnis = () => {
     { key: 'email', label: 'Email', sortable: true },
     { key: 'phone', label: 'Phone', sortable: false, render: (v) => v || '—' },
     { key: 'isActive', label: 'Status', sortable: true, render: (_, m) => (
-      <button onClick={(e) => { e.stopPropagation(); handleToggleStatus(m); }} className={`px-2.5 py-1 rounded-full text-xs font-medium ${m.isActive ? 'bg-green-100 text-green-700 dark-theme:bg-green-900/30 dark-theme:text-green-400' : 'bg-red-100 text-red-700 dark-theme:bg-red-900/30 dark-theme:text-red-400'}`}>
+      <button onClick={(e) => { e.stopPropagation(); handleToggleStatus(m); }} className="px-2.5 py-1 rounded-md text-xs font-medium" style={{ background: m.isActive ? 'var(--color-success-bg)' : 'var(--color-danger-bg)', color: m.isActive ? 'var(--color-success)' : 'var(--color-danger)' }}>
         {m.isActive ? 'Active' : 'Inactive'}
       </button>
     ), exportValue: (m) => m.isActive ? 'Active' : 'Inactive' },
     { key: 'createdAt', label: 'Joined', sortable: true, render: (v) => new Date(v).toLocaleDateString(), exportValue: (m) => new Date(m.createdAt).toLocaleDateString() },
     { key: 'actions', label: 'Actions', render: (_, m) => (
       <div className="flex items-center justify-end gap-2">
-        <button onClick={(e) => { e.stopPropagation(); openEdit(m); }} className="w-8 h-8 rounded-lg bg-blue-50 dark-theme:bg-blue-900/20 text-blue-500 flex items-center justify-center hover:bg-blue-100 transition-colors" title="Edit"><i className="ri-edit-line text-sm"></i></button>
-        <button onClick={(e) => { e.stopPropagation(); handleDelete(m.id, m.fullName); }} className="w-8 h-8 rounded-lg bg-red-50 dark-theme:bg-red-900/20 text-red-500 flex items-center justify-center hover:bg-red-100 transition-colors" title="Delete"><i className="ri-delete-bin-line text-sm"></i></button>
+        <button onClick={(e) => { e.stopPropagation(); openEdit(m); }} className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors" style={{ background: 'var(--color-info-bg)', color: 'var(--color-info)' }} title="Edit"><Pencil size={14} /></button>
+        <button onClick={(e) => { e.stopPropagation(); handleDelete(m.id, m.fullName); }} className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors" style={{ background: 'var(--color-danger-bg)', color: 'var(--color-danger)' }} title="Delete"><Trash2 size={14} /></button>
       </div>
     ) },
   ];
 
   return (
-    <AdminLayout pageTitle="Manage Alumnis">
+    <AdminLayout pageTitle="Manage Alumni">
       <div className="space-y-5">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Manage Alumnis</h1>
-          <p className="text-sm text-gray-500 dark-theme:text-gray-400 mt-1">{alumnis.length} total alumnis</p>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text)' }}>Manage Alumni</h1>
+          <p className="text-[14px] mt-1" style={{ color: 'var(--color-text-muted)' }}>{alumnis.length} total alumni</p>
         </div>
 
         <DataTable
           columns={columns}
           data={alumnis}
           loading={loading}
-          searchPlaceholder="Search alumnis..."
+          searchPlaceholder="Search alumni..."
           storageKey="nextstep_alumnis_cols"
-          exportTitle="Alumnis Report"
-          exportFileName="NextStep_Alumnis"
-          emptyIcon="ri-team-line"
-          emptyMessage="No alumnis found"
+          exportTitle="Alumni Report"
+          exportFileName="MKCE_Alumni"
+          emptyMessage="No alumni found"
           headerActions={
-            <button onClick={openCreate} className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors flex items-center gap-2">
-              <i className="ri-add-line"></i> Add Alumni
+            <button
+              onClick={openCreate}
+              className="px-4 py-2 rounded-lg text-white text-sm font-medium flex items-center gap-2 transition-colors"
+              style={{ background: 'var(--color-primary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-primary-hover)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-primary)'}
+            >
+              <Plus size={16} /> Add Alumni
             </button>
           }
         />
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 w-full max-w-md mx-4 border border-sand dark-theme:border-gray-800">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 animate-fade-in">
+          <div className="w-full max-w-md mx-4 p-6 rounded-xl" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)' }}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">{editAlumni ? 'Edit Alumni' : 'Add Alumni'}</h3>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-sand dark-theme:hover:bg-gray-800 flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
+              <h3 className="text-[16px] font-semibold" style={{ color: 'var(--color-text)' }}>{editAlumni ? 'Edit Alumni' : 'Add Alumni'}</h3>
+              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors" onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-surface-muted)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+                <X size={18} style={{ color: 'var(--color-text-muted)' }} />
+              </button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
-              <input type="email" placeholder="Email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
-              <input type="text" placeholder="Username" required value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
-              <input type="text" placeholder="Full Name" required value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
-              <input type="tel" placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
-              <input type="password" placeholder={editAlumni ? 'New Password (leave blank to keep)' : 'Password'} required={!editAlumni} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
+              {[
+                { type: 'email', placeholder: 'Email', required: true, key: 'email' },
+                { type: 'text', placeholder: 'Username', required: true, key: 'username' },
+                { type: 'text', placeholder: 'Full Name', required: true, key: 'fullName' },
+                { type: 'tel', placeholder: 'Phone', required: false, key: 'phone' },
+                { type: 'password', placeholder: editAlumni ? 'New Password (leave blank to keep)' : 'Password', required: !editAlumni, key: 'password' },
+              ].map(input => (
+                <input
+                  key={input.key}
+                  type={input.type}
+                  placeholder={input.placeholder}
+                  required={input.required}
+                  value={form[input.key]}
+                  onChange={(e) => setForm({ ...form, [input.key]: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg text-sm outline-none transition-colors"
+                  style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)', color: 'var(--color-text)' }}
+                  onFocus={(e) => e.target.style.borderColor = 'var(--color-secondary)'}
+                  onBlur={(e) => e.target.style.borderColor = 'var(--color-border-strong)'}
+                />
+              ))}
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand dark-theme:border-gray-700 text-sm font-medium text-gray-600 dark-theme:text-gray-400 hover:bg-cream dark-theme:hover:bg-gray-800">Cancel</button>
-                <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">{editAlumni ? 'Update' : 'Create'}</button>
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors" style={{ border: '1px solid var(--color-border-strong)', color: 'var(--color-text-secondary)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-surface-muted)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>Cancel</button>
+                <button type="submit" className="flex-1 py-2.5 rounded-lg text-sm font-medium text-white transition-colors" style={{ background: 'var(--color-primary)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-primary-hover)'} onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-primary)'}>{editAlumni ? 'Update' : 'Create'}</button>
               </div>
             </form>
           </div>

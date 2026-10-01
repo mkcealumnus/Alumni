@@ -22,44 +22,69 @@ const StudentOneOnOneMentorship = ({ role }) => {
             <input 
               type="text" 
               placeholder="Search mentors by name, role, or skill..." 
-              className="w-full pl-10 pr-4 py-3 bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-800 rounded-xl focus:ring-2 focus:ring-primary focus:outline-none text-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-lg border text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
             />
           </div>
-          <button className="w-full md:w-auto px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-xl font-medium transition-colors flex items-center justify-center gap-2">
-            <UserPlus className="h-5 w-5" />
+          <button 
+            className="w-full md:w-auto px-5 py-2.5 rounded-lg font-medium text-white transition-colors flex items-center justify-center gap-2 text-sm shadow-sm"
+            style={{ background: 'var(--color-primary)' }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-primary-hover)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-primary)'}
+          >
+            <UserPlus className="h-4 w-4" />
             Find a Mentor
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {mentors.map((mentor, i) => (
-            <div key={i} className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 shadow-sm flex flex-col items-center text-center">
-              <div className="w-20 h-20 bg-sand dark-theme:bg-gray-700 rounded-full mb-4 flex items-center justify-center text-2xl font-bold text-gray-500 dark-theme:text-gray-400">
+            <div 
+              key={i} 
+              className="rounded-xl p-6 border shadow-sm flex flex-col items-center text-center transition-all"
+              style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}
+            >
+              <div 
+                className="w-16 h-16 rounded-full mb-4 flex items-center justify-center text-xl font-bold border"
+                style={{ background: 'var(--color-surface-muted)', color: 'var(--color-primary)', borderColor: 'var(--color-border)' }}
+              >
                 {mentor.name.charAt(0)}
               </div>
-              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-1">{mentor.name}</h3>
-              <p className="text-sm text-gray-500 dark-theme:text-gray-400 mb-3">{mentor.role}</p>
+              <h3 className="text-base font-bold mb-1" style={{ color: 'var(--color-text)' }}>{mentor.name}</h3>
+              <p className="text-xs mb-3 font-medium" style={{ color: 'var(--color-text-secondary)' }}>{mentor.role}</p>
               
-              <div className="flex items-center gap-1 text-sm font-medium text-amber-500 mb-4">
-                <Star className="h-4 w-4 fill-current" />
+              <div className="flex items-center gap-1 text-xs font-semibold text-amber-600 mb-4">
+                <Star className="h-3.5 w-3.5 fill-current text-amber-500" />
                 <span>{mentor.rating}</span>
-                <span className="text-gray-400 dark-theme:text-gray-500 font-normal">({mentor.reviews})</span>
+                <span className="font-normal" style={{ color: 'var(--color-text-muted)' }}>({mentor.reviews})</span>
               </div>
 
-              <div className="flex flex-wrap gap-2 justify-center mb-6">
+              <div className="flex flex-wrap gap-1.5 justify-center mb-6">
                 {mentor.skills.map((skill, j) => (
-                  <span key={j} className="px-2 py-1 bg-sand dark-theme:bg-gray-700 text-gray-600 dark-theme:text-gray-300 text-xs rounded-md">
+                  <span 
+                    key={j} 
+                    className="px-2 py-0.5 text-xs rounded-md font-medium border"
+                    style={{ background: 'var(--color-surface-muted)', color: 'var(--color-text-secondary)', borderColor: 'var(--color-border)' }}
+                  >
                     {skill}
                   </span>
                 ))}
               </div>
 
               <div className="w-full grid grid-cols-2 gap-2 mt-auto">
-                <button className="py-2 px-3 border border-sand dark-theme:border-gray-700 rounded-lg text-sm font-medium hover:bg-cream dark-theme:hover:bg-gray-700 transition-colors flex items-center justify-center">
+                <button 
+                  className="py-2 px-3 border rounded-lg text-sm font-medium transition-colors flex items-center justify-center"
+                  style={{ background: 'var(--color-surface-muted)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
+                >
                   <MessageSquare className="h-4 w-4" />
                 </button>
-                <button className="py-2 px-3 bg-gray-900 dark-theme:bg-white text-white dark-theme:text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-800 dark-theme:hover:bg-sand transition-colors flex items-center justify-center gap-2">
-                  <Calendar className="h-4 w-4" /> Book
+                <button 
+                  className="py-2 px-3 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                  style={{ background: 'var(--color-primary)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-primary-hover)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'var(--color-primary)'}
+                >
+                  <Calendar className="h-3.5 w-3.5" /> Book
                 </button>
               </div>
             </div>
@@ -71,3 +96,4 @@ const StudentOneOnOneMentorship = ({ role }) => {
 };
 
 export default StudentOneOnOneMentorship;
+

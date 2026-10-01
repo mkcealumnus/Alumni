@@ -1,4 +1,9 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import {
+  Search, Columns3, Copy, FileText, FileSpreadsheet,
+  ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight,
+  ArrowUp, ArrowDown, ArrowUpDown, Check, Database
+} from 'lucide-react';
 import { exportToPDF, exportToExcel } from '@/utils/exportData';
 import Swal, { getSwalOpts } from '@/utils/swal';
 import Loader from './Loader';
@@ -14,7 +19,7 @@ const DataTable = ({
   title,
   exportTitle,
   exportFileName,
-  emptyIcon = 'ri-database-2-line',
+  emptyIcon,
   emptyMessage = 'No data found',
   searchPlaceholder = 'Search...',
   storageKey,
@@ -123,7 +128,7 @@ const DataTable = ({
       const val = getRawValue(row, c);
       return val !== undefined && val !== null ? val : '';
     }));
-    return { title: exportTitle || title || 'Export', columns: cols, rows, fileName: exportFileName || 'NextStep_Export' };
+    return { title: exportTitle || title || 'Export', columns: cols, rows, fileName: exportFileName || 'MKCE_Alumni_Export' };
   };
 
   const handleCopy = () => {
@@ -135,6 +140,12 @@ const DataTable = ({
     });
   };
 
+  const btnStyle = {
+    background: 'var(--color-surface)',
+    border: '1px solid var(--color-border)',
+    color: 'var(--color-text-secondary)',
+  };
+
   return (
     <div className="space-y-4">
       {/* Toolbar */}
@@ -143,9 +154,19 @@ const DataTable = ({
           {/* Search */}
           {searchable && (
             <div className="relative">
-              <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-              <input type="text" placeholder={searchPlaceholder} value={search} onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 pr-4 py-2 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm w-52" />
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--color-text-muted)' }} />
+              <input
+                type="text"
+                placeholder={searchPlaceholder}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9 pr-4 py-2 rounded-lg text-sm w-56 outline-none transition-colors"
+                style={{
+                  ...btnStyle,
+                }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--color-secondary)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--color-border)'}
+              />
             </div>
           )}
 
@@ -157,22 +178,45 @@ const DataTable = ({
           {/* Column visibility */}
           {columnToggle && (
             <div className="relative" ref={colMenuRef}>
-              <button onClick={() => setShowColMenu(!showColMenu)}
-                className="px-3 py-2 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 text-sm text-gray-600 dark-theme:text-gray-300 hover:border-primary transition-colors flex items-center gap-1.5">
-                <i className="ri-layout-column-line text-sm"></i> Columns <i className="ri-arrow-down-s-line text-xs"></i>
+              <button
+                onClick={() => setShowColMenu(!showColMenu)}
+                className="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors"
+                style={btnStyle}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--color-border-strong)'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--color-border)'}
+              >
+                <Columns3 size={15} /> Columns
               </button>
               {showColMenu && (
-                <div className="absolute right-0 top-full mt-1 w-52 bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 rounded-xl shadow-xl z-50 py-1 max-h-72 overflow-y-auto">
+                <div
+                  className="absolute right-0 top-full mt-1 w-52 rounded-xl z-50 py-1 max-h-72 overflow-y-auto animate-fade-in"
+                  style={{
+                    background: 'var(--color-surface)',
+                    border: '1px solid var(--color-border)',
+                    boxShadow: 'var(--shadow-lg)',
+                  }}
+                >
                   {columns.map(col => (
-                    <button key={col.key} onClick={() => toggleCol(col.key)}
-                      className="w-full flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark-theme:text-gray-300 hover:bg-cream/50 dark-theme:hover:bg-gray-800/50 transition-colors">
+                    <button
+                      key={col.key}
+                      onClick={() => toggleCol(col.key)}
+                      className="w-full flex items-center justify-between px-4 py-2 text-sm transition-colors"
+                      style={{ color: 'var(--color-text-secondary)' }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-surface-muted)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
                       <span>{col.label}</span>
-                      {isColVisible(col.key) && <i className="ri-check-line text-primary font-bold"></i>}
+                      {isColVisible(col.key) && <Check size={15} style={{ color: 'var(--color-secondary)' }} />}
                     </button>
                   ))}
-                  <div className="border-t border-sand dark-theme:border-gray-700 mt-1 pt-1">
-                    <button onClick={restoreVisibility}
-                      className="w-full px-4 py-2 text-sm text-primary hover:bg-cream/50 dark-theme:hover:bg-gray-800/50 transition-colors text-left font-medium">
+                  <div style={{ borderTop: '1px solid var(--color-border)' }} className="mt-1 pt-1">
+                    <button
+                      onClick={restoreVisibility}
+                      className="w-full px-4 py-2 text-sm font-medium text-left transition-colors"
+                      style={{ color: 'var(--color-secondary)' }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-surface-muted)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
                       Restore visibility
                     </button>
                   </div>
@@ -183,29 +227,52 @@ const DataTable = ({
 
           {/* Copy */}
           {copyable && (
-            <button onClick={handleCopy}
-              className="px-3 py-2 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 text-sm text-gray-600 dark-theme:text-gray-300 hover:border-primary transition-colors flex items-center gap-1.5">
-              <i className="ri-file-copy-line text-sm"></i> Copy
+            <button
+              onClick={handleCopy}
+              className="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors"
+              style={btnStyle}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--color-border-strong)'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--color-border)'}
+            >
+              <Copy size={15} /> Copy
             </button>
           )}
 
           {/* Export */}
           {exportable && (
-            <div className="flex items-center gap-0.5 bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 rounded-xl px-1">
-              <button onClick={() => exportToPDF(getExportData())} className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-500 hover:bg-red-50 dark-theme:hover:bg-red-900/20 transition-colors flex items-center gap-1" title="Download PDF">
-                <i className="ri-file-pdf-2-line text-sm"></i> PDF
+            <div className="flex items-center gap-0.5 px-1 rounded-lg" style={btnStyle}>
+              <button
+                onClick={() => exportToPDF(getExportData())}
+                className="px-2.5 py-1.5 rounded-md text-xs font-medium flex items-center gap-1 transition-colors"
+                style={{ color: 'var(--color-danger)' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-danger-bg)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                title="Download PDF"
+              >
+                <FileText size={14} /> PDF
               </button>
-              <div className="w-px h-4 bg-sand dark-theme:bg-gray-700"></div>
-              <button onClick={() => exportToExcel(getExportData())} className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-green-600 hover:bg-green-50 dark-theme:hover:bg-green-900/20 transition-colors flex items-center gap-1" title="Download Excel">
-                <i className="ri-file-excel-2-line text-sm"></i> Excel
+              <div className="w-px h-4" style={{ background: 'var(--color-border)' }} />
+              <button
+                onClick={() => exportToExcel(getExportData())}
+                className="px-2.5 py-1.5 rounded-md text-xs font-medium flex items-center gap-1 transition-colors"
+                style={{ color: 'var(--color-success)' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-success-bg)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                title="Download Excel"
+              >
+                <FileSpreadsheet size={14} /> Excel
               </button>
             </div>
           )}
 
           {/* Page Size */}
           {paginated && (
-            <select value={pageSize} onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
-              className="px-2 py-2 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 text-sm text-gray-600 dark-theme:text-gray-300 outline-none">
+            <select
+              value={pageSize}
+              onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+              className="px-2 py-2 rounded-lg text-sm outline-none"
+              style={btnStyle}
+            >
               {[10, 25, 50, 100].map(n => <option key={n} value={n}>{n} rows</option>)}
             </select>
           )}
@@ -216,44 +283,63 @@ const DataTable = ({
       </div>
 
       {/* Table */}
-      <div className="bg-white dark-theme:bg-gray-900 rounded-2xl border border-sand dark-theme:border-gray-800 overflow-hidden">
+      <div
+        className="rounded-xl overflow-hidden"
+        style={{
+          background: 'var(--color-surface)',
+          border: '1px solid var(--color-border)',
+        }}
+      >
         {loading ? (
           <Loader text="Loading table data..." />
         ) : pageData.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
-            <i className={`${emptyIcon} text-4xl mb-3 block`}></i>
-            <p>{search ? 'No matching results' : emptyMessage}</p>
+          <div className="text-center py-20" style={{ color: 'var(--color-text-muted)' }}>
+            <Database size={40} className="mx-auto mb-3" style={{ color: 'var(--color-border-strong)' }} />
+            <p className="text-sm">{search ? 'No matching results' : emptyMessage}</p>
           </div>
         ) : (
-
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-sand dark-theme:border-gray-800 bg-cream/50 dark-theme:bg-gray-800/50">
+                <tr style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-background)' }}>
                   {columns.filter(c => isColVisible(c.key)).map(col => (
-                    <th key={col.key}
+                    <th
+                      key={col.key}
                       onClick={col.sortable ? () => handleSort(col.key) : undefined}
-                      className={`text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap select-none ${col.sortable ? 'cursor-pointer hover:text-primary transition-colors' : ''} ${col.key === 'actions' ? 'text-right' : ''}`}>
+                      className={`text-left px-5 py-3 text-[12px] font-semibold uppercase tracking-wider whitespace-nowrap select-none ${col.sortable ? 'cursor-pointer' : ''} ${col.key === 'actions' ? 'text-right' : ''}`}
+                      style={{ color: 'var(--color-text-muted)' }}
+                    >
                       <span className="inline-flex items-center gap-1">
                         {col.label}
                         {col.sortable && sortKey === col.key && (
-                          <i className={`ri-arrow-${sortDir === 'asc' ? 'up' : 'down'}-s-line text-primary`}></i>
+                          sortDir === 'asc'
+                            ? <ArrowUp size={12} style={{ color: 'var(--color-secondary)' }} />
+                            : <ArrowDown size={12} style={{ color: 'var(--color-secondary)' }} />
                         )}
                         {col.sortable && sortKey !== col.key && (
-                          <i className="ri-arrow-up-down-line text-gray-300 dark-theme:text-gray-600 text-[10px]"></i>
+                          <ArrowUpDown size={11} style={{ color: 'var(--color-border-strong)' }} />
                         )}
                       </span>
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sand dark-theme:divide-gray-800">
+              <tbody>
                 {pageData.map((row, idx) => (
-                  <tr key={row.id || row._id || idx}
+                  <tr
+                    key={row.id || row._id || idx}
                     onClick={onRowClick ? () => onRowClick(row) : undefined}
-                    className={`hover:bg-cream/30 dark-theme:hover:bg-gray-800/30 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}>
+                    className={`transition-colors ${onRowClick ? 'cursor-pointer' : ''}`}
+                    style={{ borderBottom: '1px solid var(--color-border)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-background)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
                     {columns.filter(c => isColVisible(c.key)).map(col => (
-                      <td key={col.key} className={`px-5 py-3 text-sm whitespace-nowrap ${col.key === 'actions' ? 'text-right' : 'text-gray-600 dark-theme:text-gray-400'}`}>
+                      <td
+                        key={col.key}
+                        className={`px-5 py-3.5 text-sm whitespace-nowrap ${col.key === 'actions' ? 'text-right' : ''}`}
+                        style={{ color: col.key === 'actions' ? undefined : 'var(--color-text-secondary)' }}
+                      >
                         {col.render ? col.render(row[col.key], row) : (row[col.key] ?? '—')}
                       </td>
                     ))}
@@ -266,18 +352,35 @@ const DataTable = ({
 
         {/* Pagination */}
         {paginated && totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3 border-t border-sand dark-theme:border-gray-800">
-            <p className="text-sm text-gray-500 dark-theme:text-gray-400">
+          <div
+            className="flex items-center justify-between px-5 py-3"
+            style={{ borderTop: '1px solid var(--color-border)' }}
+          >
+            <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
               {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, sorted.length)} of {sorted.length}
             </p>
             <div className="flex items-center gap-1">
-              <button onClick={() => setPage(1)} disabled={page === 1}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-xs text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800 disabled:opacity-30 transition-colors">
-                <i className="ri-skip-back-mini-line"></i>
+              <button
+                onClick={() => setPage(1)}
+                disabled={page === 1}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors disabled:opacity-30"
+                style={{ color: 'var(--color-text-muted)' }}
+                onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = 'var(--color-surface-muted)')}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                aria-label="First page"
+              >
+                <ChevronsLeft size={16} />
               </button>
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-xs text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800 disabled:opacity-30 transition-colors">
-                <i className="ri-arrow-left-s-line"></i>
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors disabled:opacity-30"
+                style={{ color: 'var(--color-text-muted)' }}
+                onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = 'var(--color-surface-muted)')}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                aria-label="Previous page"
+              >
+                <ChevronLeft size={16} />
               </button>
               {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                 let pn;
@@ -286,19 +389,46 @@ const DataTable = ({
                 else if (page >= totalPages - 2) pn = totalPages - 4 + i;
                 else pn = page - 2 + i;
                 return (
-                  <button key={pn} onClick={() => setPage(pn)}
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-medium transition-colors ${page === pn ? 'bg-primary text-white' : 'text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800'}`}>
+                  <button
+                    key={pn}
+                    onClick={() => setPage(pn)}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-colors"
+                    style={{
+                      background: page === pn ? 'var(--color-primary)' : 'transparent',
+                      color: page === pn ? 'white' : 'var(--color-text-muted)',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (page !== pn) e.currentTarget.style.background = 'var(--color-surface-muted)';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (page !== pn) e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
                     {pn}
                   </button>
                 );
               })}
-              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-xs text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800 disabled:opacity-30 transition-colors">
-                <i className="ri-arrow-right-s-line"></i>
+              <button
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors disabled:opacity-30"
+                style={{ color: 'var(--color-text-muted)' }}
+                onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = 'var(--color-surface-muted)')}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                aria-label="Next page"
+              >
+                <ChevronRight size={16} />
               </button>
-              <button onClick={() => setPage(totalPages)} disabled={page === totalPages}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-xs text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800 disabled:opacity-30 transition-colors">
-                <i className="ri-skip-forward-mini-line"></i>
+              <button
+                onClick={() => setPage(totalPages)}
+                disabled={page === totalPages}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors disabled:opacity-30"
+                style={{ color: 'var(--color-text-muted)' }}
+                onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = 'var(--color-surface-muted)')}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                aria-label="Last page"
+              >
+                <ChevronsRight size={16} />
               </button>
             </div>
           </div>

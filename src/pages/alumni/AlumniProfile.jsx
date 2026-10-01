@@ -5,6 +5,22 @@ import Swal, { getSwalOpts } from '../../utils/swal';
 
 import { authApi, getImageUrl } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+import { User, Link2, Lock, Camera, Code, Code2 } from 'lucide-react';
+
+const GithubIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const LinkedinIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect x="2" y="9" width="4" height="12" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
 
 const AlumniProfile = () => {
   const { user, updateUser } = useAuth();
@@ -100,13 +116,15 @@ const AlumniProfile = () => {
   };
 
   const tabs = [
-    { id: 'personal', label: 'Personal Info', icon: 'ri-user-line' },
-    { id: 'social', label: 'Social Links', icon: 'ri-links-line' },
-    { id: 'security', label: 'Security', icon: 'ri-lock-line' },
+    { id: 'personal', label: 'Personal Info', Icon: User },
+    { id: 'social', label: 'Social Links', Icon: Link2 },
+    { id: 'security', label: 'Security', Icon: Lock },
   ];
 
-  const inputClass = 'w-full px-3 py-2.5 rounded-lg bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-[13px] text-gray-700 dark-theme:text-gray-200 transition-colors';
-  const labelClass = 'block text-[12px] font-semibold text-gray-500 dark-theme:text-gray-400 uppercase tracking-wide mb-1.5';
+  const inputClass = 'w-full px-3.5 py-2.5 rounded-lg border outline-none text-xs font-medium transition-colors focus:border-[var(--color-primary)]';
+  const inputStyle = { background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' };
+  const labelClass = 'block text-[11px] font-semibold uppercase tracking-wider mb-1.5';
+  const labelStyle = { color: 'var(--color-text-muted)' };
 
   if (fetching) {
     return (
@@ -116,77 +134,83 @@ const AlumniProfile = () => {
     );
   }
 
-
   return (
     <DashboardLayout pageTitle="My Profile" role="alumni">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Profile Header */}
-        <div className="bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 p-6">
+        <div className="rounded-xl border p-6" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <div className="flex flex-col sm:flex-row items-center gap-5">
             <div className="relative group">
               <img
-                src={profile.profileImage ? getImageUrl(profile.profileImage) : `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.fullName || 'Alumni')}&size=96&background=c96442&color=fff&bold=true`}
+                src={profile.profileImage ? getImageUrl(profile.profileImage) : `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.fullName || 'Alumni')}&size=96&background=12355B&color=fff&bold=true`}
                 alt="Profile"
-                className="w-24 h-24 rounded-xl object-cover border-2 border-sand dark-theme:border-gray-700"
+                className="w-24 h-24 rounded-xl object-cover border"
+                style={{ borderColor: 'var(--color-border)' }}
               />
-              <label className="absolute inset-0 bg-black/40 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                <i className="ri-camera-line text-white text-xl"></i>
+              <label className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white">
+                <Camera className="w-5 h-5" />
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
               </label>
             </div>
             <div className="text-center sm:text-left">
-              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">{profile.fullName || 'Alumni'}</h2>
-              <p className="text-sm text-gray-500 dark-theme:text-gray-400">{profile.email}</p>
-              <span className="inline-block mt-1.5 px-2.5 py-0.5 bg-blue-500/10 text-blue-600 dark-theme:text-blue-400 text-[11px] font-semibold rounded-full uppercase">Alumni</span>
+              <h2 className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>{profile.fullName || 'Alumni'}</h2>
+              <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{profile.email}</p>
+              <span className="inline-block mt-2 px-2.5 py-0.5 text-[11px] font-semibold rounded-full uppercase" style={{ background: 'rgba(18,53,91,0.08)', color: 'var(--color-primary)' }}>
+                Alumni Member
+              </span>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 p-1.5">
-          {tabs.map(tab => (
+        <div className="flex gap-1 rounded-xl border p-1.5" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+          {tabs.map(({ id, label, Icon }) => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
-                activeTab === tab.id
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'text-gray-500 dark-theme:text-gray-400 hover:bg-cream dark-theme:hover:bg-gray-800'
+              key={id}
+              onClick={() => setActiveTab(id)}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold transition-all ${
+                activeTab === id
+                  ? 'text-white shadow-xs'
+                  : 'hover:opacity-80'
               }`}
+              style={{
+                background: activeTab === id ? 'var(--color-primary)' : 'transparent',
+                color: activeTab === id ? '#ffffff' : 'var(--color-text-muted)'
+              }}
             >
-              <i className={tab.icon}></i>
-              <span className="hidden sm:inline">{tab.label}</span>
+              <Icon className="w-4 h-4" />
+              <span className="hidden sm:inline">{label}</span>
             </button>
           ))}
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 p-6">
+        <div className="rounded-xl border p-6" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           {activeTab === 'personal' && (
             <form onSubmit={handleProfileUpdate} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className={labelClass}>Full Name</label>
-                  <input type="text" className={inputClass} value={profile.fullName} onChange={e => setProfile(p => ({ ...p, fullName: e.target.value }))} />
+                  <label className={labelClass} style={labelStyle}>Full Name</label>
+                  <input type="text" className={inputClass} style={inputStyle} value={profile.fullName} onChange={e => setProfile(p => ({ ...p, fullName: e.target.value }))} />
                 </div>
                 <div>
-                  <label className={labelClass}>Email</label>
-                  <input type="email" className={`${inputClass} opacity-60 cursor-not-allowed`} value={profile.email} disabled />
+                  <label className={labelClass} style={labelStyle}>Email</label>
+                  <input type="email" className={`${inputClass} opacity-60 cursor-not-allowed`} style={inputStyle} value={profile.email} disabled />
                 </div>
                 <div>
-                  <label className={labelClass}>Username</label>
-                  <input type="text" className={`${inputClass} opacity-60 cursor-not-allowed`} value={profile.username} disabled />
+                  <label className={labelClass} style={labelStyle}>Username</label>
+                  <input type="text" className={`${inputClass} opacity-60 cursor-not-allowed`} style={inputStyle} value={profile.username} disabled />
                 </div>
                 <div>
-                  <label className={labelClass}>Phone</label>
+                  <label className={labelClass} style={labelStyle}>Phone</label>
                   <div className="flex gap-2">
-                    <input type="text" className={`${inputClass} w-20`} value={profile.countryCode} onChange={e => setProfile(p => ({ ...p, countryCode: e.target.value }))} />
-                    <input type="text" className={inputClass} value={profile.phone} onChange={e => setProfile(p => ({ ...p, phone: e.target.value }))} />
+                    <input type="text" className={`${inputClass} w-20`} style={inputStyle} value={profile.countryCode} onChange={e => setProfile(p => ({ ...p, countryCode: e.target.value }))} />
+                    <input type="text" className={inputClass} style={inputStyle} value={profile.phone} onChange={e => setProfile(p => ({ ...p, phone: e.target.value }))} />
                   </div>
                 </div>
                 <div>
-                  <label className={labelClass}>Gender</label>
-                  <select className={inputClass} value={profile.gender} onChange={e => setProfile(p => ({ ...p, gender: e.target.value }))}>
+                  <label className={labelClass} style={labelStyle}>Gender</label>
+                  <select className={inputClass} style={inputStyle} value={profile.gender} onChange={e => setProfile(p => ({ ...p, gender: e.target.value }))}>
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -194,28 +218,28 @@ const AlumniProfile = () => {
                   </select>
                 </div>
                 <div>
-                  <label className={labelClass}>Date of Birth</label>
-                  <input type="date" className={inputClass} value={profile.dateOfBirth} onChange={e => setProfile(p => ({ ...p, dateOfBirth: e.target.value }))} />
+                  <label className={labelClass} style={labelStyle}>Date of Birth</label>
+                  <input type="date" className={inputClass} style={inputStyle} value={profile.dateOfBirth} onChange={e => setProfile(p => ({ ...p, dateOfBirth: e.target.value }))} />
                 </div>
                 <div>
-                  <label className={labelClass}>College</label>
-                  <input type="text" className={inputClass} value={profile.college} onChange={e => setProfile(p => ({ ...p, college: e.target.value }))} />
+                  <label className={labelClass} style={labelStyle}>College</label>
+                  <input type="text" className={inputClass} style={inputStyle} value={profile.college} onChange={e => setProfile(p => ({ ...p, college: e.target.value }))} />
                 </div>
                 <div>
-                  <label className={labelClass}>Department</label>
-                  <input type="text" className={inputClass} value={profile.department} onChange={e => setProfile(p => ({ ...p, department: e.target.value }))} />
+                  <label className={labelClass} style={labelStyle}>Department</label>
+                  <input type="text" className={inputClass} style={inputStyle} value={profile.department} onChange={e => setProfile(p => ({ ...p, department: e.target.value }))} />
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Address</label>
-                <textarea className={`${inputClass} resize-none`} rows="2" value={profile.address} onChange={e => setProfile(p => ({ ...p, address: e.target.value }))} />
+                <label className={labelClass} style={labelStyle}>Address</label>
+                <textarea className={`${inputClass} resize-none`} style={inputStyle} rows="2" value={profile.address} onChange={e => setProfile(p => ({ ...p, address: e.target.value }))} />
               </div>
               <div>
-                <label className={labelClass}>Bio</label>
-                <textarea className={`${inputClass} resize-none`} rows="3" value={profile.bio} onChange={e => setProfile(p => ({ ...p, bio: e.target.value }))} placeholder="Tell us about yourself..." />
+                <label className={labelClass} style={labelStyle}>Bio</label>
+                <textarea className={`${inputClass} resize-none`} style={inputStyle} rows="3" value={profile.bio} onChange={e => setProfile(p => ({ ...p, bio: e.target.value }))} placeholder="Tell us about yourself..." />
               </div>
               <div className="flex justify-end">
-                <button type="submit" disabled={loading} className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold rounded-lg transition-colors disabled:opacity-50">
+                <button type="submit" disabled={loading} className="px-6 py-2.5 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50" style={{ background: 'var(--color-primary)' }}>
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
@@ -226,24 +250,32 @@ const AlumniProfile = () => {
             <form onSubmit={handleProfileUpdate} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className={labelClass}><i className="ri-github-fill mr-1"></i>GitHub</label>
-                  <input type="url" className={inputClass} value={profile.github} onChange={e => setProfile(p => ({ ...p, github: e.target.value }))} placeholder="https://github.com/username" />
+                  <label className={`${labelClass} flex items-center gap-1.5`} style={labelStyle}>
+                    <GithubIcon className="w-3.5 h-3.5" /> GitHub
+                  </label>
+                  <input type="url" className={inputClass} style={inputStyle} value={profile.github} onChange={e => setProfile(p => ({ ...p, github: e.target.value }))} placeholder="https://github.com/username" />
                 </div>
                 <div>
-                  <label className={labelClass}><i className="ri-linkedin-box-fill mr-1"></i>LinkedIn</label>
-                  <input type="url" className={inputClass} value={profile.linkedin} onChange={e => setProfile(p => ({ ...p, linkedin: e.target.value }))} placeholder="https://linkedin.com/in/username" />
+                  <label className={`${labelClass} flex items-center gap-1.5`} style={labelStyle}>
+                    <LinkedinIcon className="w-3.5 h-3.5" /> LinkedIn
+                  </label>
+                  <input type="url" className={inputClass} style={inputStyle} value={profile.linkedin} onChange={e => setProfile(p => ({ ...p, linkedin: e.target.value }))} placeholder="https://linkedin.com/in/username" />
                 </div>
                 <div>
-                  <label className={labelClass}><i className="ri-code-box-line mr-1"></i>HackerRank</label>
-                  <input type="url" className={inputClass} value={profile.hackerrank} onChange={e => setProfile(p => ({ ...p, hackerrank: e.target.value }))} placeholder="https://hackerrank.com/username" />
+                  <label className={`${labelClass} flex items-center gap-1.5`} style={labelStyle}>
+                    <Code className="w-3.5 h-3.5" /> HackerRank
+                  </label>
+                  <input type="url" className={inputClass} style={inputStyle} value={profile.hackerrank} onChange={e => setProfile(p => ({ ...p, hackerrank: e.target.value }))} placeholder="https://hackerrank.com/username" />
                 </div>
                 <div>
-                  <label className={labelClass}><i className="ri-code-s-slash-line mr-1"></i>LeetCode</label>
-                  <input type="url" className={inputClass} value={profile.leetcode} onChange={e => setProfile(p => ({ ...p, leetcode: e.target.value }))} placeholder="https://leetcode.com/username" />
+                  <label className={`${labelClass} flex items-center gap-1.5`} style={labelStyle}>
+                    <Code2 className="w-3.5 h-3.5" /> LeetCode
+                  </label>
+                  <input type="url" className={inputClass} style={inputStyle} value={profile.leetcode} onChange={e => setProfile(p => ({ ...p, leetcode: e.target.value }))} placeholder="https://leetcode.com/username" />
                 </div>
               </div>
               <div className="flex justify-end">
-                <button type="submit" disabled={loading} className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold rounded-lg transition-colors disabled:opacity-50">
+                <button type="submit" disabled={loading} className="px-6 py-2.5 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50" style={{ background: 'var(--color-primary)' }}>
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
@@ -253,19 +285,19 @@ const AlumniProfile = () => {
           {activeTab === 'security' && (
             <form onSubmit={handlePasswordChange} className="space-y-5 max-w-md">
               <div>
-                <label className={labelClass}>Current Password</label>
-                <input type="password" className={inputClass} value={passwords.currentPassword} onChange={e => setPasswords(p => ({ ...p, currentPassword: e.target.value }))} required />
+                <label className={labelClass} style={labelStyle}>Current Password</label>
+                <input type="password" className={inputClass} style={inputStyle} value={passwords.currentPassword} onChange={e => setPasswords(p => ({ ...p, currentPassword: e.target.value }))} required />
               </div>
               <div>
-                <label className={labelClass}>New Password</label>
-                <input type="password" className={inputClass} value={passwords.newPassword} onChange={e => setPasswords(p => ({ ...p, newPassword: e.target.value }))} required />
+                <label className={labelClass} style={labelStyle}>New Password</label>
+                <input type="password" className={inputClass} style={inputStyle} value={passwords.newPassword} onChange={e => setPasswords(p => ({ ...p, newPassword: e.target.value }))} required />
               </div>
               <div>
-                <label className={labelClass}>Confirm New Password</label>
-                <input type="password" className={inputClass} value={passwords.confirmPassword} onChange={e => setPasswords(p => ({ ...p, confirmPassword: e.target.value }))} required />
+                <label className={labelClass} style={labelStyle}>Confirm New Password</label>
+                <input type="password" className={inputClass} style={inputStyle} value={passwords.confirmPassword} onChange={e => setPasswords(p => ({ ...p, confirmPassword: e.target.value }))} required />
               </div>
               <div className="flex justify-end">
-                <button type="submit" disabled={loading} className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold rounded-lg transition-colors disabled:opacity-50">
+                <button type="submit" disabled={loading} className="px-6 py-2.5 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50" style={{ background: 'var(--color-primary)' }}>
                   {loading ? 'Changing...' : 'Change Password'}
                 </button>
               </div>

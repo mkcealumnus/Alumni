@@ -4,42 +4,39 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NextStep</title>
+    <meta name="description" content="MKCE Alumni Network — Reconnect, grow, and give back. A professional alumni management platform for M.Kumarasamy College of Engineering." />
+    <title>MKCE Alumni Network</title>
 
-    <!-- Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet" />
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Lucide icons are handled by lucide-react, no additional icon CDN needed -->
   </head>
   <body>
     <div id="root">
       <!-- Loading fallback — replaced by React once the app mounts -->
-      <div id="app-loader" style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#f9f6f1;">
+      <div id="app-loader" style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Inter',system-ui,sans-serif;background:#F8FAFC;">
         <div style="text-align:center;">
-          <div style="width:40px;height:40px;border:3px solid #e8e0d4;border-top-color:#c96442;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-          <p style="color:#6b6b69;font-size:14px;">Loading NextStep...</p>
+          <div style="width:36px;height:36px;border:3px solid #E2E8F0;border-top-color:#12355B;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;"></div>
+          <p style="color:#64748B;font-size:14px;font-weight:500;">Loading MKCE Alumni...</p>
         </div>
       </div>
       <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     </div>
     <noscript>
-      <div style="padding:40px;text-align:center;font-family:sans-serif;">
-        <h2 style="color:#c96442;">JavaScript Required</h2>
-        <p>Please enable JavaScript to use NextStep.</p>
+      <div style="padding:40px;text-align:center;font-family:'Inter',system-ui,sans-serif;">
+        <h2 style="color:#12355B;">JavaScript Required</h2>
+        <p style="color:#475569;">Please enable JavaScript to use MKCE Alumni Network.</p>
       </div>
     </noscript>
     <!-- Libraries loaded async to prevent render-blocking -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
       // MIT License
       // https://github.com/rafgraph/spa-github-pages
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      // When the single page app is loaded further down in this file,
-      // the correct url will be displayed in the browser's address bar
-      // without triggering an extra page load which saves web requests.
       (function (l) {
         if (l.search[1] === "/") {
           var decoded = l.search

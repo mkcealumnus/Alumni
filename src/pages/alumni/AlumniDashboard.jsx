@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { alumniApi } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+import {
+  BookOpen, Users, HelpCircle, MessageCircle, TrendingUp,
+  UserCircle, CalendarDays, ChevronRight
+} from 'lucide-react';
 
 const AlumniDashboard = () => {
   const { user } = useAuth();
@@ -24,165 +28,139 @@ const AlumniDashboard = () => {
     fetch();
   }, []);
 
+  const firstName = user?.fullName?.split(' ')[0] || 'Alumni';
+
   return (
     <DashboardLayout pageTitle="Alumni Dashboard" role="alumni">
       {loading ? null : (
-        <div className="space-y-6">
-          {/* Welcome Header */}
-          <div className="bg-gray-950 rounded-2xl p-6 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold mb-1">
-                Welcome, <span className="text-primary-light">{user?.fullName || 'Alumni'}!</span>
-              </h1>
-              <p className="text-white/60 text-sm">
-                Here&apos;s an overview of your active courses, student progress, and doubt resolution.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Link
-                to="/alumni/doubts"
-                className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-md shadow-primary/20"
-              >
-                <i className="ri-chat-3-line text-sm"></i> Resolve Doubts
-              </Link>
-              <Link
-                to="/alumni/students-progress"
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all flex items-center gap-1.5"
-              >
-                <i className="ri-line-chart-line text-sm"></i> Student Progress
-              </Link>
-            </div>
+        <div className="space-y-8">
+          {/* Welcome */}
+          <div>
+            <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
+              Welcome back, {firstName}
+            </h1>
+            <p className="text-[14px]" style={{ color: 'var(--color-text-secondary)' }}>
+              Here&apos;s an overview of your active courses, student progress, and doubt resolution.
+            </p>
           </div>
 
-          {/* Stats Grid with Interactive Links */}
+          {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
               to="/alumni/students-progress"
-              className="bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 shadow-sm hover:border-primary/40 transition-all group"
+              className="group p-5 rounded-xl transition-all duration-200"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-border-strong)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 group-hover:bg-primary group-hover:text-white text-primary transition-all flex items-center justify-center">
-                  <i className="ri-book-open-line text-lg"></i>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'var(--color-accent)' }}>
+                  <BookOpen size={18} style={{ color: 'var(--color-primary)' }} />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Active Courses</p>
-                  <p className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">
-                    {stats?.totalCourses || 0}
-                  </p>
+                  <p className="text-[12px]" style={{ color: 'var(--color-text-muted)' }}>Active Courses</p>
+                  <p className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>{stats?.totalCourses || 0}</p>
                 </div>
               </div>
             </Link>
 
             <Link
               to="/alumni/students-progress"
-              className="bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 shadow-sm hover:border-blue-500/40 transition-all group"
+              className="group p-5 rounded-xl transition-all duration-200"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-border-strong)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 group-hover:bg-blue-500 group-hover:text-white text-blue-500 transition-all flex items-center justify-center">
-                  <i className="ri-user-line text-lg"></i>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: '#E0F2FE' }}>
+                  <Users size={18} style={{ color: '#0369A1' }} />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Total Enrolled Students</p>
-                  <p className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">
-                    {stats?.totalStudents || 0}
-                  </p>
+                  <p className="text-[12px]" style={{ color: 'var(--color-text-muted)' }}>Enrolled Students</p>
+                  <p className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>{stats?.totalStudents || 0}</p>
                 </div>
               </div>
             </Link>
 
             <Link
               to="/alumni/doubts"
-              className="bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 shadow-sm hover:border-green-500/40 transition-all group"
+              className="group p-5 rounded-xl transition-all duration-200"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-border-strong)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-green-500/10 group-hover:bg-green-500 group-hover:text-white text-green-500 transition-all flex items-center justify-center">
-                  <i className="ri-question-answer-line text-lg"></i>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: '#DCFCE7' }}>
+                  <HelpCircle size={18} style={{ color: '#15803D' }} />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Pending Doubts</p>
-                  <p className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">
-                    {stats?.pendingDoubts || 0}
-                  </p>
+                  <p className="text-[12px]" style={{ color: 'var(--color-text-muted)' }}>Pending Doubts</p>
+                  <p className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>{stats?.pendingDoubts || 0}</p>
                 </div>
               </div>
             </Link>
           </div>
 
-          {/* Quick Actions Shortcuts */}
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-4">
+          {/* Quick Shortcuts */}
+          <div className="p-5 rounded-xl" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+            <h3 className="text-[16px] font-semibold mb-4" style={{ color: 'var(--color-text)' }}>
               Alumni Quick Shortcuts
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Link
-                to="/alumni/doubts"
-                className="p-4 rounded-xl border border-sand dark-theme:border-gray-800 hover:bg-sand/30 dark-theme:hover:bg-gray-800/50 transition-all flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
-                  <i className="ri-chat-3-line text-xl"></i>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800 dark-theme:text-gray-100">
-                    Student Doubts
-                  </p>
-                  <p className="text-xs text-gray-400">Answer student queries & code doubts</p>
-                </div>
-              </Link>
-
-              <Link
-                to="/alumni/students-progress"
-                className="p-4 rounded-xl border border-sand dark-theme:border-gray-800 hover:bg-sand/30 dark-theme:hover:bg-gray-800/50 transition-all flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
-                  <i className="ri-line-chart-line text-xl"></i>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800 dark-theme:text-gray-100">
-                    Student Progress
-                  </p>
-                  <p className="text-xs text-gray-400">Track student completion percentages</p>
-                </div>
-              </Link>
-
-              <Link
-                to="/alumni/profile"
-                className="p-4 rounded-xl border border-sand dark-theme:border-gray-800 hover:bg-sand/30 dark-theme:hover:bg-gray-800/50 transition-all flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                  <i className="ri-user-settings-line text-xl"></i>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800 dark-theme:text-gray-100">
-                    Alumni Profile
-                  </p>
-                  <p className="text-xs text-gray-400">Update account info & security settings</p>
-                </div>
-              </Link>
+              {[
+                { to: '/alumni/doubts', icon: MessageCircle, iconColor: '#7C3AED', iconBg: '#EDE9FE', title: 'Student Doubts', desc: 'Answer student queries & code doubts' },
+                { to: '/alumni/students-progress', icon: TrendingUp, iconColor: '#2563EB', iconBg: '#E0F2FE', title: 'Student Progress', desc: 'Track student completion percentages' },
+                { to: '/alumni/profile', icon: UserCircle, iconColor: '#B45309', iconBg: '#FEF3C7', title: 'Alumni Profile', desc: 'Update account info & security settings' },
+              ].map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={i}
+                    to={item.to}
+                    className="flex items-center gap-3 p-4 rounded-lg transition-colors"
+                    style={{ border: '1px solid var(--color-border)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-surface-muted)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: item.iconBg }}>
+                      <Icon size={18} style={{ color: item.iconColor }} />
+                    </div>
+                    <div>
+                      <p className="text-[14px] font-semibold" style={{ color: 'var(--color-text)' }}>{item.title}</p>
+                      <p className="text-[12px]" style={{ color: 'var(--color-text-muted)' }}>{item.desc}</p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
           {/* Upcoming Events */}
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-4">
+          <div className="p-5 rounded-xl" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+            <h3 className="text-[16px] font-semibold mb-4" style={{ color: 'var(--color-text)' }}>
               Upcoming Events & Schedules
             </h3>
             <div className="space-y-3">
               {(stats?.upcomingEvents || []).length === 0 ? (
-                <p className="text-sm text-gray-400 text-center py-6">No upcoming events scheduled</p>
+                <div className="text-center py-8">
+                  <CalendarDays size={32} className="mx-auto mb-2" style={{ color: 'var(--color-border-strong)' }} />
+                  <p className="text-[14px]" style={{ color: 'var(--color-text-muted)' }}>No upcoming events scheduled</p>
+                </div>
               ) : (
                 stats.upcomingEvents.map((e, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-cream dark-theme:hover:bg-gray-800 transition-colors border border-sand/50 dark-theme:border-gray-800/50"
+                    className="flex items-center gap-3 p-3 rounded-lg transition-colors"
+                    style={{ border: '1px solid var(--color-border)' }}
+                    onMouseEnter={(el) => el.currentTarget.style.background = 'var(--color-surface-muted)'}
+                    onMouseLeave={(el) => el.currentTarget.style.background = 'transparent'}
                   >
-                    <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                      <i className="ri-calendar-event-line text-blue-500 text-sm"></i>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#E0F2FE' }}>
+                      <CalendarDays size={15} style={{ color: '#0369A1' }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-700 dark-theme:text-gray-200 truncate">
-                        {e.title}
-                      </p>
-                      <span className="text-xs text-gray-400">
+                      <p className="text-[14px] font-medium truncate" style={{ color: 'var(--color-text)' }}>{e.title}</p>
+                      <span className="text-[12px]" style={{ color: 'var(--color-text-muted)' }}>
                         {new Date(e.startDate).toLocaleDateString()}
                       </span>
                     </div>

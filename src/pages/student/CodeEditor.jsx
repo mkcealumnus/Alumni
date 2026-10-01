@@ -5,6 +5,7 @@ import Swal, { getSwalOpts } from '../../utils/swal';
 
 import { studentApi } from '../../utils/api';
 import { useSearchParams } from 'react-router-dom';
+import { Keyboard, Play, Send, FlaskConical, Check, X, Lock, Clock, Terminal, Trash2, Info, RotateCcw } from 'lucide-react';
 
 // Language configuration map
 const LANGUAGES = {
@@ -226,19 +227,13 @@ const CodeEditor = () => {
   };
 
   const langConfig = LANGUAGES[language] || LANGUAGES.python;
-  const diffColors = { easy: 'bg-green-100 text-green-700', medium: 'bg-amber-100 text-amber-700', hard: 'bg-red-100 text-red-700' };
+  const diffColors = { easy: 'bg-emerald-50 text-emerald-700 border-emerald-200', medium: 'bg-amber-50 text-amber-700 border-amber-200', hard: 'bg-red-50 text-red-700 border-red-200' };
 
   const outputStatusColors = {
-    idle:    'text-gray-500',
-    running: 'text-amber-400',
-    success: 'text-green-400',
-    error:   'text-red-400',
-  };
-  const outputStatusIcons = {
-    idle:    'ri-terminal-line',
-    running: 'ri-time-line',
-    success: 'ri-checkbox-circle-line',
-    error:   'ri-error-warning-line',
+    idle:    'text-[var(--color-text-muted)]',
+    running: 'text-amber-500',
+    success: 'text-emerald-500',
+    error:   'text-red-500',
   };
 
   const openTestResults = testResults ? testResults.slice(0, 3) : null;
@@ -254,55 +249,91 @@ const CodeEditor = () => {
 
   return (
     <DashboardLayout pageTitle="Code Editor" role="student">
-
-      <div className="space-y-4 h-full">
+      <div className="space-y-4 h-full max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">{problem ? problem.title : 'Code Editor'}</h1>
-            {problem && <div className="flex items-center gap-2 mt-1">
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${diffColors[problem.difficulty] || ''}`}>{problem.difficulty}</span>
-              {problem.category && <span className="text-xs text-gray-400">{problem.category}</span>}
-            </div>}
+            <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>{problem ? problem.title : 'Code Editor'}</h1>
+            {problem && (
+              <div className="flex items-center gap-2 mt-1">
+                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${diffColors[problem.difficulty] || ''}`}>{problem.difficulty}</span>
+                {problem.category && <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{problem.category}</span>}
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-2">
-            <select value={language} onChange={handleLanguageChange} className="px-3 py-2 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 text-xs outline-none font-medium">
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className="px-3 py-2 rounded-lg border text-xs outline-none font-medium transition-colors focus:border-[var(--color-primary)]"
+              style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
+            >
               {Object.entries(LANGUAGES).map(([key, lang]) => (
                 <option key={key} value={key}>{lang.label}</option>
               ))}
             </select>
-            <button onClick={() => { setShowInput(!showInput); setActiveTab('input'); }} className={`px-3 py-2 rounded-xl border text-xs font-medium transition-colors flex items-center gap-1 ${showInput ? 'bg-blue-500 text-white border-blue-500' : 'bg-cream dark-theme:bg-gray-800 border-sand dark-theme:border-gray-700 text-gray-500 dark-theme:text-gray-400 hover:border-blue-400'}`}>
-              <i className="ri-keyboard-line"></i>Input
+
+            <button
+              onClick={() => { setShowInput(!showInput); setActiveTab('input'); }}
+              className="px-3.5 py-2 rounded-lg border text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-2xs hover:opacity-90"
+              style={{
+                background: showInput ? 'var(--color-primary)' : 'var(--color-surface)',
+                borderColor: showInput ? 'var(--color-primary)' : 'var(--color-border)',
+                color: showInput ? '#ffffff' : 'var(--color-text-muted)'
+              }}
+            >
+              <Keyboard className="w-3.5 h-3.5" />
+              Input
             </button>
-            <button onClick={handleRun} disabled={running} className="px-4 py-2 rounded-xl bg-green-500 text-white text-xs font-medium hover:bg-green-600 disabled:opacity-50 flex items-center gap-1 transition-colors">
-              <i className="ri-play-line"></i>{running ? 'Running...' : 'Run'}
+
+            <button
+              onClick={handleRun}
+              disabled={running}
+              className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1.5 shadow-2xs transition-colors"
+            >
+              <Play className="w-3.5 h-3.5 fill-current" />
+              {running ? 'Running...' : 'Run'}
             </button>
-            {problemId && <button onClick={handleSubmit} disabled={running} className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-medium hover:bg-primary-dark disabled:opacity-50 flex items-center gap-1 transition-colors">
-              <i className="ri-send-plane-line"></i>{running ? 'Evaluating...' : 'Submit'}
-            </button>}
+
+            {problemId && (
+              <button
+                onClick={handleSubmit}
+                disabled={running}
+                className="px-4 py-2 rounded-lg text-white text-xs font-semibold disabled:opacity-50 flex items-center gap-1.5 shadow-2xs transition-colors hover:opacity-90"
+                style={{ background: 'var(--color-primary)' }}
+              >
+                <Send className="w-3.5 h-3.5" />
+                {running ? 'Evaluating...' : 'Submit'}
+              </button>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Problem description panel */}
           {problem && (
-            <div className="lg:col-span-1 bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 max-h-[70vh] overflow-y-auto">
-              <h3 className="font-semibold text-gray-800 dark-theme:text-gray-100 text-sm mb-3">Problem Description</h3>
-              <p className="text-xs text-gray-600 dark-theme:text-gray-300 whitespace-pre-wrap mb-4">{problem.description}</p>
-              {problem.constraints && <><h4 className="font-medium text-gray-700 dark-theme:text-gray-300 text-xs mb-1">Constraints</h4><p className="text-xs text-gray-500 mb-3 whitespace-pre-wrap">{problem.constraints}</p></>}
+            <div className="lg:col-span-1 rounded-xl p-5 border max-h-[70vh] overflow-y-auto shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+              <h3 className="font-bold text-sm mb-3" style={{ color: 'var(--color-text)' }}>Problem Description</h3>
+              <p className="text-xs whitespace-pre-wrap mb-4 leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>{problem.description}</p>
+              {problem.constraints && (
+                <>
+                  <h4 className="font-semibold text-xs mb-1" style={{ color: 'var(--color-text)' }}>Constraints</h4>
+                  <p className="text-xs mb-3 whitespace-pre-wrap font-mono" style={{ color: 'var(--color-text-muted)' }}>{problem.constraints}</p>
+                </>
+              )}
               
               {/* Test Cases Summary */}
-              <div className="my-4 pt-3 border-t border-sand dark-theme:border-gray-800">
+              <div className="my-4 pt-3 border-t" style={{ borderColor: 'var(--color-border)' }}>
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-gray-800 dark-theme:text-gray-200 text-xs flex items-center gap-1">
-                    <i className="ri-flask-line text-primary"></i> Test Cases (18 Total)
+                  <h4 className="font-semibold text-xs flex items-center gap-1.5" style={{ color: 'var(--color-text)' }}>
+                    <FlaskConical className="w-3.5 h-3.5 text-[var(--color-primary)]" /> Test Cases (18 Total)
                   </h4>
                   {testSummary ? (
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${testSummary.passedCount === testSummary.totalCount ? 'bg-green-100 text-green-700 dark-theme:bg-green-900/40 dark-theme:text-green-300' : 'bg-red-100 text-red-700 dark-theme:bg-red-900/40 dark-theme:text-red-300'}`}>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${testSummary.passedCount === testSummary.totalCount ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
                       {testSummary.passedCount}/{testSummary.totalCount} Passed
                     </span>
                   ) : (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 dark-theme:bg-blue-900/40 text-blue-600 dark-theme:text-blue-300 font-medium">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full font-medium border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
                       3 Open • 15 Hidden
                     </span>
                   )}
@@ -310,7 +341,7 @@ const CodeEditor = () => {
 
                 {/* 3 Open Test Cases */}
                 <div className="space-y-2 mb-3">
-                  <span className="text-[11px] font-medium text-gray-500 dark-theme:text-gray-400 block">Open Test Cases (Sample)</span>
+                  <span className="text-[11px] font-semibold block" style={{ color: 'var(--color-text-muted)' }}>Open Test Cases (Sample)</span>
                   {(problem.openTestCases || [
                     { id: 1, input: problem.sampleInput || 'Sample 1', output: problem.sampleOutput || 'Output 1' },
                     { id: 2, input: 'Sample Input 2', output: 'Sample Output 2' },
@@ -318,26 +349,26 @@ const CodeEditor = () => {
                   ]).slice(0, 3).map((tc, idx) => {
                     const res = openTestResults ? openTestResults[idx] : null;
                     return (
-                      <div key={tc.id || idx} className={`p-2.5 rounded-xl border text-[11px] transition-colors ${res ? (res.passed ? 'bg-green-50/50 dark-theme:bg-green-950/20 border-green-300/60' : 'bg-red-50/50 dark-theme:bg-red-950/20 border-red-300/60') : 'bg-cream/60 dark-theme:bg-gray-800/60 border-sand/60 dark-theme:border-gray-700/60'}`}>
-                        <div className="flex items-center justify-between text-gray-600 dark-theme:text-gray-300 font-medium mb-1">
+                      <div key={tc.id || idx} className={`p-2.5 rounded-lg border text-[11px] transition-colors ${res ? (res.passed ? 'bg-emerald-50/60 border-emerald-200' : 'bg-red-50/60 border-red-200') : 'bg-[var(--color-background)] border-[var(--color-border)]'}`}>
+                        <div className="flex items-center justify-between font-medium mb-1" style={{ color: 'var(--color-text)' }}>
                           <span>Open Case {idx + 1}</span>
                           {res ? (
                             res.passed ? (
-                              <span className="text-[9px] bg-green-500/15 text-green-600 dark-theme:text-green-400 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
-                                <i className="ri-check-line"></i> Passed
+                              <span className="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
+                                <Check className="w-3 h-3" /> Passed
                               </span>
                             ) : (
-                              <span className="text-[9px] bg-red-500/15 text-red-600 dark-theme:text-red-400 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
-                                <i className="ri-close-line"></i> Failed
+                              <span className="text-[9px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-bold flex items-center gap-0.5">
+                                <X className="w-3 h-3" /> Failed
                               </span>
                             )
                           ) : (
-                            <span className="text-[9px] bg-green-500/10 text-green-600 dark-theme:text-green-400 px-1.5 py-0.5 rounded">Visible</span>
+                            <span className="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded">Visible</span>
                           )}
                         </div>
-                        <div className="text-[10px] text-gray-500 font-mono space-y-0.5">
-                          <div><span className="text-gray-400">In:</span> {tc.input}</div>
-                          <div><span className="text-gray-400">Out:</span> {tc.output}</div>
+                        <div className="text-[10px] font-mono space-y-0.5" style={{ color: 'var(--color-text-muted)' }}>
+                          <div><span className="font-sans font-semibold">In:</span> {tc.input}</div>
+                          <div><span className="font-sans font-semibold">Out:</span> {tc.output}</div>
                         </div>
                       </div>
                     );
@@ -347,9 +378,9 @@ const CodeEditor = () => {
                 {/* 15 Hidden Test Cases Status Badges */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] font-medium text-gray-500 dark-theme:text-gray-400 block">15 Hidden Test Cases</span>
+                    <span className="text-[11px] font-semibold block" style={{ color: 'var(--color-text-muted)' }}>15 Hidden Test Cases</span>
                     {hiddenTestResults && (
-                      <span className="text-[10px] text-gray-400 font-mono">
+                      <span className="text-[10px] font-mono" style={{ color: 'var(--color-text-muted)' }}>
                         {hiddenTestResults.filter(r => r.passed).length}/15 Passed
                       </span>
                     )}
@@ -359,18 +390,18 @@ const CodeEditor = () => {
                       const res = hiddenTestResults ? hiddenTestResults[i] : null;
                       if (!res) {
                         return (
-                          <div key={i} className="px-1.5 py-1 rounded-lg bg-sand dark-theme:bg-gray-800 text-[9px] font-mono text-center text-gray-500 border border-sand/40 dark-theme:border-gray-700/40 flex items-center justify-center gap-0.5" title={`Hidden Test Case #${i + 1} (Locked)`}>
-                            <i className="ri-lock-line text-[8px] text-amber-500"></i> H{i + 1}
+                          <div key={i} className="px-1.5 py-1 rounded-lg text-[9px] font-mono text-center border flex items-center justify-center gap-0.5" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }} title={`Hidden Test Case #${i + 1} (Locked)`}>
+                            <Lock className="w-2.5 h-2.5 text-amber-500" /> H{i + 1}
                           </div>
                         );
                       }
                       return res.passed ? (
-                        <div key={i} className="px-1.5 py-1 rounded-lg bg-green-500/15 text-green-700 dark-theme:text-green-300 font-mono text-center border border-green-400/50 text-[9px] flex items-center justify-center gap-0.5 font-bold" title={`Hidden Test Case #${i + 1}: Passed`}>
-                          <i className="ri-check-line text-[10px] text-green-600"></i> H{i + 1}
+                        <div key={i} className="px-1.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-mono text-center border border-emerald-200 text-[9px] flex items-center justify-center gap-0.5 font-bold" title={`Hidden Test Case #${i + 1}: Passed`}>
+                          <Check className="w-3 h-3 text-emerald-600" /> H{i + 1}
                         </div>
                       ) : (
-                        <div key={i} className="px-1.5 py-1 rounded-lg bg-red-500/15 text-red-700 dark-theme:text-red-300 font-mono text-center border border-red-400/50 text-[9px] flex items-center justify-center gap-0.5 font-bold" title={`Hidden Test Case #${i + 1}: Failed`}>
-                          <i className="ri-close-line text-[10px] text-red-600"></i> H{i + 1}
+                        <div key={i} className="px-1.5 py-1 rounded-lg bg-red-50 text-red-700 font-mono text-center border border-red-200 text-[9px] flex items-center justify-center gap-0.5 font-bold" title={`Hidden Test Case #${i + 1}: Failed`}>
+                          <X className="w-3 h-3 text-red-600" /> H{i + 1}
                         </div>
                       );
                     })}
@@ -383,17 +414,21 @@ const CodeEditor = () => {
           {/* Editor + I/O panels */}
           <div className={`${problem ? 'lg:col-span-2' : 'lg:col-span-3'} space-y-4`}>
             {/* Code Editor Container */}
-            <div className="bg-white dark-theme:bg-gray-900 rounded-2xl border border-sand dark-theme:border-gray-800 overflow-hidden">
-              <div className="px-4 py-2 bg-cream dark-theme:bg-gray-800 border-b border-sand dark-theme:border-gray-700 flex items-center justify-between">
+            <div className="rounded-xl border overflow-hidden shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+              <div className="px-4 py-2 border-b flex items-center justify-between" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-400"></div>
                   <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                  <span className="ml-2 text-xs font-mono text-gray-600 dark-theme:text-gray-300">solution.{langConfig.ext}</span>
+                  <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+                  <span className="ml-2 text-xs font-mono font-medium" style={{ color: 'var(--color-text)' }}>solution.{langConfig.ext}</span>
                 </div>
-                <div className="flex items-center gap-3 text-[10px] text-gray-400">
+                <div className="flex items-center gap-3 text-[10px]" style={{ color: 'var(--color-text-muted)' }}>
                   <span>{langConfig.label}</span>
-                  {executionTime && <span className="text-green-400"><i className="ri-time-line mr-0.5"></i>{executionTime}s</span>}
+                  {executionTime && (
+                    <span className="text-emerald-600 flex items-center gap-0.5 font-semibold">
+                      <Clock className="w-3 h-3" />{executionTime}s
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -409,22 +444,40 @@ const CodeEditor = () => {
             </div>
 
             {/* Input / Output Panel */}
-            <div className="bg-white dark-theme:bg-gray-900 rounded-2xl border border-sand dark-theme:border-gray-800 overflow-hidden">
+            <div className="rounded-xl border overflow-hidden shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
               {/* Tab header */}
-              <div className="px-4 py-2 bg-cream dark-theme:bg-gray-800 border-b border-sand dark-theme:border-gray-700 flex items-center justify-between">
+              <div className="px-4 py-2 border-b flex items-center justify-between" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                 <div className="flex items-center gap-1">
-                  <button onClick={() => setActiveTab('output')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${activeTab === 'output' ? 'bg-white dark-theme:bg-gray-700 text-gray-800 dark-theme:text-gray-100 shadow-sm' : 'text-gray-500 dark-theme:text-gray-400 hover:text-gray-700'}`}>
-                    <i className={`${outputStatusIcons[outputStatus]} ${outputStatusColors[outputStatus]}`}></i>Output
+                  <button
+                    onClick={() => setActiveTab('output')}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+                    style={{
+                      background: activeTab === 'output' ? 'var(--color-surface)' : 'transparent',
+                      color: activeTab === 'output' ? 'var(--color-text)' : 'var(--color-text-muted)'
+                    }}
+                  >
+                    <Terminal className={`w-3.5 h-3.5 ${outputStatusColors[outputStatus]}`} />
+                    Output
                   </button>
-                  <button onClick={() => { setActiveTab('input'); setShowInput(true); }} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${activeTab === 'input' ? 'bg-white dark-theme:bg-gray-700 text-gray-800 dark-theme:text-gray-100 shadow-sm' : 'text-gray-500 dark-theme:text-gray-400 hover:text-gray-700'}`}>
-                    <i className="ri-keyboard-line"></i>Input (stdin)
-                    {stdin.trim() && <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>}
+
+                  <button
+                    onClick={() => { setActiveTab('input'); setShowInput(true); }}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+                    style={{
+                      background: activeTab === 'input' ? 'var(--color-surface)' : 'transparent',
+                      color: activeTab === 'input' ? 'var(--color-text)' : 'var(--color-text-muted)'
+                    }}
+                  >
+                    <Keyboard className="w-3.5 h-3.5" />
+                    Input (stdin)
+                    {stdin.trim() && <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>}
                   </button>
                 </div>
+
                 <div className="flex items-center gap-2">
                   {outputStatus !== 'idle' && outputStatus !== 'running' && (
-                    <button onClick={handleClearOutput} className="text-[10px] text-gray-400 dark-theme:text-gray-500 hover:text-gray-600 dark-theme:hover:text-gray-300 transition-colors">
-                      <i className="ri-delete-bin-line mr-0.5"></i>Clear
+                    <button onClick={handleClearOutput} className="text-[10px] flex items-center gap-1 transition-colors hover:opacity-80" style={{ color: 'var(--color-text-muted)' }}>
+                      <Trash2 className="w-3 h-3" /> Clear
                     </button>
                   )}
                 </div>
@@ -434,13 +487,13 @@ const CodeEditor = () => {
               {activeTab === 'output' && (
                 <div className="relative">
                   {outputStatus === 'running' && (
-                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 animate-pulse"></div>
+                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 via-blue-500 to-indigo-500 animate-pulse"></div>
                   )}
                   <pre className={`p-4 text-xs font-mono min-h-[100px] max-h-[200px] overflow-auto whitespace-pre-wrap ${
-                    outputStatus === 'error' ? 'text-red-400' : 
-                    outputStatus === 'success' ? 'text-green-400' : 
-                    outputStatus === 'running' ? 'text-amber-400' : 
-                    'text-gray-500 dark-theme:text-gray-400'
+                    outputStatus === 'error' ? 'text-red-500 font-semibold' : 
+                    outputStatus === 'success' ? 'text-emerald-600 font-semibold' : 
+                    outputStatus === 'running' ? 'text-amber-600 font-semibold' : 
+                    'text-[var(--color-text-muted)]'
                   }`}>{output || 'Click "Run" to execute your code. Your code runs on a real server — output, errors, and inputs are all live.'}</pre>
                 </div>
               )}
@@ -449,13 +502,13 @@ const CodeEditor = () => {
               {activeTab === 'input' && (
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-[11px] text-gray-500 dark-theme:text-gray-400">
-                      <i className="ri-information-line mr-1"></i>
-                      Provide input values your program will read (e.g., via <code className="bg-cream dark-theme:bg-gray-800 px-1 rounded text-[10px]">input()</code> in Python, <code className="bg-cream dark-theme:bg-gray-800 px-1 rounded text-[10px]">scanf</code> in C, <code className="bg-cream dark-theme:bg-gray-800 px-1 rounded text-[10px]">Scanner</code> in Java)
+                    <p className="text-[11px] flex items-center gap-1" style={{ color: 'var(--color-text-muted)' }}>
+                      <Info className="w-3.5 h-3.5 text-[var(--color-primary)] shrink-0" />
+                      Provide input values your program will read (e.g., via <code className="px-1 rounded text-[10px] border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>input()</code> in Python, <code className="px-1 rounded text-[10px] border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>scanf</code> in C, <code className="px-1 rounded text-[10px] border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>Scanner</code> in Java)
                     </p>
                     {stdin.trim() && (
-                      <button onClick={() => setStdin('')} className="text-[10px] text-gray-400 hover:text-red-400 transition-colors">
-                        <i className="ri-close-line"></i>Clear
+                      <button onClick={() => setStdin('')} className="text-[10px] text-red-500 hover:underline flex items-center gap-0.5">
+                        <X className="w-3 h-3" /> Clear
                       </button>
                     )}
                   </div>
@@ -464,13 +517,14 @@ const CodeEditor = () => {
                     onChange={(e) => setStdin(e.target.value)}
                     placeholder="Enter input values here, one per line...&#10;&#10;Example:&#10;5&#10;hello world&#10;3.14"
                     spellCheck={false}
-                    className="w-full h-[120px] bg-gray-950 text-green-400 font-mono text-xs p-3 rounded-xl outline-none resize-none border border-gray-800 focus:border-blue-500 transition-colors placeholder:text-gray-600"
+                    className="w-full h-[120px] font-mono text-xs p-3 rounded-lg outline-none resize-none border transition-colors focus:border-[var(--color-primary)]"
+                    style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
                   />
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-[10px] text-gray-400 dark-theme:text-gray-500">{stdin ? `${stdin.split('\n').length} line(s)` : 'No input provided'}</p>
+                    <p className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>{stdin ? `${stdin.split('\n').length} line(s)` : 'No input provided'}</p>
                     {problem?.sampleInput && stdin !== problem.sampleInput && (
-                      <button onClick={() => setStdin(problem.sampleInput)} className="text-[10px] text-blue-400 hover:text-blue-300 transition-colors">
-                        <i className="ri-refresh-line mr-0.5"></i>Use sample input
+                      <button onClick={() => setStdin(problem.sampleInput)} className="text-[10px] font-semibold text-[var(--color-primary)] hover:underline flex items-center gap-1">
+                        <RotateCcw className="w-3 h-3" /> Use sample input
                       </button>
                     )}
                   </div>

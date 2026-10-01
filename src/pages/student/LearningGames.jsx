@@ -325,9 +325,9 @@ const LearningGames = () => {
   // ============================================================
   //                 COMMON STYLES
   // ============================================================
-  const cardCls = 'bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800';
-  const btnPrimary = 'px-4 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary-dark transition-colors';
-  const btnSecondary = 'px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 text-gray-500 dark-theme:text-gray-400 font-medium text-sm hover:bg-cream-dark dark-theme:hover:bg-gray-700 hover:border-gray-400 dark-theme:hover:border-gray-600 transition-colors';
+  const cardCls = 'rounded-xl p-6 border shadow-2xs transition-all';
+  const btnPrimary = 'px-4 py-2.5 rounded-lg text-white font-semibold text-xs transition-colors shadow-2xs hover:opacity-90';
+  const btnSecondary = 'px-4 py-2.5 rounded-lg border text-xs font-semibold transition-colors hover:opacity-80';
 
   // ============================================================
   //           CODE CHALLENGE RENDERER

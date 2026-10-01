@@ -5,59 +5,62 @@ import { Briefcase, BookOpen, Compass, ChevronRight, TrendingUp } from 'lucide-r
 
 const AlumniCareerGuidance = ({ role }) => {
   const Layout = role === 'admin' ? AdminLayout : DashboardLayout;
-  
+
   const resources = [
-    { title: "Resume Building", icon: BookOpen, desc: "Learn how to craft a standout resume that gets past ATS.", color: "bg-blue-100 text-blue-600 dark-theme:bg-blue-900/30 dark-theme:text-blue-400" },
-    { title: "Interview Prep", icon: Briefcase, desc: "Master the most common behavioral and technical questions.", color: "bg-emerald-100 text-emerald-600 dark-theme:bg-emerald-900/30 dark-theme:text-emerald-400" },
-    { title: "Industry Trends", icon: TrendingUp, desc: "Stay updated with the latest in tech, business, and design.", color: "bg-purple-100 text-purple-600 dark-theme:bg-purple-900/30 dark-theme:text-purple-400" },
+    { title: "Resume Building", icon: BookOpen, desc: "Learn how to craft a standout resume that gets past ATS." },
+    { title: "Interview Prep", icon: Briefcase, desc: "Master the most common behavioral and technical questions." },
+    { title: "Industry Trends", icon: TrendingUp, desc: "Stay updated with the latest in tech, business, and design." },
   ];
 
   return (
     <Layout pageTitle="Career Guidance" role={role}>
-      <div className="space-y-6">
-        <div className="bg-gradient-to-r from-c-blue to-c-teal rounded-2xl p-8 text-white shadow-lg">
-          <div className="flex items-center space-x-4 mb-4">
-            <Compass className="h-10 w-10 text-white/90" />
-            <h1 className="text-3xl font-bold">Navigate Your Career</h1>
+      <div className="space-y-6 max-w-6xl mx-auto">
+        {/* Banner */}
+        <div className="rounded-xl p-8 border" style={{ background: 'var(--color-primary)', borderColor: 'var(--color-border)', color: '#ffffff' }}>
+          <div className="flex items-center gap-3 mb-3">
+            <Compass className="w-8 h-8 opacity-90" />
+            <h1 className="text-2xl font-bold tracking-tight">Navigate Your Alumni Career</h1>
           </div>
-          <p className="text-white/80 max-w-2xl text-lg">
-            Share your journey, find lateral opportunities, or pivot into a new field with our exclusive alumni career resources.
+          <p className="text-xs max-w-2xl leading-relaxed opacity-90">
+            Share your journey, find lateral opportunities, or pivot into a new field with our exclusive alumni career resources and mentoring sessions.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Resources Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {resources.map((res, i) => (
-            <div key={i} className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${res.color} mb-4`}>
-                <res.icon className="h-6 w-6" />
+            <div key={i} className="rounded-xl p-5 border transition-all hover:shadow-xs group cursor-pointer" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: 'rgba(18,53,91,0.08)', color: 'var(--color-primary)' }}>
+                <res.icon className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100 mb-2">{res.title}</h3>
-              <p className="text-gray-500 dark-theme:text-gray-400 mb-4">{res.desc}</p>
-              <div className="flex items-center text-sm font-semibold text-primary dark-theme:text-primary-light group-hover:underline">
-                Explore <ChevronRight className="h-4 w-4 ml-1" />
+              <h3 className="text-sm font-bold mb-1" style={{ color: 'var(--color-text)' }}>{res.title}</h3>
+              <p className="text-xs mb-4" style={{ color: 'var(--color-text-muted)' }}>{res.desc}</p>
+              <div className="flex items-center text-xs font-semibold group-hover:underline" style={{ color: 'var(--color-primary)' }}>
+                Explore <ChevronRight className="w-3.5 h-3.5 ml-1" />
               </div>
             </div>
           ))}
         </div>
 
-        <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 shadow-sm mt-6">
-          <h2 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100 mb-4">Upcoming Counseling Sessions</h2>
-          <div className="space-y-4">
-             <div className="flex items-center justify-between p-4 rounded-xl bg-cream dark-theme:bg-gray-700/50">
+        {/* Upcoming Sessions */}
+        <div className="rounded-xl p-6 border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+          <h2 className="text-base font-bold mb-4" style={{ color: 'var(--color-text)' }}>Upcoming Counseling Sessions</h2>
+          <div className="space-y-3">
+             <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border gap-3" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                <div>
-                 <h4 className="font-semibold text-gray-800 dark-theme:text-gray-100">Transitioning to Product Management</h4>
-                 <p className="text-sm text-gray-500 dark-theme:text-gray-400">By Sarah Jenkins • Oct 15, 2:00 PM</p>
+                 <h4 className="font-semibold text-xs" style={{ color: 'var(--color-text)' }}>Transitioning to Product Management</h4>
+                 <p className="text-[11px] mt-0.5" style={{ color: 'var(--color-text-muted)' }}>By Sarah Jenkins • Oct 15, 2:00 PM</p>
                </div>
-               <button className="px-4 py-2 bg-white dark-theme:bg-gray-600 border border-sand dark-theme:border-gray-500 rounded-lg text-sm font-medium hover:bg-cream dark-theme:hover:bg-gray-500 transition-colors">
+               <button className="px-4 py-2 rounded-lg text-white text-xs font-semibold transition-colors hover:opacity-90" style={{ background: 'var(--color-primary)' }}>
                  Register
                </button>
              </div>
-             <div className="flex items-center justify-between p-4 rounded-xl bg-cream dark-theme:bg-gray-700/50">
+             <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border gap-3" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                <div>
-                 <h4 className="font-semibold text-gray-800 dark-theme:text-gray-100">Negotiating Your First Salary</h4>
-                 <p className="text-sm text-gray-500 dark-theme:text-gray-400">By David Chen • Oct 18, 4:00 PM</p>
+                 <h4 className="font-semibold text-xs" style={{ color: 'var(--color-text)' }}>Negotiating Your First Salary</h4>
+                 <p className="text-[11px] mt-0.5" style={{ color: 'var(--color-text-muted)' }}>By David Chen • Oct 18, 4:00 PM</p>
                </div>
-               <button className="px-4 py-2 bg-white dark-theme:bg-gray-600 border border-sand dark-theme:border-gray-500 rounded-lg text-sm font-medium hover:bg-cream dark-theme:hover:bg-gray-500 transition-colors">
+               <button className="px-4 py-2 rounded-lg text-white text-xs font-semibold transition-colors hover:opacity-90" style={{ background: 'var(--color-primary)' }}>
                  Register
                </button>
              </div>

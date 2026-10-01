@@ -59,13 +59,13 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: '40px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '40px auto' }}>
-          <h1 style={{ color: '#c96442', fontSize: '24px', marginBottom: '16px' }}>Something went wrong</h1>
-          <p style={{ color: '#666', marginBottom: '12px' }}>The application encountered an error. Please try refreshing the page.</p>
-          <pre style={{ background: '#f5f5f5', padding: '16px', borderRadius: '8px', fontSize: '13px', overflow: 'auto', color: '#e8e8e8' }}>
+        <div style={{ padding: '40px', fontFamily: 'Inter, system-ui, sans-serif', maxWidth: '600px', margin: '40px auto' }}>
+          <h1 style={{ color: '#12355B', fontSize: '24px', marginBottom: '16px', fontWeight: 700 }}>Something went wrong</h1>
+          <p style={{ color: '#475569', marginBottom: '12px' }}>The application encountered an error. Please try refreshing the page.</p>
+          <pre style={{ background: '#F1F5F9', padding: '16px', borderRadius: '8px', fontSize: '13px', overflow: 'auto', color: '#0F172A', border: '1px solid #E2E8F0' }}>
             {this.state.error?.message || 'Unknown error'}
           </pre>
-          <button onClick={() => window.location.reload()} style={{ marginTop: '16px', padding: '10px 24px', background: '#c96442', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}>
+          <button onClick={() => window.location.reload()} style={{ marginTop: '16px', padding: '10px 24px', background: '#12355B', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}>
             Reload Page
           </button>
         </div>

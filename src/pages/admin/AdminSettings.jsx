@@ -3,7 +3,7 @@ import AdminLayout from '@/components/layout/AdminLayout';
 import Swal, { getSwalOpts } from '../../utils/swal';
 import { adminApi, authApi } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
-
+import { User, Lock, Settings } from 'lucide-react';
 
 const AdminSettings = () => {
   const { user, updateUser } = useAuth();
@@ -65,74 +65,113 @@ const AdminSettings = () => {
   };
 
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: 'ri-user-line' },
-    { id: 'password', label: 'Password', icon: 'ri-lock-line' },
-    { id: 'platform', label: 'Platform', icon: 'ri-settings-line' },
+    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'password', label: 'Password', icon: Lock },
+    { id: 'platform', label: 'Platform', icon: Settings },
   ];
+
+  const inputClass = "w-full px-4 py-2.5 rounded-lg border outline-none text-xs font-medium transition-colors focus:border-[var(--color-primary)]";
+  const inputStyle = { background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text)' };
 
   return (
     <AdminLayout pageTitle="Settings">
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Settings</h1>
+      <div className="space-y-6 max-w-4xl mx-auto">
+        <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>Settings</h1>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-white dark-theme:bg-gray-900 rounded-xl p-1 border border-sand dark-theme:border-gray-800 w-fit">
-          {tabs.map(tab => (
-            <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id ? 'bg-primary text-white' : 'text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800'}`}>
-              <i className={tab.icon}></i>{tab.label}
-            </button>
-          ))}
+        <div className="flex gap-1 p-1 rounded-xl border w-fit" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+          {tabs.map(tab => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                style={{
+                  background: isActive ? 'var(--color-primary)' : 'transparent',
+                  color: isActive ? '#ffffff' : 'var(--color-text-muted)',
+                }}
+              >
+                <Icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Profile Tab */}
         {activeTab === 'profile' && (
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 max-w-lg">
-            <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-5">Profile Information</h3>
+          <div className="rounded-xl p-6 border max-w-lg shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <h3 className="text-base font-bold mb-5" style={{ color: 'var(--color-text)' }}>Profile Information</h3>
             <form onSubmit={handleProfileUpdate} className="space-y-4">
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Full Name</label>
-                <input type="text" value={profile.fullName} onChange={(e) => setProfile({ ...profile, fullName: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Email</label>
-                <input type="email" value={profile.email} disabled className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 outline-none text-sm opacity-60 cursor-not-allowed" /></div>
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Phone</label>
-                <input type="tel" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark disabled:opacity-60">{loading ? 'Saving...' : 'Save Changes'}</button>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Full Name</label>
+                <input type="text" value={profile.fullName} onChange={(e) => setProfile({ ...profile, fullName: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Email</label>
+                <input type="email" value={profile.email} disabled className={`${inputClass} opacity-60 cursor-not-allowed`} style={{ ...inputStyle, background: 'var(--color-background)' }} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Phone</label>
+                <input type="tel" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <button type="submit" disabled={loading} className="px-5 py-2.5 rounded-lg text-white text-xs font-semibold transition-colors hover:opacity-90 disabled:opacity-60 shadow-xs" style={{ background: 'var(--color-primary)' }}>
+                {loading ? 'Saving...' : 'Save Changes'}
+              </button>
             </form>
           </div>
         )}
 
         {/* Password Tab */}
         {activeTab === 'password' && (
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 max-w-lg">
-            <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-5">Change Password</h3>
+          <div className="rounded-xl p-6 border max-w-lg shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <h3 className="text-base font-bold mb-5" style={{ color: 'var(--color-text)' }}>Change Password</h3>
             <form onSubmit={handlePasswordChange} className="space-y-4">
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Current Password</label>
-                <input type="password" required value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">New Password</label>
-                <input type="password" required value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Confirm Password</label>
-                <input type="password" required value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark disabled:opacity-60">{loading ? 'Changing...' : 'Change Password'}</button>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Current Password</label>
+                <input type="password" required value={passwords.currentPassword} onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>New Password</label>
+                <input type="password" required value={passwords.newPassword} onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Confirm Password</label>
+                <input type="password" required value={passwords.confirmPassword} onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <button type="submit" disabled={loading} className="px-5 py-2.5 rounded-lg text-white text-xs font-semibold transition-colors hover:opacity-90 disabled:opacity-60 shadow-xs" style={{ background: 'var(--color-primary)' }}>
+                {loading ? 'Changing...' : 'Change Password'}
+              </button>
             </form>
           </div>
         )}
 
         {/* Platform Tab */}
         {activeTab === 'platform' && (
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 max-w-lg">
-            <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-5">Platform Settings</h3>
+          <div className="rounded-xl p-6 border max-w-lg shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <h3 className="text-base font-bold mb-5" style={{ color: 'var(--color-text)' }}>Platform Settings</h3>
             <form onSubmit={handleSettingsUpdate} className="space-y-4">
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Site Name</label>
-                <input type="text" value={settings.siteName || 'NextStep'} onChange={(e) => setSettings({ ...settings, siteName: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Support Email</label>
-                <input type="email" value={settings.supportEmail || ''} onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <div><label className="block text-xs font-medium text-gray-500 mb-1">Max Students Per Course</label>
-                <input type="number" value={settings.maxStudentsPerCourse || 100} onChange={(e) => setSettings({ ...settings, maxStudentsPerCourse: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
-              <div className="flex items-center gap-3">
-                <input type="checkbox" checked={settings.maintenanceMode === 'true' || settings.maintenanceMode === true} onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked ? 'true' : 'false' })} className="rounded border-sand text-primary focus:ring-primary" />
-                <label className="text-sm text-gray-600 dark-theme:text-gray-400">Maintenance Mode</label>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Site Name</label>
+                <input type="text" value={settings.siteName || 'NextStep'} onChange={(e) => setSettings({ ...settings, siteName: e.target.value })} className={inputClass} style={inputStyle} />
               </div>
-              <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark disabled:opacity-60">{loading ? 'Saving...' : 'Save Settings'}</button>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Support Email</label>
+                <input type="email" value={settings.supportEmail || ''} onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--color-text-muted)' }}>Max Students Per Course</label>
+                <input type="number" value={settings.maxStudentsPerCourse || 100} onChange={(e) => setSettings({ ...settings, maxStudentsPerCourse: e.target.value })} className={inputClass} style={inputStyle} />
+              </div>
+              <div className="flex items-center gap-3">
+                <input type="checkbox" id="mMode" checked={settings.maintenanceMode === 'true' || settings.maintenanceMode === true} onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked ? 'true' : 'false' })} className="rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)]" />
+                <label htmlFor="mMode" className="text-xs font-semibold cursor-pointer" style={{ color: 'var(--color-text)' }}>Maintenance Mode</label>
+              </div>
+              <button type="submit" disabled={loading} className="px-5 py-2.5 rounded-lg text-white text-xs font-semibold transition-colors hover:opacity-90 disabled:opacity-60 shadow-xs" style={{ background: 'var(--color-primary)' }}>
+                {loading ? 'Saving...' : 'Save Settings'}
+              </button>
             </form>
           </div>
         )}
@@ -140,4 +179,5 @@ const AdminSettings = () => {
     </AdminLayout>
   );
 };
+
 export default AdminSettings;

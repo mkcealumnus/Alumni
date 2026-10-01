@@ -4,6 +4,7 @@ import Loader from '@/components/ui/Loader';
 import Swal, { getSwalOpts } from '../../utils/swal';
 
 import { alumniApi } from '../../utils/api';
+import { Plus, Code2, Edit, Trash2, X } from 'lucide-react';
 
 const NewProblemSolving = () => {
   const [problems, setProblems] = useState([]);
@@ -38,67 +39,95 @@ const NewProblemSolving = () => {
       .then(async r => { if (r.isConfirmed) { await alumniApi.deleteProblem(id); fetchProblems(); } });
   };
 
-  const diffColors = { easy: 'bg-green-100 text-green-700', medium: 'bg-amber-100 text-amber-700', hard: 'bg-red-100 text-red-700' };
+  const diffColors = {
+    easy: { bg: 'rgba(16, 185, 129, 0.1)', text: '#059669' },
+    medium: { bg: 'rgba(245, 158, 11, 0.1)', text: '#D97706' },
+    hard: { bg: 'rgba(239, 68, 68, 0.1)', text: '#DC2626' }
+  };
+
+  const inputClass = 'w-full px-3.5 py-2.5 rounded-lg border outline-none text-xs font-medium transition-colors focus:border-[var(--color-primary)]';
+  const inputStyle = { background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' };
 
   return (
     <AdminLayout>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div><h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Coding Problems</h1><p className="text-sm text-gray-500 mt-1">{problems.length} problems</p></div>
-          <button onClick={openCreate} className="px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark flex items-center gap-2"><i className="ri-add-line"></i>New Problem</button>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>Coding Problems</h1>
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{problems.length} practice problems configured</p>
+          </div>
+          <button onClick={openCreate} className="px-4 py-2.5 rounded-lg text-white text-xs font-semibold flex items-center gap-2 shadow-xs transition-colors" style={{ background: 'var(--color-primary)' }}>
+            <Plus className="w-4 h-4" /> New Problem
+          </button>
         </div>
 
         {loading ? <Loader text="Loading problems..." /> :
-        problems.length === 0 ? <div className="text-center py-20 text-gray-400"><i className="ri-code-s-slash-line text-4xl mb-3 block"></i><p>No problems yet</p></div> :
-
-        <div className="space-y-3">
-          {problems.map(p => (
-            <div key={p.id} className="bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 hover:shadow-md transition-shadow">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"><i className="ri-code-s-slash-line text-primary"></i></div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 dark-theme:text-gray-100 text-sm">{p.title}</h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${diffColors[p.difficulty] || diffColors.easy}`}>{p.difficulty}</span>
-                      {p.category && <span className="text-xs text-gray-400">{p.category}</span>}
+        problems.length === 0 ? (
+          <div className="text-center py-16 rounded-xl border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
+            <Code2 className="w-10 h-10 mx-auto mb-3 opacity-40" />
+            <p className="text-xs font-medium">No problems added yet</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {problems.map(p => {
+              const diffStyle = diffColors[p.difficulty] || diffColors.easy;
+              return (
+                <div key={p.id} className="rounded-xl p-4 border transition-all hover:shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(18, 53, 91, 0.08)', color: 'var(--color-primary)' }}>
+                        <Code2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-xs" style={{ color: 'var(--color-text)' }}>{p.title}</h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider" style={{ background: diffStyle.bg, color: diffStyle.text }}>{p.difficulty}</span>
+                          {p.category && <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>{p.category}</span>}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => openEdit(p)} className="p-2 rounded-lg border transition-colors hover:opacity-80" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-primary)' }}>
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button onClick={() => handleDelete(p.id)} className="p-2 rounded-lg border transition-colors hover:opacity-80 text-red-600" style={{ background: 'rgba(239, 68, 68, 0.05)', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => openEdit(p)} className="px-3 py-1.5 rounded-lg bg-blue-50 text-xs text-blue-600 hover:bg-blue-100"><i className="ri-edit-line"></i></button>
-                  <button onClick={() => handleDelete(p.id)} className="px-3 py-1.5 rounded-lg bg-red-50 text-xs text-red-600 hover:bg-red-100"><i className="ri-delete-bin-line"></i></button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>}
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
-          <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 w-full max-w-lg mx-4 border border-sand dark-theme:border-gray-800 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-xs">
+          <div className="rounded-xl p-6 w-full max-w-lg mx-4 border max-h-[90vh] overflow-y-auto shadow-lg" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">{editItem ? 'Edit' : 'New'} Problem</h3>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-sand flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
+              <h3 className="text-base font-bold" style={{ color: 'var(--color-text)' }}>{editItem ? 'Edit' : 'New'} Problem</h3>
+              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg flex items-center justify-center border hover:opacity-80" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
+                <X className="w-4 h-4" />
+              </button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
-              <input type="text" placeholder="Problem Title" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
-              <textarea placeholder="Description" rows={3} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm resize-none" />
+              <input type="text" placeholder="Problem Title" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className={inputClass} style={inputStyle} />
+              <textarea placeholder="Description" rows={3} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className={`${inputClass} resize-none`} style={inputStyle} />
               <div className="grid grid-cols-2 gap-3">
-                <select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm">
+                <select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })} className={inputClass} style={inputStyle}>
                   <option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option>
                 </select>
-                <input type="text" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
+                <input type="text" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className={inputClass} style={inputStyle} />
               </div>
-              <input type="text" placeholder="Constraints" value={form.constraints} onChange={e => setForm({ ...form, constraints: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
+              <input type="text" placeholder="Constraints" value={form.constraints} onChange={e => setForm({ ...form, constraints: e.target.value })} className={inputClass} style={inputStyle} />
               <div className="grid grid-cols-2 gap-3">
-                <textarea placeholder="Sample Input" rows={2} value={form.sampleInput} onChange={e => setForm({ ...form, sampleInput: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm resize-none font-mono text-xs" />
-                <textarea placeholder="Sample Output" rows={2} value={form.sampleOutput} onChange={e => setForm({ ...form, sampleOutput: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm resize-none font-mono text-xs" />
+                <textarea placeholder="Sample Input" rows={2} value={form.sampleInput} onChange={e => setForm({ ...form, sampleInput: e.target.value })} className={`${inputClass} resize-none font-mono text-[11px]`} style={inputStyle} />
+                <textarea placeholder="Sample Output" rows={2} value={form.sampleOutput} onChange={e => setForm({ ...form, sampleOutput: e.target.value })} className={`${inputClass} resize-none font-mono text-[11px]`} style={inputStyle} />
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-cream">Cancel</button>
-                <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">{editItem ? 'Update' : 'Create'}</button>
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-lg border text-xs font-semibold hover:opacity-80" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>Cancel</button>
+                <button type="submit" className="flex-1 py-2.5 rounded-lg text-white text-xs font-semibold hover:opacity-90" style={{ background: 'var(--color-primary)' }}>{editItem ? 'Update' : 'Create'}</button>
               </div>
             </form>
           </div>

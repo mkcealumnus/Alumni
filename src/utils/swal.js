@@ -1,19 +1,18 @@
 import Swal from 'sweetalert2';
 
 /**
- * Dark-theme-aware SweetAlert2 configuration.
- * Call getSwalOpts() at fire-time so it picks up the current theme.
+ * Theme-aware SweetAlert2 configuration for MKCE Alumni.
+ * Uses the institutional navy/blue palette.
  */
 export const getSwalOpts = () => {
-  const isDark = document.body.classList.contains('dark-theme');
   return {
-    background: isDark ? '#1a1a1a' : '#fff',
-    color: isDark ? '#e8e8e8' : '#1f2937',
-    confirmButtonColor: '#d4a574',
+    background: '#FFFFFF',
+    color: '#0F172A',
+    confirmButtonColor: '#12355B',
   };
 };
 
-/** Fire a themed SweetAlert — merges dark-mode opts automatically */
+/** Fire a themed SweetAlert — merges theme opts automatically */
 export const swalFire = (opts = {}) => Swal.fire({ ...getSwalOpts(), ...opts });
 
 /** Themed success toast (auto-close, no confirm button) */
@@ -31,8 +30,8 @@ export const swalConfirm = (title, text, extra = {}) =>
     title,
     text,
     showCancelButton: true,
-    confirmButtonColor: '#dc2626',
-    cancelButtonColor: '#333',
+    confirmButtonColor: '#B91C1C',
+    cancelButtonColor: '#475569',
     confirmButtonText: 'Confirm',
     ...extra,
   });

@@ -4,6 +4,11 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import Loader from '@/components/ui/Loader';
 import Swal, { getSwalOpts } from '../../utils/swal';
 import { studentApi } from '../../utils/api';
+import {
+  ArrowLeft, BookOpen, FileText, Video, FileCode, Check, Search,
+  ChevronDown, ChevronUp, ExternalLink, Info, ChevronLeft, ChevronRight,
+  QrCode, BarChart2, Clock, Calendar, Play
+} from 'lucide-react';
 
 // Helper component to render rich text & code snippets for course reading lessons
 const TextLessonRenderer = ({ contentText }) => {
@@ -34,13 +39,13 @@ const TextLessonRenderer = ({ contentText }) => {
       if (listBuffer.length > 0) {
         if (listType === 'ol') {
           elements.push(
-            <ol key={key} className="list-decimal list-inside space-y-1 my-3 text-sm text-gray-700 dark-theme:text-gray-300 pl-2">
+            <ol key={key} className="list-decimal list-inside space-y-1 my-3 text-sm pl-2" style={{ color: 'var(--color-text)' }}>
               {listBuffer.map((item, idx) => <li key={idx}>{parseInlineFormatting(item)}</li>)}
             </ol>
           );
         } else {
           elements.push(
-            <ul key={key} className="list-disc list-inside space-y-1 my-3 text-sm text-gray-700 dark-theme:text-gray-300 pl-2">
+            <ul key={key} className="list-disc list-inside space-y-1 my-3 text-sm pl-2" style={{ color: 'var(--color-text)' }}>
               {listBuffer.map((item, idx) => <li key={idx}>{parseInlineFormatting(item)}</li>)}
             </ul>
           );
@@ -56,24 +61,24 @@ const TextLessonRenderer = ({ contentText }) => {
         const bodyRows = tableRows.slice(1).filter(r => !r.every(c => c.trim().startsWith('---') || c.trim() === ''));
 
         elements.push(
-          <div key={key} className="overflow-x-auto my-4 rounded-xl border border-sand dark-theme:border-gray-800">
+          <div key={key} className="overflow-x-auto my-4 rounded-xl border shadow-2xs" style={{ borderColor: 'var(--color-border)' }}>
             <table className="w-full text-left text-xs border-collapse">
               {headerRow && (
                 <thead>
-                  <tr className="bg-sand/30 dark-theme:bg-gray-800/80 border-b border-sand dark-theme:border-gray-800">
+                  <tr className="border-b" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                     {headerRow.map((cell, cIdx) => (
-                      <th key={cIdx} className="px-3.5 py-2.5 font-bold text-gray-800 dark-theme:text-gray-200">
+                      <th key={cIdx} className="px-3.5 py-2.5 font-bold" style={{ color: 'var(--color-text)' }}>
                         {parseInlineFormatting(cell.trim())}
                       </th>
                     ))}
                   </tr>
                 </thead>
               )}
-              <tbody className="divide-y divide-sand/50 dark-theme:divide-gray-800">
+              <tbody className="divide-y" style={{ borderColor: 'var(--color-border)' }}>
                 {bodyRows.map((row, rIdx) => (
-                  <tr key={rIdx} className="hover:bg-sand/10 dark-theme:hover:bg-gray-800/40 transition-colors">
+                  <tr key={rIdx} className="hover:bg-slate-50 transition-colors">
                     {row.map((cell, cIdx) => (
-                      <td key={cIdx} className="px-3.5 py-2 text-gray-700 dark-theme:text-gray-300">
+                      <td key={cIdx} className="px-3.5 py-2" style={{ color: 'var(--color-text)' }}>
                         {parseInlineFormatting(cell.trim())}
                       </td>
                     ))}
@@ -97,14 +102,14 @@ const TextLessonRenderer = ({ contentText }) => {
       return tokens.map((token, i) => {
         if (token.startsWith('`') && token.endsWith('`')) {
           return (
-            <code key={i} className="px-1.5 py-0.5 rounded bg-amber-500/10 dark-theme:bg-gray-800 text-amber-700 dark-theme:text-amber-300 font-mono text-[13px] border border-amber-500/20 dark-theme:border-gray-700">
+            <code key={i} className="px-1.5 py-0.5 rounded font-mono text-[13px] border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-primary)' }}>
               {token.slice(1, -1)}
             </code>
           );
         } else if ((token.startsWith('**') && token.endsWith('**')) || (token.startsWith('__') && token.endsWith('__'))) {
-          return <strong key={i} className="font-bold text-gray-900 dark-theme:text-gray-100">{token.slice(2, -2)}</strong>;
+          return <strong key={i} className="font-bold" style={{ color: 'var(--color-text)' }}>{token.slice(2, -2)}</strong>;
         } else if ((token.startsWith('*') && token.endsWith('*')) || (token.startsWith('_') && token.endsWith('_'))) {
-          return <em key={i} className="italic text-gray-800 dark-theme:text-gray-200">{token.slice(1, -1)}</em>;
+          return <em key={i} className="italic" style={{ color: 'var(--color-text)' }}>{token.slice(1, -1)}</em>;
         }
         return token;
       });
@@ -177,17 +182,17 @@ const TextLessonRenderer = ({ contentText }) => {
         const parsedHeading = parseInlineFormatting(headingText);
 
         if (level === 1) {
-          elements.push(<h1 key={i} className="text-xl sm:text-2xl font-bold text-gray-900 dark-theme:text-gray-100 mt-6 mb-3 pb-2 border-b border-sand dark-theme:border-gray-800">{parsedHeading}</h1>);
+          elements.push(<h1 key={i} className="text-xl sm:text-2xl font-bold mt-6 mb-3 pb-2 border-b" style={{ color: 'var(--color-text)', borderColor: 'var(--color-border)' }}>{parsedHeading}</h1>);
         } else if (level === 2) {
-          elements.push(<h2 key={i} className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mt-5 mb-2.5">{parsedHeading}</h2>);
+          elements.push(<h2 key={i} className="text-lg font-bold mt-5 mb-2.5" style={{ color: 'var(--color-text)' }}>{parsedHeading}</h2>);
         } else if (level === 3) {
-          elements.push(<h3 key={i} className="text-sm sm:text-base font-bold text-primary mt-4 mb-2">{parsedHeading}</h3>);
+          elements.push(<h3 key={i} className="text-sm sm:text-base font-bold mt-4 mb-2" style={{ color: 'var(--color-primary)' }}>{parsedHeading}</h3>);
         } else if (level === 4) {
-          elements.push(<h4 key={i} className="text-xs sm:text-sm font-bold text-amber-700 dark-theme:text-amber-400 mt-3.5 mb-1.5">{parsedHeading}</h4>);
+          elements.push(<h4 key={i} className="text-xs sm:text-sm font-bold text-amber-700 mt-3.5 mb-1.5">{parsedHeading}</h4>);
         } else if (level === 5) {
-          elements.push(<h5 key={i} className="text-xs font-bold text-gray-700 dark-theme:text-gray-300 mt-3 mb-1">{parsedHeading}</h5>);
+          elements.push(<h5 key={i} className="text-xs font-bold mt-3 mb-1" style={{ color: 'var(--color-text)' }}>{parsedHeading}</h5>);
         } else {
-          elements.push(<h6 key={i} className="text-[11px] font-bold text-gray-600 dark-theme:text-gray-400 mt-2 mb-1">{parsedHeading}</h6>);
+          elements.push(<h6 key={i} className="text-[11px] font-bold mt-2 mb-1" style={{ color: 'var(--color-text-muted)' }}>{parsedHeading}</h6>);
         }
         continue;
       }
@@ -196,8 +201,7 @@ const TextLessonRenderer = ({ contentText }) => {
       if (line.startsWith('> ')) {
         flushList(`list-${i}`);
         elements.push(
-          <div key={i} className="my-3 p-4 rounded-xl bg-primary/5 border-l-4 border-primary text-gray-700 dark-theme:text-gray-300 text-xs sm:text-sm leading-relaxed flex items-start gap-3">
-            <i className="ri-information-line text-lg text-primary flex-shrink-0 mt-0.5"></i>
+          <div key={i} className="my-3 p-4 rounded-xl border-l-4 text-xs sm:text-sm leading-relaxed flex items-start gap-3" style={{ background: 'rgba(18, 53, 91, 0.04)', borderColor: 'var(--color-primary)', color: 'var(--color-text)' }}>
             <div>{parseInlineFormatting(line.replace('> ', ''))}</div>
           </div>
         );
@@ -224,7 +228,7 @@ const TextLessonRenderer = ({ contentText }) => {
 
       // Horizontal Rule
       if (line.trim() === '---' || line.trim() === '***') {
-        elements.push(<hr key={i} className="my-5 border-sand dark-theme:border-gray-800" />);
+        elements.push(<hr key={i} className="my-5 border" style={{ borderColor: 'var(--color-border)' }} />);
         continue;
       }
 
@@ -234,7 +238,7 @@ const TextLessonRenderer = ({ contentText }) => {
       }
 
       elements.push(
-        <p key={i} className="my-2.5 text-xs sm:text-sm text-gray-700 dark-theme:text-gray-300 leading-relaxed">
+        <p key={i} className="my-2.5 text-xs sm:text-sm leading-relaxed" style={{ color: 'var(--color-text)' }}>
           {parseInlineFormatting(line)}
         </p>
       );
@@ -346,112 +350,120 @@ const CourseViewer = () => {
 
   return (
     <DashboardLayout pageTitle={course.title} role="student">
-      <div className="space-y-5">
+      <div className="space-y-5 max-w-7xl mx-auto">
         {/* Back + Header + Inline Course Information Badges */}
-        <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-4 border border-sand dark-theme:border-gray-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="rounded-xl p-4 border shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <div className="flex items-center gap-3 min-w-0">
-            <button onClick={() => navigate('/student/my-courses')} className="w-9 h-9 rounded-xl bg-sand/30 dark-theme:bg-gray-800 flex items-center justify-center hover:bg-sand/60 dark-theme:hover:bg-gray-700 transition-colors flex-shrink-0">
-              <i className="ri-arrow-left-line text-gray-600 dark-theme:text-gray-300 text-lg"></i>
+            <button
+              onClick={() => navigate('/student/my-courses')}
+              className="w-9 h-9 rounded-lg border flex items-center justify-center transition-colors hover:opacity-80 shrink-0"
+              style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
+            >
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div className="min-w-0">
-              <h1 className="text-base sm:text-lg font-bold text-gray-800 dark-theme:text-gray-100 truncate">{course.title}</h1>
-              <p className="text-xs text-gray-400 mt-0.5">{course.mentorName && `By ${course.mentorName} • `}{course.category || 'General'} • {course.courseType || 'Theory'}</p>
+              <h1 className="text-base sm:text-lg font-bold truncate" style={{ color: 'var(--color-text)' }}>{course.title}</h1>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{course.mentorName && `By ${course.mentorName} • `}{course.category || 'General'} • {course.courseType || 'Theory'}</p>
             </div>
           </div>
 
-          {/* Inline Course Information Badges (Code, Difficulty, Duration, Semester, Lessons Count) */}
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap text-xs flex-shrink-0">
+          {/* Inline Course Information Badges */}
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap text-xs shrink-0">
             {course.courseCode && (
-              <div className="px-3 py-1.5 rounded-xl bg-primary/10 text-primary font-bold border border-primary/20 flex items-center gap-1.5">
-                <i className="ri-qr-code-line text-sm"></i>
+              <div className="px-3 py-1.5 rounded-lg font-bold border flex items-center gap-1.5" style={{ background: 'rgba(18, 53, 91, 0.08)', borderColor: 'var(--color-border)', color: 'var(--color-primary)' }}>
+                <QrCode className="w-3.5 h-3.5" />
                 <span>{course.courseCode}</span>
               </div>
             )}
             {course.difficulty && (
-              <div className="px-3 py-1.5 rounded-xl bg-sand/40 dark-theme:bg-gray-800 text-gray-700 dark-theme:text-gray-200 font-semibold border border-sand dark-theme:border-gray-700 flex items-center gap-1.5">
-                <i className="ri-bar-chart-line text-xs text-gray-400"></i>
+              <div className="px-3 py-1.5 rounded-lg font-semibold border flex items-center gap-1.5" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}>
+                <BarChart2 className="w-3.5 h-3.5 text-[var(--color-primary)]" />
                 <span className="capitalize">{course.difficulty}</span>
               </div>
             )}
             {course.duration && (
-              <div className="px-3 py-1.5 rounded-xl bg-sand/40 dark-theme:bg-gray-800 text-gray-700 dark-theme:text-gray-200 font-semibold border border-sand dark-theme:border-gray-700 flex items-center gap-1.5">
-                <i className="ri-time-line text-xs text-gray-400"></i>
+              <div className="px-3 py-1.5 rounded-lg font-semibold border flex items-center gap-1.5" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}>
+                <Clock className="w-3.5 h-3.5 text-[var(--color-primary)]" />
                 <span>{course.duration}</span>
               </div>
             )}
             {course.semester && (
-              <div className="px-3 py-1.5 rounded-xl bg-sand/40 dark-theme:bg-gray-800 text-gray-700 dark-theme:text-gray-200 font-semibold border border-sand dark-theme:border-gray-700 flex items-center gap-1.5">
-                <i className="ri-calendar-line text-xs text-gray-400"></i>
+              <div className="px-3 py-1.5 rounded-lg font-semibold border flex items-center gap-1.5" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}>
+                <Calendar className="w-3.5 h-3.5 text-[var(--color-primary)]" />
                 <span>{course.semester}</span>
               </div>
             )}
-            <div className="px-3 py-1.5 rounded-xl bg-sand/40 dark-theme:bg-gray-800 text-gray-700 dark-theme:text-gray-200 font-semibold border border-sand dark-theme:border-gray-700 flex items-center gap-1.5">
-              <i className="ri-book-read-line text-xs text-gray-400"></i>
+            <div className="px-3 py-1.5 rounded-lg font-semibold border flex items-center gap-1.5" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}>
+              <BookOpen className="w-3.5 h-3.5 text-[var(--color-primary)]" />
               <span>{(course.content || []).length} lessons</span>
             </div>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-4 border border-sand dark-theme:border-gray-800 shadow-sm">
+        <div className="rounded-xl p-4 border shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-gray-600 dark-theme:text-gray-400">Course Completion Progress</span>
-            <div className="flex items-center gap-3 text-xs text-gray-400">
-              <span>{completedTopics.length}/{totalTopics} topics marked complete</span>
-              <span className="font-bold text-primary text-sm">{progress}%</span>
+            <span className="text-xs font-semibold" style={{ color: 'var(--color-text)' }}>Course Completion Progress</span>
+            <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--color-text-muted)' }}>
+              <span>{completedTopics.length}/{totalTopics} topics completed</span>
+              <span className="font-bold text-sm" style={{ color: 'var(--color-primary)' }}>{progress}%</span>
             </div>
           </div>
-          <div className="w-full h-2.5 bg-sand dark-theme:bg-gray-700 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-primary to-primary-dark rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
+          <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: 'var(--color-border)' }}>
+            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, background: 'var(--color-primary)' }}></div>
           </div>
         </div>
 
         {/* Main Content Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
-          {/* Sidebar Navigation Panel (Sticky / Constant on Scroll) */}
+          {/* Sidebar Navigation Panel */}
           <div className="lg:col-span-1 space-y-3 lg:sticky lg:top-20 self-start">
             {/* Sidebar Tab Switcher */}
-            <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-1.5 border border-sand dark-theme:border-gray-800 flex items-center gap-1 shadow-xs">
+            <div className="rounded-xl p-1 border flex items-center gap-1 shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
               <button
                 onClick={() => setSidebarTab('lessons')}
-                className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${sidebarTab === 'lessons' ? 'bg-primary text-white shadow-xs' : 'text-gray-500 hover:text-gray-800 dark-theme:hover:text-gray-200'}`}
+                className="flex-1 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                style={{
+                  background: sidebarTab === 'lessons' ? 'var(--color-primary)' : 'transparent',
+                  color: sidebarTab === 'lessons' ? '#ffffff' : 'var(--color-text-muted)'
+                }}
               >
-                <i className="ri-list-check-2 text-sm"></i>
+                <BookOpen className="w-3.5 h-3.5" />
                 <span>All Lessons ({(course.content || []).length})</span>
               </button>
               <button
                 onClick={() => setSidebarTab('units')}
-                className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${sidebarTab === 'units' ? 'bg-primary text-white shadow-xs' : 'text-gray-500 hover:text-gray-800 dark-theme:hover:text-gray-200'}`}
+                className="flex-1 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                style={{
+                  background: sidebarTab === 'units' ? 'var(--color-primary)' : 'transparent',
+                  color: sidebarTab === 'units' ? '#ffffff' : 'var(--color-text-muted)'
+                }}
               >
-                <i className="ri-folders-line text-sm"></i>
+                <FileText className="w-3.5 h-3.5" />
                 <span>Units & Topics</span>
               </button>
             </div>
 
             {/* SIDEBAR TAB 1: ALL READING LESSONS DIRECTORY */}
             {sidebarTab === 'lessons' && (
-              <div className="bg-white dark-theme:bg-gray-900 rounded-2xl border border-sand dark-theme:border-gray-800 shadow-sm overflow-hidden">
+              <div className="rounded-xl border shadow-2xs overflow-hidden" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
                 {/* Search Filter */}
-                <div className="p-3 border-b border-sand dark-theme:border-gray-800">
+                <div className="p-3 border-b" style={{ borderColor: 'var(--color-border)' }}>
                   <div className="relative">
-                    <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Search lessons..."
                       value={lessonSearch}
                       onChange={(e) => setLessonSearch(e.target.value)}
-                      className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-sand/30 dark-theme:bg-gray-800 text-xs text-gray-800 dark-theme:text-gray-200 focus:outline-none focus:ring-1 focus:ring-primary border border-transparent"
+                      className="w-full pl-8 pr-3 py-1.5 rounded-lg text-xs outline-none border transition-colors focus:border-[var(--color-primary)]"
+                      style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
                     />
-                    {lessonSearch && (
-                      <button onClick={() => setLessonSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                        <i className="ri-close-line text-xs"></i>
-                      </button>
-                    )}
                   </div>
                 </div>
 
-                {/* Lessons Scrollable List (Constant height tied to viewport) */}
-                <div className="divide-y divide-sand/50 dark-theme:divide-gray-800 max-h-[calc(100vh-230px)] overflow-y-auto">
+                {/* Lessons Scrollable List */}
+                <div className="divide-y max-h-[calc(100vh-230px)] overflow-y-auto" style={{ borderColor: 'var(--color-border)' }}>
                   {(course.content || [])
                     .filter(c => !lessonSearch || c.title.toLowerCase().includes(lessonSearch.toLowerCase()) || (c.subjectTitle || '').toLowerCase().includes(lessonSearch.toLowerCase()))
                     .map((c, idx) => {
@@ -460,17 +472,21 @@ const CourseViewer = () => {
                         <button
                           key={c.id}
                           onClick={() => setActiveContent(c)}
-                          className={`w-full px-3.5 py-3 flex items-center gap-2.5 text-left hover:bg-sand/30 dark-theme:hover:bg-gray-800/50 transition-all ${isActive ? 'bg-primary/10 dark-theme:bg-primary/20 border-l-4 border-primary font-medium' : ''}`}
+                          className="w-full px-3.5 py-3 flex items-center gap-2.5 text-left transition-colors"
+                          style={{
+                            background: isActive ? 'rgba(18, 53, 91, 0.08)' : 'transparent',
+                            borderLeft: isActive ? '3px solid var(--color-primary)' : '3px solid transparent'
+                          }}
                         >
-                          <span className="text-xs font-bold text-gray-400 w-5 text-center flex-shrink-0">{idx + 1}</span>
-                          <span className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${contentColors[c.contentType] || 'bg-sand text-gray-500'}`}>
-                            <i className={`${contentIcons[c.contentType] || 'ri-file-line'} text-xs`}></i>
+                          <span className="text-xs font-bold w-5 text-center shrink-0" style={{ color: 'var(--color-text-muted)' }}>{idx + 1}</span>
+                          <span className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-primary)' }}>
+                            <FileText className="w-3.5 h-3.5" />
                           </span>
                           <div className="flex-1 min-w-0">
-                            <p className={`text-xs font-semibold truncate ${isActive ? 'text-primary' : 'text-gray-800 dark-theme:text-gray-200'}`}>{c.title}</p>
-                            <p className="text-[10px] text-gray-400 truncate mt-0.5">{c.subjectTitle || 'General'}</p>
+                            <p className="text-xs font-bold truncate" style={{ color: isActive ? 'var(--color-primary)' : 'var(--color-text)' }}>{c.title}</p>
+                            <p className="text-[10px] truncate mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{c.subjectTitle || 'General'}</p>
                           </div>
-                          {isActive && <i className="ri-play-fill text-primary text-sm flex-shrink-0"></i>}
+                          {isActive && <Play className="w-3.5 h-3.5 fill-current text-[var(--color-primary)] shrink-0" />}
                         </button>
                       );
                     })}
@@ -482,39 +498,39 @@ const CourseViewer = () => {
             {sidebarTab === 'units' && (
               <div className="space-y-3 max-h-[calc(100vh-230px)] overflow-y-auto pr-1">
                 {(course.subjects || []).length === 0 ? (
-                  <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 border border-sand dark-theme:border-gray-800 text-center">
-                    <p className="text-xs text-gray-400">No units available</p>
+                  <div className="rounded-xl p-4 border text-center" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                    <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>No units available</p>
                   </div>
                 ) : (
                   (course.subjects || []).map((sub, si) => (
-                    <div key={sub.id} className="bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 overflow-hidden shadow-sm">
-                      <button onClick={() => toggleSubject(sub.id)} className="w-full px-4 py-3 flex items-center justify-between hover:bg-cream dark-theme:hover:bg-gray-800/50 transition-colors">
+                    <div key={sub.id} className="rounded-xl border overflow-hidden shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                      <button onClick={() => toggleSubject(sub.id)} className="w-full px-4 py-3 flex items-center justify-between transition-colors hover:opacity-90">
                         <div className="flex items-center gap-2.5">
-                          <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center flex-shrink-0">{si + 1}</span>
-                          <span className="text-xs font-semibold text-gray-800 dark-theme:text-gray-100 text-left line-clamp-1">{sub.title}</span>
+                          <span className="w-6 h-6 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0" style={{ background: 'rgba(18, 53, 91, 0.08)', color: 'var(--color-primary)' }}>{si + 1}</span>
+                          <span className="text-xs font-bold text-left line-clamp-1" style={{ color: 'var(--color-text)' }}>{sub.title}</span>
                         </div>
-                        <i className={`ri-arrow-${expandedSubjects[sub.id] ? 'up' : 'down'}-s-line text-gray-400`}></i>
+                        {expandedSubjects[sub.id] ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                       </button>
                       {expandedSubjects[sub.id] && (sub.topics || []).length > 0 && (
-                        <div className="px-3 pb-3 space-y-1 border-t border-sand/40 dark-theme:border-gray-800/60 pt-2">
+                        <div className="px-3 pb-3 space-y-1 border-t pt-2" style={{ borderColor: 'var(--color-border)' }}>
                           {sub.topics.map((topic, ti) => {
                             const isCompleted = completedTopics.includes(topic.id);
                             return (
-                              <div key={topic.id} className="flex items-center gap-2 pl-3 py-1.5 rounded-lg hover:bg-sand/30 dark-theme:hover:bg-gray-800/40 transition-colors group">
+                              <div key={topic.id} className="flex items-center gap-2 pl-3 py-1.5 rounded-lg transition-colors group">
                                 <button
                                   onClick={() => toggleTopic(topic.id)}
-                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${isCompleted ? 'bg-green-500 border-green-500 text-white' : 'border-sand dark-theme:border-gray-600 hover:border-primary'}`}
+                                  className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${isCompleted ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-gray-300 hover:border-[var(--color-primary)]'}`}
                                   title={isCompleted ? "Mark incomplete" : "Mark complete"}
                                 >
-                                  {isCompleted && <i className="ri-check-line text-[10px]"></i>}
+                                  {isCompleted && <Check className="w-3 h-3" />}
                                 </button>
                                 <span
                                   onClick={() => {
-                                    // Locate matching content if available
                                     const matchingContent = allContents.find(c => c.subjectId === sub.id && c.title.includes(topic.title.split(' ')[0]));
                                     if (matchingContent) setActiveContent(matchingContent);
                                   }}
-                                  className={`text-xs cursor-pointer select-none transition-colors ${isCompleted ? 'text-gray-400 line-through' : 'text-gray-700 dark-theme:text-gray-300 hover:text-primary'}`}
+                                  className={`text-xs cursor-pointer select-none transition-colors ${isCompleted ? 'line-through opacity-60' : 'hover:text-[var(--color-primary)]'}`}
+                                  style={{ color: 'var(--color-text)' }}
                                 >
                                   {si + 1}.{ti + 1} {topic.title}
                                 </span>
@@ -528,33 +544,32 @@ const CourseViewer = () => {
                 )}
               </div>
             )}
-
           </div>
 
           {/* Main Content Reader */}
           <div className="lg:col-span-2 space-y-4">
             {(course.content || []).length === 0 ? (
-              <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-12 border border-sand dark-theme:border-gray-800 text-center">
-                <i className="ri-folder-open-line text-5xl text-gray-300 mb-3 block"></i>
-                <p className="text-gray-500 text-sm">No content available for this course yet</p>
+              <div className="rounded-xl p-12 border text-center shadow-2xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-30" style={{ color: 'var(--color-text-muted)' }} />
+                <p className="text-xs font-semibold" style={{ color: 'var(--color-text-muted)' }}>No content available for this course yet</p>
               </div>
             ) : (
               <>
                 {/* Active Content Display */}
                 {activeContent && (
-                  <div className="bg-white dark-theme:bg-gray-900 rounded-2xl border border-sand dark-theme:border-gray-800 overflow-hidden shadow-sm flex flex-col h-[calc(100vh-200px)] min-h-[520px]">
-                    {/* Lesson Header (Fixed Top) */}
-                    <div className="px-5 py-4 border-b border-sand dark-theme:border-gray-800 flex items-center justify-between bg-sand/10 dark-theme:bg-gray-800/30 flex-shrink-0">
+                  <div className="rounded-xl border overflow-hidden shadow-2xs flex flex-col h-[calc(100vh-200px)] min-h-[520px]" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                    {/* Lesson Header */}
+                    <div className="px-5 py-4 border-b flex items-center justify-between shrink-0" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                       <div>
-                        <h3 className="font-bold text-gray-800 dark-theme:text-gray-100 text-base">{activeContent.title}</h3>
-                        <p className="text-xs text-gray-400 mt-0.5">{activeContent.subjectTitle || 'General'} • {activeContent.contentType.toUpperCase()} Lesson</p>
+                        <h3 className="font-bold text-base" style={{ color: 'var(--color-text)' }}>{activeContent.title}</h3>
+                        <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{activeContent.subjectTitle || 'General'} • {activeContent.contentType.toUpperCase()} Lesson</p>
                       </div>
-                      <span className={`w-9 h-9 rounded-xl ${contentColors[activeContent.contentType] || 'bg-sand text-gray-500'} flex items-center justify-center shadow-xs`}>
-                        <i className={`${contentIcons[activeContent.contentType] || 'ri-file-line'} text-lg`}></i>
+                      <span className="w-9 h-9 rounded-lg border flex items-center justify-center shrink-0" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-primary)' }}>
+                        <FileText className="w-4 h-4" />
                       </span>
                     </div>
 
-                    {/* Lesson Body (Independently Scrollable Content Area) */}
+                    {/* Lesson Body */}
                     <div className="p-5 sm:p-6 flex-1 overflow-y-auto">
                       {activeContent.contentType === 'video' && activeContent.contentData && (
                         <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
@@ -573,9 +588,11 @@ const CourseViewer = () => {
                       {activeContent.contentType === 'pdf' && activeContent.contentData && (
                         <div className="space-y-3 mb-4">
                           <div className="flex items-center justify-end">
-                            <a href={activeContent.contentData} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-medium hover:bg-red-500/20 inline-flex items-center gap-1.5 transition-colors"><i className="ri-external-link-line"></i>Open in New Tab</a>
+                            <a href={activeContent.contentData} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 border border-red-200 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors hover:bg-red-100">
+                              <ExternalLink className="w-3.5 h-3.5" /> Open in New Tab
+                            </a>
                           </div>
-                          <div className="rounded-xl overflow-hidden border border-sand dark-theme:border-gray-800" style={{ height: '70vh' }}>
+                          <div className="rounded-xl overflow-hidden border" style={{ height: '70vh', borderColor: 'var(--color-border)' }}>
                             <iframe src={activeContent.contentData} title={activeContent.title} className="w-full h-full border-0" />
                           </div>
                         </div>
@@ -586,21 +603,22 @@ const CourseViewer = () => {
                       )}
 
                       {activeContent.description && (
-                        <div className="mt-6 text-xs text-gray-500 border-t border-sand dark-theme:border-gray-800 pt-4 flex items-center gap-2">
-                          <i className="ri-information-line text-primary text-sm"></i>
+                        <div className="mt-6 text-xs border-t pt-4 flex items-center gap-2" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
+                          <Info className="w-4 h-4 text-[var(--color-primary)] shrink-0" />
                           <span>{activeContent.description}</span>
                         </div>
                       )}
                     </div>
 
-                    {/* Lesson Reader Navigation Footer (Fixed Bottom) */}
-                    <div className="px-5 py-3.5 border-t border-sand dark-theme:border-gray-800 flex items-center justify-between gap-3 flex-shrink-0 bg-sand/10 dark-theme:bg-gray-800/30">
+                    {/* Lesson Reader Navigation Footer */}
+                    <div className="px-5 py-3.5 border-t flex items-center justify-between gap-3 shrink-0" style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)' }}>
                       {prevContent ? (
                         <button
                           onClick={() => setActiveContent(prevContent)}
-                          className="px-4 py-2 rounded-xl bg-sand/30 dark-theme:bg-gray-800 hover:bg-sand/60 dark-theme:hover:bg-gray-700 text-gray-700 dark-theme:text-gray-200 text-xs font-medium inline-flex items-center gap-2 transition-colors"
+                          className="px-4 py-2 rounded-lg border text-xs font-semibold inline-flex items-center gap-1.5 transition-colors hover:opacity-80"
+                          style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
                         >
-                          <i className="ri-arrow-left-s-line text-base"></i>
+                          <ChevronLeft className="w-4 h-4" />
                           <span className="truncate max-w-[150px] sm:max-w-[200px]">Previous Lesson</span>
                         </button>
                       ) : <div />}
@@ -608,10 +626,11 @@ const CourseViewer = () => {
                       {nextContent ? (
                         <button
                           onClick={() => setActiveContent(nextContent)}
-                          className="px-4 py-2 rounded-xl bg-primary text-white hover:bg-primary-dark text-xs font-medium inline-flex items-center gap-2 transition-colors ml-auto shadow-xs"
+                          className="px-4 py-2 rounded-lg text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-colors hover:opacity-90 ml-auto shadow-2xs"
+                          style={{ background: 'var(--color-primary)' }}
                         >
                           <span className="truncate max-w-[150px] sm:max-w-[200px]">Next Lesson</span>
-                          <i className="ri-arrow-right-s-line text-base"></i>
+                          <ChevronRight className="w-4 h-4" />
                         </button>
                       ) : <div />}
                     </div>

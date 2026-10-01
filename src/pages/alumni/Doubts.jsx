@@ -6,6 +6,7 @@ import Swal, { getSwalOpts } from '../../utils/swal';
 
 import { alumniApi } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
+import { ArrowLeft, User, BookOpen, Clock, Flag, Send, CheckCircle2, MessageSquare, ArrowDown, HelpCircle, UserCheck, AlertCircle } from 'lucide-react';
 
 const POLL_INTERVAL = 3000;
 
@@ -173,84 +174,81 @@ const AlumniDoubts = () => {
     }
   };
 
-  const statusColor = (s) => ({
-    open: 'bg-amber-100 text-amber-800 dark-theme:bg-amber-900/30 dark-theme:text-amber-300',
-    'in-progress': 'bg-blue-100 text-blue-800 dark-theme:bg-blue-900/30 dark-theme:text-blue-300',
-    resolved: 'bg-green-100 text-green-800 dark-theme:bg-green-900/30 dark-theme:text-green-300',
-    closed: 'bg-sand text-gray-800 dark-theme:bg-gray-700 dark-theme:text-gray-300'
-  })[s] || 'bg-sand text-gray-800';
+  const statusBadge = (s) => {
+    switch (s) {
+      case 'open':
+        return { bg: 'rgba(245, 158, 11, 0.1)', color: '#D97706', label: 'Open' };
+      case 'in-progress':
+        return { bg: 'rgba(59, 130, 246, 0.1)', color: '#2563EB', label: 'In Progress' };
+      case 'resolved':
+        return { bg: 'rgba(16, 185, 129, 0.1)', color: '#059669', label: 'Resolved' };
+      default:
+        return { bg: 'var(--color-background)', color: 'var(--color-text-muted)', label: s };
+    }
+  };
 
   const priorityColor = (p) => ({
-    high: 'text-red-500',
-    medium: 'text-amber-500',
-    low: 'text-green-500'
-  })[p] || 'text-gray-500';
+    high: '#DC2626',
+    medium: '#D97706',
+    low: '#059669'
+  })[p] || 'var(--color-text-muted)';
 
   const filtered = filter === 'all' ? doubts : doubts.filter(d => d.status === filter);
 
-  // ===================== DETAIL VIEW =====================
   // ===================== DETAIL VIEW (REAL-TIME CHAT) =====================
   if (selectedDoubt) {
     return (
       <Layout {...layoutProps}>
-        <style>{`
-          @keyframes msgSlideIn {
-            from { opacity: 0; transform: translateY(12px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-          }
-          .chat-msg { animation: msgSlideIn 0.25s ease-out both; }
-          .chat-msg-sending { opacity: 0.7; }
-          @keyframes livePulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-          }
-          .live-dot { animation: livePulse 2s infinite; }
-        `}</style>
         <div className="max-w-4xl mx-auto flex flex-col" style={{ height: 'calc(100vh - 7rem)' }}>
           {/* Top bar */}
           <div className="flex items-center gap-3 mb-3">
-            <button onClick={() => setSelectedDoubt(null)} className="flex items-center gap-2 text-primary hover:text-primary-dark font-medium transition">
-              <i className="ri-arrow-left-line text-lg"></i> Back
+            <button onClick={() => setSelectedDoubt(null)} className="flex items-center gap-2 text-xs font-semibold transition hover:opacity-80" style={{ color: 'var(--color-primary)' }}>
+              <ArrowLeft className="w-4 h-4" /> Back to Doubts
             </button>
-            <div className="ml-auto flex items-center gap-2 text-xs text-gray-400 dark-theme:text-gray-500">
-              <span className="live-dot inline-block w-2 h-2 rounded-full bg-green-500"></span>
-              Live
+            <div className="ml-auto flex items-center gap-2 text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Live Sync
             </div>
           </div>
 
-          {detailLoading && !activeDoubt ? null : (
-            <div className="flex-1 flex flex-col bg-white dark-theme:bg-gray-900 rounded-xl shadow-lg overflow-hidden min-h-0">
+          {detailLoading && !selectedDoubt ? null : (
+            <div className="flex-1 flex flex-col rounded-xl border shadow-xs overflow-hidden min-h-0" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
               {/* Chat Header */}
-              <div className="px-5 py-4 border-b dark-theme:border-gray-700 bg-white/80 dark-theme:bg-gray-800/80 backdrop-blur-sm flex-shrink-0">
+              <div className="px-5 py-4 border-b flex-shrink-0" style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface)' }}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <h2 className="text-lg font-bold text-gray-900 dark-theme:text-gray-100 truncate">{selectedDoubt.title}</h2>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 dark-theme:text-gray-400 flex-wrap">
-                      <span><i className="ri-user-line mr-1"></i>{selectedDoubt.studentName}</span>
-                      {selectedDoubt.studentEmail && <span className="text-gray-400">{selectedDoubt.studentEmail}</span>}
-                      {selectedDoubt.courseTitle && <span className="text-primary"><i className="ri-book-open-line mr-1"></i>{selectedDoubt.courseTitle}</span>}
-                      <span><i className="ri-time-line mr-1"></i>{relativeTime(selectedDoubt.createdAt)}</span>
+                    <h2 className="text-base font-bold truncate" style={{ color: 'var(--color-text)' }}>{selectedDoubt.title}</h2>
+                    <div className="flex items-center gap-3 mt-1 text-xs flex-wrap" style={{ color: 'var(--color-text-muted)' }}>
+                      <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{selectedDoubt.studentName}</span>
+                      {selectedDoubt.studentEmail && <span>{selectedDoubt.studentEmail}</span>}
+                      {selectedDoubt.courseTitle && <span className="flex items-center gap-1 font-semibold" style={{ color: 'var(--color-primary)' }}><BookOpen className="w-3.5 h-3.5" />{selectedDoubt.courseTitle}</span>}
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{relativeTime(selectedDoubt.createdAt)}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor(selectedDoubt.status)}`}>
-                      {selectedDoubt.status}
-                    </span>
-                    <span className={priorityColor(selectedDoubt.priority)}><i className="ri-flag-fill"></i></span>
+                    {(() => {
+                      const badge = statusBadge(selectedDoubt.status);
+                      return (
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider" style={{ background: badge.bg, color: badge.color }}>
+                          {badge.label}
+                        </span>
+                      );
+                    })()}
+                    <Flag className="w-4 h-4" style={{ color: priorityColor(selectedDoubt.priority) }} />
                   </div>
                 </div>
                 {selectedDoubt.description && (
-                  <p className="mt-2 text-sm text-gray-500 dark-theme:text-gray-400 line-clamp-2">{selectedDoubt.description}</p>
+                  <p className="mt-2 text-xs line-clamp-2" style={{ color: 'var(--color-text-muted)' }}>{selectedDoubt.description}</p>
                 )}
                 <div className="mt-2 flex items-center gap-2 text-xs flex-wrap">
                   {selectedDoubt.alumniName && (
-                    <span className="bg-blue-50 dark-theme:bg-blue-900/20 text-blue-700 dark-theme:text-blue-300 px-2 py-0.5 rounded font-medium">
-                      <i className="ri-user-star-line mr-1"></i>Assigned: {selectedDoubt.alumniName}
+                    <span className="px-2 py-0.5 rounded font-medium flex items-center gap-1" style={{ background: 'rgba(18,53,91,0.08)', color: 'var(--color-primary)' }}>
+                      <UserCheck className="w-3.5 h-3.5" /> Assigned: {selectedDoubt.alumniName}
                     </span>
                   )}
                   {!selectedDoubt.assignedAlumniId && (
-                    <span className="bg-amber-50 dark-theme:bg-amber-900/20 text-amber-700 dark-theme:text-amber-300 px-2 py-0.5 rounded font-medium animate-pulse">
-                      <i className="ri-alert-line mr-1"></i>Unassigned — reply to claim
+                    <span className="px-2 py-0.5 rounded font-medium flex items-center gap-1 animate-pulse" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#D97706' }}>
+                      <AlertCircle className="w-3.5 h-3.5" /> Unassigned — reply to claim
                     </span>
                   )}
                 </div>
@@ -261,13 +259,13 @@ const AlumniDoubts = () => {
                 ref={chatContainerRef}
                 onScroll={handleChatScroll}
                 className="flex-1 overflow-y-auto px-5 py-4 space-y-3 relative"
-                style={{ scrollBehavior: 'smooth' }}
+                style={{ scrollBehavior: 'smooth', background: 'var(--color-background)' }}
               >
                 {replies.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-gray-400 dark-theme:text-gray-500">
-                    <i className="ri-chat-smile-3-line text-5xl mb-3 opacity-40"></i>
-                    <p className="text-sm font-medium">No replies yet</p>
-                    <p className="text-xs mt-1">Be the first to respond — your reply will appear here live</p>
+                  <div className="flex flex-col items-center justify-center h-full" style={{ color: 'var(--color-text-muted)' }}>
+                    <MessageSquare className="w-10 h-10 mb-3 opacity-40" />
+                    <p className="text-xs font-semibold">No replies yet</p>
+                    <p className="text-[11px] mt-1">Be the first to respond — your reply will appear here live</p>
                   </div>
                 ) : (
                   <>
@@ -277,53 +275,48 @@ const AlumniDoubts = () => {
                       return (
                         <div
                           key={r.id}
-                          className={`flex ${isStudent ? 'justify-start' : 'justify-end'} chat-msg ${r._sending ? 'chat-msg-sending' : ''}`}
-                          style={{ animationDelay: `${Math.min(idx * 0.03, 0.3)}s` }}
+                          className={`flex ${isStudent ? 'justify-start' : 'justify-end'} ${r._sending ? 'opacity-70' : ''}`}
                         >
                           {/* Avatar for student */}
                           {isStudent && (
                             <div className="flex-shrink-0 mr-2 mt-auto">
                               {showAvatar ? (
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                                <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: 'var(--color-accent)' }}>
                                   {r.authorName?.charAt(0)?.toUpperCase() || 'S'}
                                 </div>
-                              ) : <div className="w-8" />}
+                              ) : <div className="w-7" />}
                             </div>
                           )}
 
                           <div className={`max-w-[75%] ${!isStudent ? 'order-1' : ''}`}>
                             {showAvatar && (
-                              <p className={`text-xs font-medium mb-1 ${!isStudent ? 'text-right text-primary/70' : 'text-gray-500 dark-theme:text-gray-400'}`}>
+                              <p className={`text-[10px] font-semibold mb-1 ${!isStudent ? 'text-right' : ''}`} style={{ color: 'var(--color-text-muted)' }}>
                                 {r.authorName}
                                 {r.authorRole === 'student' && ' · Student'}
                                 {r.authorRole === 'alumni' && ' · Alumni'}
                                 {r.authorRole === 'admin' && ' · Admin'}
                               </p>
                             )}
-                            <div className={`rounded-2xl px-4 py-2.5 shadow-sm ${
-                              !isStudent
-                                ? 'bg-primary text-white rounded-br-md'
-                                : 'bg-sand dark-theme:bg-gray-700 text-gray-900 dark-theme:text-gray-100 rounded-bl-md'
-                            }`}>
-                              <p className="text-sm whitespace-pre-wrap leading-relaxed">{r.content}</p>
+                            <div className="rounded-2xl px-4 py-2.5 shadow-2xs" style={{
+                              background: !isStudent ? 'var(--color-primary)' : 'var(--color-surface)',
+                              color: !isStudent ? '#ffffff' : 'var(--color-text)',
+                              border: isStudent ? '1px solid var(--color-border)' : 'none'
+                            }}>
+                              <p className="text-xs whitespace-pre-wrap leading-relaxed">{r.content}</p>
                             </div>
-                            <p className={`text-[10px] mt-1 ${!isStudent ? 'text-right' : ''} text-gray-400 dark-theme:text-gray-500`}>
-                              {r._sending ? (
-                                <span className="inline-flex items-center gap-1">
-                                  <i className="ri-time-line"></i> Sending...
-                                </span>
-                              ) : relativeTime(r.createdAt)}
+                            <p className={`text-[10px] mt-1 ${!isStudent ? 'text-right' : ''}`} style={{ color: 'var(--color-text-muted)' }}>
+                              {r._sending ? 'Sending...' : relativeTime(r.createdAt)}
                             </p>
                           </div>
 
-                          {/* Avatar for alumni/admin (me) */}
+                          {/* Avatar for me */}
                           {!isStudent && (
                             <div className="flex-shrink-0 ml-2 mt-auto">
                               {showAvatar ? (
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                                <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: 'var(--color-primary)' }}>
                                   {user?.fullName?.charAt(0)?.toUpperCase() || 'M'}
                                 </div>
-                              ) : <div className="w-8" />}
+                              ) : <div className="w-7" />}
                             </div>
                           )}
                         </div>
@@ -339,16 +332,17 @@ const AlumniDoubts = () => {
                 <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10">
                   <button
                     onClick={() => scrollToBottom()}
-                    className="bg-primary text-white rounded-full px-4 py-1.5 text-xs shadow-lg hover:bg-primary-dark transition flex items-center gap-1"
+                    className="text-white rounded-full px-4 py-1.5 text-xs shadow-md hover:opacity-90 transition flex items-center gap-1"
+                    style={{ background: 'var(--color-primary)' }}
                   >
-                    <i className="ri-arrow-down-line"></i> New messages
+                    <ArrowDown className="w-3.5 h-3.5" /> New messages
                   </button>
                 </div>
               )}
 
               {/* Chat Input */}
               {selectedDoubt.status !== 'resolved' && selectedDoubt.status !== 'closed' ? (
-                <div className="px-4 py-3 border-t dark-theme:border-gray-700 bg-white/80 dark-theme:bg-gray-800/80 backdrop-blur-sm flex-shrink-0">
+                <div className="px-4 py-3 border-t flex-shrink-0" style={{ borderColor: 'var(--color-border)', background: 'var(--color-surface)' }}>
                   <div className="flex items-end gap-2">
                     <textarea
                       ref={textareaRef}
@@ -357,8 +351,8 @@ const AlumniDoubts = () => {
                       onKeyDown={handleKeyDown}
                       placeholder={selectedDoubt.assignedAlumniId ? 'Type a message...' : 'Reply to claim this doubt...'}
                       rows={1}
-                      className="flex-1 px-4 py-2.5 border rounded-2xl dark-theme:bg-gray-700 dark-theme:border-gray-600 dark-theme:text-gray-100 focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-sm max-h-32 overflow-y-auto"
-                      style={{ minHeight: '42px' }}
+                      className="flex-1 px-3.5 py-2.5 border rounded-xl outline-none text-xs transition-colors focus:border-[var(--color-primary)] resize-none max-h-32 overflow-y-auto"
+                      style={{ background: 'var(--color-background)', borderColor: 'var(--color-border)', color: 'var(--color-text)', minHeight: '40px' }}
                       onInput={e => {
                         e.target.style.height = 'auto';
                         e.target.style.height = Math.min(e.target.scrollHeight, 128) + 'px';
@@ -367,27 +361,24 @@ const AlumniDoubts = () => {
                     <button
                       onClick={handleReply}
                       disabled={!replyText.trim() || sending}
-                      className={`p-2.5 rounded-full transition shadow-sm flex-shrink-0 ${
-                        replyText.trim() && !sending
-                          ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-md'
-                          : 'bg-sand dark-theme:bg-gray-700 text-gray-400 cursor-not-allowed'
-                      }`}
+                      className="p-2.5 rounded-xl transition text-white disabled:opacity-40 flex-shrink-0"
+                      style={{ background: 'var(--color-primary)' }}
                     >
-                      <i className="ri-send-plane-2-fill text-lg"></i>
+                      <Send className="w-4 h-4" />
                     </button>
                     {selectedDoubt.status === 'in-progress' && (
-                      <button onClick={handleResolve} className="px-3 py-2.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition font-medium text-sm flex-shrink-0">
-                        <i className="ri-check-double-line mr-1"></i>Resolve
+                      <button onClick={handleResolve} className="px-3.5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition font-semibold text-xs flex items-center gap-1 flex-shrink-0">
+                        <CheckCircle2 className="w-4 h-4" /> Resolve
                       </button>
                     )}
                   </div>
-                  <p className="text-[10px] text-gray-400 dark-theme:text-gray-500 mt-1.5 text-center">
+                  <p className="text-[10px] mt-1.5 text-center" style={{ color: 'var(--color-text-muted)' }}>
                     Press Enter to send · Shift+Enter for new line
                   </p>
                 </div>
               ) : (
-                <div className="px-4 py-3 border-t dark-theme:border-gray-700 text-center text-sm text-gray-400 dark-theme:text-gray-500 bg-cream dark-theme:bg-gray-950/30">
-                  <i className="ri-check-double-line mr-1"></i> This conversation has been {selectedDoubt.status}
+                <div className="px-4 py-3 border-t text-center text-xs font-semibold flex items-center justify-center gap-1.5" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)', background: 'var(--color-background)' }}>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> This conversation has been {selectedDoubt.status}
                 </div>
               )}
             </div>
@@ -408,44 +399,47 @@ const AlumniDoubts = () => {
   // ===================== LIST VIEW =====================
   return (
     <Layout {...layoutProps}>
-
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark-theme:text-gray-100">Student Doubts</h1>
-          <p className="text-gray-500 dark-theme:text-gray-400 text-sm mt-1">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight" style={{ color: 'var(--color-text)' }}>Student Doubts Hub</h1>
+          <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
             Answer student questions — first alumni to reply gets auto-assigned
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
-            <p className="text-2xl font-bold text-amber-600">{doubts.filter(d => d.status === 'open').length}</p>
-            <p className="text-sm text-gray-500 dark-theme:text-gray-400">Open (Unassigned)</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="rounded-xl border p-4" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <p className="text-xl font-bold text-amber-600">{doubts.filter(d => d.status === 'open').length}</p>
+            <p className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>Open (Unassigned)</p>
           </div>
-          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
-            <p className="text-2xl font-bold text-blue-600">{doubts.filter(d => d.status === 'in-progress').length}</p>
-            <p className="text-sm text-gray-500 dark-theme:text-gray-400">In Progress</p>
+          <div className="rounded-xl border p-4" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <p className="text-xl font-bold text-blue-600">{doubts.filter(d => d.status === 'in-progress').length}</p>
+            <p className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>In Progress</p>
           </div>
-          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
-            <p className="text-2xl font-bold text-green-600">{doubts.filter(d => d.status === 'resolved').length}</p>
-            <p className="text-sm text-gray-500 dark-theme:text-gray-400">Resolved</p>
+          <div className="rounded-xl border p-4" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <p className="text-xl font-bold text-emerald-600">{doubts.filter(d => d.status === 'resolved').length}</p>
+            <p className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>Resolved</p>
           </div>
-          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
-            <p className="text-2xl font-bold text-primary">{doubts.length}</p>
-            <p className="text-sm text-gray-500 dark-theme:text-gray-400">Total Visible</p>
+          <div className="rounded-xl border p-4" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <p className="text-xl font-bold" style={{ color: 'var(--color-primary)' }}>{doubts.length}</p>
+            <p className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>Total Visible</p>
           </div>
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <div className="flex gap-1.5 overflow-x-auto pb-1">
           {['all', 'open', 'in-progress', 'resolved'].map(s => (
-            <button key={s} onClick={() => setFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition ${
+            <button key={s} onClick={() => setFilter(s)} className={`px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
               filter === s
-                ? 'bg-primary text-white shadow'
-                : 'bg-white dark-theme:bg-gray-900 text-gray-600 dark-theme:text-gray-300 hover:bg-cream dark-theme:hover:bg-gray-700 border dark-theme:border-gray-700'
-            }`}>
+                ? 'text-white shadow-xs'
+                : 'border hover:opacity-80'
+            }`} style={{
+              background: filter === s ? 'var(--color-primary)' : 'var(--color-surface)',
+              borderColor: 'var(--color-border)',
+              color: filter === s ? '#ffffff' : 'var(--color-text-muted)'
+            }}>
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
               {' '}({s === 'all' ? doubts.length : doubts.filter(d => d.status === s).length})
             </button>
@@ -454,43 +448,47 @@ const AlumniDoubts = () => {
 
         {/* Doubt List */}
         {filtered.length === 0 ? (
-          <div className="text-center py-16 bg-white dark-theme:bg-gray-900 rounded-xl">
-            <i className="ri-question-answer-line text-5xl text-gray-300 dark-theme:text-gray-600 mb-3 block"></i>
-            <h3 className="text-lg font-semibold text-gray-600 dark-theme:text-gray-400">No doubts found</h3>
-            <p className="text-gray-400 dark-theme:text-gray-500 text-sm mt-1">Student doubts will appear here when posted</p>
+          <div className="text-center py-16 rounded-xl border p-8" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
+            <HelpCircle className="w-10 h-10 mx-auto mb-3 opacity-40" />
+            <h3 className="text-xs font-semibold">No doubts found</h3>
+            <p className="text-[11px] mt-1">Student doubts will appear here when posted</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {filtered.map(d => (
-              <div
-                key={d.id}
-                onClick={() => openDetail(d)}
-                className="bg-white dark-theme:bg-gray-900 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer border border-transparent hover:border-primary/20 dark-theme:hover:border-purple-800 group"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-1 flex-wrap">
-                      <h3 className="font-semibold text-gray-900 dark-theme:text-gray-100 truncate group-hover:text-primary transition">{d.title}</h3>
-                      <span className={priorityColor(d.priority)}><i className="ri-flag-fill text-sm"></i></span>
-                      {!d.assignedAlumniId && (
-                        <span className="bg-amber-100 dark-theme:bg-amber-900/30 text-amber-600 dark-theme:text-amber-400 text-xs px-2 py-0.5 rounded-full font-medium">
-                          Unassigned
-                        </span>
-                      )}
+            {filtered.map(d => {
+              const badge = statusBadge(d.status);
+              return (
+                <div
+                  key={d.id}
+                  onClick={() => openDetail(d)}
+                  className="rounded-xl p-4 border transition-all hover:shadow-xs cursor-pointer group"
+                  style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-1 flex-wrap">
+                        <h3 className="font-semibold text-xs truncate group-hover:text-[var(--color-primary)] transition" style={{ color: 'var(--color-text)' }}>{d.title}</h3>
+                        <Flag className="w-3.5 h-3.5" style={{ color: priorityColor(d.priority) }} />
+                        {!d.assignedAlumniId && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#D97706' }}>
+                            Unassigned
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4 text-xs flex-wrap" style={{ color: 'var(--color-text-muted)' }}>
+                        <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{d.studentName}</span>
+                        {d.courseTitle && <span className="flex items-center gap-1"><BookOpen className="w-3.5 h-3.5" />{d.courseTitle}</span>}
+                        <span className="flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" />{d.replyCount || 0} replies</span>
+                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{new Date(d.createdAt).toLocaleDateString()}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 dark-theme:text-gray-400 flex-wrap">
-                      <span><i className="ri-user-line mr-1"></i>{d.studentName}</span>
-                      {d.courseTitle && <span><i className="ri-book-open-line mr-1"></i>{d.courseTitle}</span>}
-                      <span><i className="ri-chat-3-line mr-1"></i>{d.replyCount || 0} replies</span>
-                      <span><i className="ri-time-line mr-1"></i>{new Date(d.createdAt).toLocaleDateString()}</span>
-                    </div>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider whitespace-nowrap" style={{ background: badge.bg, color: badge.color }}>
+                      {badge.label}
+                    </span>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${statusColor(d.status)}`}>
-                    {d.status}
-                  </span>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

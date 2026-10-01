@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import Loader from '@/components/ui/Loader';
 import { studentApi } from '../../utils/api';
+import { 
+  FileText, Video, Link as LinkIcon, Presentation, StickyNote, Code, 
+  ArrowLeft, Clock, ExternalLink, Info, Copy, HelpCircle, Search, 
+  BookOpen, ArrowRight, FileCode 
+} from 'lucide-react';
 
 
 // Comprehensive, rich built-in learning materials for all courses
@@ -454,30 +459,22 @@ const StudyMaterial = () => {
       }
       setLoading(false);
     };
-    fetchMaterials();
   }, []);
 
   const courses = ['all', 'Web Development', 'Data Structures & Algorithms', 'Python Programming', 'Database Management', 'Machine Learning', 'Computer Networks', 'Operating Systems', 'Software Engineering'];
   const types = ['all', 'document', 'notes', 'cheat-sheet', 'pdf', 'video', 'link'];
 
-  const typeIcons = {
-    pdf: 'ri-file-pdf-2-line',
-    video: 'ri-video-line',
-    document: 'ri-file-text-line',
-    link: 'ri-link',
-    presentation: 'ri-slideshow-line',
-    notes: 'ri-sticky-note-line',
-    'cheat-sheet': 'ri-code-box-line'
-  };
-
-  const typeColors = {
-    pdf: 'bg-red-500/15 text-red-500',
-    video: 'bg-blue-500/15 text-blue-500',
-    document: 'bg-green-500/15 text-green-500',
-    link: 'bg-indigo-500/15 text-indigo-500',
-    presentation: 'bg-amber-500/15 text-amber-500',
-    notes: 'bg-teal-500/15 text-teal-500',
-    'cheat-sheet': 'bg-purple-500/15 text-purple-500'
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case 'pdf': return FileText;
+      case 'video': return Video;
+      case 'document': return FileText;
+      case 'link': return LinkIcon;
+      case 'presentation': return Presentation;
+      case 'notes': return StickyNote;
+      case 'cheat-sheet': return FileCode;
+      default: return FileText;
+    }
   };
 
   const filtered = materials.filter(m => {
@@ -516,26 +513,27 @@ const StudyMaterial = () => {
         {viewingMaterial ? (
           <div className="space-y-5 animate-fade-in">
             {/* Reader Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark-theme:bg-gray-900 p-5 rounded-2xl border border-sand dark-theme:border-gray-800 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-xl border shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setViewingMaterial(null)}
-                  className="px-3 py-2 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 text-gray-700 dark-theme:text-gray-200 text-xs font-semibold hover:border-primary transition-colors flex items-center gap-1.5"
+                  className="px-3.5 py-2 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  style={{ background: 'var(--color-surface-muted)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
                 >
-                  <i className="ri-arrow-left-line"></i> Back to Materials
+                  <ArrowLeft className="h-4 w-4" /> Back to Materials
                 </button>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-primary/10 text-primary">
+                    <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold border" style={{ background: 'var(--color-accent)', color: 'var(--color-primary)', borderColor: 'var(--color-border)' }}>
                       {viewingMaterial.courseName}
                     </span>
                     {viewingMaterial.readTime && (
-                      <span className="text-[11px] text-gray-400 dark-theme:text-gray-500">
-                        <i className="ri-time-line mr-0.5"></i>{viewingMaterial.readTime}
+                      <span className="text-xs flex items-center gap-1" style={{ color: 'var(--color-text-muted)' }}>
+                        <Clock className="h-3.5 w-3.5" />{viewingMaterial.readTime}
                       </span>
                     )}
                   </div>
-                  <h2 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100 mt-1">
+                  <h2 className="text-xl font-bold mt-1" style={{ color: 'var(--color-text)' }}>
                     {viewingMaterial.title}
                   </h2>
                 </div>
@@ -545,9 +543,10 @@ const StudyMaterial = () => {
                   href={viewingMaterial.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition-colors flex items-center gap-1.5 flex-shrink-0"
+                  className="px-4 py-2 rounded-lg text-white text-xs font-semibold transition-colors flex items-center gap-1.5 flex-shrink-0 shadow-xs"
+                  style={{ background: 'var(--color-primary)' }}
                 >
-                  <i className="ri-external-link-line"></i> External Reference
+                  <ExternalLink className="h-3.5 w-3.5" /> External Reference
                 </a>
               )}
             </div>
@@ -556,39 +555,39 @@ const StudyMaterial = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
               {/* Main Reading Section */}
               <div className="lg:col-span-3 space-y-5">
-                <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 space-y-6">
-                  <p className="text-sm text-gray-600 dark-theme:text-gray-300 leading-relaxed font-medium bg-cream dark-theme:bg-gray-800/60 p-4 rounded-xl border border-sand dark-theme:border-gray-700/50">
-                    <i className="ri-information-line text-primary mr-1"></i>
-                    {viewingMaterial.description}
+                <div className="rounded-xl p-6 border space-y-6 shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                  <p className="text-xs leading-relaxed font-medium p-4 rounded-lg border flex items-start gap-2" style={{ background: 'var(--color-surface-muted)', borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}>
+                    <Info className="h-4 w-4 shrink-0 mt-0.5" style={{ color: 'var(--color-primary)' }} />
+                    <span>{viewingMaterial.description}</span>
                   </p>
 
                   {/* Built-in Sections */}
                   {viewingMaterial.sections ? (
                     viewingMaterial.sections.map((sec, idx) => (
-                      <div key={idx} className="space-y-3 pt-3 border-t border-sand dark-theme:border-gray-800 first:border-none first:pt-0">
-                        <h3 className="text-base font-bold text-gray-800 dark-theme:text-gray-100 flex items-center gap-2">
-                          <span className="w-6 h-6 rounded-lg bg-primary/10 text-primary text-xs flex items-center justify-center font-bold">
+                      <div key={idx} className="space-y-3 pt-4 border-t first:border-none first:pt-0" style={{ borderColor: 'var(--color-border)' }}>
+                        <h3 className="text-base font-bold flex items-center gap-2" style={{ color: 'var(--color-text)' }}>
+                          <span className="w-6 h-6 rounded-md text-white text-xs flex items-center justify-center font-bold" style={{ background: 'var(--color-primary)' }}>
                             {idx + 1}
                           </span>
                           {sec.title}
                         </h3>
                         {sec.content && (
-                          <p className="text-xs text-gray-600 dark-theme:text-gray-300 leading-relaxed whitespace-pre-wrap font-sans">
+                          <p className="text-xs leading-relaxed whitespace-pre-wrap font-sans" style={{ color: 'var(--color-text-secondary)' }}>
                             {sec.content}
                           </p>
                         )}
                         {sec.code && (
-                          <div className="relative rounded-xl overflow-hidden bg-gray-950 border border-gray-800">
-                            <div className="px-4 py-1.5 bg-gray-900 text-[11px] font-mono text-gray-400 border-b border-gray-800 flex justify-between items-center">
+                          <div className="relative rounded-lg overflow-hidden border" style={{ background: '#0F172A', borderColor: 'var(--color-border)' }}>
+                            <div className="px-4 py-2 text-xs font-mono text-gray-400 border-b flex justify-between items-center" style={{ background: '#1E293B', borderColor: '#334155' }}>
                               <span>Code Snippet</span>
                               <button
                                 onClick={() => navigator.clipboard.writeText(sec.code)}
-                                className="text-[10px] text-blue-400 hover:underline flex items-center gap-1"
+                                className="text-xs text-blue-400 hover:underline flex items-center gap-1 font-semibold"
                               >
-                                <i className="ri-file-copy-line"></i> Copy
+                                <Copy className="h-3.5 w-3.5" /> Copy
                               </button>
                             </div>
-                            <pre className="p-4 text-xs font-mono text-green-400 overflow-x-auto whitespace-pre">
+                            <pre className="p-4 text-xs font-mono text-emerald-400 overflow-x-auto whitespace-pre">
                               {sec.code}
                             </pre>
                           </div>
@@ -596,7 +595,7 @@ const StudyMaterial = () => {
                       </div>
                     ))
                   ) : viewingMaterial.url ? (
-                    <div className="h-[600px] rounded-xl overflow-hidden border border-sand dark-theme:border-gray-800">
+                    <div className="h-[600px] rounded-lg overflow-hidden border" style={{ borderColor: 'var(--color-border)' }}>
                       <iframe
                         src={viewingMaterial.url}
                         title={viewingMaterial.title}
@@ -608,14 +607,14 @@ const StudyMaterial = () => {
 
                 {/* Self-Assessment Quiz Section */}
                 {viewingMaterial.quiz && viewingMaterial.quiz.length > 0 && (
-                  <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 border border-sand dark-theme:border-gray-800 space-y-5">
+                  <div className="rounded-xl p-6 border space-y-5 shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
                     <div className="flex items-center justify-between">
-                      <h3 className="text-base font-bold text-gray-800 dark-theme:text-gray-100 flex items-center gap-2">
-                        <i className="ri-questionnaire-line text-primary"></i>
+                      <h3 className="text-base font-bold flex items-center gap-2" style={{ color: 'var(--color-text)' }}>
+                        <HelpCircle className="h-5 w-5" style={{ color: 'var(--color-primary)' }} />
                         Knowledge Check & Quiz
                       </h3>
                       {quizSubmitted && (
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-500">
+                        <span className="px-3 py-1 rounded-full text-xs font-bold border" style={{ background: 'var(--color-success-bg)', color: 'var(--color-success)', borderColor: 'var(--color-border)' }}>
                           Score: {score} / {viewingMaterial.quiz.length}
                         </span>
                       )}
@@ -623,29 +622,42 @@ const StudyMaterial = () => {
 
                     <div className="space-y-4">
                       {viewingMaterial.quiz.map((q, qIdx) => (
-                        <div key={qIdx} className="bg-cream dark-theme:bg-gray-800/50 p-4 rounded-xl border border-sand dark-theme:border-gray-700/50 space-y-3">
-                          <p className="text-xs font-semibold text-gray-800 dark-theme:text-gray-200">
+                        <div key={qIdx} className="p-4 rounded-lg border space-y-3" style={{ background: 'var(--color-surface-muted)', borderColor: 'var(--color-border)' }}>
+                          <p className="text-xs font-bold" style={{ color: 'var(--color-text)' }}>
                             {qIdx + 1}. {q.q}
                           </p>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {q.options.map((opt, optIdx) => {
                               const isSelected = userAnswers[qIdx] === optIdx;
                               const isCorrect = q.answer === optIdx;
-                              let btnStyle = 'bg-white dark-theme:bg-gray-900 border-sand dark-theme:border-gray-700 text-gray-700 dark-theme:text-gray-300';
                               
+                              let bgStyle = 'var(--color-surface)';
+                              let textStyle = 'var(--color-text-secondary)';
+                              let borderStyle = 'var(--color-border)';
+
                               if (isSelected) {
-                                btnStyle = 'bg-primary text-white border-primary';
+                                bgStyle = 'var(--color-primary)';
+                                textStyle = '#FFFFFF';
+                                borderStyle = 'var(--color-primary)';
                               }
                               if (quizSubmitted) {
-                                if (isCorrect) btnStyle = 'bg-green-500 text-white border-green-500';
-                                else if (isSelected && !isCorrect) btnStyle = 'bg-red-500 text-white border-red-500';
+                                if (isCorrect) {
+                                  bgStyle = 'var(--color-success)';
+                                  textStyle = '#FFFFFF';
+                                  borderStyle = 'var(--color-success)';
+                                } else if (isSelected && !isCorrect) {
+                                  bgStyle = 'var(--color-danger)';
+                                  textStyle = '#FFFFFF';
+                                  borderStyle = 'var(--color-danger)';
+                                }
                               }
 
                               return (
                                 <button
                                   key={optIdx}
                                   onClick={() => handleOptionSelect(qIdx, optIdx)}
-                                  className={`p-2.5 rounded-lg border text-xs text-left transition-all font-medium ${btnStyle}`}
+                                  className="p-2.5 rounded-lg border text-xs text-left transition-all font-medium"
+                                  style={{ background: bgStyle, color: textStyle, borderColor: borderStyle }}
                                 >
                                   {opt}
                                 </button>
@@ -660,14 +672,16 @@ const StudyMaterial = () => {
                       <button
                         onClick={handleQuizSubmit}
                         disabled={Object.keys(userAnswers).length < viewingMaterial.quiz.length}
-                        className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary-dark disabled:opacity-50 transition-colors"
+                        className="px-5 py-2.5 rounded-lg text-white text-xs font-semibold disabled:opacity-50 transition-colors shadow-xs"
+                        style={{ background: 'var(--color-primary)' }}
                       >
                         Submit Quiz
                       </button>
                     ) : (
                       <button
                         onClick={() => { setQuizSubmitted(false); setUserAnswers({}); }}
-                        className="px-4 py-2 rounded-xl bg-cream dark-theme:bg-gray-800 text-xs font-semibold text-gray-700 dark-theme:text-gray-200 border border-sand dark-theme:border-gray-700 hover:border-primary transition-colors"
+                        className="px-4 py-2 rounded-lg text-xs font-semibold border transition-colors"
+                        style={{ background: 'var(--color-surface-muted)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
                       >
                         Retake Quiz
                       </button>
@@ -676,38 +690,38 @@ const StudyMaterial = () => {
                 )}
               </div>
 
-              {/* Sidebar Info & Table of Contents */}
+              {/* Sidebar Info */}
               <div className="lg:col-span-1 space-y-4">
-                <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 space-y-4 sticky top-4">
-                  <h4 className="font-bold text-gray-800 dark-theme:text-gray-100 text-xs uppercase tracking-wider">
+                <div className="rounded-xl p-5 border space-y-4 sticky top-4 shadow-xs" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                  <h4 className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--color-text)' }}>
                     Material Overview
                   </h4>
-                  <div className="space-y-2.5 text-xs text-gray-600 dark-theme:text-gray-400">
-                    <div className="flex justify-between items-center py-1 border-b border-sand dark-theme:border-gray-800">
-                      <span>Course:</span>
-                      <span className="font-semibold text-gray-800 dark-theme:text-gray-200">{viewingMaterial.courseName}</span>
+                  <div className="space-y-2.5 text-xs">
+                    <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: 'var(--color-border)' }}>
+                      <span style={{ color: 'var(--color-text-muted)' }}>Course:</span>
+                      <span className="font-semibold" style={{ color: 'var(--color-text)' }}>{viewingMaterial.courseName}</span>
                     </div>
-                    <div className="flex justify-between items-center py-1 border-b border-sand dark-theme:border-gray-800">
-                      <span>Type:</span>
-                      <span className="font-semibold capitalize text-primary">{viewingMaterial.type || 'Document'}</span>
+                    <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: 'var(--color-border)' }}>
+                      <span style={{ color: 'var(--color-text-muted)' }}>Type:</span>
+                      <span className="font-semibold capitalize" style={{ color: 'var(--color-primary)' }}>{viewingMaterial.type || 'Document'}</span>
                     </div>
                     {viewingMaterial.readTime && (
-                      <div className="flex justify-between items-center py-1 border-b border-sand dark-theme:border-gray-800">
-                        <span>Read Time:</span>
-                        <span className="font-semibold text-gray-800 dark-theme:text-gray-200">{viewingMaterial.readTime}</span>
+                      <div className="flex justify-between items-center py-1 border-b" style={{ borderColor: 'var(--color-border)' }}>
+                        <span style={{ color: 'var(--color-text-muted)' }}>Read Time:</span>
+                        <span className="font-semibold" style={{ color: 'var(--color-text)' }}>{viewingMaterial.readTime}</span>
                       </div>
                     )}
                   </div>
 
                   {viewingMaterial.sections && (
                     <div className="pt-2">
-                      <h5 className="font-semibold text-gray-700 dark-theme:text-gray-300 text-xs mb-2">
+                      <h5 className="font-semibold text-xs mb-2" style={{ color: 'var(--color-text)' }}>
                         Chapters & Topics
                       </h5>
                       <ul className="space-y-1.5 text-xs">
                         {viewingMaterial.sections.map((s, idx) => (
-                          <li key={idx} className="text-gray-500 dark-theme:text-gray-400 hover:text-primary transition-colors flex items-center gap-1.5">
-                            <i className="ri-checkbox-blank-circle-fill text-[6px] text-primary"></i>
+                          <li key={idx} className="flex items-center gap-1.5" style={{ color: 'var(--color-text-secondary)' }}>
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }}></span>
                             {s.title}
                           </li>
                         ))}
@@ -724,32 +738,34 @@ const StudyMaterial = () => {
             {/* Top Bar Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">Study Materials</h1>
-                <p className="text-sm text-gray-500 mt-1">{filtered.length} comprehensive resources available across courses</p>
+                <h1 className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>Study Materials</h1>
+                <p className="text-xs mt-0.5 font-medium" style={{ color: 'var(--color-text-secondary)' }}>{filtered.length} comprehensive resources available across courses</p>
               </div>
               <div className="relative w-full sm:w-72">
-                <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <input
                   type="text"
                   placeholder="Search topics, courses..."
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-xs text-gray-800 dark-theme:text-gray-100"
+                  className="w-full pl-9 pr-4 py-2 rounded-lg border text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
                 />
               </div>
             </div>
 
             {/* Course Category Selector */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
               {courses.map(c => (
                 <button
                   key={c}
                   onClick={() => setSelectedCourse(c)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
-                    selectedCourse === c
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'bg-cream dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-400 border border-sand dark-theme:border-gray-700 hover:border-primary'
-                  }`}
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition-colors"
+                  style={{
+                    background: selectedCourse === c ? 'var(--color-primary)' : 'var(--color-surface)',
+                    borderColor: selectedCourse === c ? 'var(--color-primary)' : 'var(--color-border)',
+                    color: selectedCourse === c ? '#FFFFFF' : 'var(--color-text-secondary)'
+                  }}
                 >
                   {c === 'all' ? 'All Courses' : c}
                 </button>
@@ -757,16 +773,17 @@ const StudyMaterial = () => {
             </div>
 
             {/* Type Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1">
               {types.map(t => (
                 <button
                   key={t}
                   onClick={() => setFilterType(t)}
-                  className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-colors capitalize ${
-                    filterType === t
-                      ? 'bg-gray-800 dark-theme:bg-gray-100 text-white dark-theme:text-gray-900'
-                      : 'text-gray-500 hover:text-gray-800 dark-theme:text-gray-400'
-                  }`}
+                  className="px-3 py-1 rounded-md text-xs font-medium transition-colors capitalize"
+                  style={{
+                    background: filterType === t ? 'var(--color-surface-muted)' : 'transparent',
+                    color: filterType === t ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                    fontWeight: filterType === t ? '600' : '500'
+                  }}
                 >
                   {t === 'all' ? 'All Formats' : t}
                 </button>
@@ -777,51 +794,54 @@ const StudyMaterial = () => {
             {loading ? (
               <Loader text="Loading study materials..." />
             ) : filtered.length === 0 ? (
-
-              <div className="text-center py-20 text-gray-400 dark-theme:text-gray-500">
-                <i className="ri-file-text-line text-4xl mb-3 block"></i>
-                <p>{search ? 'No materials match your search.' : 'No materials available in this category.'}</p>
+              <div className="text-center py-16" style={{ color: 'var(--color-text-muted)' }}>
+                <FileText className="h-10 w-10 mx-auto mb-3 opacity-40" />
+                <p className="text-sm font-medium">{search ? 'No materials match your search.' : 'No materials available in this category.'}</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filtered.map((m, i) => {
                   const mType = m.type || 'document';
+                  const Icon = getTypeIcon(mType);
                   return (
                     <div
                       key={m.id || i}
                       onClick={() => openMaterial(m)}
-                      className="bg-white dark-theme:bg-gray-900 rounded-2xl p-5 border border-sand dark-theme:border-gray-800 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-pointer group flex flex-col justify-between"
+                      className="rounded-xl p-5 border shadow-xs transition-all cursor-pointer flex flex-col justify-between"
+                      style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-border-strong)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.boxShadow = 'none'; }}
                     >
                       <div>
                         <div className="flex items-start justify-between gap-3 mb-3">
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${typeColors[mType] || typeColors.document}`}>
-                            <i className={`${typeIcons[mType] || typeIcons.document} text-lg`}></i>
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center border" style={{ background: 'var(--color-accent)', borderColor: 'var(--color-border)', color: 'var(--color-primary)' }}>
+                            <Icon className="h-5 w-5" />
                           </div>
-                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${typeColors[mType] || typeColors.document}`}>
+                          <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold capitalize border" style={{ background: 'var(--color-surface-muted)', borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}>
                             {mType}
                           </span>
                         </div>
 
-                        <h3 className="font-bold text-gray-800 dark-theme:text-gray-100 text-sm mb-1 group-hover:text-primary transition-colors line-clamp-1">
+                        <h3 className="font-bold text-sm mb-1 line-clamp-1" style={{ color: 'var(--color-text)' }}>
                           {m.title}
                         </h3>
-                        <p className="text-[11px] font-semibold text-primary/80 mb-2">
+                        <p className="text-xs font-semibold mb-2" style={{ color: 'var(--color-primary)' }}>
                           {m.courseName || 'General'}
                         </p>
                         {m.description && (
-                          <p className="text-xs text-gray-500 dark-theme:text-gray-400 line-clamp-2 leading-relaxed mb-4">
+                          <p className="text-xs line-clamp-2 leading-relaxed mb-4" style={{ color: 'var(--color-text-secondary)' }}>
                             {m.description}
                           </p>
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between pt-3 border-t border-sand dark-theme:border-gray-800 text-xs">
-                        <span className="text-gray-400 text-[11px]">
-                          <i className="ri-book-read-line mr-1"></i>
+                      <div className="flex items-center justify-between pt-3 border-t text-xs font-medium" style={{ borderColor: 'var(--color-border)' }}>
+                        <span className="flex items-center gap-1" style={{ color: 'var(--color-text-muted)' }}>
+                          <BookOpen className="h-3.5 w-3.5" />
                           {m.readTime || 'Structured Guide'}
                         </span>
-                        <span className="text-primary font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                          Read <i className="ri-arrow-right-line"></i>
+                        <span className="font-semibold flex items-center gap-1" style={{ color: 'var(--color-primary)' }}>
+                          Read <ArrowRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
                     </div>
