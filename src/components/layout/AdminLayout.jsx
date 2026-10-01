@@ -88,7 +88,7 @@ const AdminLayout = ({ children, pageTitle }) => {
     { path: '/admin/students-progress', icon: 'ri-line-chart-line', label: 'Student Progress' },
 
     { type: 'separator', label: 'Reports & Settings' },
-    { path: '/admin/revenue', icon: 'ri-coin-line', label: 'Revenue & Pricing' },
+
     { path: '/admin/performance-analytics', icon: 'ri-line-chart-line', label: 'Analytics' },
     { path: '/admin/system-reports', icon: 'ri-file-chart-line', label: 'Reports' },
     { path: '/admin/manage-requests', icon: 'ri-git-pull-request-line', label: 'Requests' },

@@ -14,7 +14,7 @@ const studentNav = [
   { path: '/student/my-grades', icon: 'ri-bar-chart-box-line', label: 'My Grades' },
   { path: '/student/my-progress', icon: 'ri-line-chart-line', label: 'My Progress' },
   { path: '/student/my-doubts', icon: 'ri-chat-3-line', label: 'My Doubts' },
-  { path: '/student/billing', icon: 'ri-vip-crown-line', label: 'Billing & Plans' },
+
   { path: '/student/profile', icon: 'ri-user-settings-line', label: 'My Profile' },
 ];
 

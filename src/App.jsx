@@ -17,7 +17,7 @@ import CoursesOverview from '@/pages/admin/CoursesOverview'
 import ManageAlumni from '@/pages/admin/ManageAlumni'
 import AdminProfile from '@/pages/admin/AdminProfile'
 import ManageRequests from '@/pages/admin/ManageRequests'
-import AdminRevenue from '@/pages/admin/AdminRevenue'
+
 
 // Alumni
 import {
@@ -44,7 +44,7 @@ import MyGrades from '@/pages/student/MyGrades'
 import MyProgress from '@/pages/student/MyProgress'
 import CourseViewer from '@/pages/student/CourseViewer'
 import MyDoubts from '@/pages/student/MyDoubts'
-import StudentBilling from '@/pages/student/StudentBilling'
+
 import StudentProfile from '@/pages/student/StudentProfile'
 
 class ErrorBoundary extends React.Component {
@@ -106,7 +106,7 @@ function App() {
           <Route path="/admin/manage-alumni" element={<ProtectedRoute allowedRoles={['admin']}><ManageAlumni /></ProtectedRoute>} />
           <Route path="/admin/profile" element={<ProtectedRoute allowedRoles={['admin']}><AdminProfile /></ProtectedRoute>} />
           <Route path="/admin/manage-requests" element={<ProtectedRoute allowedRoles={['admin']}><ManageRequests /></ProtectedRoute>} />
-          <Route path="/admin/revenue" element={<ProtectedRoute allowedRoles={['admin']}><AdminRevenue /></ProtectedRoute>} />
+
 
           {/* Alumni Routes */}
           <Route path="/alumni" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniDashboard /></ProtectedRoute>} />
@@ -128,7 +128,7 @@ function App() {
           
           {/* Student Routes */}
           <Route path="/student" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
-          <Route path="/student/billing" element={<ProtectedRoute allowedRoles={['student']}><StudentBilling /></ProtectedRoute>} />
+
           <Route path="/student/learning-games" element={<ProtectedRoute allowedRoles={['student']}><LearningGames /></ProtectedRoute>} />
           <Route path="/student/study-material" element={<ProtectedRoute allowedRoles={['student']}><StudyMaterial /></ProtectedRoute>} />
           <Route path="/student/my-courses" element={<ProtectedRoute allowedRoles={['student']}><MyCourses /></ProtectedRoute>} />
