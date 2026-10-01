@@ -79,19 +79,14 @@ router.post("/register", async (req, res) => {
       fullName,
       password,
       phone,
-      countryCode,
-      college,
       department,
-      year,
+      graduationYear,
       rollNumber,
-      gender,
-      dateOfBirth,
-      address,
+      company,
+      designation,
       bio,
       github,
       linkedin,
-      hackerrank,
-      leetcode,
       profileImage,
     } = req.body;
 
@@ -118,32 +113,27 @@ router.post("/register", async (req, res) => {
 
     // Insert user with plain text password
     const [result] = await pool.query(
-      `INSERT INTO users (email, username, fullName, password, phone, countryCode, role, isVerified, isActive,
-        college, department, year, rollNumber, gender, dateOfBirth, address, bio,
-        github, linkedin, hackerrank, leetcode, profileImage)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 0, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO users (email, username, fullName, password, phone, role, isVerified, isActive,
+        department, graduationYear, rollNumber, company, designation, bio,
+        github, linkedin, profileImage)
+       VALUES (?, ?, ?, ?, ?, ?, 0, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         email.toLowerCase(),
         username.toLowerCase(),
         fullName,
         password,
         phone || null,
-        countryCode || "+91",
         userRole,
-        college || null,
         department || null,
-        year || null,
+        graduationYear || null,
         rollNumber || null,
-        gender || null,
-        dateOfBirth || null,
-        address || null,
+        company || null,
+        designation || null,
         bio || null,
         github || null,
         linkedin || null,
-        hackerrank || null,
-        leetcode || null,
-        profileImage || null,
-      ],
+        profileImage || null
+      ]
     );
 
     // Generate OTP for email verification
@@ -452,7 +442,7 @@ router.post("/refresh-token", authenticate, async (req, res) => {
 router.get("/me", authenticate, async (req, res) => {
   try {
     const [users] = await pool.query(
-      "SELECT id, email, username, fullName, phone, countryCode, role, profileImage, college, department, year, rollNumber, gender, dateOfBirth, address, bio, github, linkedin, hackerrank, leetcode, isVerified, isActive, createdAt, updatedAt FROM users WHERE id = ?",
+      "SELECT id, email, username, fullName, phone, role, profileImage, department, graduationYear, rollNumber, company, designation, bio, linkedin, github, isVerified, isActive, createdAt, updatedAt FROM users WHERE id = ?",
       [req.user.id],
     );
 
@@ -480,31 +470,26 @@ router.put("/profile", authenticate, async (req, res) => {
     }
 
     // Admin & Alumni can edit all profile fields directly
-    const { fullName, phone, countryCode, profileImage, college, department, year, gender, dateOfBirth, address, bio, github, linkedin, hackerrank, leetcode } = req.body;
+    const { fullName, phone, profileImage, department, graduationYear, company, designation, bio, github, linkedin } = req.body;
 
     await pool.query(
       `UPDATE users SET
         fullName = COALESCE(?, fullName),
         phone = COALESCE(?, phone),
-        countryCode = COALESCE(?, countryCode),
         profileImage = COALESCE(?, profileImage),
-        college = COALESCE(?, college),
         department = COALESCE(?, department),
-        year = COALESCE(?, year),
-        gender = COALESCE(?, gender),
-        dateOfBirth = COALESCE(?, dateOfBirth),
-        address = COALESCE(?, address),
+        graduationYear = COALESCE(?, graduationYear),
+        company = COALESCE(?, company),
+        designation = COALESCE(?, designation),
         bio = COALESCE(?, bio),
         github = COALESCE(?, github),
-        linkedin = COALESCE(?, linkedin),
-        hackerrank = COALESCE(?, hackerrank),
-        leetcode = COALESCE(?, leetcode)
+        linkedin = COALESCE(?, linkedin)
       WHERE id = ?`,
-      [fullName, phone, countryCode, profileImage, college, department, year, gender, dateOfBirth, address, bio, github, linkedin, hackerrank, leetcode, req.user.id],
+      [fullName, phone, profileImage, department, graduationYear, company, designation, bio, github, linkedin, req.user.id],
     );
 
     const [updated] = await pool.query(
-      "SELECT id, email, username, fullName, phone, countryCode, role, profileImage, college, department, year, rollNumber, gender, dateOfBirth, address, bio, github, linkedin, hackerrank, leetcode, isVerified, isActive, createdAt, updatedAt FROM users WHERE id = ?",
+      "SELECT id, email, username, fullName, phone, role, profileImage, department, graduationYear, rollNumber, company, designation, bio, linkedin, github, isVerified, isActive, createdAt, updatedAt FROM users WHERE id = ?",
       [req.user.id],
     );
 
