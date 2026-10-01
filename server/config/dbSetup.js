@@ -761,7 +761,7 @@ async function setup() {
   // Seed Subscription Plans
   const plans = [
     [
-      'Starter Pass', 'starter', 0.00, 0.00, 
+      'Starter Pass', 'starter', 0.00, 0.00,
       'Perfect for exploring basic content and introductory programming resources.',
       JSON.stringify([
         'Access to 1 free course preview',
@@ -772,7 +772,7 @@ async function setup() {
       0, 1
     ],
     [
-      'Pro Scholar', 'pro', 499.00, 3999.00, 
+      'Pro Scholar', 'pro', 499.00, 3999.00,
       'Full access to all skill tracks, interactive code compilers, and 1-on-1 mentor guidance.',
       JSON.stringify([
         'Unlimited access to ALL courses',
@@ -785,7 +785,7 @@ async function setup() {
       1, 1
     ],
     [
-      'Campus Elite Pass', 'campus', 1299.00, 9999.00, 
+      'Campus Elite Pass', 'campus', 1299.00, 9999.00,
       'Designed for college students needing full curriculum coverage, lab tasks, and placement prep.',
       JSON.stringify([
         'Everything in Pro Scholar',
@@ -855,7 +855,7 @@ async function setup() {
     console.log(`  ✅ Seeded ${generatedTests.length} Aptitude Tests with ${generatedTests.length * 25} Questions into DB`);
 
     // Seed Coding Problems (All 300)
-    try { await connection.query("ALTER TABLE codingProblems ADD COLUMN boilerplate TEXT DEFAULT NULL AFTER sampleOutput"); } catch {}
+    try { await connection.query("ALTER TABLE codingProblems ADD COLUMN boilerplate TEXT DEFAULT NULL AFTER sampleOutput"); } catch { }
     const mid = mentorRows[0].id;
     const all300Problems = [...all150CodingProblems, ...extra150CodingProblems];
     for (const p of all300Problems) {

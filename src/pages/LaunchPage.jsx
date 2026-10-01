@@ -19,14 +19,14 @@ export default function LaunchPage() {
 
   return (
     <div className="min-h-screen bg-[#fcfcfd] text-slate-900 flex flex-col font-sans selection:bg-orange-500 selection:text-white relative overflow-x-hidden">
-      
+
       {/* Light background radial glow & subtle grid pattern */}
       <div className="fixed inset-0 bg-radial-gradient pointer-events-none z-0"></div>
       <div className="fixed inset-0 bg-grid-pattern opacity-60 pointer-events-none z-0"></div>
 
       {/* Main Container */}
       <div className="relative z-10 flex-1 flex flex-col">
-        
+
         {/* Navigation Header */}
         <Header
           onNavigate={scrollToSection}
@@ -35,7 +35,7 @@ export default function LaunchPage() {
 
         {/* Hero Section */}
         <section className="relative px-4 pt-12 lg:pt-20 pb-8 text-center max-w-5xl mx-auto">
-          
+
           {/* Top Institutional Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-mono font-bold text-slate-700 shadow-sm mb-6 backdrop-blur-md hover:border-orange-400 transition-all cursor-default">
             <span className="flex h-2 w-2 relative">

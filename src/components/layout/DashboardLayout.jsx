@@ -70,8 +70,10 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
   }, []);
 
   const handleSignOut = () => {
-    Swal.fire({ ...getSwalOpts(), title: 'Sign Out?', text: 'Are you sure you want to sign out?', icon: 'question',
-      showCancelButton: true, confirmButtonColor: '#d4a574', confirmButtonText: 'Yes, sign out'}).then(result => {
+    Swal.fire({
+      ...getSwalOpts(), title: 'Sign Out?', text: 'Are you sure you want to sign out?', icon: 'question',
+      showCancelButton: true, confirmButtonColor: '#d4a574', confirmButtonText: 'Yes, sign out'
+    }).then(result => {
       if (result.isConfirmed) { logout(); navigate('/auth'); }
     });
   };
@@ -195,8 +197,8 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
                   <Link
                     to={
                       role === 'admin' ? '/admin/profile' :
-                      role === 'alumni' ? '/alumni/profile' :
-                      '/student/profile'
+                        role === 'alumni' ? '/alumni/profile' :
+                          '/student/profile'
                     }
                     className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-gray-700 dark-theme:text-gray-300 hover:bg-cream dark-theme:hover:bg-gray-800 transition-colors"
                     onClick={() => setProfileOpen(false)}

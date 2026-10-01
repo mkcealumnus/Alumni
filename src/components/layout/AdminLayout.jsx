@@ -65,8 +65,10 @@ const AdminLayout = ({ children, pageTitle }) => {
   };
 
   const handleSignOut = () => {
-    Swal.fire({ ...getSwalOpts(), title: 'Sign Out?', text: 'Are you sure you want to sign out?', icon: 'question',
-      showCancelButton: true, confirmButtonColor: '#d4a574', confirmButtonText: 'Yes, sign out'}).then(result => {
+    Swal.fire({
+      ...getSwalOpts(), title: 'Sign Out?', text: 'Are you sure you want to sign out?', icon: 'question',
+      showCancelButton: true, confirmButtonColor: '#d4a574', confirmButtonText: 'Yes, sign out'
+    }).then(result => {
       if (result.isConfirmed) { logout(); navigate('/auth'); }
     });
   };
