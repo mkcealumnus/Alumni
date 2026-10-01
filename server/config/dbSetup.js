@@ -7,7 +7,6 @@
 */
 
 import mysql from 'mysql2/promise';
-import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -272,6 +271,20 @@ async function setup() {
     ) ENGINE=InnoDB
   `);
 
+  // 16. activityLogs
+  await connection.query(`
+    CREATE TABLE IF NOT EXISTS activityLogs (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      userId INT NOT NULL,
+      action VARCHAR(100) NOT NULL,
+      description TEXT,
+      ipAddress VARCHAR(45) DEFAULT NULL,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
+      INDEX idx_action (action)
+    ) ENGINE=InnoDB
+  `);
+
   console.log('✅ MKCE Alumni Portal schema created successfully');
 
   // ──────────────────── CLEAN MOCK DATA ────────────────────
@@ -284,7 +297,7 @@ async function setup() {
     'courses', 'courseContent', 'courseSubjects', 'courseTopics', 'courseMaterials', 'courseEnrollments',
     'assignments', 'assignmentSubmissions', 'aptitudeTests', 'aptitudeQuestions',
     'aptitudeTestAttempts', 'aptitudeAnswers', 'codingProblems', 'codingSubmissions',
-    'doubts', 'doubtReplies', 'gameChallenges', 'gameUnlocks', 'grades', 'activityLogs',
+    'doubts', 'doubtReplies', 'gameChallenges', 'gameUnlocks', 'grades',
     'studymaterials', 'discussionreplies', 'discussions'
   ];
   
@@ -298,7 +311,7 @@ async function setup() {
   const tablesToTruncate = [
     'users', 'otpCodes', 'roadmaps', 'roadmapDiscussions', 'mentorshipSessions',
     'groups', 'groupMembers', 'groupMessages', 'jobs', 'events', 'eventRegistrations',
-    'notifications', 'systemSettings', 'profileRequests', 'contactMessages'
+    'notifications', 'systemSettings', 'profileRequests', 'contactMessages', 'activityLogs'
   ];
 
   for (const table of tablesToTruncate) {
