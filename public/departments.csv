@@ -1,0 +1,85 @@
+Code,Degree,Department Name
+AIDS,B.Tech.,Artificial Intelligence and Data Science
+AIML,B.Tech.,Artificial Intelligence and Machine Learning
+AUTO,B.E.,Automobile Engineering
+BME,B.E.,Biomedical Engineering
+BIOTECH,B.Tech.,Biotechnology
+CHEM,B.Tech.,Chemical Engineering
+CIVIL,B.E.,Civil Engineering
+CSE,B.E.,Computer Science and Engineering
+CSBS,B.Tech.,Computer Science and Business Systems
+CSE(AIML),B.E.,Artificial Intelligence and Machine Learning
+CYBER,B.E.,Computer Science and Engineering (Cyber Security)
+CSD,B.E.,Computer Science and Design
+ECE,B.E.,Electronics and Communication Engineering
+EEE,B.E.,Electrical and Electronics Engineering
+EIE,B.E.,Electronics and Instrumentation Engineering
+FOOD,B.Tech.,Food Technology
+GEO,B.E.,Geo Informatics
+IT,B.E.,Information Technology
+MARINE,B.E.,Marine Engineering
+MECH,B.E.,Mechanical Engineering
+MECT,B.E.,Mechatronics Engineering
+MINING,B.E.,Mining Engineering
+PETRO,B.Tech.,Petroleum Engineering
+PRINT,B.E.,Printing Technology
+PROD,B.E.,Production Engineering
+RUBBER,B.Tech.,Rubber and Plastics Technology
+SAFETY,B.E.,Safety and Fire Engineering
+TEXTILE,B.Tech.,Textile Technology
+VLSI,B.E.,Electronics Engineering (VLSI Design)
+AERO,B.E.,Aeronautical Engineering
+AGRI,B.Tech.,Agricultural Engineering
+ARCH,B.Arch.,Architecture
+CERAMIC,B.Tech.,Ceramic Technology
+ENV,B.E.,Environmental Engineering
+FASHION,B.Tech.,Fashion Technology
+HANDLOOM,B.Tech.,Handloom and Textile Technology
+INDUST,B.E.,Industrial Engineering
+LEATHER,B.Tech.,Leather Technology
+MANUF,B.E.,Manufacturing Engineering
+MATSC,B.Tech.,Material Science and Engineering
+NANO,B.Tech.,Nanotechnology
+PHARM,B.Pharm.,Pharmaceutical Engineering
+PLASTIC,B.Tech.,Plastic Technology
+POLYMER,B.Tech.,Polymer Technology
+POWER,B.E.,Power Electronics and Drives
+ROBOTICS,B.E.,Robotics and Automation
+SUGAR,B.Tech.,Sugar Technology
+TELECOM,B.E.,Telecommunication Engineering
+AIDS_M,M.E.,Artificial Intelligence and Data Science
+AIML_M,M.E.,Artificial Intelligence and Machine Learning
+APPLY,M.E.,Applied Electronics
+CAD,M.E.,Computer Aided Design
+COMM,M.E.,Communication Systems
+CONST,M.E.,Construction Engineering and Management
+CONTROL,M.E.,Control and Instrumentation Engineering
+CSE_M,M.E.,Computer Science and Engineering
+CYBER_M,M.E.,Cyber Security
+EMBED,M.E.,Embedded System Technologies
+ENERGY,M.E.,Energy Engineering
+ENV_M,M.E.,Environmental Engineering
+GEOTECH,M.E.,Geotechnical Engineering
+HIGHWAY,M.E.,Highway Engineering
+INDUST_M,M.E.,Industrial Engineering
+MANUF_M,M.E.,Manufacturing Engineering
+MECH_M,M.E.,Mechanical Engineering (CAD/CAM)
+POWER_M,M.E.,Power Electronics and Drives
+PROD_M,M.E.,Production Engineering
+PSE,M.E.,Power Systems Engineering
+SE,M.E.,Software Engineering
+SOIL,M.E.,Soil Mechanics and Foundation Engineering
+STRUCT,M.E.,Structural Engineering
+THERMAL,M.E.,Thermal Engineering
+VLSI_M,M.E.,VLSI Design
+WATER,M.E.,Water Resources Engineering
+WELD,M.E.,Welding Technology
+BIOTECH_M,M.Tech.,Biotechnology
+CHEM_M,M.Tech.,Chemical Engineering
+FOOD_M,M.Tech.,Food Technology
+IT_M,M.Tech.,Information Technology
+NANO_M,M.Tech.,Nanotechnology
+REMOTE,M.Tech.,Remote Sensing
+TEXTILE_M,M.Tech.,Textile Technology
+MBA,MBA,Master of Business Administration
+MCA,MCA,Master of Computer Applications
