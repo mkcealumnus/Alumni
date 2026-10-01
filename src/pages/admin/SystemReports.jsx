@@ -205,9 +205,9 @@ const SystemReports = () => {
             data={logs}
             loading={false}
             searchPlaceholder="Search logs..."
-            storageKey="nextstep_activity_logs_cols"
+            storageKey="sowberry_activity_logs_cols"
             exportTitle="Activity Logs Report"
-            exportFileName="NextStep_Activity_Logs"
+            exportFileName="Sowberry_Activity_Logs"
             emptyIcon="ri-file-list-3-line"
             emptyMessage="No activity logs recorded yet"
           />

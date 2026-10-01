@@ -89,7 +89,7 @@ const PerformanceAnalytics = () => {
               loading={false}
               searchPlaceholder="Search courses..."
               exportTitle="Top Courses by Enrollment"
-              exportFileName="NextStep_Top_Courses"
+              exportFileName="Sowberry_Top_Courses"
               emptyIcon="ri-book-open-line"
               emptyMessage="No course data available"
               columnToggle={false}
@@ -105,7 +105,7 @@ const PerformanceAnalytics = () => {
               loading={false}
               searchPlaceholder="Search months..."
               exportTitle="Monthly Trends Report"
-              exportFileName="NextStep_Monthly_Trends"
+              exportFileName="Sowberry_Monthly_Trends"
               emptyIcon="ri-line-chart-line"
               emptyMessage="No trend data available"
               columnToggle={false}

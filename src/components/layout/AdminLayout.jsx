@@ -65,10 +65,8 @@ const AdminLayout = ({ children, pageTitle }) => {
   };
 
   const handleSignOut = () => {
-    Swal.fire({
-      ...getSwalOpts(), title: 'Sign Out?', text: 'Are you sure you want to sign out?', icon: 'question',
-      showCancelButton: true, confirmButtonColor: '#d4a574', confirmButtonText: 'Yes, sign out'
-    }).then(result => {
+    Swal.fire({ ...getSwalOpts(), title: 'Sign Out?', text: 'Are you sure you want to sign out?', icon: 'question',
+      showCancelButton: true, confirmButtonColor: '#d4a574', confirmButtonText: 'Yes, sign out'}).then(result => {
       if (result.isConfirmed) { logout(); navigate('/auth'); }
     });
   };
@@ -90,7 +88,7 @@ const AdminLayout = ({ children, pageTitle }) => {
     { path: '/admin/students-progress', icon: 'ri-line-chart-line', label: 'Student Progress' },
 
     { type: 'separator', label: 'Reports & Settings' },
-
+    { path: '/admin/revenue', icon: 'ri-coin-line', label: 'Revenue & Pricing' },
     { path: '/admin/performance-analytics', icon: 'ri-line-chart-line', label: 'Analytics' },
     { path: '/admin/system-reports', icon: 'ri-file-chart-line', label: 'Reports' },
     { path: '/admin/manage-requests', icon: 'ri-git-pull-request-line', label: 'Requests' },
@@ -124,7 +122,7 @@ const AdminLayout = ({ children, pageTitle }) => {
             <i className="ri-seedling-fill text-primary-light text-lg"></i>
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-[15px] text-white leading-tight">NextStep</span>
+            <span className="font-bold text-[15px] text-white leading-tight">Sowberry</span>
             <span className="text-[10px] font-medium tracking-wider text-gray-500 uppercase">ADMIN</span>
           </div>
         </div>

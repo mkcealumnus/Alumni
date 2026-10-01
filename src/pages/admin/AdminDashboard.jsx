@@ -147,7 +147,7 @@ const AdminDashboard = () => {
   const handleDownloadUploads = async () => {
     setDownloadingUploads(true);
     try {
-      const token = localStorage.getItem('nextstep_token');
+      const token = localStorage.getItem('sowberry_token');
       const res = await fetch(adminApi.downloadUploads(), {
         headers: { Authorization: `Bearer ${token}` }
       });

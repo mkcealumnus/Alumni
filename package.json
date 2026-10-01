@@ -1,6 +1,6 @@
 {
-  "name": "nextstep",
-  "homepage": "https://nextstep.prisoltech.app",
+  "name": "sowberry",
+  "homepage": "https://sowberry.prisoltech.app",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -42,7 +42,6 @@
     "file-saver": "^2.0.5",
     "jspdf": "^4.1.0",
     "jspdf-autotable": "^5.0.7",
-    "lucide-react": "^1.49.0",
     "particles.js": "^2.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

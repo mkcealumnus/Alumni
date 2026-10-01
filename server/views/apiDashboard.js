@@ -1,5 +1,5 @@
 /**
- * NextStep API Dashboard HTML Template
+ * Sowberry API Dashboard HTML Template
  * Features:
  * - Light & Dark Theme modes (persisted in localStorage)
  * - Sidebar & Header navigation with real-time health ping & status indicator
@@ -21,7 +21,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NextStep API — Developer Dashboard</title>
+  <title>Sowberry API — Developer Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -998,7 +998,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
     <div class="sidebar-brand">
       <div class="brand-icon"><i class="ri-seedling-fill"></i></div>
       <div>
-        <div class="brand-title">NextStep <span>API</span></div>
+        <div class="brand-title">Sowberry <span>API</span></div>
       </div>
       <span class="brand-version">v1.0.0</span>
     </div>
@@ -1119,10 +1119,10 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
       <div class="page-banner">
         <div>
           <h1 class="page-title">
-            <i class="ri-seedling-fill" style="color:#c96442;"></i> NextStep API Dashboard
+            <i class="ri-seedling-fill" style="color:#c96442;"></i> Sowberry API Dashboard
           </h1>
           <p class="page-subtitle">
-            Interactive API Management Console and Route Specification for NextStep backend services.
+            Interactive API Management Console and Route Specification for Sowberry Academy backend services.
           </p>
         </div>
         <div class="banner-actions">
@@ -1392,7 +1392,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
               <div class="ep-actions">
                 <button class="btn-action" onclick="toggleDetails(this)"><i class="ri-code-line"></i> Details</button>
                 <button class="btn-action btn-copy" onclick="copyPath('/api/auth/forgot-password')"><i class="ri-file-copy-line"></i></button>
-                <button class="btn-action" onclick="openConsole('/api/auth/forgot-password', 'POST', '{\n  \"email\": \"student@nextstep.edu\"\n}')">
+                <button class="btn-action" onclick="openConsole('/api/auth/forgot-password', 'POST', '{\n  \"email\": \"student@sowberry.edu\"\n}')">
                   <i class="ri-terminal-line"></i> Test
                 </button>
               </div>
@@ -1405,7 +1405,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
             <div class="ep-details-drawer">
               <div class="details-box">
                 <div class="details-box-title">Request Body</div>
-                <div class="code-block">{ "email": "student@nextstep.edu" }</div>
+                <div class="code-block">{ "email": "student@sowberry.edu" }</div>
               </div>
             </div>
           </div>
@@ -1420,7 +1420,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
               <div class="ep-actions">
                 <button class="btn-action" onclick="toggleDetails(this)"><i class="ri-code-line"></i> Details</button>
                 <button class="btn-action btn-copy" onclick="copyPath('/api/auth/verify-otp')"><i class="ri-file-copy-line"></i></button>
-                <button class="btn-action" onclick="openConsole('/api/auth/verify-otp', 'POST', '{\n  \"email\": \"student@nextstep.edu\",\n  \"otp\": \"123456\"\n}')">
+                <button class="btn-action" onclick="openConsole('/api/auth/verify-otp', 'POST', '{\n  \"email\": \"student@sowberry.edu\",\n  \"otp\": \"123456\"\n}')">
                   <i class="ri-terminal-line"></i> Test
                 </button>
               </div>
@@ -1433,7 +1433,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
             <div class="ep-details-drawer">
               <div class="details-box">
                 <div class="details-box-title">Request Body</div>
-                <div class="code-block">{ "email": "student@nextstep.edu", "otp": "123456" }</div>
+                <div class="code-block">{ "email": "student@sowberry.edu", "otp": "123456" }</div>
               </div>
             </div>
           </div>
@@ -1448,7 +1448,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
               <div class="ep-actions">
                 <button class="btn-action" onclick="toggleDetails(this)"><i class="ri-code-line"></i> Details</button>
                 <button class="btn-action btn-copy" onclick="copyPath('/api/auth/reset-password')"><i class="ri-file-copy-line"></i></button>
-                <button class="btn-action" onclick="openConsole('/api/auth/reset-password', 'POST', '{\n  \"email\": \"student@nextstep.edu\",\n  \"token\": \"otp_reset_token\",\n  \"newPassword\": \"NewPassword123!\"\n}')">
+                <button class="btn-action" onclick="openConsole('/api/auth/reset-password', 'POST', '{\n  \"email\": \"student@sowberry.edu\",\n  \"token\": \"otp_reset_token\",\n  \"newPassword\": \"NewPassword123!\"\n}')">
                   <i class="ri-terminal-line"></i> Test
                 </button>
               </div>
@@ -1461,7 +1461,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
             <div class="ep-details-drawer">
               <div class="details-box">
                 <div class="details-box-title">Request Body</div>
-                <div class="code-block">{ "email": "student@nextstep.edu", "token": "...", "newPassword": "..." }</div>
+                <div class="code-block">{ "email": "student@sowberry.edu", "token": "...", "newPassword": "..." }</div>
               </div>
             </div>
           </div>
@@ -2086,7 +2086,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
               <div class="ep-actions">
                 <button class="btn-action" onclick="toggleDetails(this)"><i class="ri-code-line"></i> Details</button>
                 <button class="btn-action btn-copy" onclick="copyPath('/api/student/execute')"><i class="ri-file-copy-line"></i></button>
-                <button class="btn-action" onclick="openConsole('/api/student/execute', 'POST', '{\n  \"language\": \"javascript\",\n  \"code\": \"console.log(\\\"Hello NextStep!\\\");\"\n}')">
+                <button class="btn-action" onclick="openConsole('/api/student/execute', 'POST', '{\n  \"language\": \"javascript\",\n  \"code\": \"console.log(\\\"Hello Sowberry!\\\");\"\n}')">
                   <i class="ri-terminal-line"></i> Test
                 </button>
               </div>
@@ -2311,7 +2311,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
                 </button>
               </div>
             </div>
-            <div class="ep-desc">Subscribes email address to NextStep monthly newsletter.</div>
+            <div class="ep-desc">Subscribes email address to Sowberry Academy monthly newsletter.</div>
             <div class="ep-tags-row">
               <span class="ep-tag ep-tag-public"><i class="ri-lock-unlock-line"></i> Public Route</span>
               <span class="ep-tag">Body: { email }</span>
@@ -2373,7 +2373,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
             <div class="ep-details-drawer">
               <div class="details-box">
                 <div class="details-box-title">Response Schema</div>
-                <div class="code-block">{ "success": true, "message": "NextStep API is running!", "timestamp": "ISO Date" }</div>
+                <div class="code-block">{ "success": true, "message": "Sowberry API is running!", "timestamp": "ISO Date" }</div>
               </div>
             </div>
           </div>
@@ -2406,7 +2406,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
 
     <!-- FOOTER -->
     <footer class="dashboard-footer">
-      <p>&copy; ${new Date().getFullYear()} <a href="http://localhost:5173" target="_blank">NextStep</a> &bull; API v1.0.0 &bull; Express.js Node Environment</p>
+      <p>&copy; ${new Date().getFullYear()} <a href="http://localhost:5173" target="_blank">Sowberry Academy</a> &bull; API v1.0.0 &bull; Express.js Node Environment</p>
     </footer>
 
   </div>
@@ -2475,13 +2475,13 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
 
     // Theme Management with localStorage persistence
     function initTheme() {
-      const savedTheme = localStorage.getItem('nextstep_api_theme') || 'dark';
+      const savedTheme = localStorage.getItem('sowberry_api_theme') || 'dark';
       setTheme(savedTheme, false);
     }
 
     function setTheme(theme, save = true) {
       document.documentElement.setAttribute('data-theme', theme);
-      if (save) localStorage.setItem('nextstep_api_theme', theme);
+      if (save) localStorage.setItem('sowberry_api_theme', theme);
 
       const btnLight = document.getElementById('themeBtnLight');
       const btnDark = document.getElementById('themeBtnDark');
@@ -2643,13 +2643,13 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
 
     // Bearer Token Management
     function loadSavedToken() {
-      const token = localStorage.getItem('nextstep_jwt_token') || '';
+      const token = localStorage.getItem('sowberry_jwt_token') || '';
       document.getElementById('consoleJwtToken').value = token;
     }
 
     function saveTokenPreference() {
       const token = document.getElementById('consoleJwtToken').value.trim();
-      localStorage.setItem('nextstep_jwt_token', token);
+      localStorage.setItem('sowberry_jwt_token', token);
       showToast('JWT Token saved for API requests');
     }
 
@@ -2663,7 +2663,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
 
     function clearToken() {
       document.getElementById('consoleJwtToken').value = '';
-      localStorage.removeItem('nextstep_jwt_token');
+      localStorage.removeItem('sowberry_jwt_token');
       showToast('Token cleared');
     }
 
@@ -2779,7 +2779,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
     function exportPostmanCollection() {
       const spec = {
         info: {
-          name: "NextStep API",
+          name: "Sowberry Academy API",
           schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
         },
         item: [
@@ -2796,10 +2796,10 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'NextStep-API-Spec.json';
+      a.download = 'Sowberry-API-Spec.json';
       a.click();
       URL.revokeObjectURL(url);
-      showToast('Downloaded NextStep API JSON Spec');
+      showToast('Downloaded Sowberry API JSON Spec');
     }
 
     // Global Keyboard Shortcuts

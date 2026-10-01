@@ -1,6 +1,6 @@
 /*
-  NextStep Database Setup Script
-  Database: nextstep (MySQL)
+  Sowberry Database Setup Script
+  Database: sowberry (MySQL)
   Naming: camelCase
 
   Run: node config/dbSetup.js
@@ -16,7 +16,7 @@ import { seedHtmlCourse } from '../data/seedHtmlCourse.js';
 
 dotenv.config();
 
-const DB_NAME = process.env.DB_NAME || 'nextstep';
+const DB_NAME = process.env.DB_NAME || 'sowberry';
 
 async function setup() {
   // Connect without database first to create it
@@ -735,12 +735,12 @@ async function setup() {
 
   // Seed Initial 6 Users (1 for each role)
   const initialUsers = [
-    ['jayanthan@nextstep.com', 'jayanthan', 'Jayanthan', 'Vishu@2008', '8825756388', '+91', 'admin'],
-    ['janasruthi@nextstep.com', 'janasruthi', 'Jana Sruthi', 'Vishu@2008', '8825756381', '+91', 'instructor'],
-    ['vishalini@nextstep.com', 'vishalini', 'Vishalini', 'Vishu@2008', '9442556781', '+91', 'student'],
-    ['creator@nextstep.com', 'creator_sow', 'Course Creator', 'Vishu@2008', '9442556784', '+91', 'creator'],
-    ['manager@nextstep.com', 'manager_sow', 'Supervisor Manager', 'Vishu@2008', '9442556785', '+91', 'manager'],
-    ['observer@nextstep.com', 'observer_sow', 'Guest Observer', 'Vishu@2008', '9442556786', '+91', 'observer'],
+    ['jayanthan@sowberry.com', 'jayanthan', 'Jayanthan', 'Vishu@2008', '8825756388', '+91', 'admin'],
+    ['janasruthi@sowberry.com', 'janasruthi', 'Jana Sruthi', 'Vishu@2008', '8825756381', '+91', 'instructor'],
+    ['vishalini@sowberry.com', 'vishalini', 'Vishalini', 'Vishu@2008', '9442556781', '+91', 'student'],
+    ['creator@sowberry.com', 'creator_sow', 'Course Creator', 'Vishu@2008', '9442556784', '+91', 'creator'],
+    ['manager@sowberry.com', 'manager_sow', 'Supervisor Manager', 'Vishu@2008', '9442556785', '+91', 'manager'],
+    ['observer@sowberry.com', 'observer_sow', 'Guest Observer', 'Vishu@2008', '9442556786', '+91', 'observer'],
   ];
 
   for (const u of initialUsers) {
@@ -751,17 +751,17 @@ async function setup() {
   }
 
   console.log('✅ Initial 6 seed users created');
-  console.log('   Admin:      jayanthan@nextstep.com  / Vishu@2008 (Username: jayanthan)');
-  console.log('   Instructor: janasruthi@nextstep.com / Vishu@2008 (Username: janasruthi)');
-  console.log('   Student:    vishalini@nextstep.com  / Vishu@2008 (Username: vishalini)');
-  console.log('   Creator:    creator@nextstep.com    / Vishu@2008 (Username: creator_sow)');
-  console.log('   Manager:    manager@nextstep.com    / Vishu@2008 (Username: manager_sow)');
-  console.log('   Observer:   observer@nextstep.com   / Vishu@2008 (Username: observer_sow)');
+  console.log('   Admin:      jayanthan@sowberry.com  / Vishu@2008 (Username: jayanthan)');
+  console.log('   Instructor: janasruthi@sowberry.com / Vishu@2008 (Username: janasruthi)');
+  console.log('   Student:    vishalini@sowberry.com  / Vishu@2008 (Username: vishalini)');
+  console.log('   Creator:    creator@sowberry.com    / Vishu@2008 (Username: creator_sow)');
+  console.log('   Manager:    manager@sowberry.com    / Vishu@2008 (Username: manager_sow)');
+  console.log('   Observer:   observer@sowberry.com   / Vishu@2008 (Username: observer_sow)');
 
   // Seed Subscription Plans
   const plans = [
     [
-      'Starter Pass', 'starter', 0.00, 0.00,
+      'Starter Pass', 'starter', 0.00, 0.00, 
       'Perfect for exploring basic content and introductory programming resources.',
       JSON.stringify([
         'Access to 1 free course preview',
@@ -772,7 +772,7 @@ async function setup() {
       0, 1
     ],
     [
-      'Pro Scholar', 'pro', 499.00, 3999.00,
+      'Pro Scholar', 'pro', 499.00, 3999.00, 
       'Full access to all skill tracks, interactive code compilers, and 1-on-1 mentor guidance.',
       JSON.stringify([
         'Unlimited access to ALL courses',
@@ -785,7 +785,7 @@ async function setup() {
       1, 1
     ],
     [
-      'Campus Elite Pass', 'campus', 1299.00, 9999.00,
+      'Campus Elite Pass', 'campus', 1299.00, 9999.00, 
       'Designed for college students needing full curriculum coverage, lab tasks, and placement prep.',
       JSON.stringify([
         'Everything in Pro Scholar',
@@ -855,7 +855,7 @@ async function setup() {
     console.log(`  ✅ Seeded ${generatedTests.length} Aptitude Tests with ${generatedTests.length * 25} Questions into DB`);
 
     // Seed Coding Problems (All 300)
-    try { await connection.query("ALTER TABLE codingProblems ADD COLUMN boilerplate TEXT DEFAULT NULL AFTER sampleOutput"); } catch { }
+    try { await connection.query("ALTER TABLE codingProblems ADD COLUMN boilerplate TEXT DEFAULT NULL AFTER sampleOutput"); } catch {}
     const mid = mentorRows[0].id;
     const all300Problems = [...all150CodingProblems, ...extra150CodingProblems];
     for (const p of all300Problems) {
@@ -880,8 +880,8 @@ async function setup() {
 
   // Seed System Settings
   const settings = [
-    ['siteName', 'NextStep'],
-    ['siteEmail', 'berries@nextstep.com'],
+    ['siteName', 'Sowberry Academy'],
+    ['siteEmail', 'berries@sowberry.com'],
     ['sitePhone', '+91 8825756388'],
     ['maxFileUploadSize', '10'],
     ['maintenanceMode', 'false'],
@@ -897,15 +897,15 @@ async function setup() {
 
   console.log('✅ Seed data inserted');
   console.log('');
-  console.log('🌱 NextStep database setup complete!');
+  console.log('🌱 Sowberry database setup complete!');
   console.log('─────────────────────────────────────');
-  console.log('Database: nextstep');
+  console.log('Database: sowberry');
   console.log('Tables: 28');
   console.log('');
   console.log('Login Credentials:');
-  console.log('  Admin:   jayanthan@nextstep.com  / Vishu@2008 (Username: jayanthan)');
-  console.log('  Mentor:  janasruthi@nextstep.com / Vishu@2008 (Username: janasruthi)');
-  console.log('  Student: vishalini@nextstep.com  / Vishu@2008 (Username: vishalini)');
+  console.log('  Admin:   jayanthan@sowberry.com  / Vishu@2008 (Username: jayanthan)');
+  console.log('  Mentor:  janasruthi@sowberry.com / Vishu@2008 (Username: janasruthi)');
+  console.log('  Student: vishalini@sowberry.com  / Vishu@2008 (Username: vishalini)');
 
   await connection.end();
   process.exit(0);

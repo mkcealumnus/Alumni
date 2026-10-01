@@ -114,7 +114,7 @@ router.post("/register", async (req, res) => {
         .json({ success: false, message: "Email or username already exists." });
     }
 
-    const validRoles = ['admin', 'student', 'alumni'];
+    const validRoles = ['admin', 'instructor', 'mentor', 'student', 'creator', 'manager', 'observer'];
     const userRole = req.body.role && validRoles.includes(req.body.role) ? req.body.role : 'student';
 
     // Insert user with plain text password

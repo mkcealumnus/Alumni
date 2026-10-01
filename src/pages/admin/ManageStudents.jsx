@@ -47,28 +47,6 @@ const ManageStudents = () => {
     if (res.success) fetchStudents();
   };
 
-  const handleAdvanceYear = () => {
-    Swal.fire({
-      ...getSwalOpts(),
-      title: 'Advance Academic Year?',
-      text: 'This will move IV year students to Alumni and advance all other years.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#c96442',
-      confirmButtonText: 'Yes, Advance Year'
-    }).then(async (r) => {
-      if (r.isConfirmed) {
-        const res = await adminApi.advanceAcademicYear();
-        if (res.success) {
-          Swal.fire({ ...getSwalOpts(), icon: 'success', title: 'Advanced!', text: res.message, timer: 2500, showConfirmButton: false });
-          fetchStudents();
-        } else {
-          Swal.fire({ ...getSwalOpts(), icon: 'error', title: 'Error', text: res.message });
-        }
-      }
-    });
-  };
-
   const columns = [
     { key: 'id', label: 'ID', sortable: true, visible: true },
     { key: 'fullName', label: 'Name', sortable: true, render: (_, s) => (
@@ -115,20 +93,15 @@ const ManageStudents = () => {
           data={students}
           loading={loading}
           searchPlaceholder="Search students..."
-          storageKey="nextstep_students_cols"
+          storageKey="sowberry_students_cols"
           exportTitle="Students Report"
-          exportFileName="NextStep_Students"
+          exportFileName="Sowberry_Students"
           emptyIcon="ri-user-line"
           emptyMessage="No students found"
           headerActions={
-            <div className="flex gap-2">
-              <button onClick={handleAdvanceYear} className="px-4 py-2 rounded-xl bg-orange-100 text-orange-700 dark-theme:bg-orange-900/30 dark-theme:text-orange-400 text-sm font-medium hover:bg-orange-200 transition-colors flex items-center gap-2" title="Advance students to next year">
-                <i className="ri-arrow-up-circle-line"></i> Advance Year
-              </button>
-              <button onClick={openCreate} className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors flex items-center gap-2">
-                <i className="ri-add-line"></i> Add Student
-              </button>
-            </div>
+            <button onClick={openCreate} className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors flex items-center gap-2">
+              <i className="ri-add-line"></i> Add Student
+            </button>
           }
         />
       </div>

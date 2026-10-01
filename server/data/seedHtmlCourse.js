@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 // Load env relative to server directory
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const DB_NAME = process.env.DB_NAME || 'nextstep';
+const DB_NAME = process.env.DB_NAME || 'sowberry';
 
 export async function seedHtmlCourse(existingConn = null) {
   let connection = existingConn;

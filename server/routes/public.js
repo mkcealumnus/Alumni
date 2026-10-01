@@ -233,6 +233,48 @@ router.post('/contact', async (req, res) => {
   }
 });
 
+// ──────────────── PUBLIC COURSES (Browse without auth) ────────────────
+router.get('/courses', async (req, res) => {
+  try {
+    const [courses] = await pool.query(`
+      SELECT c.id, c.title, c.description, c.image, c.duration, c.category, c.difficulty, c.rating, c.price, c.isPremium,
+        u.fullName as mentorName,
+        (SELECT COUNT(*) FROM courseEnrollments WHERE courseId = c.id) as totalStudents
+      FROM courses c
+      JOIN users u ON c.mentorId = u.id
+      WHERE c.isPublished = 1
+      ORDER BY c.rating DESC, c.createdAt DESC
+    `);
+
+    res.json({ success: true, data: { courses } });
+  } catch (error) {
+    console.error('Public courses error:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+});
+
+// ──────────────── PRICING PLANS (Public) ────────────────
+router.get('/pricing-plans', async (req, res) => {
+  try {
+    const [plans] = await pool.query(`
+      SELECT id, title, slug, monthlyPrice, yearlyPrice, description, features, isPopular, isActive
+      FROM subscriptionPlans
+      WHERE isActive = 1
+      ORDER BY id ASC
+    `);
+
+    const formatted = plans.map(p => ({
+      ...p,
+      features: typeof p.features === 'string' ? JSON.parse(p.features) : (p.features || [])
+    }));
+
+    res.json({ success: true, data: { plans: formatted } });
+  } catch (error) {
+    console.error('Pricing plans error:', error);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+});
+
 // ──────────────── NEWSLETTER (Public) ────────────────
 router.post('/newsletter', async (req, res) => {
   try {

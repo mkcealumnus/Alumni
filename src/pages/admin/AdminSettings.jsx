@@ -123,7 +123,7 @@ const AdminSettings = () => {
             <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mb-5">Platform Settings</h3>
             <form onSubmit={handleSettingsUpdate} className="space-y-4">
               <div><label className="block text-xs font-medium text-gray-500 mb-1">Site Name</label>
-                <input type="text" value={settings.siteName || 'NextStep'} onChange={(e) => setSettings({ ...settings, siteName: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
+                <input type="text" value={settings.siteName || 'Sowberry'} onChange={(e) => setSettings({ ...settings, siteName: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
               <div><label className="block text-xs font-medium text-gray-500 mb-1">Support Email</label>
                 <input type="email" value={settings.supportEmail || ''} onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
               <div><label className="block text-xs font-medium text-gray-500 mb-1">Max Students Per Course</label>

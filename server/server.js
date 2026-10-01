@@ -10,6 +10,7 @@ dotenv.config();
 // Route imports
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
+import mentorRoutes from './routes/mentor.js';
 import studentRoutes from './routes/student.js';
 import publicRoutes from './routes/public.js';
 import { renderApiDashboard } from './views/apiDashboard.js';
@@ -42,6 +43,7 @@ if (process.env.NODE_ENV !== 'production') {
 // ──────────────── ROUTES ────────────────
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/mentor', mentorRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/public', publicRoutes);
 
@@ -60,10 +62,10 @@ app.get('/', (req, res) => {
   if (req.headers.accept?.includes('application/json') || req.query.format === 'json' || req.query.accept === 'json') {
     return res.json({
       success: true,
-      message: 'NextStep API Server',
+      message: 'Sowberry API Server',
       version: '1.0.0',
       timestamp: new Date().toISOString(),
-      endpoints: { health: '/api/health', auth: '/api/auth', admin: '/api/admin', student: '/api/student', public: '/api/public' }
+      endpoints: { health: '/api/health', auth: '/api/auth', admin: '/api/admin', mentor: '/api/mentor', student: '/api/student', public: '/api/public' }
     });
   }
   res.send(getDashboardHTML());
@@ -74,13 +76,14 @@ app.get('/api', (req, res) => {
   if (req.headers.accept?.includes('application/json') || req.query.format === 'json' || req.query.accept === 'json') {
     return res.json({
       success: true,
-      message: 'NextStep API is running!',
+      message: 'Sowberry API is running!',
       version: '1.0.0',
       timestamp: new Date().toISOString(),
       endpoints: {
         health: 'GET /api/health',
         auth: '/api/auth (login, register, forgot-password, verify-otp, reset-password, me, profile, change-password)',
-        admin: '/api/admin (dashboard, students, alumni, analytics, reports, settings, notifications)',
+        admin: '/api/admin (dashboard, students, mentors, courses, analytics, reports, settings, notifications, contact-messages)',
+        mentor: '/api/mentor (dashboard, courses, assignments, students-progress, problems, aptitude-tests, events, discussions, study-materials)',
         student: '/api/student (dashboard, courses, assignments, grades, progress, coding-problems, aptitude-tests, study-materials, events, discussions, notifications)',
         public: '/api/public (courses, contact, newsletter)'
       }
@@ -91,7 +94,7 @@ app.get('/api', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'NextStep API is running!', timestamp: new Date().toISOString() });
+  res.json({ success: true, message: 'Sowberry API is running!', timestamp: new Date().toISOString() });
 });
 
 // 404 handler
@@ -110,7 +113,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log('');
   console.log('🌱 ─────────────────────────────────────');
-  console.log(`   NextStep API Server`);
+  console.log(`   Sowberry API Server`);
   console.log(`   Port: ${PORT}`);
   console.log(`   Mode: ${process.env.NODE_ENV || 'development'}`);
   console.log(`   API:  http://localhost:${PORT}/api`);

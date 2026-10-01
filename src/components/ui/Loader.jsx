@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Centralized, theme-aware common Loader component for NextStep.
+ * Centralized, theme-aware common Loader component for Sowberry.
  * 
  * @param {Object} props
  * @param {'sm' | 'md' | 'lg'} [props.size='md'] - Spinner size

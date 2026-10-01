@@ -123,7 +123,7 @@ const DataTable = ({
       const val = getRawValue(row, c);
       return val !== undefined && val !== null ? val : '';
     }));
-    return { title: exportTitle || title || 'Export', columns: cols, rows, fileName: exportFileName || 'NextStep_Export' };
+    return { title: exportTitle || title || 'Export', columns: cols, rows, fileName: exportFileName || 'Sowberry_Export' };
   };
 
   const handleCopy = () => {
