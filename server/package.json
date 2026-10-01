@@ -1,7 +1,7 @@
 {
   "name": "nextstep-backend",
   "version": "1.0.0",
-  "description": "NextStep Academy Backend API",
+  "description": "NextStep Backend API",
   "main": "server.js",
   "type": "module",
   "scripts": {

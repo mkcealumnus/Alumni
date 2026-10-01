@@ -1122,7 +1122,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
             <i class="ri-seedling-fill" style="color:#c96442;"></i> NextStep API Dashboard
           </h1>
           <p class="page-subtitle">
-            Interactive API Management Console and Route Specification for NextStep Academy backend services.
+            Interactive API Management Console and Route Specification for NextStep backend services.
           </p>
         </div>
         <div class="banner-actions">
@@ -2311,7 +2311,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
                 </button>
               </div>
             </div>
-            <div class="ep-desc">Subscribes email address to NextStep Academy monthly newsletter.</div>
+            <div class="ep-desc">Subscribes email address to NextStep monthly newsletter.</div>
             <div class="ep-tags-row">
               <span class="ep-tag ep-tag-public"><i class="ri-lock-unlock-line"></i> Public Route</span>
               <span class="ep-tag">Body: { email }</span>
@@ -2406,7 +2406,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
 
     <!-- FOOTER -->
     <footer class="dashboard-footer">
-      <p>&copy; ${new Date().getFullYear()} <a href="http://localhost:5173" target="_blank">NextStep Academy</a> &bull; API v1.0.0 &bull; Express.js Node Environment</p>
+      <p>&copy; ${new Date().getFullYear()} <a href="http://localhost:5173" target="_blank">NextStep</a> &bull; API v1.0.0 &bull; Express.js Node Environment</p>
     </footer>
 
   </div>
@@ -2779,7 +2779,7 @@ export const renderApiDashboard = ({ uptimeSeconds = 0, port = 5000, env = 'deve
     function exportPostmanCollection() {
       const spec = {
         info: {
-          name: "NextStep Academy API",
+          name: "NextStep API",
           schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
         },
         item: [

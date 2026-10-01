@@ -655,7 +655,7 @@ const Home = () => {
         {/* Bottom */}
         <div className="border-t border-white/5 py-4">
           <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-600">&copy; {currentYear} NextStep Academy. All Rights Reserved.</p>
+            <p className="text-xs text-gray-600">&copy; {currentYear} NextStep. All Rights Reserved.</p>
             <div className="flex gap-4">
               {['Privacy Policy', 'Terms of Service'].map((link, i) => (
                 <a key={i} href="#" className="text-xs text-gray-600 hover:text-primary-light transition-colors">{link}</a>

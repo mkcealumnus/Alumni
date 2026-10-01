@@ -25,4 +25,4 @@ def scan_directory(directory):
             filepath = os.path.join(root, file)
             replace_in_file(filepath, "NextStep", "NextStep")
 
-s
+scan_directory('.')

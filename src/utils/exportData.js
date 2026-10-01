@@ -241,7 +241,7 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
     doc.setTextColor(71, 85, 105);
     doc.text('• Standard Grading Scale: A+ (90-100%), A (80-89%), B (70-79%)', 18, summaryY + 12);
     doc.text('• Official Digital Verification Code: SB-SEC-9842-2026-OK', 18, summaryY + 17);
-    doc.text('• Verified against NextStep Academy Academic Registry database.', 18, summaryY + 22);
+    doc.text('• Verified against NextStep Academic Registry database.', 18, summaryY + 22);
     doc.text('• Certificate and transcript issued under authorized electronic signature.', 18, summaryY + 27);
 
     // Right Box: Total Result Summary
@@ -290,7 +290,7 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
-    doc.text(`NextStep Academy • Official Academic Grade Sheet • ${transcriptId}`, 14, pageHeight - 8);
+    doc.text(`NextStep • Official Academic Grade Sheet • ${transcriptId}`, 14, pageHeight - 8);
     doc.text(`Page ${i} of ${pageCount}`, pageWidth - 14, pageHeight - 8, { align: 'right' });
   }
 

@@ -880,7 +880,7 @@ async function setup() {
 
   // Seed System Settings
   const settings = [
-    ['siteName', 'NextStep Academy'],
+    ['siteName', 'NextStep'],
     ['siteEmail', 'berries@nextstep.com'],
     ['sitePhone', '+91 8825756388'],
     ['maxFileUploadSize', '10'],

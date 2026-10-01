@@ -1,6 +1,6 @@
 <div align="center">
 
-  <h1>🌱 NextStep Academy</h1>
+  <h1>🌱 NextStep</h1>
   <p><b>An Enterprise-Grade Multi-Role Learning Management System & EdTech Ecosystem</b></p>
 
   <img src="https://github-repo-readme-stats.vercel.app/api?username=jayanthansenthilkumar&repo=NextStep&theme=dark" alt="NextStep Repo Stats" />
@@ -18,7 +18,7 @@
 
 ## 📌 Overview
 
-**NextStep Academy** is an all-in-one, multi-role **Learning Management System (LMS)** designed to deliver high-quality technical education, interactive coding assessments, gamified learning, and institutional management. Built on modern web technologies (**React 19**, **Node.js**, **Express**, **MySQL**, **CodeMirror 6**, and **Three.js**), NextStep provides an end-to-end platform for students, mentors, content creators, academic managers, observers, and administrators.
+**NextStep** is an all-in-one, multi-role **Learning Management System (LMS)** designed to deliver high-quality technical education, interactive coding assessments, gamified learning, and institutional management. Built on modern web technologies (**React 19**, **Node.js**, **Express**, **MySQL**, **CodeMirror 6**, and **Three.js**), NextStep provides an end-to-end platform for students, mentors, content creators, academic managers, observers, and administrators.
 
 ---
 
@@ -285,5 +285,5 @@ NODE_ENV=production npm start
 
 ## 📄 License
 
-This repository is proprietary software of **NextStep Academy**. All rights reserved.
+This repository is proprietary software of **NextStep**. All rights reserved.
 

@@ -1,6 +1,6 @@
 /**
  * HTML5 Complete Masterclass: From Scratch to Advanced
- * Single-source comprehensive course dataset for NextStep Academy
+ * Single-source comprehensive course dataset for NextStep
  */
 
 export const htmlCourse = {
@@ -266,7 +266,7 @@ Entities start with an ampersand (\`&\`) and end with a semicolon (\`;\`).
 #### Example Usage:
 \`\`\`html
 <p>To start a tag, write &lt;div&gt; in your editor.</p>
-<p>Copyright &copy; 2026 NextStep Academy. All rights reserved.</p>
+<p>Copyright &copy; 2026 NextStep. All rights reserved.</p>
 \`\`\``
         }
       ]
@@ -291,7 +291,7 @@ Hyperlinks connect web pages, documents, sections, and external resources. The a
 ### Basic Anchor Tag Syntax
 
 \`\`\`html
-<a href="https://nextstep.com">Visit NextStep Academy</a>
+<a href="https://nextstep.com">Visit NextStep</a>
 \`\`\`
 
 ---
@@ -551,7 +551,7 @@ WEBVTT
 
 1
 00:00:01.000 --> 00:00:04.000
-Welcome to NextStep Academy HTML5 Masterclass!
+Welcome to NextStep HTML5 Masterclass!
 
 2
 00:00:04.500 --> 00:00:08.000
@@ -697,7 +697,7 @@ HTML5 introduces dedicated landmark elements for page layout architecture.
 
   <!-- Page Header -->
   <header>
-    <a href="/" class="logo">NextStep Academy</a>
+    <a href="/" class="logo">NextStep</a>
     <nav>
       <ul>
         <li><a href="/courses">Courses</a></li>
@@ -793,8 +793,8 @@ Create expandable/collapsible accordions without a single line of JavaScript!
 
 \`\`\`html
 <details open>
-  <summary>What is NextStep Academy?</summary>
-  <p>NextStep Academy is an end-to-end learning workspace for engineering students covering coding, aptitude, and tech courses.</p>
+  <summary>What is NextStep?</summary>
+  <p>NextStep is an end-to-end learning workspace for engineering students covering coding, aptitude, and tech courses.</p>
 </details>
 
 <details>
@@ -1239,8 +1239,8 @@ Meta tags supply search engine crawlers (Googlebot) and social networks with inf
 
 \`\`\`html
 <!-- Primary Meta Tags -->
-<title>HTML5 Complete Masterclass | NextStep Academy</title>
-<meta name="title" content="HTML5 Complete Masterclass | NextStep Academy">
+<title>HTML5 Complete Masterclass | NextStep</title>
+<meta name="title" content="HTML5 Complete Masterclass | NextStep">
 <meta name="description" content="Learn HTML5 from scratch to advanced level with comprehensive lessons, form validation, graphics, and accessibility standards.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://nextstep.prisoltech.app/courses/html101">
@@ -1248,7 +1248,7 @@ Meta tags supply search engine crawlers (Googlebot) and social networks with inf
 <!-- Open Graph / Facebook / LinkedIn -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nextstep.prisoltech.app/courses/html101">
-<meta property="og:title" content="HTML5 Complete Masterclass | NextStep Academy">
+<meta property="og:title" content="HTML5 Complete Masterclass | NextStep">
 <meta property="og:description" content="Master modern HTML5 with hands-on reading guides and quizzes.">
 <meta property="og:image" content="https://nextstep.prisoltech.app/og-html5.jpg">
 
