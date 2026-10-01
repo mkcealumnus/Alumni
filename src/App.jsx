@@ -6,7 +6,7 @@ import SessionManager from '@/components/ui/SessionManager'
 import Loader from '@/components/ui/Loader'
 
 
-import Home from '@/pages/Home'
+import LaunchPage from '@/pages/LaunchPage'
 import AuthPage from '@/pages/auth/AuthPage'
 import AdminDashboard from '@/pages/admin/AdminDashboard'
 import AdminSettings from '@/pages/admin/AdminSettings'
@@ -69,7 +69,7 @@ function App() {
         <AuthProvider>
           <SessionManager />
           <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LaunchPage />} />
           <Route path="/auth" element={<AuthPage />} />
           
           {/* Admin Routes */}
