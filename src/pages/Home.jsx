@@ -135,19 +135,19 @@ const Home = () => {
                 <div className="space-y-4 pt-8">
                   <div className="bg-[#FAF9F5] dark-theme:bg-[#18181A] p-8 rounded-[2rem] border border-[#F2EBE5] dark-theme:border-gray-800/60 shadow-sm transition-transform hover:-translate-y-1">
                     <i className="ri-shield-star-line text-3xl text-[#C27A3A] dark-theme:text-[#D4A574] mb-6 block"></i>
-                    <h4 className="text-lg font-bold text-[#2C2926] dark-theme:text-white mb-2">Verified Trust</h4>
+                    <h4 className="text-lg font-bold text-[#2C2926] dark-theme:text-gray-100 mb-2">Verified Trust</h4>
                     <p className="text-sm text-[#8C8985] dark-theme:text-gray-500 leading-relaxed">Every user is authenticated manually by the admin team.</p>
                   </div>
                   <div className="bg-[#FAF9F5] dark-theme:bg-[#18181A] p-8 rounded-[2rem] border border-[#F2EBE5] dark-theme:border-gray-800/60 shadow-sm transition-transform hover:-translate-y-1">
                     <i className="ri-rocket-line text-3xl text-[#C27A3A] dark-theme:text-[#D4A574] mb-6 block"></i>
-                    <h4 className="text-lg font-bold text-[#2C2926] dark-theme:text-white mb-2">Fast Tracking</h4>
+                    <h4 className="text-lg font-bold text-[#2C2926] dark-theme:text-gray-100 mb-2">Fast Tracking</h4>
                     <p className="text-sm text-[#8C8985] dark-theme:text-gray-500 leading-relaxed">Skip cold emails and connect directly via 1-on-1s.</p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="bg-[#FAF9F5] dark-theme:bg-[#18181A] p-8 rounded-[2rem] border border-[#F2EBE5] dark-theme:border-gray-800/60 shadow-sm h-full flex flex-col justify-center min-h-[240px] transition-transform hover:-translate-y-1">
                     <div className="text-6xl font-bold text-[#C27A3A] dark-theme:text-[#D4A574] mb-4 font-serif">10x</div>
-                    <h4 className="text-lg font-bold text-[#2C2926] dark-theme:text-white mb-2">More Effective</h4>
+                    <h4 className="text-lg font-bold text-[#2C2926] dark-theme:text-gray-100 mb-2">More Effective</h4>
                     <p className="text-sm text-[#8C8985] dark-theme:text-gray-500 leading-relaxed">Students report a 10x higher engagement rate here.</p>
                   </div>
                 </div>
@@ -164,7 +164,7 @@ const Home = () => {
             
             <div className="text-center mb-20 max-w-3xl mx-auto">
               <h2 className="text-xs font-bold text-[#C27A3A] dark-theme:text-[#D4A574] uppercase tracking-widest mb-4">Core Features</h2>
-              <h3 className="text-3xl md:text-5xl font-bold text-[#2C2926] dark-theme:text-white leading-[1.1] mb-6 font-serif">
+              <h3 className="text-3xl md:text-5xl font-bold text-[#2C2926] dark-theme:text-gray-100 leading-[1.1] mb-6 font-serif">
                 Everything you need to <br className="hidden sm:block"/> <span className="italic text-[#8C8985]">accelerate</span> your career.
               </h3>
               <p className="text-lg text-[#5C5956] dark-theme:text-gray-400">
@@ -226,7 +226,7 @@ const Home = () => {
               
               <div>
                 <h2 className="text-xs font-bold text-[#C27A3A] dark-theme:text-[#D4A574] uppercase tracking-widest mb-4">Simple Process</h2>
-                <h3 className="text-3xl md:text-5xl font-bold text-[#2C2926] dark-theme:text-white leading-[1.1] mb-6 font-serif">
+                <h3 className="text-3xl md:text-5xl font-bold text-[#2C2926] dark-theme:text-gray-100 leading-[1.1] mb-6 font-serif">
                   From Campus to Corporate <br className="hidden lg:block"/> in 3 steps.
                 </h3>
                 <p className="text-lg text-[#5C5956] dark-theme:text-gray-400 mb-12">
@@ -253,7 +253,7 @@ const Home = () => {
                   ].map((step, i) => (
                     <div key={i} className="flex gap-6">
                       <div className="flex flex-col items-center">
-                        <div className="w-10 h-10 rounded-full bg-[#FAF9F5] dark-theme:bg-[#18181A] border border-[#DCD5CF] dark-theme:border-gray-700 text-[#2C2926] dark-theme:text-white flex items-center justify-center font-bold text-sm shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-[#FAF9F5] dark-theme:bg-[#18181A] border border-[#DCD5CF] dark-theme:border-gray-700 text-[#2C2926] dark-theme:text-gray-100 flex items-center justify-center font-bold text-sm shrink-0">
                           {step.num}
                         </div>
                         {i !== 2 && <div className="w-px h-full bg-[#E5DCD5] dark-theme:bg-gray-800 mt-4"></div>}
@@ -318,7 +318,7 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-6 relative z-10 mb-16">
             <div className="text-center mb-20 max-w-3xl mx-auto">
               <h2 className="text-xs font-bold text-[#C27A3A] dark-theme:text-[#D4A574] uppercase tracking-widest mb-4">Impact</h2>
-              <h3 className="text-3xl md:text-5xl font-bold text-[#2C2926] dark-theme:text-white leading-[1.1] font-serif">
+              <h3 className="text-3xl md:text-5xl font-bold text-[#2C2926] dark-theme:text-gray-100 leading-[1.1] font-serif">
                 What the community says.
               </h3>
             </div>
@@ -347,11 +347,11 @@ const Home = () => {
                     {t.quote}
                   </p>
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-[#FAF9F5] dark-theme:bg-[#2A2A2D] text-[#2C2926] dark-theme:text-white border border-[#E5DCD5] dark-theme:border-gray-700">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-[#FAF9F5] dark-theme:bg-[#2A2A2D] text-[#2C2926] dark-theme:text-gray-100 border border-[#E5DCD5] dark-theme:border-gray-700">
                       {t.name.charAt(0)}
                     </div>
                     <div>
-                      <h5 className="font-bold text-[#2C2926] dark-theme:text-white text-sm">{t.name}</h5>
+                      <h5 className="font-bold text-[#2C2926] dark-theme:text-gray-100 text-sm">{t.name}</h5>
                       <span className="text-xs text-[#8C8985]">{t.role}</span>
                     </div>
                   </div>

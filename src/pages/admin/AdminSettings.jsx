@@ -79,7 +79,7 @@ const AdminSettings = () => {
         <div className="flex gap-1 bg-white dark-theme:bg-gray-900 rounded-xl p-1 border border-sand dark-theme:border-gray-800 w-fit">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-50 dark-theme:hover:bg-gray-800'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id ? 'bg-primary text-white' : 'text-gray-500 hover:bg-cream dark-theme:hover:bg-gray-800'}`}>
               <i className={tab.icon}></i>{tab.label}
             </button>
           ))}
@@ -129,7 +129,7 @@ const AdminSettings = () => {
               <div><label className="block text-xs font-medium text-gray-500 mb-1">Max Students Per Course</label>
                 <input type="number" value={settings.maxStudentsPerCourse || 100} onChange={(e) => setSettings({ ...settings, maxStudentsPerCourse: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" /></div>
               <div className="flex items-center gap-3">
-                <input type="checkbox" checked={settings.maintenanceMode === 'true' || settings.maintenanceMode === true} onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked ? 'true' : 'false' })} className="rounded border-gray-300 text-primary focus:ring-primary" />
+                <input type="checkbox" checked={settings.maintenanceMode === 'true' || settings.maintenanceMode === true} onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked ? 'true' : 'false' })} className="rounded border-sand text-primary focus:ring-primary" />
                 <label className="text-sm text-gray-600 dark-theme:text-gray-400">Maintenance Mode</label>
               </div>
               <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark disabled:opacity-60">{loading ? 'Saving...' : 'Save Settings'}</button>

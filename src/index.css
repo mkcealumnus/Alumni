@@ -430,7 +430,7 @@ iframe {
   margin: 0 !important;
 }
 @layer utilities {
-  .bg-300% {
+  .bg-300\% {
     background-size: 300% 300%;
   }
 }

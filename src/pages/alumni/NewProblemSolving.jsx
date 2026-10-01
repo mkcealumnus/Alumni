@@ -80,7 +80,7 @@ const NewProblemSolving = () => {
           <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 w-full max-w-lg mx-4 border border-sand dark-theme:border-gray-800 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">{editItem ? 'Edit' : 'New'} Problem</h3>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
+              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-sand flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
               <input type="text" placeholder="Problem Title" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
@@ -97,7 +97,7 @@ const NewProblemSolving = () => {
                 <textarea placeholder="Sample Output" rows={2} value={form.sampleOutput} onChange={e => setForm({ ...form, sampleOutput: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm resize-none font-mono text-xs" />
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-gray-50">Cancel</button>
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-cream">Cancel</button>
                 <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">{editItem ? 'Update' : 'Create'}</button>
               </div>
             </form>

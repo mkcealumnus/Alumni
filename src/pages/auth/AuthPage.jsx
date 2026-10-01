@@ -861,7 +861,7 @@ const AuthPage = () => {
                   <div className="flex items-center justify-between text-sm">
                     <label className="flex items-center gap-2 text-gray-600 dark-theme:text-gray-400 cursor-pointer">
                       <input type="checkbox" name="remember" checked={loginData.remember} onChange={handleLoginChange}
-                        className="rounded border-gray-300 text-primary focus:ring-primary" />
+                        className="rounded border-sand text-primary focus:ring-primary" />
                       Remember me
                     </label>
                     <button type="button" onClick={() => toggleForm('forgot')}
@@ -985,7 +985,7 @@ const AuthPage = () => {
                           )}
                         </div>
                         {showCollegeDropdown && collegeResults.length > 0 && (
-                          <div ref={collegeDropdownRef} className="absolute z-50 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 shadow-lg">
+                          <div ref={collegeDropdownRef} className="absolute z-50 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 shadow-lg">
                             {collegeResults.map((c, i) => (
                               <button
                                 key={i}
@@ -1004,7 +1004,7 @@ const AuthPage = () => {
                           </div>
                         )}
                         {showCollegeDropdown && !collegeLoading && collegeSearch.trim().length > 0 && collegeResults.length === 0 && (
-                          <div ref={collegeDropdownRef} className="absolute z-50 w-full mt-1 rounded-xl bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 shadow-lg px-4 py-3 text-sm text-gray-400">
+                          <div ref={collegeDropdownRef} className="absolute z-50 w-full mt-1 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 shadow-lg px-4 py-3 text-sm text-gray-400">
                             No colleges found
                           </div>
                         )}
@@ -1054,7 +1054,7 @@ const AuthPage = () => {
                             )}
                           </div>
                           {showDeptDropdown && deptResults.length > 0 && (
-                            <div ref={deptDropdownRef} className="absolute z-50 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 shadow-lg">
+                            <div ref={deptDropdownRef} className="absolute z-50 w-full mt-1 max-h-48 overflow-y-auto rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 shadow-lg">
                               {deptResults.map((d, i) => (
                                 <button
                                   key={i}
@@ -1081,7 +1081,7 @@ const AuthPage = () => {
                             </div>
                           )}
                           {showDeptDropdown && !deptLoading && deptSearch.trim().length > 0 && deptResults.length === 0 && (
-                            <div ref={deptDropdownRef} className="absolute z-50 w-full mt-1 rounded-xl bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 shadow-lg px-4 py-3 text-sm text-gray-400">
+                            <div ref={deptDropdownRef} className="absolute z-50 w-full mt-1 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 shadow-lg px-4 py-3 text-sm text-gray-400">
                               No departments found
                             </div>
                           )}

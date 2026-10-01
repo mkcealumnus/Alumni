@@ -359,7 +359,7 @@ const CodeEditor = () => {
                       const res = hiddenTestResults ? hiddenTestResults[i] : null;
                       if (!res) {
                         return (
-                          <div key={i} className="px-1.5 py-1 rounded-lg bg-gray-100 dark-theme:bg-gray-800 text-[9px] font-mono text-center text-gray-500 border border-sand/40 dark-theme:border-gray-700/40 flex items-center justify-center gap-0.5" title={`Hidden Test Case #${i + 1} (Locked)`}>
+                          <div key={i} className="px-1.5 py-1 rounded-lg bg-sand dark-theme:bg-gray-800 text-[9px] font-mono text-center text-gray-500 border border-sand/40 dark-theme:border-gray-700/40 flex items-center justify-center gap-0.5" title={`Hidden Test Case #${i + 1} (Locked)`}>
                             <i className="ri-lock-line text-[8px] text-amber-500"></i> H{i + 1}
                           </div>
                         );

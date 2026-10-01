@@ -128,7 +128,7 @@ const CodingPractice = () => {
                 placeholder="Search 150 problems..."
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-                className="w-full pl-8 pr-3 py-2 rounded-xl bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 text-xs outline-none focus:border-primary transition-colors"
+                className="w-full pl-8 pr-3 py-2 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 text-xs outline-none focus:border-primary transition-colors"
               />
             </div>
 
@@ -136,7 +136,7 @@ const CodingPractice = () => {
             <select
               value={selectedCategory}
               onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-              className="px-3 py-2 rounded-xl bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 text-xs outline-none font-medium"
+              className="px-3 py-2 rounded-xl bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 text-xs outline-none font-medium"
             >
               <option value="all">All Categories</option>
               {categoriesList.filter(c => c !== 'all').map(cat => (
@@ -187,7 +187,7 @@ const CodingPractice = () => {
                           {p.difficulty}
                         </span>
                         {p.category && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-400">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-sand dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-400">
                             {p.category}
                           </span>
                         )}
@@ -227,7 +227,7 @@ const CodingPractice = () => {
                   <button
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                    className="px-3 py-1.5 rounded-lg border border-sand dark-theme:border-gray-700 bg-white dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-300 disabled:opacity-40"
+                    className="px-3 py-1.5 rounded-lg border border-sand dark-theme:border-gray-700 bg-white dark-theme:bg-gray-900 text-gray-600 dark-theme:text-gray-300 disabled:opacity-40"
                   >
                     Previous
                   </button>
@@ -243,7 +243,7 @@ const CodingPractice = () => {
                   <button
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                    className="px-3 py-1.5 rounded-lg border border-sand dark-theme:border-gray-700 bg-white dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-300 disabled:opacity-40"
+                    className="px-3 py-1.5 rounded-lg border border-sand dark-theme:border-gray-700 bg-white dark-theme:bg-gray-900 text-gray-600 dark-theme:text-gray-300 disabled:opacity-40"
                   >
                     Next
                   </button>

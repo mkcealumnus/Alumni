@@ -135,7 +135,7 @@ const AlumniProfile = () => {
               </label>
             </div>
             <div className="text-center sm:text-left">
-              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-white">{profile.fullName || 'Alumni'}</h2>
+              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">{profile.fullName || 'Alumni'}</h2>
               <p className="text-sm text-gray-500 dark-theme:text-gray-400">{profile.email}</p>
               <span className="inline-block mt-1.5 px-2.5 py-0.5 bg-blue-500/10 text-blue-600 dark-theme:text-blue-400 text-[11px] font-semibold rounded-full uppercase">Alumni</span>
             </div>

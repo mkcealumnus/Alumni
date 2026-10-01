@@ -201,7 +201,7 @@ const StudentDashboard = () => {
                 </span>
               </div>
 
-              <h2 className="text-3xl font-extrabold text-gray-900 dark-theme:text-white tracking-tight">
+              <h2 className="text-3xl font-extrabold text-gray-900 dark-theme:text-gray-100 tracking-tight">
                 {s.value}
               </h2>
               <p className="text-xs font-semibold text-gray-500 dark-theme:text-gray-400 mt-1 flex items-center justify-between">

@@ -32,7 +32,7 @@ const StudentsProgress = () => {
     { key: 'courseTitle', label: 'Course', sortable: true },
     { key: 'completionPercentage', label: 'Progress', sortable: true, render: (v) => (
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-2 bg-gray-100 dark-theme:bg-gray-800 rounded-full overflow-hidden min-w-[80px]">
+        <div className="flex-1 h-2 bg-sand dark-theme:bg-gray-800 rounded-full overflow-hidden min-w-[80px]">
           <div className={`h-full rounded-full ${(v || 0) >= 100 ? 'bg-green-500' : 'bg-primary'}`} style={{ width: `${v || 0}%` }}></div>
         </div>
         <span className="text-xs font-medium text-gray-600 dark-theme:text-gray-400 w-10">{v || 0}%</span>

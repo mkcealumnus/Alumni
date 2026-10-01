@@ -88,13 +88,13 @@ const AlumniDiscussion = () => {
           <div className="bg-white dark-theme:bg-gray-900 rounded-2xl border border-sand dark-theme:border-gray-800 p-6">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">New Discussion Thread</h3>
-              <button onClick={() => setShowCreate(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
+              <button onClick={() => setShowCreate(false)} className="w-8 h-8 rounded-lg hover:bg-sand flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
             </div>
             <form onSubmit={handleCreate} className="space-y-4">
               <input type="text" placeholder="Thread Title" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
               <textarea placeholder="Write your discussion content..." rows={5} required value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm resize-none" />
               <div className="flex gap-3">
-                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-gray-50">Cancel</button>
+                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-cream">Cancel</button>
                 <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">Post Thread</button>
               </div>
             </form>

@@ -87,7 +87,7 @@ const NewAptitude = () => {
           <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 w-full max-w-2xl mx-4 border border-sand dark-theme:border-gray-800 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">Create Aptitude Test</h3>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
+              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-sand flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <input type="text" placeholder="Test Title" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
@@ -97,7 +97,7 @@ const NewAptitude = () => {
                 <input type="number" placeholder="Total Marks" value={form.totalMarks} onChange={e => setForm({ ...form, totalMarks: parseInt(e.target.value) || 100 })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
               </div>
               <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                <input type="checkbox" checked={form.isPublished} onChange={e => setForm({ ...form, isPublished: e.target.checked })} className="rounded border-gray-300 text-primary" /> Publish
+                <input type="checkbox" checked={form.isPublished} onChange={e => setForm({ ...form, isPublished: e.target.checked })} className="rounded border-sand text-primary" /> Publish
               </label>
 
               <div className="border-t border-sand dark-theme:border-gray-800 pt-4">
@@ -129,7 +129,7 @@ const NewAptitude = () => {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-gray-50">Cancel</button>
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-cream">Cancel</button>
                 <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">Create Test</button>
               </div>
             </form>

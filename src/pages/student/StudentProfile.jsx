@@ -183,7 +183,7 @@ const StudentProfile = () => {
 
   const inputClass = 'w-full px-3 py-2.5 rounded-lg bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-[13px] text-gray-700 dark-theme:text-gray-200 transition-colors';
   const labelClass = 'block text-[12px] font-semibold text-gray-500 dark-theme:text-gray-400 uppercase tracking-wide mb-1.5';
-  const readOnlyClass = 'w-full px-3 py-2.5 rounded-lg bg-gray-100 dark-theme:bg-gray-800/50 border border-sand dark-theme:border-gray-700 text-[13px] text-gray-600 dark-theme:text-gray-300 cursor-not-allowed';
+  const readOnlyClass = 'w-full px-3 py-2.5 rounded-lg bg-sand dark-theme:bg-gray-800/50 border border-sand dark-theme:border-gray-700 text-[13px] text-gray-600 dark-theme:text-gray-300 cursor-not-allowed';
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
   const statusColors = { pending: 'bg-yellow-100 text-yellow-700 dark-theme:bg-yellow-900/30 dark-theme:text-yellow-400', approved: 'bg-green-100 text-green-700 dark-theme:bg-green-900/30 dark-theme:text-green-400', rejected: 'bg-red-100 text-red-700 dark-theme:bg-red-900/30 dark-theme:text-red-400' };
@@ -215,11 +215,11 @@ const StudentProfile = () => {
               </label>
             </div>
             <div className="text-center sm:text-left flex-1">
-              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-white">{profile.fullName || 'Student'}</h2>
+              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">{profile.fullName || 'Student'}</h2>
               <p className="text-sm text-gray-500 dark-theme:text-gray-400">{profile.email}</p>
               <div className="flex flex-wrap gap-2 mt-1.5 justify-center sm:justify-start">
                 <span className="px-2.5 py-0.5 bg-emerald-500/10 text-emerald-600 dark-theme:text-emerald-400 text-[11px] font-semibold rounded-full uppercase">Student</span>
-                {profile.rollNumber && <span className="px-2.5 py-0.5 bg-gray-100 dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-400 text-[11px] font-semibold rounded-full">{profile.rollNumber}</span>}
+                {profile.rollNumber && <span className="px-2.5 py-0.5 bg-sand dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-400 text-[11px] font-semibold rounded-full">{profile.rollNumber}</span>}
               </div>
             </div>
             <div className="flex gap-2">
@@ -336,7 +336,7 @@ const StudentProfile = () => {
                         </div>
                         <p className="text-[13px] text-gray-600 dark-theme:text-gray-300"><strong>Reason:</strong> {req.reason}</p>
                         {req.type === 'edit' && req.requestData && (
-                          <div className="mt-2 p-2 bg-gray-50 dark-theme:bg-gray-800/50 rounded-lg">
+                          <div className="mt-2 p-2 bg-cream dark-theme:bg-gray-800/50 rounded-lg">
                             <p className="text-[11px] font-semibold text-gray-500 dark-theme:text-gray-400 mb-1">Requested Changes:</p>
                             <div className="flex flex-wrap gap-1.5">
                               {Object.entries(typeof req.requestData === 'string' ? JSON.parse(req.requestData) : req.requestData).map(([k, v]) => (
@@ -395,8 +395,8 @@ const StudentProfile = () => {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowEditModal(false)}>
           <div className="bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="sticky top-0 bg-white dark-theme:bg-gray-900 px-6 py-4 border-b border-sand dark-theme:border-gray-800 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-white">Request Profile Edit</h3>
-              <button onClick={() => setShowEditModal(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 dark-theme:hover:bg-gray-800 flex items-center justify-center text-gray-400">
+              <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">Request Profile Edit</h3>
+              <button onClick={() => setShowEditModal(false)} className="w-8 h-8 rounded-lg hover:bg-sand dark-theme:hover:bg-gray-800 flex items-center justify-center text-gray-400">
                 <i className="ri-close-line text-lg"></i>
               </button>
             </div>
@@ -476,7 +476,7 @@ const StudentProfile = () => {
                 <textarea className={`${inputClass} resize-none`} rows="2" value={editReason} onChange={e => setEditReason(e.target.value)} placeholder="Explain why you need to edit your profile..." />
               </div>
               <div className="flex justify-end gap-3 pt-2">
-                <button onClick={() => setShowEditModal(false)} className="px-5 py-2.5 text-[13px] font-medium text-gray-600 dark-theme:text-gray-400 hover:bg-gray-100 dark-theme:hover:bg-gray-800 rounded-lg transition-colors">
+                <button onClick={() => setShowEditModal(false)} className="px-5 py-2.5 text-[13px] font-medium text-gray-600 dark-theme:text-gray-400 hover:bg-sand dark-theme:hover:bg-gray-800 rounded-lg transition-colors">
                   Cancel
                 </button>
                 <button onClick={handleSubmitEditRequest} disabled={loading} className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold rounded-lg transition-colors disabled:opacity-50">
@@ -507,7 +507,7 @@ const StudentProfile = () => {
                 <textarea className={`${inputClass} resize-none`} rows="3" value={deleteReason} onChange={e => setDeleteReason(e.target.value)} placeholder="Why do you want to delete your account?" />
               </div>
               <div className="flex justify-end gap-3 pt-2">
-                <button onClick={() => setShowDeleteModal(false)} className="px-5 py-2.5 text-[13px] font-medium text-gray-600 dark-theme:text-gray-400 hover:bg-gray-100 dark-theme:hover:bg-gray-800 rounded-lg transition-colors">
+                <button onClick={() => setShowDeleteModal(false)} className="px-5 py-2.5 text-[13px] font-medium text-gray-600 dark-theme:text-gray-400 hover:bg-sand dark-theme:hover:bg-gray-800 rounded-lg transition-colors">
                   Cancel
                 </button>
                 <button onClick={handleSubmitDeleteRequest} disabled={loading} className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white text-[13px] font-semibold rounded-lg transition-colors disabled:opacity-50">

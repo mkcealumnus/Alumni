@@ -124,7 +124,7 @@ const MyCourses = () => {
                 <i className="ri-vip-crown-fill text-yellow-300"></i>
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 dark-theme:text-white text-sm">Unlock All Courses with Pro Scholar Pass</h4>
+                <h4 className="font-bold text-gray-900 dark-theme:text-gray-100 text-sm">Unlock All Courses with Pro Scholar Pass</h4>
                 <p className="text-xs text-gray-500 dark-theme:text-gray-400">Get unlimited access to courses, interactive compilers, and 1-on-1 mentor guidance starting at ₹499/month.</p>
               </div>
             </div>

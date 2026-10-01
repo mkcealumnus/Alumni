@@ -135,7 +135,7 @@ const AdminProfile = () => {
               </label>
             </div>
             <div className="text-center sm:text-left">
-              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-white">{profile.fullName || 'Admin'}</h2>
+              <h2 className="text-xl font-bold text-gray-800 dark-theme:text-gray-100">{profile.fullName || 'Admin'}</h2>
               <p className="text-sm text-gray-500 dark-theme:text-gray-400">{profile.email}</p>
               <span className="inline-block mt-1.5 px-2.5 py-0.5 bg-primary/10 text-primary text-[11px] font-semibold rounded-full uppercase">Admin</span>
             </div>

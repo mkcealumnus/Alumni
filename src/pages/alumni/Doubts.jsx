@@ -177,8 +177,8 @@ const AlumniDoubts = () => {
     open: 'bg-amber-100 text-amber-800 dark-theme:bg-amber-900/30 dark-theme:text-amber-300',
     'in-progress': 'bg-blue-100 text-blue-800 dark-theme:bg-blue-900/30 dark-theme:text-blue-300',
     resolved: 'bg-green-100 text-green-800 dark-theme:bg-green-900/30 dark-theme:text-green-300',
-    closed: 'bg-gray-100 text-gray-800 dark-theme:bg-gray-700 dark-theme:text-gray-300'
-  })[s] || 'bg-gray-100 text-gray-800';
+    closed: 'bg-sand text-gray-800 dark-theme:bg-gray-700 dark-theme:text-gray-300'
+  })[s] || 'bg-sand text-gray-800';
 
   const priorityColor = (p) => ({
     high: 'text-red-500',
@@ -219,7 +219,7 @@ const AlumniDoubts = () => {
           </div>
 
           {detailLoading && !activeDoubt ? null : (
-            <div className="flex-1 flex flex-col bg-white dark-theme:bg-gray-800 rounded-xl shadow-lg overflow-hidden min-h-0">
+            <div className="flex-1 flex flex-col bg-white dark-theme:bg-gray-900 rounded-xl shadow-lg overflow-hidden min-h-0">
               {/* Chat Header */}
               <div className="px-5 py-4 border-b dark-theme:border-gray-700 bg-white/80 dark-theme:bg-gray-800/80 backdrop-blur-sm flex-shrink-0">
                 <div className="flex items-start justify-between gap-4">
@@ -303,7 +303,7 @@ const AlumniDoubts = () => {
                             <div className={`rounded-2xl px-4 py-2.5 shadow-sm ${
                               !isStudent
                                 ? 'bg-primary text-white rounded-br-md'
-                                : 'bg-gray-100 dark-theme:bg-gray-700 text-gray-900 dark-theme:text-gray-100 rounded-bl-md'
+                                : 'bg-sand dark-theme:bg-gray-700 text-gray-900 dark-theme:text-gray-100 rounded-bl-md'
                             }`}>
                               <p className="text-sm whitespace-pre-wrap leading-relaxed">{r.content}</p>
                             </div>
@@ -370,7 +370,7 @@ const AlumniDoubts = () => {
                       className={`p-2.5 rounded-full transition shadow-sm flex-shrink-0 ${
                         replyText.trim() && !sending
                           ? 'bg-primary text-white hover:bg-primary-dark hover:shadow-md'
-                          : 'bg-gray-200 dark-theme:bg-gray-700 text-gray-400 cursor-not-allowed'
+                          : 'bg-sand dark-theme:bg-gray-700 text-gray-400 cursor-not-allowed'
                       }`}
                     >
                       <i className="ri-send-plane-2-fill text-lg"></i>
@@ -386,7 +386,7 @@ const AlumniDoubts = () => {
                   </p>
                 </div>
               ) : (
-                <div className="px-4 py-3 border-t dark-theme:border-gray-700 text-center text-sm text-gray-400 dark-theme:text-gray-500 bg-gray-50 dark-theme:bg-gray-900/30">
+                <div className="px-4 py-3 border-t dark-theme:border-gray-700 text-center text-sm text-gray-400 dark-theme:text-gray-500 bg-cream dark-theme:bg-gray-950/30">
                   <i className="ri-check-double-line mr-1"></i> This conversation has been {selectedDoubt.status}
                 </div>
               )}
@@ -420,19 +420,19 @@ const AlumniDoubts = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white dark-theme:bg-gray-800 rounded-xl p-4 shadow-sm">
+          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
             <p className="text-2xl font-bold text-amber-600">{doubts.filter(d => d.status === 'open').length}</p>
             <p className="text-sm text-gray-500 dark-theme:text-gray-400">Open (Unassigned)</p>
           </div>
-          <div className="bg-white dark-theme:bg-gray-800 rounded-xl p-4 shadow-sm">
+          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
             <p className="text-2xl font-bold text-blue-600">{doubts.filter(d => d.status === 'in-progress').length}</p>
             <p className="text-sm text-gray-500 dark-theme:text-gray-400">In Progress</p>
           </div>
-          <div className="bg-white dark-theme:bg-gray-800 rounded-xl p-4 shadow-sm">
+          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
             <p className="text-2xl font-bold text-green-600">{doubts.filter(d => d.status === 'resolved').length}</p>
             <p className="text-sm text-gray-500 dark-theme:text-gray-400">Resolved</p>
           </div>
-          <div className="bg-white dark-theme:bg-gray-800 rounded-xl p-4 shadow-sm">
+          <div className="bg-white dark-theme:bg-gray-900 rounded-xl p-4 shadow-sm">
             <p className="text-2xl font-bold text-primary">{doubts.length}</p>
             <p className="text-sm text-gray-500 dark-theme:text-gray-400">Total Visible</p>
           </div>
@@ -444,7 +444,7 @@ const AlumniDoubts = () => {
             <button key={s} onClick={() => setFilter(s)} className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition ${
               filter === s
                 ? 'bg-primary text-white shadow'
-                : 'bg-white dark-theme:bg-gray-800 text-gray-600 dark-theme:text-gray-300 hover:bg-gray-50 dark-theme:hover:bg-gray-700 border dark-theme:border-gray-700'
+                : 'bg-white dark-theme:bg-gray-900 text-gray-600 dark-theme:text-gray-300 hover:bg-cream dark-theme:hover:bg-gray-700 border dark-theme:border-gray-700'
             }`}>
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
               {' '}({s === 'all' ? doubts.length : doubts.filter(d => d.status === s).length})
@@ -454,7 +454,7 @@ const AlumniDoubts = () => {
 
         {/* Doubt List */}
         {filtered.length === 0 ? (
-          <div className="text-center py-16 bg-white dark-theme:bg-gray-800 rounded-xl">
+          <div className="text-center py-16 bg-white dark-theme:bg-gray-900 rounded-xl">
             <i className="ri-question-answer-line text-5xl text-gray-300 dark-theme:text-gray-600 mb-3 block"></i>
             <h3 className="text-lg font-semibold text-gray-600 dark-theme:text-gray-400">No doubts found</h3>
             <p className="text-gray-400 dark-theme:text-gray-500 text-sm mt-1">Student doubts will appear here when posted</p>
@@ -465,7 +465,7 @@ const AlumniDoubts = () => {
               <div
                 key={d.id}
                 onClick={() => openDetail(d)}
-                className="bg-white dark-theme:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer border border-transparent hover:border-primary/20 dark-theme:hover:border-purple-800 group"
+                className="bg-white dark-theme:bg-gray-900 rounded-xl p-5 shadow-sm hover:shadow-md transition cursor-pointer border border-transparent hover:border-primary/20 dark-theme:hover:border-purple-800 group"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">

@@ -93,7 +93,7 @@ const AdminLayout = ({ children, pageTitle }) => {
 
       {/* Mobile Menu Toggle */}
       <button
-        className="fixed top-3 left-3 z-50 lg:hidden w-9 h-9 rounded-lg bg-white dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 shadow-sm flex items-center justify-center text-gray-600 dark-theme:text-gray-400"
+        className="fixed top-3 left-3 z-50 lg:hidden w-9 h-9 rounded-lg bg-white dark-theme:bg-gray-900 border border-sand dark-theme:border-gray-700 shadow-sm flex items-center justify-center text-gray-600 dark-theme:text-gray-400"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
         <i className="ri-menu-line text-lg"></i>

@@ -89,7 +89,7 @@ const Sidebar = () => {
               className={`group relative flex items-center justify-center w-11 h-11 rounded-full transition-all duration-300
                 ${
                   isActive
-                    ? "bg-[#2C2926] dark-theme:bg-white text-white dark-theme:text-black shadow-md"
+                    ? "bg-[#2C2926] dark-theme:bg-white text-white dark-theme:text-gray-900 shadow-md"
                     : "text-[#8C8985] dark-theme:text-gray-400 hover:bg-[#F2EBE5] dark-theme:hover:bg-[#2A2A2D] hover:text-[#2C2926] dark-theme:hover:text-white"
                 }`}
               aria-label={item.label}
@@ -98,7 +98,7 @@ const Sidebar = () => {
               
               {/* Tooltip */}
               <span
-                className="absolute left-14 px-3 py-1.5 rounded-xl bg-[#2C2926] dark-theme:bg-white text-white dark-theme:text-black text-xs font-bold tracking-wide
+                className="absolute left-14 px-3 py-1.5 rounded-xl bg-[#2C2926] dark-theme:bg-white text-white dark-theme:text-gray-900 text-xs font-bold tracking-wide
                 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-x-2 group-hover:translate-x-0
                 whitespace-nowrap pointer-events-none shadow-xl"
               >

@@ -102,7 +102,7 @@ const TextLessonRenderer = ({ contentText }) => {
             </code>
           );
         } else if ((token.startsWith('**') && token.endsWith('**')) || (token.startsWith('__') && token.endsWith('__'))) {
-          return <strong key={i} className="font-bold text-gray-900 dark-theme:text-white">{token.slice(2, -2)}</strong>;
+          return <strong key={i} className="font-bold text-gray-900 dark-theme:text-gray-100">{token.slice(2, -2)}</strong>;
         } else if ((token.startsWith('*') && token.endsWith('*')) || (token.startsWith('_') && token.endsWith('_'))) {
           return <em key={i} className="italic text-gray-800 dark-theme:text-gray-200">{token.slice(1, -1)}</em>;
         }
@@ -177,7 +177,7 @@ const TextLessonRenderer = ({ contentText }) => {
         const parsedHeading = parseInlineFormatting(headingText);
 
         if (level === 1) {
-          elements.push(<h1 key={i} className="text-xl sm:text-2xl font-bold text-gray-900 dark-theme:text-white mt-6 mb-3 pb-2 border-b border-sand dark-theme:border-gray-800">{parsedHeading}</h1>);
+          elements.push(<h1 key={i} className="text-xl sm:text-2xl font-bold text-gray-900 dark-theme:text-gray-100 mt-6 mb-3 pb-2 border-b border-sand dark-theme:border-gray-800">{parsedHeading}</h1>);
         } else if (level === 2) {
           elements.push(<h2 key={i} className="text-lg font-bold text-gray-800 dark-theme:text-gray-100 mt-5 mb-2.5">{parsedHeading}</h2>);
         } else if (level === 3) {
@@ -401,7 +401,7 @@ const CourseViewer = () => {
               <span className="font-bold text-primary text-sm">{progress}%</span>
             </div>
           </div>
-          <div className="w-full h-2.5 bg-gray-200 dark-theme:bg-gray-700 rounded-full overflow-hidden">
+          <div className="w-full h-2.5 bg-sand dark-theme:bg-gray-700 rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-primary to-primary-dark rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
           </div>
         </div>
@@ -463,7 +463,7 @@ const CourseViewer = () => {
                           className={`w-full px-3.5 py-3 flex items-center gap-2.5 text-left hover:bg-sand/30 dark-theme:hover:bg-gray-800/50 transition-all ${isActive ? 'bg-primary/10 dark-theme:bg-primary/20 border-l-4 border-primary font-medium' : ''}`}
                         >
                           <span className="text-xs font-bold text-gray-400 w-5 text-center flex-shrink-0">{idx + 1}</span>
-                          <span className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${contentColors[c.contentType] || 'bg-gray-100 text-gray-500'}`}>
+                          <span className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${contentColors[c.contentType] || 'bg-sand text-gray-500'}`}>
                             <i className={`${contentIcons[c.contentType] || 'ri-file-line'} text-xs`}></i>
                           </span>
                           <div className="flex-1 min-w-0">
@@ -488,7 +488,7 @@ const CourseViewer = () => {
                 ) : (
                   (course.subjects || []).map((sub, si) => (
                     <div key={sub.id} className="bg-white dark-theme:bg-gray-900 rounded-xl border border-sand dark-theme:border-gray-800 overflow-hidden shadow-sm">
-                      <button onClick={() => toggleSubject(sub.id)} className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 dark-theme:hover:bg-gray-800/50 transition-colors">
+                      <button onClick={() => toggleSubject(sub.id)} className="w-full px-4 py-3 flex items-center justify-between hover:bg-cream dark-theme:hover:bg-gray-800/50 transition-colors">
                         <div className="flex items-center gap-2.5">
                           <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center flex-shrink-0">{si + 1}</span>
                           <span className="text-xs font-semibold text-gray-800 dark-theme:text-gray-100 text-left line-clamp-1">{sub.title}</span>
@@ -503,7 +503,7 @@ const CourseViewer = () => {
                               <div key={topic.id} className="flex items-center gap-2 pl-3 py-1.5 rounded-lg hover:bg-sand/30 dark-theme:hover:bg-gray-800/40 transition-colors group">
                                 <button
                                   onClick={() => toggleTopic(topic.id)}
-                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${isCompleted ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 dark-theme:border-gray-600 hover:border-primary'}`}
+                                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${isCompleted ? 'bg-green-500 border-green-500 text-white' : 'border-sand dark-theme:border-gray-600 hover:border-primary'}`}
                                   title={isCompleted ? "Mark incomplete" : "Mark complete"}
                                 >
                                   {isCompleted && <i className="ri-check-line text-[10px]"></i>}
@@ -549,7 +549,7 @@ const CourseViewer = () => {
                         <h3 className="font-bold text-gray-800 dark-theme:text-gray-100 text-base">{activeContent.title}</h3>
                         <p className="text-xs text-gray-400 mt-0.5">{activeContent.subjectTitle || 'General'} • {activeContent.contentType.toUpperCase()} Lesson</p>
                       </div>
-                      <span className={`w-9 h-9 rounded-xl ${contentColors[activeContent.contentType] || 'bg-gray-100 text-gray-500'} flex items-center justify-center shadow-xs`}>
+                      <span className={`w-9 h-9 rounded-xl ${contentColors[activeContent.contentType] || 'bg-sand text-gray-500'} flex items-center justify-center shadow-xs`}>
                         <i className={`${contentIcons[activeContent.contentType] || 'ri-file-line'} text-lg`}></i>
                       </span>
                     </div>

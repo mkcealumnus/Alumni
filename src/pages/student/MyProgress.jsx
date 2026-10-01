@@ -33,7 +33,7 @@ const MyProgress = () => {
     { key: 'mentorName', label: 'Mentor', sortable: true, visible: false, render: (v) => v || 'Instructor' },
     { key: 'progress', label: 'Progress', sortable: true, render: (v) => (
       <div className="flex items-center gap-3 min-w-[120px]">
-        <div className="flex-1 h-2 bg-gray-200 dark-theme:bg-gray-700 rounded-full overflow-hidden">
+        <div className="flex-1 h-2 bg-sand dark-theme:bg-gray-700 rounded-full overflow-hidden">
           <div className={`h-2 rounded-full transition-all ${(v || 0) >= 100 ? 'bg-green-500' : 'bg-primary'}`} style={{ width: `${v || 0}%` }}></div>
         </div>
         <span className="text-xs font-medium w-10 text-right">{v || 0}%</span>
@@ -59,7 +59,7 @@ const MyProgress = () => {
               <span className="text-lg font-bold text-primary">{overall.overallProgress}%</span>
             </div>
           </div>
-          <div className="w-full h-3 bg-gray-200 dark-theme:bg-gray-700 rounded-full"><div className="h-3 bg-gradient-to-r from-primary to-primary-dark rounded-full transition-all" style={{ width: `${overall.overallProgress}%` }}></div></div>
+          <div className="w-full h-3 bg-sand dark-theme:bg-gray-700 rounded-full"><div className="h-3 bg-gradient-to-r from-primary to-primary-dark rounded-full transition-all" style={{ width: `${overall.overallProgress}%` }}></div></div>
           <div className="flex justify-between mt-3 text-xs text-gray-400">
             <span>{overall.totalCourses} courses</span>
             <span>{overall.completedLessons}/{overall.totalLessons} lessons completed</span>

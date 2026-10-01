@@ -97,7 +97,7 @@ const CheckoutModal = ({ isOpen, onClose, item, type = 'plan', billingCycle = 'm
             <div>
               <h3 className="text-xs font-semibold uppercase text-gray-500 dark-theme:text-gray-400 tracking-wider mb-3">Order Summary</h3>
               <div className="mb-4">
-                <div className="font-bold text-gray-900 dark-theme:text-white text-lg">{item.title}</div>
+                <div className="font-bold text-gray-900 dark-theme:text-gray-100 text-lg">{item.title}</div>
                 <div className="text-xs text-gray-500 dark-theme:text-gray-400 capitalize mt-0.5">
                   {type === 'plan' ? `${billingCycle} Billing Plan` : 'Lifetime Access Course'}
                 </div>
@@ -161,7 +161,7 @@ const CheckoutModal = ({ isOpen, onClose, item, type = 'plan', billingCycle = 'm
               {paymentMethod === 'UPI' && (
                 <div className="space-y-3 bg-cream/50 dark-theme:bg-gray-800/30 p-4 rounded-xl border border-sand dark-theme:border-gray-700">
                   <div className="text-center p-2 bg-white dark-theme:bg-gray-900 rounded-lg border border-sand dark-theme:border-gray-800">
-                    <div className="w-28 h-28 mx-auto bg-gray-100 dark-theme:bg-gray-800 rounded-lg flex items-center justify-center border border-dashed border-gray-400">
+                    <div className="w-28 h-28 mx-auto bg-sand dark-theme:bg-gray-800 rounded-lg flex items-center justify-center border border-dashed border-gray-400">
                       <i className="ri-qr-code-fill text-6xl text-gray-700 dark-theme:text-gray-300"></i>
                     </div>
                     <p className="text-[11px] text-gray-500 dark-theme:text-gray-400 mt-1">Scan QR with GPay / PhonePe / Paytm</p>

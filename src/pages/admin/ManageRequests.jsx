@@ -107,7 +107,7 @@ const ManageRequests = () => {
                   <i className={`${s.icon} text-lg`}></i>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800 dark-theme:text-white">{s.count}</p>
+                  <p className="text-2xl font-bold text-gray-800 dark-theme:text-gray-100">{s.count}</p>
                   <p className="text-[11px] text-gray-500 dark-theme:text-gray-400">{s.label}</p>
                 </div>
               </div>
@@ -165,7 +165,7 @@ const ManageRequests = () => {
                       className="w-10 h-10 rounded-lg object-cover"
                     />
                     <div>
-                      <p className="text-[13px] font-semibold text-gray-800 dark-theme:text-white">{req.studentName}</p>
+                      <p className="text-[13px] font-semibold text-gray-800 dark-theme:text-gray-100">{req.studentName}</p>
                       <p className="text-[11px] text-gray-400">{req.studentEmail}</p>
                       {req.rollNumber && <p className="text-[10px] text-gray-400">{req.rollNumber}</p>}
                     </div>
@@ -190,7 +190,7 @@ const ManageRequests = () => {
                     <p className="text-[13px] text-gray-600 dark-theme:text-gray-300"><strong>Reason:</strong> {req.reason}</p>
 
                     {req.type === 'edit' && req.requestData && (
-                      <div className="p-2.5 bg-gray-50 dark-theme:bg-gray-800/50 rounded-lg">
+                      <div className="p-2.5 bg-cream dark-theme:bg-gray-800/50 rounded-lg">
                         <p className="text-[11px] font-semibold text-gray-500 dark-theme:text-gray-400 mb-1.5">Requested Changes:</p>
                         <div className="flex flex-wrap gap-1.5">
                           {Object.entries(typeof req.requestData === 'string' ? JSON.parse(req.requestData) : req.requestData).map(([k, v]) => (

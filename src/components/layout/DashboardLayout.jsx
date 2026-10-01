@@ -161,7 +161,7 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl text-gray-500 hover:text-gray-700 dark-theme:text-gray-400 dark-theme:hover:text-gray-200 hover:bg-gray-100 dark-theme:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-xl text-gray-500 hover:text-gray-700 dark-theme:text-gray-400 dark-theme:hover:text-gray-200 hover:bg-sand dark-theme:hover:bg-gray-800 transition-colors"
               title="Toggle theme"
             >
               <i className={`text-lg ${theme === 'dark-theme' ? 'ri-sun-line' : 'ri-moon-line'}`}></i>

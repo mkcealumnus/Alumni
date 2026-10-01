@@ -59,7 +59,7 @@ const NewEvents = () => {
               <div className="p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"><i className={`${typeIcons[ev.eventType] || 'ri-calendar-line'} text-primary`}></i></div>
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${typeColors[ev.eventType] || 'bg-gray-100 text-gray-700'}`}>{ev.eventType}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${typeColors[ev.eventType] || 'bg-sand text-gray-700'}`}>{ev.eventType}</span>
                 </div>
                 <h3 className="font-semibold text-gray-800 dark-theme:text-gray-100 text-sm mb-1">{ev.title}</h3>
                 <p className="text-xs text-gray-500 line-clamp-2 mb-3">{ev.description}</p>
@@ -83,7 +83,7 @@ const NewEvents = () => {
           <div className="bg-white dark-theme:bg-gray-900 rounded-2xl p-6 w-full max-w-lg mx-4 border border-sand dark-theme:border-gray-800">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-gray-800 dark-theme:text-gray-100">{editing ? 'Edit Event' : 'Create Event'}</h3>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
+              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-lg hover:bg-sand flex items-center justify-center"><i className="ri-close-line text-lg text-gray-500"></i></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <input type="text" placeholder="Event Title" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
@@ -100,7 +100,7 @@ const NewEvents = () => {
               </div>
               <input type="text" placeholder="Location / Meeting Link" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className="w-full px-4 py-2.5 rounded-xl bg-cream dark-theme:bg-gray-800 border border-sand dark-theme:border-gray-700 focus:border-primary outline-none text-sm" />
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-gray-50">Cancel</button>
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-sand text-sm font-medium text-gray-600 hover:bg-cream">Cancel</button>
                 <button type="submit" className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:bg-primary-dark">{editing ? 'Update' : 'Create'}</button>
               </div>
             </form>
