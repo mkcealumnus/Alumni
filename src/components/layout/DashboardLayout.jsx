@@ -5,27 +5,24 @@ import { useAuth } from '@/context/AuthContext';
 
 const studentNav = [
   { path: '/student', icon: 'ri-dashboard-line', label: 'Dashboard' },
-  { path: '/student/my-courses', icon: 'ri-book-open-line', label: 'My Courses' },
-  { path: '/student/coding-practice', icon: 'ri-code-s-slash-line', label: 'Coding Practice' },
-  { path: '/student/code-editor', icon: 'ri-terminal-box-line', label: 'Code Editor' },
-  { path: '/student/aptitude-tests', icon: 'ri-question-answer-line', label: 'Aptitude Tests' },
-  { path: '/student/learning-games', icon: 'ri-gamepad-line', label: 'Learning Games' },
-  { path: '/student/study-material', icon: 'ri-file-text-line', label: 'Study Material' },
-  { path: '/student/my-grades', icon: 'ri-bar-chart-box-line', label: 'My Grades' },
-  { path: '/student/my-progress', icon: 'ri-line-chart-line', label: 'My Progress' },
-  { path: '/student/my-doubts', icon: 'ri-chat-3-line', label: 'My Doubts' },
+  { path: '/student/career-guidance', icon: 'ri-compass-3-line', label: 'Career Guidance' },
+  { path: '/student/mentorship', icon: 'ri-user-star-line', label: '1-on-1 Mentorship' },
+  { path: '/student/groups', icon: 'ri-team-line', label: 'Alumni Groups' },
+  { path: '/student/roadmaps', icon: 'ri-map-pin-time-line', label: 'Roadmaps' },
+  { path: '/student/workshops', icon: 'ri-calendar-event-line', label: 'Workshops' },
+  { path: '/student/jobs', icon: 'ri-briefcase-4-line', label: 'Job Portal' },
 
   { path: '/student/profile', icon: 'ri-user-settings-line', label: 'My Profile' },
 ];
 
 const alumniNav = [
   { path: '/alumni', icon: 'ri-dashboard-line', label: 'Dashboard' },
-  { path: '/alumni/doubts', icon: 'ri-chat-3-line', label: 'Student Doubts' },
-  { path: '/alumni/students-progress', icon: 'ri-line-chart-line', label: 'Student Progress' },
-  { path: '/alumni/problem-solving', icon: 'ri-code-s-slash-line', label: 'Coding Problems' },
-  { path: '/alumni/aptitude', icon: 'ri-question-answer-line', label: 'Aptitude Tests' },
-  { path: '/alumni/events', icon: 'ri-calendar-event-line', label: 'Events' },
-  { path: '/alumni/discussion', icon: 'ri-discuss-line', label: 'Discussion' },
+  { path: '/alumni/career-guidance', icon: 'ri-compass-3-line', label: 'Career Guidance' },
+  { path: '/alumni/mentorship', icon: 'ri-user-star-line', label: '1-on-1 Mentorship' },
+  { path: '/alumni/groups', icon: 'ri-team-line', label: 'Mentorship Groups' },
+  { path: '/alumni/roadmaps', icon: 'ri-map-pin-time-line', label: 'Roadmaps' },
+  { path: '/alumni/workshops', icon: 'ri-calendar-event-line', label: 'Workshops' },
+  { path: '/alumni/jobs', icon: 'ri-briefcase-4-line', label: 'Job Portal' },
   { path: '/alumni/profile', icon: 'ri-user-settings-line', label: 'Profile' },
 ];
 

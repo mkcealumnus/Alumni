@@ -13,39 +13,45 @@ import AdminSettings from '@/pages/admin/AdminSettings'
 import SystemReports from '@/pages/admin/SystemReports'
 import PerformanceAnalytics from '@/pages/admin/PerformanceAnalytics'
 import ManageStudents from '@/pages/admin/ManageStudents'
-import CoursesOverview from '@/pages/admin/CoursesOverview'
 import ManageAlumni from '@/pages/admin/ManageAlumni'
 import AdminProfile from '@/pages/admin/AdminProfile'
 import ManageRequests from '@/pages/admin/ManageRequests'
+
+import {
+  AdminCareerGuidance,
+  AdminOneOnOneMentorship,
+  AdminGroupMentorship,
+  AdminRoadmaps,
+  AdminWorkshops,
+  AdminJobPortal
+} from '@/pages/admin'
 
 
 // Alumni
 import {
   AlumniDashboard,
-  Doubts as AlumniDoubts,
-  NewProblemSolving,
-  StudentsProgress,
-  NewEvents,
-  NewAptitude,
-  AlumniDiscussion,
-  AlumniProfile
+  AlumniProfile,
+  AlumniCareerGuidance,
+  AlumniOneOnOneMentorship,
+  AlumniGroupMentorship,
+  AlumniRoadmaps,
+  AlumniWorkshops,
+  AlumniJobPortal
 } from '@/pages/alumni'
+
 
 // Student
 import StudentDashboard from '@/pages/student/StudentDashboard'
-import LearningGames from '@/pages/student/LearningGames'
-import StudyMaterial from '@/pages/student/StudyMaterial'
-import MyCourses from '@/pages/student/MyCourses'
-import CodingPractice from '@/pages/student/CodingPractice'
-import AptitudeTests from '@/pages/student/AptitudeTests'
-import AptitudeResult from '@/pages/student/AptitudeResult'
-import CodeEditor from '@/pages/student/CodeEditor'
-import MyGrades from '@/pages/student/MyGrades'
-import MyProgress from '@/pages/student/MyProgress'
-import CourseViewer from '@/pages/student/CourseViewer'
-import MyDoubts from '@/pages/student/MyDoubts'
-
 import StudentProfile from '@/pages/student/StudentProfile'
+import {
+  StudentCareerGuidance,
+  StudentOneOnOneMentorship,
+  StudentGroupMentorship,
+  StudentRoadmaps,
+  StudentWorkshops,
+  StudentJobPortal
+} from '@/pages/student'
+
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -102,45 +108,41 @@ function App() {
           <Route path="/admin/system-reports" element={<ProtectedRoute allowedRoles={['admin']}><SystemReports /></ProtectedRoute>} />
           <Route path="/admin/performance-analytics" element={<ProtectedRoute allowedRoles={['admin']}><PerformanceAnalytics /></ProtectedRoute>} />
           <Route path="/admin/manage-students" element={<ProtectedRoute allowedRoles={['admin']}><ManageStudents /></ProtectedRoute>} />
-          <Route path="/admin/courses-overview" element={<ProtectedRoute allowedRoles={['admin']}><CoursesOverview /></ProtectedRoute>} />
           <Route path="/admin/manage-alumni" element={<ProtectedRoute allowedRoles={['admin']}><ManageAlumni /></ProtectedRoute>} />
           <Route path="/admin/profile" element={<ProtectedRoute allowedRoles={['admin']}><AdminProfile /></ProtectedRoute>} />
           <Route path="/admin/manage-requests" element={<ProtectedRoute allowedRoles={['admin']}><ManageRequests /></ProtectedRoute>} />
 
+          <Route path="/admin/career-guidance" element={<ProtectedRoute allowedRoles={['admin']}><AdminCareerGuidance role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/mentorship" element={<ProtectedRoute allowedRoles={['admin']}><AdminOneOnOneMentorship role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/groups" element={<ProtectedRoute allowedRoles={['admin']}><AdminGroupMentorship role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/roadmaps" element={<ProtectedRoute allowedRoles={['admin']}><AdminRoadmaps role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/workshops" element={<ProtectedRoute allowedRoles={['admin']}><AdminWorkshops role="admin" /></ProtectedRoute>} />
+          <Route path="/admin/jobs" element={<ProtectedRoute allowedRoles={['admin']}><AdminJobPortal role="admin" /></ProtectedRoute>} />
+
 
           {/* Alumni Routes */}
           <Route path="/alumni" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniDashboard /></ProtectedRoute>} />
-          <Route path="/alumni/doubts" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniDoubts /></ProtectedRoute>} />
-          <Route path="/alumni/students-progress" element={<ProtectedRoute allowedRoles={['alumni']}><StudentsProgress /></ProtectedRoute>} />
-          <Route path="/alumni/problem-solving" element={<ProtectedRoute allowedRoles={['alumni']}><NewProblemSolving /></ProtectedRoute>} />
-          <Route path="/alumni/aptitude" element={<ProtectedRoute allowedRoles={['alumni']}><NewAptitude /></ProtectedRoute>} />
-          <Route path="/alumni/events" element={<ProtectedRoute allowedRoles={['alumni']}><NewEvents /></ProtectedRoute>} />
-          <Route path="/alumni/discussion" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniDiscussion /></ProtectedRoute>} />
           <Route path="/alumni/profile" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniProfile /></ProtectedRoute>} />
           
-          {/* Admin-accessible Alumni features */}
-          <Route path="/admin/doubts" element={<ProtectedRoute allowedRoles={['admin']}><AlumniDoubts /></ProtectedRoute>} />
-          <Route path="/admin/students-progress" element={<ProtectedRoute allowedRoles={['admin']}><StudentsProgress /></ProtectedRoute>} />
-          <Route path="/admin/problem-solving" element={<ProtectedRoute allowedRoles={['admin']}><NewProblemSolving /></ProtectedRoute>} />
-          <Route path="/admin/aptitude" element={<ProtectedRoute allowedRoles={['admin']}><NewAptitude /></ProtectedRoute>} />
-          <Route path="/admin/events" element={<ProtectedRoute allowedRoles={['admin']}><NewEvents /></ProtectedRoute>} />
-          <Route path="/admin/discussion" element={<ProtectedRoute allowedRoles={['admin']}><AlumniDiscussion /></ProtectedRoute>} />
-          
+          <Route path="/alumni/career-guidance" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniCareerGuidance role="alumni" /></ProtectedRoute>} />
+          <Route path="/alumni/mentorship" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniOneOnOneMentorship role="alumni" /></ProtectedRoute>} />
+          <Route path="/alumni/groups" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniGroupMentorship role="alumni" /></ProtectedRoute>} />
+          <Route path="/alumni/roadmaps" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniRoadmaps role="alumni" /></ProtectedRoute>} />
+          <Route path="/alumni/workshops" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniWorkshops role="alumni" /></ProtectedRoute>} />
+          <Route path="/alumni/jobs" element={<ProtectedRoute allowedRoles={['alumni']}><AlumniJobPortal role="alumni" /></ProtectedRoute>} />
+
+
           {/* Student Routes */}
           <Route path="/student" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
-
-          <Route path="/student/learning-games" element={<ProtectedRoute allowedRoles={['student']}><LearningGames /></ProtectedRoute>} />
-          <Route path="/student/study-material" element={<ProtectedRoute allowedRoles={['student']}><StudyMaterial /></ProtectedRoute>} />
-          <Route path="/student/my-courses" element={<ProtectedRoute allowedRoles={['student']}><MyCourses /></ProtectedRoute>} />
-          <Route path="/student/coding-practice" element={<ProtectedRoute allowedRoles={['student']}><CodingPractice /></ProtectedRoute>} />
-          <Route path="/student/aptitude-tests" element={<ProtectedRoute allowedRoles={['student']}><AptitudeTests /></ProtectedRoute>} />
-          <Route path="/student/aptitude-tests/result/:attemptId" element={<ProtectedRoute allowedRoles={['student']}><AptitudeResult /></ProtectedRoute>} />
-          <Route path="/student/code-editor" element={<ProtectedRoute allowedRoles={['student']}><CodeEditor /></ProtectedRoute>} />
-          <Route path="/student/my-grades" element={<ProtectedRoute allowedRoles={['student']}><MyGrades /></ProtectedRoute>} />
-          <Route path="/student/my-progress" element={<ProtectedRoute allowedRoles={['student']}><MyProgress /></ProtectedRoute>} />
-          <Route path="/student/my-doubts" element={<ProtectedRoute allowedRoles={['student']}><MyDoubts /></ProtectedRoute>} />
-          <Route path="/student/course-viewer/:id" element={<ProtectedRoute allowedRoles={['student']}><CourseViewer /></ProtectedRoute>} />
           <Route path="/student/profile" element={<ProtectedRoute allowedRoles={['student']}><StudentProfile /></ProtectedRoute>} />
+
+          <Route path="/student/career-guidance" element={<ProtectedRoute allowedRoles={['student']}><StudentCareerGuidance role="student" /></ProtectedRoute>} />
+          <Route path="/student/mentorship" element={<ProtectedRoute allowedRoles={['student']}><StudentOneOnOneMentorship role="student" /></ProtectedRoute>} />
+          <Route path="/student/groups" element={<ProtectedRoute allowedRoles={['student']}><StudentGroupMentorship role="student" /></ProtectedRoute>} />
+          <Route path="/student/roadmaps" element={<ProtectedRoute allowedRoles={['student']}><StudentRoadmaps role="student" /></ProtectedRoute>} />
+          <Route path="/student/workshops" element={<ProtectedRoute allowedRoles={['student']}><StudentWorkshops role="student" /></ProtectedRoute>} />
+          <Route path="/student/jobs" element={<ProtectedRoute allowedRoles={['student']}><StudentJobPortal role="student" /></ProtectedRoute>} />
+
 
           {/* Catch-all 404 */}
           <Route path="*" element={<Navigate to="/" replace />} />

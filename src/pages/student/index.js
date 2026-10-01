@@ -5,11 +5,15 @@ export { default as CodingPractice } from './CodingPractice';
 export { default as CourseViewer } from './CourseViewer';
 export { default as LearningGames } from './LearningGames';
 export { default as MyCourses } from './MyCourses';
-
 export { default as MyDoubts } from './MyDoubts';
 export { default as MyGrades } from './MyGrades';
 export { default as MyProgress } from './MyProgress';
-export { default as StudentBilling } from './StudentBilling';
 export { default as StudentDashboard } from './StudentDashboard';
 export { default as StudentProfile } from './StudentProfile';
 export { default as StudyMaterial } from './StudyMaterial';
+export { default as StudentCareerGuidance } from './StudentCareerGuidance';
+export { default as StudentOneOnOneMentorship } from './StudentOneOnOneMentorship';
+export { default as StudentGroupMentorship } from './StudentGroupMentorship';
+export { default as StudentRoadmaps } from './StudentRoadmaps';
+export { default as StudentWorkshops } from './StudentWorkshops';
+export { default as StudentJobPortal } from './StudentJobPortal';
