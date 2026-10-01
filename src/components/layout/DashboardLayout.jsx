@@ -5,16 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 
 const studentNav = [
   { path: '/student', icon: 'ri-dashboard-line', label: 'Dashboard' },
-  { path: '/student/my-courses', icon: 'ri-book-open-line', label: 'My Courses' },
-  { path: '/student/coding-practice', icon: 'ri-code-s-slash-line', label: 'Coding Practice' },
-  { path: '/student/code-editor', icon: 'ri-terminal-box-line', label: 'Code Editor' },
-  { path: '/student/aptitude-tests', icon: 'ri-question-answer-line', label: 'Aptitude Tests' },
-  { path: '/student/learning-games', icon: 'ri-gamepad-line', label: 'Learning Games' },
-  { path: '/student/study-material', icon: 'ri-file-text-line', label: 'Study Material' },
-  { path: '/student/my-grades', icon: 'ri-bar-chart-box-line', label: 'My Grades' },
-  { path: '/student/my-progress', icon: 'ri-line-chart-line', label: 'My Progress' },
   { path: '/student/my-doubts', icon: 'ri-chat-3-line', label: 'My Doubts' },
-  { path: '/student/billing', icon: 'ri-vip-crown-line', label: 'Billing & Plans' },
   { path: '/student/profile', icon: 'ri-user-settings-line', label: 'My Profile' },
 ];
 
@@ -104,7 +95,7 @@ const DashboardLayout = ({ children, pageTitle, role = 'student' }) => {
             <i className="ri-seedling-fill text-primary-light text-lg"></i>
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-[15px] text-white leading-tight">Sowberry</span>
+            <span className="font-bold text-[15px] text-white leading-tight">NextStep</span>
             <span className="text-[10px] font-medium tracking-wider text-gray-500 uppercase">{roleBadgeLabel}</span>
           </div>
         </div>

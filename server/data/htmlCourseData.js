@@ -1,6 +1,6 @@
 /**
  * HTML5 Complete Masterclass: From Scratch to Advanced
- * Single-source comprehensive course dataset for Sowberry Academy
+ * Single-source comprehensive course dataset for NextStep Academy
  */
 
 export const htmlCourse = {
@@ -47,7 +47,7 @@ Welcome to the **HTML5 Complete Masterclass**! HTML (HyperText Markup Language) 
 
 ### The Web Client-Server Architecture
 
-When you type a URL into your browser (such as \`https://sowberry.com\`):
+When you type a URL into your browser (such as \`https://nextstep.com\`):
 1. **DNS Lookup**: Your browser finds the IP address corresponding to the server.
 2. **HTTP Request**: The browser requests the page resource from the web server.
 3. **HTTP Response**: The web server sends back an **HTML document** along with CSS, JavaScript, and asset files.
@@ -95,7 +95,7 @@ Every valid HTML5 document follows a standardized skeleton structure. Let's insp
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First Web Page - Sowberry</title>
+  <title>My First Web Page - NextStep</title>
 </head>
 <body>
   <h1>Hello, World!</h1>
@@ -266,7 +266,7 @@ Entities start with an ampersand (\`&\`) and end with a semicolon (\`;\`).
 #### Example Usage:
 \`\`\`html
 <p>To start a tag, write &lt;div&gt; in your editor.</p>
-<p>Copyright &copy; 2026 Sowberry Academy. All rights reserved.</p>
+<p>Copyright &copy; 2026 NextStep Academy. All rights reserved.</p>
 \`\`\``
         }
       ]
@@ -291,7 +291,7 @@ Hyperlinks connect web pages, documents, sections, and external resources. The a
 ### Basic Anchor Tag Syntax
 
 \`\`\`html
-<a href="https://sowberry.com">Visit Sowberry Academy</a>
+<a href="https://nextstep.com">Visit NextStep Academy</a>
 \`\`\`
 
 ---
@@ -354,7 +354,7 @@ Jump directly to a specific section on the same page using \`id\` attributes:
 
 \`\`\`html
 <!-- Email link -->
-<a href="mailto:support@sowberry.com?subject=HTML%20Course%20Query">Email Support</a>
+<a href="mailto:support@nextstep.com?subject=HTML%20Course%20Query">Email Support</a>
 
 <!-- Telephone link -->
 <a href="tel:+918825756388">Call Admissions (+91 8825756388)</a>
@@ -454,7 +454,7 @@ Images enhance user visual experience. Optimizing image delivery and accessibili
 ### Basic Image Syntax (\`<img>\`)
 
 \`\`\`html
-<img src="banner.jpg" alt="Sowberry Web Development Masterclass Students" width="800" height="400" loading="lazy">
+<img src="banner.jpg" alt="NextStep Web Development Masterclass Students" width="800" height="400" loading="lazy">
 \`\`\`
 
 #### Key Attributes:
@@ -488,7 +488,7 @@ Deliver different image versions based on device screen sizes or image format su
   <source srcset="hero-mobile.webp" media="(max-width: 600px)">
   <source srcset="hero-desktop.webp" media="(min-width: 601px)">
   <!-- Fallback img tag mandatory -->
-  <img src="hero-fallback.jpg" alt="Sowberry Dashboard Preview">
+  <img src="hero-fallback.jpg" alt="NextStep Dashboard Preview">
 </picture>
 \`\`\`
 
@@ -551,7 +551,7 @@ WEBVTT
 
 1
 00:00:01.000 --> 00:00:04.000
-Welcome to Sowberry Academy HTML5 Masterclass!
+Welcome to NextStep Academy HTML5 Masterclass!
 
 2
 00:00:04.500 --> 00:00:08.000
@@ -691,13 +691,13 @@ HTML5 introduces dedicated landmark elements for page layout architecture.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Sowberry Tech Blog</title>
+  <title>NextStep Tech Blog</title>
 </head>
 <body>
 
   <!-- Page Header -->
   <header>
-    <a href="/" class="logo">Sowberry Academy</a>
+    <a href="/" class="logo">NextStep Academy</a>
     <nav>
       <ul>
         <li><a href="/courses">Courses</a></li>
@@ -739,7 +739,7 @@ HTML5 introduces dedicated landmark elements for page layout architecture.
 
   <!-- Page Footer -->
   <footer>
-    <p>&copy; 2026 Sowberry Startup Platform. All rights reserved.</p>
+    <p>&copy; 2026 NextStep Startup Platform. All rights reserved.</p>
   </footer>
 
 </body>
@@ -793,8 +793,8 @@ Create expandable/collapsible accordions without a single line of JavaScript!
 
 \`\`\`html
 <details open>
-  <summary>What is Sowberry Academy?</summary>
-  <p>Sowberry Academy is an end-to-end learning workspace for engineering students covering coding, aptitude, and tech courses.</p>
+  <summary>What is NextStep Academy?</summary>
+  <p>NextStep Academy is an end-to-end learning workspace for engineering students covering coding, aptitude, and tech courses.</p>
 </details>
 
 <details>
@@ -1239,24 +1239,24 @@ Meta tags supply search engine crawlers (Googlebot) and social networks with inf
 
 \`\`\`html
 <!-- Primary Meta Tags -->
-<title>HTML5 Complete Masterclass | Sowberry Academy</title>
-<meta name="title" content="HTML5 Complete Masterclass | Sowberry Academy">
+<title>HTML5 Complete Masterclass | NextStep Academy</title>
+<meta name="title" content="HTML5 Complete Masterclass | NextStep Academy">
 <meta name="description" content="Learn HTML5 from scratch to advanced level with comprehensive lessons, form validation, graphics, and accessibility standards.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://sowberry.prisoltech.app/courses/html101">
+<link rel="canonical" href="https://nextstep.prisoltech.app/courses/html101">
 
 <!-- Open Graph / Facebook / LinkedIn -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://sowberry.prisoltech.app/courses/html101">
-<meta property="og:title" content="HTML5 Complete Masterclass | Sowberry Academy">
+<meta property="og:url" content="https://nextstep.prisoltech.app/courses/html101">
+<meta property="og:title" content="HTML5 Complete Masterclass | NextStep Academy">
 <meta property="og:description" content="Master modern HTML5 with hands-on reading guides and quizzes.">
-<meta property="og:image" content="https://sowberry.prisoltech.app/og-html5.jpg">
+<meta property="og:image" content="https://nextstep.prisoltech.app/og-html5.jpg">
 
 <!-- Twitter Card -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:title" content="HTML5 Complete Masterclass">
 <meta property="twitter:description" content="Master modern HTML5 from scratch to advanced level.">
-<meta property="twitter:image" content="https://sowberry.prisoltech.app/og-html5.jpg">
+<meta property="twitter:image" content="https://nextstep.prisoltech.app/og-html5.jpg">
 \`\`\``
         },
         {

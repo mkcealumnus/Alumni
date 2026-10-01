@@ -14,13 +14,13 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
   const pageWidth = doc.internal.pageSize.getWidth(); // 210
   const pageHeight = doc.internal.pageSize.getHeight(); // 297
 
-  const primaryColor = [201, 100, 66]; // #c96442 Sowberry Warm Terracotta
+  const primaryColor = [201, 100, 66]; // #c96442 NextStep Warm Terracotta
   const darkNavy = [15, 23, 42]; // #0f172a Deep Slate
   const textMuted = [100, 116, 139]; // #64748b Slate Muted
 
   const studentName = user.fullName || 'Student Academic Record';
   const rollNo = user.rollNumber || '2026CS101';
-  const email = user.email || 'student@sowberry.edu';
+  const email = user.email || 'student@nextstep.edu';
   const issueDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const transcriptId = `TRN-${new Date().getFullYear()}-SB-${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -28,7 +28,7 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(22);
   doc.setTextColor(darkNavy[0], darkNavy[1], darkNavy[2]);
-  doc.text('Sowberry AI', 14, 18);
+  doc.text('NextStep AI', 14, 18);
 
   doc.setFontSize(9);
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
@@ -37,7 +37,7 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(textMuted[0], textMuted[1], textMuted[2]);
-  doc.text('Tamil Nadu, India • support@sowberry.app • www.sowberry.prisoltech.app', 14, 29);
+  doc.text('Tamil Nadu, India • support@nextstep.app • www.nextstep.prisoltech.app', 14, 29);
 
   // 2. HEADER BADGE & METADATA RIGHT
   const badgeWidth = 58;
@@ -241,7 +241,7 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
     doc.setTextColor(71, 85, 105);
     doc.text('• Standard Grading Scale: A+ (90-100%), A (80-89%), B (70-79%)', 18, summaryY + 12);
     doc.text('• Official Digital Verification Code: SB-SEC-9842-2026-OK', 18, summaryY + 17);
-    doc.text('• Verified against Sowberry Academy Academic Registry database.', 18, summaryY + 22);
+    doc.text('• Verified against NextStep Academy Academic Registry database.', 18, summaryY + 22);
     doc.text('• Certificate and transcript issued under authorized electronic signature.', 18, summaryY + 27);
 
     // Right Box: Total Result Summary
@@ -290,11 +290,11 @@ export const exportGradeReportPDF = ({ studentInfo, summary, grades, fileName })
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
-    doc.text(`Sowberry Academy • Official Academic Grade Sheet • ${transcriptId}`, 14, pageHeight - 8);
+    doc.text(`NextStep Academy • Official Academic Grade Sheet • ${transcriptId}`, 14, pageHeight - 8);
     doc.text(`Page ${i} of ${pageCount}`, pageWidth - 14, pageHeight - 8, { align: 'right' });
   }
 
-  doc.save(`${fileName || 'Sowberry_My_Grades_Transcript'}.pdf`);
+  doc.save(`${fileName || 'NextStep_My_Grades_Transcript'}.pdf`);
 };
 
 /**
@@ -333,7 +333,7 @@ export const exportToPDF = ({ title, columns, rows, fileName }) => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
-  doc.text('Sowberry', 14, 12);
+  doc.text('NextStep', 14, 12);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(title, 14, 22);

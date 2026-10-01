@@ -11,21 +11,21 @@ export const getImageUrl = (path) => {
 };
 
 // ──────────────── TOKEN MANAGEMENT ────────────────
-export const getToken = () => localStorage.getItem('sowberry_token');
-export const setToken = (token) => localStorage.setItem('sowberry_token', token);
-export const removeToken = () => localStorage.removeItem('sowberry_token');
+export const getToken = () => localStorage.getItem('nextstep_token');
+export const setToken = (token) => localStorage.setItem('nextstep_token', token);
+export const removeToken = () => localStorage.removeItem('nextstep_token');
 
 export const getUser = () => {
   try {
-    const user = localStorage.getItem('sowberry_user');
+    const user = localStorage.getItem('nextstep_user');
     return user ? JSON.parse(user) : null;
   } catch {
-    localStorage.removeItem('sowberry_user');
+    localStorage.removeItem('nextstep_user');
     return null;
   }
 };
-export const setUser = (user) => localStorage.setItem('sowberry_user', JSON.stringify(user));
-export const removeUser = () => localStorage.removeItem('sowberry_user');
+export const setUser = (user) => localStorage.setItem('nextstep_user', JSON.stringify(user));
+export const removeUser = () => localStorage.removeItem('nextstep_user');
 
 export const logout = () => {
   removeToken();
@@ -115,6 +115,7 @@ export const adminApi = {
   createStudent: (body) => apiCall('/admin/students', { method: 'POST', body: JSON.stringify(body) }),
   updateStudent: (id, body) => apiCall(`/admin/students/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
   deleteStudent: (id) => apiCall(`/admin/students/${id}`, { method: 'DELETE' }),
+  advanceAcademicYear: () => apiCall('/admin/advance-academic-year', { method: 'PUT' }),
   // Mentors
   getMentors: (params = '') => apiCall(`/admin/mentors${params ? '?' + params : ''}`),
   getMentor: (id) => apiCall(`/admin/mentors/${id}`),
@@ -163,10 +164,8 @@ export const adminApi = {
   getProfileRequests: () => apiCall('/admin/profile-requests'),
   approveProfileRequest: (id, body = {}) => apiCall(`/admin/profile-requests/${id}/approve`, { method: 'PUT', body: JSON.stringify(body) }),
   rejectProfileRequest: (id, body) => apiCall(`/admin/profile-requests/${id}/reject`, { method: 'PUT', body: JSON.stringify(body) }),
-  // Revenue & Pricing
-  getRevenueAnalytics: () => apiCall('/admin/revenue-analytics'),
-  updatePricingPlan: (id, body) => apiCall(`/admin/pricing-plans/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
 };
+
 
 // ──────────────── MENTOR API ────────────────
 export const mentorApi = {
@@ -274,17 +273,11 @@ export const studentApi = {
   createDoubt: (body) => apiCall('/student/doubts', { method: 'POST', body: JSON.stringify(body) }),
   getDoubt: (id) => apiCall(`/student/doubts/${id}`),
   replyDoubt: (id, body) => apiCall(`/student/doubts/${id}/reply`, { method: 'POST', body: JSON.stringify(body) }),
-  // Subscriptions & Billing
-  getSubscriptionStatus: () => apiCall('/student/subscription-status'),
-  subscribePlan: (body) => apiCall('/student/subscribe', { method: 'POST', body: JSON.stringify(body) }),
-  buyCourse: (body) => apiCall('/student/buy-course', { method: 'POST', body: JSON.stringify(body) }),
-  getBillingHistory: () => apiCall('/student/billing-history'),
 };
 
 // ──────────────── PUBLIC API ────────────────
 export const publicApi = {
   getCourses: () => apiCall('/public/courses'),
-  getPricingPlans: () => apiCall('/public/pricing-plans'),
   submitContact: (body) => apiCall('/public/contact', { method: 'POST', body: JSON.stringify(body) }),
   subscribeNewsletter: (body) => apiCall('/public/newsletter', { method: 'POST', body: JSON.stringify(body) }),
   searchColleges: (keyword) => apiCall('/public/colleges/search', { method: 'POST', body: JSON.stringify({ keyword }) }),

@@ -351,7 +351,7 @@ export function generate25000AptitudeQuestions() {
             qObj = { question: `Q${globalQCount}: Fill in blank: "Neither of the two applicants ___ qualified."`, ...opts, marks: 1, explanation: `"Neither" takes singular verb "is".`, orderIndex: qSlot };
           } else if (qSlot === 2) {
             const opts = buildOptions('has been working', ['is working', 'have worked', 'was work']);
-            qObj = { question: `Q${globalQCount}: Choose correct tense: "She ___ at Sowberry Academy since 2022."`, ...opts, marks: 1, explanation: `Present Perfect Continuous "has been working".`, orderIndex: qSlot };
+            qObj = { question: `Q${globalQCount}: Choose correct tense: "She ___ at NextStep Academy since 2022."`, ...opts, marks: 1, explanation: `Present Perfect Continuous "has been working".`, orderIndex: qSlot };
           } else if (qSlot === 3) {
             const opts = buildOptions('A song was sung by Mary', ['A song is sung by Mary', 'Mary sang a song', 'A song will be sung']);
             qObj = { question: `Q${globalQCount}: Convert to Passive Voice: "Mary sang a song."`, ...opts, marks: 1, explanation: `Simple past passive "was sung".`, orderIndex: qSlot };

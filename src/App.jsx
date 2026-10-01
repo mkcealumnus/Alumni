@@ -17,7 +17,7 @@ import AdminProfile from '@/pages/admin/AdminProfile'
 import ManageRequests from '@/pages/admin/ManageRequests'
 import StudentDashboard from '@/pages/student/StudentDashboard'
 
-import MyProgress from '@/pages/student/MyProgress'
+
 import MyDoubts from '@/pages/student/MyDoubts'
 import StudentProfile from '@/pages/student/StudentProfile'
 
@@ -87,7 +87,7 @@ function App() {
           
           {/* Student Routes */}
           <Route path="/student" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
-          <Route path="/student/my-progress" element={<ProtectedRoute allowedRoles={['student']}><MyProgress /></ProtectedRoute>} />
+
           <Route path="/student/my-doubts" element={<ProtectedRoute allowedRoles={['student']}><MyDoubts /></ProtectedRoute>} />
           <Route path="/student/profile" element={<ProtectedRoute allowedRoles={['student']}><StudentProfile /></ProtectedRoute>} />
 

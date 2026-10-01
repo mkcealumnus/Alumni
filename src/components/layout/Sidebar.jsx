@@ -5,7 +5,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'about', 'moto', 'who-we-are', 'pricing', 'contact'];
+      const sections = ['hero', 'about', 'moto', 'who-we-are', 'contact'];
       const scrollPosition = window.scrollY + 100;
       
       let current = '';
@@ -56,7 +56,7 @@ const Sidebar = () => {
     { id: "about", icon: "ri-information-line", label: "About" },
     { id: "moto", icon: "ri-focus-3-line", label: "Our Moto" },
     { id: "who-we-are", icon: "ri-team-line", label: "Who We Are" },
-    { id: "pricing", icon: "ri-price-tag-3-line", label: "Pricing" },
+
     { id: "contact", icon: "ri-mail-line", label: "Contact" },
   ];
 

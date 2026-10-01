@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
   if (req.headers.accept?.includes('application/json') || req.query.format === 'json' || req.query.accept === 'json') {
     return res.json({
       success: true,
-      message: 'Sowberry API Server',
+      message: 'NextStep API Server',
       version: '1.0.0',
       timestamp: new Date().toISOString(),
       endpoints: { health: '/api/health', auth: '/api/auth', admin: '/api/admin', student: '/api/student', public: '/api/public' }
@@ -74,7 +74,7 @@ app.get('/api', (req, res) => {
   if (req.headers.accept?.includes('application/json') || req.query.format === 'json' || req.query.accept === 'json') {
     return res.json({
       success: true,
-      message: 'Sowberry API is running!',
+      message: 'NextStep API is running!',
       version: '1.0.0',
       timestamp: new Date().toISOString(),
       endpoints: {
@@ -91,7 +91,7 @@ app.get('/api', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'Sowberry API is running!', timestamp: new Date().toISOString() });
+  res.json({ success: true, message: 'NextStep API is running!', timestamp: new Date().toISOString() });
 });
 
 // 404 handler
@@ -110,7 +110,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log('');
   console.log('🌱 ─────────────────────────────────────');
-  console.log(`   Sowberry API Server`);
+  console.log(`   NextStep API Server`);
   console.log(`   Port: ${PORT}`);
   console.log(`   Mode: ${process.env.NODE_ENV || 'development'}`);
   console.log(`   API:  http://localhost:${PORT}/api`);
