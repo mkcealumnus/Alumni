@@ -99,7 +99,7 @@ export default function StudentOnboardingPage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      navigate("/onboarding/status?role=student&status=pending");
+      navigate("/onboardingStatus?role=student&status=pending");
     }, 1200);
   };
 

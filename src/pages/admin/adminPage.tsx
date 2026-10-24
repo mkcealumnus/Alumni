@@ -17,7 +17,7 @@ import {
   Calendar,
   ScrollText,
 } from "lucide-react";
-import { MOCK_VERIFICATION_QUEUE, MOCK_JOBS, MOCK_EVENTS, MOCK_AUDIT_LOGS } from "@/lib/mock-data";
+import { MOCK_VERIFICATION_QUEUE, MOCK_JOBS, MOCK_EVENTS, MOCK_AUDIT_LOGS } from "@/lib/mockData";
 import { VerificationQueueItem, VerificationStatus } from "@/lib/types";
 
 export default function AdminConsolePage() {

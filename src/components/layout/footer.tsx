@@ -35,17 +35,17 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/portal/student" className="hover:text-primary transition-colors">
+                <Link to="/portalStudent" className="hover:text-primary transition-colors">
                   Student Career Hub
                 </Link>
               </li>
               <li>
-                <Link to="/onboarding/student" className="hover:text-primary transition-colors">
+                <Link to="/onboardingStudent" className="hover:text-primary transition-colors">
                   Student Verification
                 </Link>
               </li>
               <li>
-                <Link to="/onboarding/alumni" className="hover:text-primary transition-colors">
+                <Link to="/onboardingAlumni" className="hover:text-primary transition-colors">
                   Alumni Verification
                 </Link>
               </li>

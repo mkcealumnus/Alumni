@@ -14,7 +14,7 @@ import {
   FileCheck2,
   Activity,
 } from "lucide-react";
-import { MOCK_ALUMNI, MOCK_JOBS } from "@/lib/mock-data";
+import { MOCK_ALUMNI, MOCK_JOBS } from "@/lib/mockData";
 
 export default function HomePage() {
   return (
@@ -43,7 +43,7 @@ export default function HomePage() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-              <Link to="/auth/register" className="w-full sm:w-auto">
+              <Link to="/authRegister" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto gap-2 text-sm font-semibold">
                   Get Verified &amp; Join
                   <ArrowRight className="w-4 h-4" />
@@ -269,7 +269,7 @@ export default function HomePage() {
               </li>
             </ul>
             <div className="pt-2">
-              <Link to="/onboarding/student">
+              <Link to="/onboardingStudent">
                 <Button variant="secondary" size="sm" className="w-full justify-between">
                   Start Student Verification
                   <ChevronRight className="w-4 h-4" />
@@ -308,7 +308,7 @@ export default function HomePage() {
               </li>
             </ul>
             <div className="pt-2">
-              <Link to="/onboarding/alumni">
+              <Link to="/onboardingAlumni">
                 <Button variant="secondary" size="sm" className="w-full justify-between">
                   Verify Alumni Graduation
                   <ChevronRight className="w-4 h-4" />
@@ -331,7 +331,7 @@ export default function HomePage() {
                 Direct referral openings posted by verified engineers and leaders.
               </p>
             </div>
-            <Link to="/portal/student">
+            <Link to="/portalStudent">
               <Button variant="outline" size="sm">
                 View All Opportunities
               </Button>
@@ -424,12 +424,12 @@ export default function HomePage() {
             Whether you are a student preparing for campus drives or an alumnus looking to mentor the next generation, Alumnux provides the verified space to connect.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link to="/auth/register" className="w-full sm:w-auto">
+            <Link to="/authRegister" className="w-full sm:w-auto">
               <Button size="lg" className="w-full sm:w-auto text-sm font-semibold">
                 Start Account Verification
               </Button>
             </Link>
-            <Link to="/auth/login" className="w-full sm:w-auto">
+            <Link to="/authLogin" className="w-full sm:w-auto">
               <Button variant="secondary" size="lg" className="w-full sm:w-auto text-sm font-semibold">
                 Sign In With Google
               </Button>

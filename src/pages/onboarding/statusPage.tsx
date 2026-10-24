@@ -151,7 +151,7 @@ export default function VerificationStatusPage() {
               </div>
 
               <div className="pt-2">
-                <Link to="/onboarding/student">
+                <Link to="/onboardingStudent">
                   <Button className="w-full gap-2 text-xs font-semibold">
                     <RotateCcw className="w-4 h-4" />
                     Resubmit Updated ID Scan
@@ -182,7 +182,7 @@ export default function VerificationStatusPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <Link to="/portal/student">
+                <Link to="/portalStudent">
                   <Button className="w-full gap-2 text-xs font-semibold">
                     Go to Student Hub
                     <ArrowRight className="w-4 h-4" />

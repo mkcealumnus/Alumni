@@ -9,7 +9,7 @@ import {
   Bell,
   ChevronRight,
 } from "lucide-react";
-import { MOCK_ALUMNI, MOCK_JOBS, MOCK_EVENTS } from "@/lib/mock-data";
+import { MOCK_ALUMNI, MOCK_JOBS, MOCK_EVENTS } from "@/lib/mockData";
 
 export default function StudentDashboardPage() {
   return (

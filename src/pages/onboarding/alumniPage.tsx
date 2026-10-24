@@ -95,7 +95,7 @@ export default function AlumniOnboardingPage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      navigate("/onboarding/status?role=alumni&status=pending");
+      navigate("/onboardingStatus?role=alumni&status=pending");
     }, 1200);
   };
 

@@ -51,7 +51,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <Link to="/onboarding/student" className="block pt-2">
+              <Link to="/onboardingStudent" className="block pt-2">
                 <Button className="w-full justify-between text-xs">
                   <span>Continue as Student</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <Link to="/onboarding/alumni" className="block pt-2">
+              <Link to="/onboardingAlumni" className="block pt-2">
                 <Button variant="secondary" className="w-full justify-between text-xs">
                   <span>Continue as Alumni</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -102,7 +102,7 @@ export default function RegisterPage() {
 
         <div className="text-center pt-2 text-xs text-secondary">
           Already registered?{" "}
-          <Link to="/auth/login" className="text-accent font-medium hover:underline">
+          <Link to="/authLogin" className="text-accent font-medium hover:underline">
             Sign in to your account
           </Link>
         </div>

@@ -69,19 +69,19 @@ export default function LoginPage() {
                   Select your designated role to inspect post-login destination routing:
                 </p>
                 <div className="grid grid-cols-1 gap-2 pt-1">
-                  <Link to="/onboarding/student">
+                  <Link to="/onboardingStudent">
                     <Button variant="secondary" size="sm" className="w-full justify-between text-xs">
                       <span>New Student &rarr; <strong>Verification Intake</strong></span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Button>
                   </Link>
-                  <Link to="/onboarding/alumni">
+                  <Link to="/onboardingAlumni">
                     <Button variant="secondary" size="sm" className="w-full justify-between text-xs">
                       <span>New Alum &rarr; <strong>Degree Intake</strong></span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Button>
                   </Link>
-                  <Link to="/portal/student">
+                  <Link to="/portalStudent">
                     <Button variant="secondary" size="sm" className="w-full justify-between text-xs">
                       <span>Verified Student &rarr; <strong>Student Hub</strong></span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -181,7 +181,7 @@ export default function LoginPage() {
         {/* Footnote */}
         <p className="text-center text-xs text-secondary">
           Don&apos;t have an account yet?{" "}
-          <Link to="/auth/register" className="text-accent font-medium hover:underline">
+          <Link to="/authRegister" className="text-accent font-medium hover:underline">
             Register and choose account type
           </Link>
         </p>

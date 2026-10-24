@@ -17,7 +17,7 @@ import {
   SlidersHorizontal,
   GraduationCap,
 } from "lucide-react";
-import { MOCK_ALUMNI } from "@/lib/mock-data";
+import { MOCK_ALUMNI } from "@/lib/mockData";
 import { ALLOWED_DEPARTMENTS } from "@/lib/validation";
 
 export default function AlumniDirectoryPage() {

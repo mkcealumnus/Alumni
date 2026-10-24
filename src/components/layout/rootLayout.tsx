@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
-import { DevicePreviewBar } from "./device-preview-bar";
+import { DevicePreviewBar } from "./devicePreviewBar";
 
 export function RootLayout() {
   return (

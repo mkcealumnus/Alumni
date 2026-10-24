@@ -80,9 +80,9 @@ export function Navbar() {
             Alumni Directory
           </Link>
           <Link
-            to="/portal/student"
+            to="/portalStudent"
             className={`px-3 py-1.5 rounded-sm transition-colors flex items-center gap-1.5 ${
-              isActive("/portal/student")
+              isActive("/portalStudent") || isActive("/portal/student")
                 ? "bg-surface text-primary border border-border"
                 : "text-secondary hover:text-primary"
             }`}
@@ -91,9 +91,9 @@ export function Navbar() {
             Student Hub
           </Link>
           <Link
-            to="/onboarding/status"
+            to="/onboardingStatus"
             className={`px-3 py-1.5 rounded-sm transition-colors flex items-center gap-1.5 ${
-              isActive("/onboarding/status")
+              isActive("/onboardingStatus") || isActive("/onboarding/status")
                 ? "bg-surface text-primary border border-border"
                 : "text-secondary hover:text-primary"
             }`}
@@ -116,12 +116,12 @@ export function Navbar() {
 
         {/* Auth / Action CTAs */}
         <div className="hidden sm:flex items-center gap-2">
-          <Link to="/auth/login">
+          <Link to="/authLogin">
             <Button variant="secondary" size="sm" className="text-xs h-8">
               Sign In
             </Button>
           </Link>
-          <Link to="/auth/register">
+          <Link to="/authRegister">
             <Button variant="primary" size="sm" className="text-xs h-8">
               Join Network
             </Button>
@@ -130,7 +130,7 @@ export function Navbar() {
 
         {/* Mobile menu trigger (for 6.1" - 6.8" and Foldables) */}
         <div className="flex lg:hidden items-center gap-2">
-          <Link to="/auth/login">
+          <Link to="/authLogin">
             <Button variant="secondary" size="sm" className="text-xs h-8 px-2.5">
               Sign In
             </Button>
@@ -164,7 +164,7 @@ export function Navbar() {
             Alumni Directory
           </Link>
           <Link
-            to="/portal/student"
+            to="/portalStudent"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-[#F2F2EC] rounded-sm"
           >
@@ -172,7 +172,7 @@ export function Navbar() {
             Student Hub
           </Link>
           <Link
-            to="/onboarding/student"
+            to="/onboardingStudent"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-[#F2F2EC] rounded-sm"
           >
@@ -180,7 +180,7 @@ export function Navbar() {
             Student Verification
           </Link>
           <Link
-            to="/onboarding/alumni"
+            to="/onboardingAlumni"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-[#F2F2EC] rounded-sm"
           >
@@ -188,7 +188,7 @@ export function Navbar() {
             Alumni Verification
           </Link>
           <Link
-            to="/onboarding/status"
+            to="/onboardingStatus"
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-[#F2F2EC] rounded-sm"
           >
