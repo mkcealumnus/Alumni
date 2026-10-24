@@ -1,188 +1,263 @@
-
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert } from "@/components/ui/alert";
-import { Lock, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Lock,
+  Mail,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  Sparkles,
+  GraduationCap,
+  Briefcase,
+  ShieldCheck,
+  AlertCircle,
+} from "lucide-react";
+import { useAuth } from "../../context/authContext";
 
 export default function LoginPage() {
-  const [authState, setAuthState] = useState<"idle" | "loading" | "error" | "routing">("idle");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login, loginAsDemo } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSimulateOAuth = (outcome: "loading" | "error" | "routing") => {
-    if (outcome === "loading") {
-      setAuthState("loading");
-      setTimeout(() => {
-        setAuthState("idle");
-      }, 3000);
-    } else if (outcome === "error") {
-      setAuthState("error");
+  // Determine redirection target if user arrived from a protected route
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
+
+  const handleStandardLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    if (!email.trim() || !password) {
+      setErrorMessage("Please enter both email and password.");
+      return;
+    }
+
+    setIsLoading(true);
+    const result = await login(email, password);
+    setIsLoading(false);
+
+    if (result.success && result.user) {
+      const destination =
+        from ||
+        (result.user.role === "student" ? "/student/dashboard" : "/alumni/dashboard");
+      navigate(destination, { replace: true });
+    } else {
       setErrorMessage(
-        "OAuth State Error: Provider handshake rejected or account domain not recognized. In production, Supabase Auth securely handles OAuth redirects."
+        result.error ||
+          "Invalid credentials. Use the Demo Login buttons below for instant 1-click access."
       );
-    } else if (outcome === "routing") {
-      setAuthState("routing");
     }
   };
 
+  const handleInstantDemoLogin = async (role: "student" | "alumni") => {
+    setIsLoading(true);
+    const demoUser = await loginAsDemo(role);
+    setIsLoading(false);
+
+    const destination =
+      role === "student" ? "/student/dashboard" : "/alumni/dashboard";
+    navigate(destination, { replace: true });
+  };
+
   return (
-    <div className="min-h-[calc(100vh-16rem)] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[calc(100vh-14rem)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         {/* Brand identity header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-sm bg-accent text-white font-bold text-sm mx-auto">
-            AL
-          </div>
+          <Link to="/" className="inline-flex items-center gap-2 group">
+            <div className="w-9 h-9 rounded-sm bg-accent text-white font-bold text-sm flex items-center justify-center shadow-sm">
+              AL
+            </div>
+            <span className="font-bold text-lg text-primary tracking-tight">
+              ALUMNUX
+            </span>
+          </Link>
           <h1 className="text-2xl font-bold tracking-tight text-primary">
             Sign In to Alumnux
           </h1>
-          <p className="text-xs text-secondary">
+          <p className="text-xs text-secondary font-mono">
             Your Network. Your Next Chapter.
           </p>
         </div>
 
-        <Card className="shadow-subtle">
-          <CardHeader>
-            <CardTitle className="text-sm">Sign In via Google</CardTitle>
-            <CardDescription>
-              We utilize federated Google authentication. Academic credentials are verified post-login.
+        {/* Demo Fast-Access Section (Highlighted prominently per prompt requirements) */}
+        <div className="bg-surface border-2 border-accent/40 rounded-md p-4 sm:p-5 shadow-subtle space-y-3.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-primary font-mono uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              <span>1-Click Demo Login</span>
+            </div>
+            <Badge variant="outline" className="text-[10px] bg-[#F8F8F5]">
+              No Password Needed
+            </Badge>
+          </div>
+          <p className="text-xs text-secondary leading-snug">
+            Instantly enter the platform as either a Student or Verified Alumni to test dashboard interactions without database setup.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleInstantDemoLogin("student")}
+              disabled={isLoading}
+              className="w-full text-xs h-10 border-border hover:border-accent hover:bg-accent/5 justify-between px-3"
+            >
+              <div className="flex items-center gap-2 text-left">
+                <GraduationCap className="w-4 h-4 text-accent" />
+                <div>
+                  <div className="font-semibold text-primary leading-tight">Student Demo</div>
+                  <div className="text-[10px] text-secondary font-mono">student@alumnux.demo</div>
+                </div>
+              </div>
+              <ArrowRight className="w-3 h-3 text-secondary" />
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleInstantDemoLogin("alumni")}
+              disabled={isLoading}
+              className="w-full text-xs h-10 border-border hover:border-accent hover:bg-accent/5 justify-between px-3"
+            >
+              <div className="flex items-center gap-2 text-left">
+                <Briefcase className="w-4 h-4 text-accent" />
+                <div>
+                  <div className="font-semibold text-primary leading-tight">Alumni Demo</div>
+                  <div className="text-[10px] text-secondary font-mono">alumni@alumnux.demo</div>
+                </div>
+              </div>
+              <ArrowRight className="w-3 h-3 text-secondary" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Standard Credentials Card */}
+        <Card className="shadow-subtle border-border">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-bold text-primary">
+              Manual Demo Credentials
+            </CardTitle>
+            <CardDescription className="text-xs">
+              Enter test credentials or prefill via the instant buttons above.
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-4">
-            {/* Error state display */}
-            {authState === "error" && (
-              <Alert variant="error" title="Authentication Error">
+            {errorMessage && (
+              <Alert variant="error" title="Sign In Error">
                 {errorMessage}
               </Alert>
             )}
 
-            {/* Post-login routing simulation */}
-            {authState === "routing" && (
-              <div className="p-4 border border-border rounded-md bg-[#F8F8F5] space-y-3">
-                <div className="flex items-center gap-2 text-xs font-semibold text-primary">
-                  <CheckCircle2 className="w-4 h-4 text-semantic-success" />
-                  Authenticated Session Detected
-                </div>
-                <p className="text-xs text-secondary">
-                  Select your designated role to inspect post-login destination routing:
-                </p>
-                <div className="grid grid-cols-1 gap-2 pt-1">
-                  <Link to="/onboardingStudent">
-                    <Button variant="secondary" size="sm" className="w-full justify-between text-xs">
-                      <span>New Student &rarr; <strong>Verification Intake</strong></span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </Link>
-                  <Link to="/onboardingAlumni">
-                    <Button variant="secondary" size="sm" className="w-full justify-between text-xs">
-                      <span>New Alum &rarr; <strong>Degree Intake</strong></span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </Link>
-                  <Link to="/portalStudent">
-                    <Button variant="secondary" size="sm" className="w-full justify-between text-xs">
-                      <span>Verified Student &rarr; <strong>Student Hub</strong></span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </Link>
-                  <Link to="/admin">
-                    <Button variant="primary" size="sm" className="w-full justify-between text-xs">
-                      <span>Senior Trustee &rarr; <strong>Admin Console</strong></span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </Link>
+            <form onSubmit={handleStandardLogin} className="space-y-3.5">
+              {/* Email Input */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-primary">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="student@alumnux.demo or alumni@alumnux.demo"
+                    className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                  />
                 </div>
               </div>
-            )}
 
-            {/* Primary Google Auth Action */}
-            <Button
-              className="w-full h-10 gap-3 text-xs font-medium"
-              isLoading={authState === "loading"}
-              onClick={() => handleSimulateOAuth("loading")}
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="currentColor"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="currentColor"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                />
-                <path
-                  fill="currentColor"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                />
-              </svg>
-              <span>{authState === "loading" ? "Contacting Google OAuth..." : "Continue with Google"}</span>
-            </Button>
+              {/* Password Input with Show/Hide toggle */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <label className="font-medium text-primary">
+                    Password
+                  </label>
+                  <Link
+                    to="/forgot-password"
+                    className="text-accent hover:underline text-[11px]"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Student@123 or Alumni@123"
+                    className="pl-9 pr-10 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
 
-            {/* Evaluation State Switcher */}
-            <div className="pt-4 border-t border-border space-y-2">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-secondary">
-                Phase 1 Prototype State Inspector:
+              {/* Remember Me Checkbox */}
+              <div className="flex items-center gap-2 pt-1">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="rounded-xs border-border text-accent focus:ring-accent w-3.5 h-3.5"
+                />
+                <label htmlFor="remember-me" className="text-xs text-secondary select-none">
+                  Remember demo session on this browser
+                </label>
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-10 text-xs font-semibold gap-2 shadow-subtle"
+              >
+                {isLoading ? (
+                  <span>Authenticating...</span>
+                ) : (
+                  <>
+                    <span>Sign In</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </Button>
+            </form>
+
+            {/* Security Disclaimer Note */}
+            <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm text-[11px] text-secondary flex items-start gap-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+              <span>
+                <strong className="text-primary font-medium">Demo Limitation:</strong> These accounts operate in client demonstration mode. In future milestones, Supabase Auth handles federated authentication and zero-trust identity verification.
               </span>
-              <div className="flex flex-wrap gap-1.5">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-[11px] h-7 px-2"
-                  onClick={() => handleSimulateOAuth("loading")}
-                >
-                  Test Loading
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-[11px] h-7 px-2"
-                  onClick={() => handleSimulateOAuth("error")}
-                >
-                  Test Error
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-[11px] h-7 px-2"
-                  onClick={() => handleSimulateOAuth("routing")}
-                >
-                  Test Post-Login
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-[11px] h-7 px-2 text-secondary"
-                  onClick={() => setAuthState("idle")}
-                >
-                  Reset
-                </Button>
-              </div>
-            </div>
-
-            {/* Security Notice */}
-            <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm text-[11px] text-secondary space-y-1">
-              <div className="flex items-center gap-1.5 font-medium text-primary">
-                <Lock className="w-3.5 h-3.5 text-accent" />
-                <span>Zero-Trust Credential Storage</span>
-              </div>
-              <p>
-                Passwords are never stored. Auth tokens are maintained via HTTP-only secure cookies adhering to DPDP 2023 principles.
-              </p>
             </div>
           </CardContent>
         </Card>
 
-        {/* Footnote */}
+        {/* Link to Registration */}
         <p className="text-center text-xs text-secondary">
           Don&apos;t have an account yet?{" "}
-          <Link to="/authRegister" className="text-accent font-medium hover:underline">
-            Register and choose account type
+          <Link to="/register" className="text-accent font-semibold hover:underline">
+            Register for Alumnux demo
           </Link>
         </p>
       </div>

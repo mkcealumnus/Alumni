@@ -1,71 +1,97 @@
 import { Link } from "react-router-dom";
+import { ShieldCheck, ArrowRight, ExternalLink } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="mt-auto border-t border-border bg-[#F2F2EC] text-primary text-xs">
-      <div className="max-w-[320rem] mx-auto px-4 sm:px-6 md:px-8 2xl:px-10 desktop:px-12 ultrawide:px-20 superwide:px-32 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 2xl:grid-cols-5 ultrawide:grid-cols-6 gap-8 mb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Brand & Mandate */}
-          <div className="md:col-span-2 2xl:col-span-2 ultrawide:col-span-3 space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-sm bg-accent text-white flex items-center justify-center font-bold text-xs">
+          <div className="md:col-span-2 space-y-3.5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-sm bg-accent text-white flex items-center justify-center font-bold text-xs shadow-sm">
                 AL
               </div>
-              <span className="font-bold text-sm tracking-tight">ALUMNUX</span>
+              <div className="flex flex-col">
+                <span className="font-bold text-sm tracking-tight">ALUMNUX</span>
+                <span className="text-[10px] text-secondary font-mono tracking-tight">
+                  Your Network. Your Next Chapter.
+                </span>
+              </div>
             </div>
-            <p className="text-secondary text-xs max-w-md 2xl:max-w-xl leading-relaxed">
-              Your Network. Your Next Chapter. Connecting students directly with verified alumni for career mentorship, mock interviews, and authentic job referrals.
+
+            <p className="text-secondary text-xs max-w-md leading-relaxed">
+              An independent student and alumni career guidance platform designed to connect students with experienced alumni through career mentorship, professional networking, job opportunities, internships, and referrals.
             </p>
-            <div className="p-3 bg-surface border border-border rounded-sm max-w-lg 2xl:max-w-2xl">
+
+            {/* Prominent Independence Notice */}
+            <div className="p-3 bg-surface border border-border rounded-sm max-w-lg space-y-1">
+              <div className="flex items-center gap-1.5 font-medium text-primary text-[11px]">
+                <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+                <span>Independent Governance Statement</span>
+              </div>
               <p className="text-[11px] text-secondary leading-normal">
-                <strong className="text-primary font-medium">Independent Governance Notice:</strong> Alumnux is independently developed and managed by exactly three designated senior alumni trustees. College management and academic faculty have no operational involvement or administrative access.
+                Alumnux is independently developed and administered by three senior alumni. It is not an officially managed college platform, and college administration or faculty have no operational oversight.
               </p>
             </div>
           </div>
 
-          {/* Platform Links */}
-          <div className="space-y-2">
-            <h4 className="font-semibold text-primary uppercase text-[11px] tracking-wider">
-              Platform
+          {/* Public Pages Navigation */}
+          <div className="space-y-2.5">
+            <h4 className="font-semibold text-primary uppercase text-[11px] tracking-wider font-mono">
+              Public Pages
             </h4>
-            <ul className="space-y-1.5 text-secondary">
+            <ul className="space-y-2 text-secondary">
               <li>
-                <Link to="/directory" className="hover:text-primary transition-colors">
-                  Alumni Directory
+                <Link to="/" className="hover:text-primary transition-colors flex items-center gap-1">
+                  Home
                 </Link>
               </li>
               <li>
-                <Link to="/portalStudent" className="hover:text-primary transition-colors">
-                  Student Career Hub
+                <Link to="/about" className="hover:text-primary transition-colors flex items-center gap-1">
+                  About Alumnux
                 </Link>
               </li>
               <li>
-                <Link to="/onboardingStudent" className="hover:text-primary transition-colors">
-                  Student Verification
+                <Link to="/our-goal" className="hover:text-primary transition-colors flex items-center gap-1">
+                  Our Goal &amp; Roadmap
                 </Link>
               </li>
               <li>
-                <Link to="/onboardingAlumni" className="hover:text-primary transition-colors">
-                  Alumni Verification
+                <Link to="/career" className="hover:text-primary transition-colors flex items-center gap-1">
+                  Career Opportunities
                 </Link>
               </li>
               <li>
-                <Link to="/admin" className="hover:text-primary transition-colors text-accent">
-                  Admin Console (3 Trustees)
+                <Link to="/contact" className="hover:text-primary transition-colors flex items-center gap-1">
+                  Contact &amp; Support
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal & Compliance */}
-          <div className="space-y-2">
-            <h4 className="font-semibold text-primary uppercase text-[11px] tracking-wider">
-              Legal & Privacy
+          {/* Access & Compliance */}
+          <div className="space-y-2.5">
+            <h4 className="font-semibold text-primary uppercase text-[11px] tracking-wider font-mono">
+              Access &amp; Portal
             </h4>
-            <ul className="space-y-1.5 text-secondary">
+            <ul className="space-y-2 text-secondary">
+              <li>
+                <Link to="/login" className="hover:text-primary transition-colors flex items-center gap-1 font-medium text-primary">
+                  <span>Sign In</span>
+                  <ArrowRight className="w-3 h-3 text-accent" />
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className="hover:text-primary transition-colors flex items-center gap-1">
+                  Create Demo Account
+                </Link>
+              </li>
               <li>
                 <Link to="/privacy" className="hover:text-primary transition-colors">
-                  Privacy Policy (DPDP 2023)
+                  Privacy Policy
                 </Link>
               </li>
               <li>
@@ -74,46 +100,26 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="/docs/verification-policy.md"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-primary transition-colors"
-                >
-                  Verification & Evidence Policy
-                </a>
+                <span className="text-[10px] text-secondary/80 font-mono block pt-1">
+                  Frontend Demo Prototype &bull; Supabase-Ready
+                </span>
               </li>
-              <li>
-                <a
-                  href="/docs/SRS-v1.1.md"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-primary transition-colors"
-                >
-                  Software Requirements (v1.1)
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Device Responsive Coverage */}
-          <div className="space-y-2 hidden 2xl:block">
-            <h4 className="font-semibold text-primary uppercase text-[11px] tracking-wider">
-              Responsive Coverage
-            </h4>
-            <ul className="space-y-1 text-[11px] text-secondary font-mono">
-              <li>&bull; Mobile: 6.1&quot; &rarr; 6.8&quot; (Standard &amp; Max)</li>
-              <li>&bull; Foldable: 7.6&quot; &rarr; 8.0&quot;+ Opened</li>
-              <li>&bull; Laptops: 11.6&quot; &rarr; 18.0&quot; Standards</li>
-              <li>&bull; Monitors: 21.5&quot; &rarr; 32.0&quot; QHD/4K</li>
-              <li>&bull; Ultrawides: 34&quot;-38&quot; (21:9) &amp; 49&quot; (32:9)</li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-secondary">
-          <p>&copy; {new Date().getFullYear()} Alumnux Platform. All rights reserved. Self-governed alumni community.</p>
-          <p className="font-mono">Refined Nano-Brutalism &bull; Strict RLS &bull; 6.1&quot; to 49.0&quot; Responsive Grid</p>
+        {/* Bottom Bar */}
+        <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-secondary text-[11px]">
+          <p>
+            &copy; {currentYear} Alumnux. All rights reserved. Independently administered by 3 senior alumni trustees.
+          </p>
+          <div className="flex items-center gap-4 text-[10px] font-mono">
+            <span className="inline-flex items-center gap-1 text-emerald-600">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+              Demo Authentication Enabled
+            </span>
+            <span>Refined Nano-Brutalism</span>
+          </div>
         </div>
       </div>
     </footer>
