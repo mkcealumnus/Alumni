@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { DEVICE_SIZES } from "../components/layout/device-preview-bar";
+import { DEVICE_SIZES } from "@/components/layout/device-preview-bar";
 
 describe("Physical Device Responsive Layout Specifications", () => {
   it("should contain all 14 physical screen sizes specified in the master table", () => {

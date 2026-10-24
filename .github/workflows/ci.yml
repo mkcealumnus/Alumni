@@ -32,8 +32,8 @@ jobs:
       - name: Run Vitest Unit Tests
         run: npm run test
 
-      - name: Build Next.js Production Bundle
+      - name: Build Vite Production Bundle
         run: npm run build
         env:
-          NEXT_PUBLIC_SUPABASE_URL: "https://placeholder-ci.supabase.co"
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder-ci-anon-key"
+          VITE_SUPABASE_URL: "https://placeholder-ci.supabase.co"
+          VITE_SUPABASE_ANON_KEY: "placeholder-ci-anon-key"

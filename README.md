@@ -52,15 +52,17 @@ The Phase 1 interactive prototype includes:
 
 ## 4. Technical Architecture & Database Design
 
-- **Frontend & App Framework:** Next.js 14+ (App Router), React, TypeScript (Strict Mode).
-- **Styling:** Tailwind CSS + CSS Variables (`lib/tokens.ts`).
+- **Frontend & App Framework:** React 19 (`react@^19.0.0`, `react-dom@^19.0.0`), Vite (`vite@^5.4.11`), TypeScript (Strict Mode).
+- **Routing:** React Router v7 (`react-router-dom@^7.0.0`) with client-side SPA routing and catch-all 404 handler.
+- **Styling:** Tailwind CSS + Refined Nano-Brutalism Design Tokens (`src/lib/tokens.ts`).
 - **Icons:** Lucide React.
-- **Form & Validation:** React Hook Form, Zod declarative schemas (`lib/validation/index.ts`).
+- **Form & Validation:** React Hook Form, Zod declarative schemas (`src/lib/validation/index.ts`).
 - **Backend / Database:** PostgreSQL 15+ (via Supabase) with **100% of tables protected by Row Level Security (RLS)**.
+- **Client Integration:** `@supabase/supabase-js` using standard Vite environment variables (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`).
 - **Database Migrations:**
   - `supabase/migrations/20261024000001_initial_schema.sql` (17 relational tables, custom triggers, indexes, and comprehensive RLS policies).
   - `supabase/migrations/20261024000002_seed_data.sql` (Canonical departments, skill taxonomies, and 3 senior alumni trustee account stubs).
-- **Test Scaffolding:** Vitest for schema validation and review state machine tests.
+- **Test Scaffolding:** Vitest for schema validation and 14-device responsive layout specifications.
 - **CI/CD:** GitHub Actions workflow in `.github/workflows/ci.yml`.
 
 ---
@@ -101,11 +103,11 @@ Visit [http://localhost:3000](http://localhost:3000) to explore the prototype.
 | Workstream | Acceptance Criteria | Status | Verified Outcome |
 |---|---|:---:|---|
 | **A. Product Discovery** | SRS v1.1 with independent 3-trustee model, user journeys, MVP boundaries | &check; | Complete in `docs/SRS-v1.1.md` |
-| **B. Design System** | Refined Nano-Brutalism tokens, geometry rules, reusable component library | &check; | Implemented in `lib/tokens.ts`, `components/ui/*` |
+| **B. Design System** | Refined Nano-Brutalism tokens, geometry rules, reusable component library | &check; | Implemented in `src/lib/tokens.ts`, `src/components/ui/*` |
 | **C. Interface Screens** | 8 polished responsive screens (Landing, Auth, Student/Alum Onboarding, Status, Directory, Hub, Admin) | &check; | Fully responsive with interactive state toggles |
 | **D. Database & Arch** | 17 relational tables with indexes, constraints, triggers, and full RLS policies | &check; | Verified in `supabase/migrations/*` & `docs/database-design.md` |
-| **E. Privacy & Policy** | DPDP Act 2023 compliance, evidence isolation, ephemeral URLs, retention rules | &check; | Documented in `docs/verification-policy.md` & `app/privacy` |
-| **F. Engineering Quality** | Strict TypeScript, Vitest test suite, CI workflow, zero secrets committed | &check; | Passed typecheck, lint, test, and production build |
+| **E. Privacy & Policy** | DPDP Act 2023 compliance, evidence isolation, ephemeral URLs, retention rules | &check; | Documented in `docs/verification-policy.md` & `src/pages/privacy-page.tsx` |
+| **F. Engineering Quality** | React 19 + Vite, strict TypeScript, Vitest test suite, CI workflow, zero secrets committed | &check; | Passed typecheck, lint, test, and production build |
 
 ---
 

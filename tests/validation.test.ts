@@ -4,7 +4,7 @@ import {
   alumniVerificationSchema,
   adminDecisionSchema,
   ALLOWED_DEPARTMENTS,
-} from "../lib/validation";
+} from "@/lib/validation";
 
 describe("Alumnux Validation & Governance Suite", () => {
   describe("Student Verification Validation", () => {

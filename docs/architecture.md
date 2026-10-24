@@ -1,7 +1,7 @@
 # Technical Architecture Specification
 ## Project: ALUMNUX — Phase 1 Technical Foundation
 
-**System Overview:** Modern Jamstack architecture built on Next.js App Router, Supabase (PostgreSQL, Auth, Storage, Realtime), Tailwind CSS with Refined Nano-Brutalism design primitives, and strict TypeScript.
+**System Overview:** Modern Single Page Application (SPA) architecture built on React 19, Vite, React Router v7, Supabase (PostgreSQL, Auth, Storage, Realtime), Tailwind CSS with Refined Nano-Brutalism design primitives, and strict TypeScript.
 
 ---
 
@@ -17,17 +17,17 @@
                 |                          |                         |
                 v                          v                         v
 +---------------------------------------------------------------------------------+
-|                        NEXT.JS APP ROUTER ARCHITECTURE                          |
+|                        REACT 19 + VITE SPA ARCHITECTURE                         |
 |                                                                                 |
 |   +-------------------------------------------------------------------------+   |
-|   | Public Edge / Static Routes:                                            |   |
+|   | Public Routes (React Router v7):                                        |   |
 |   |   - / (Refined Nano-Brutalism Landing Page)                             |   |
-|   |   - /about, /privacy, /terms                                            |   |
+|   |   - /privacy, /terms                                                    |   |
 |   |   - /auth/login, /auth/register (Google OAuth entry)                    |   |
 |   +-------------------------------------------------------------------------+   |
 |                                                                                 |
 |   +-------------------------------------------------------------------------+   |
-|   | Protected Portal Routes (Middleware Auth & Session Check):              |   |
+|   | Protected Portal Routes (Client Guards + Supabase RLS Session Check):   |   |
 |   |   - /onboarding/student & /onboarding/alumni (Verification Journeys)     |   |
 |   |   - /onboarding/status (Live Review State Machine)                      |   |
 |   |   - /portal/student (Student Dashboard Concept)                         |   |
