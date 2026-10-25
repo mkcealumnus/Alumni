@@ -14,12 +14,10 @@ import {
   Settings,
   LogOut,
   Bell,
-  Search,
   Menu,
   X,
   ExternalLink,
   ChevronDown,
-  ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "../context/authContext";
 import { DEMO_NOTIFICATIONS } from "../data/demoData";

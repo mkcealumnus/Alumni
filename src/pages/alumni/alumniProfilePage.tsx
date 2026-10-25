@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
-  Building2,
   GraduationCap,
   Mail,
   ShieldCheck,
@@ -11,7 +10,6 @@ import {
   Save,
   Plus,
   X,
-  MapPin,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 

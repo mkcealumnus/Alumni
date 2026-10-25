@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Settings, Bell, Shield, RefreshCw, CheckCircle2 } from "lucide-react";
+import { Bell, Shield, RefreshCw, CheckCircle2 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 

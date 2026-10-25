@@ -18,10 +18,8 @@ import {
   X,
   ExternalLink,
   ChevronDown,
-  Sparkles,
 } from "lucide-react";
 import { useAuth } from "../context/authContext";
-import { DEMO_NOTIFICATIONS } from "../data/demoData";
 
 export function AlumniDashboardLayout() {
   const { pathname } = useLocation();
