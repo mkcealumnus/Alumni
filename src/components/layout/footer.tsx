@@ -101,7 +101,7 @@ export function Footer() {
               </li>
               <li>
                 <span className="text-[10px] text-secondary/80 font-mono block pt-1">
-                  Frontend Demo Prototype &bull; Supabase-Ready
+                  Frontend Demo Prototype &bull; Client-Ready Architecture
                 </span>
               </li>
             </ul>
