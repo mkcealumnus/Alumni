@@ -170,7 +170,7 @@ Every mandatory verification gate passes with zero errors and zero warnings:
 | Command | Status | Description |
 | :--- | :--- | :--- |
 | `npm run typecheck` | **Passed (Exit 0)** | TypeScript compiler (`tsc --noEmit`) with strict mode enabled |
-| `npm run test` | **Passed (Exit 0)** | 22 / 22 automated Vitest tests passing across 3 test suites |
+| `npm run test` | **Passed (Exit 0)** | 26 / 26 automated Vitest tests passing across 4 test suites |
 | `npm run lint` | **Passed (Exit 0)** | ESLint passing with 0 warnings (`--max-warnings 0`) |
 | `npm run build` | **Passed (Exit 0)** | Vite 6 production bundle generated in `dist/` in ~7.6s |
 | `npx wrangler deploy --dry-run` | **Passed (Exit 0)** | Cloudflare SPA deployment verification |

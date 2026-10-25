@@ -1,5 +1,5 @@
-
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -19,8 +19,14 @@ import {
 } from "lucide-react";
 import { MOCK_ALUMNI } from "@/lib/mockData";
 import { ALLOWED_DEPARTMENTS } from "@/lib/validation";
+import { useAuth } from "@/context/authContext";
+import { RequestMentorshipModal } from "@/components/mentorship/requestMentorshipModal";
 
 export default function AlumniDirectoryPage() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [selectedAlumForModal, setSelectedAlumForModal] = useState<typeof MOCK_ALUMNI[0] | null>(null);
+
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDept, setSelectedDept] = useState<string>("ALL");
@@ -415,7 +421,20 @@ export default function AlumniDirectoryPage() {
                   <Lock className="w-3 h-3 text-secondary shrink-0" />
                   Email Masked
                 </span>
-                <Button size="sm" variant="secondary" className="text-xs h-8 px-2.5 sm:px-3">
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="text-xs h-8 px-2.5 sm:px-3"
+                  onClick={() => {
+                    if (!user) {
+                      navigate("/login?redirect=/student/mentorship/one-on-one");
+                    } else if (user.role === "alumni") {
+                      navigate("/alumni/mentorship/requests");
+                    } else {
+                      setSelectedAlumForModal(alum);
+                    }
+                  }}
+                >
                   Request Mentorship
                 </Button>
               </div>
@@ -423,6 +442,17 @@ export default function AlumniDirectoryPage() {
           ))}
         </div>
       )}
+
+      {/* Mentorship Request Modal */}
+      <RequestMentorshipModal
+        isOpen={!!selectedAlumForModal}
+        onClose={() => setSelectedAlumForModal(null)}
+        alumnus={selectedAlumForModal}
+        onSuccess={() => {
+          setSelectedAlumForModal(null);
+          navigate("/student/mentorship/one-on-one?tab=requests");
+        }}
+      />
     </div>
   );
 }

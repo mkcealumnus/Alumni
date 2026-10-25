@@ -4,6 +4,27 @@ export const IS_DEMO_DATA = true;
 
 export const MOCK_ALUMNI: UserProfile[] = [
   {
+    id: "alumni-demo-jordan",
+    email: "alumni@alumnux.demo",
+    full_name: "Jordan Vance",
+    headline: "Staff Platform Engineer @ Stripe | IT '18",
+    bio: "Staff Platform Engineer at Stripe specializing in payment reliability, global distributed architectures, and developer tooling. Offering mock interview guidance and resume critiques for aspiring engineers.",
+    account_type: "alumni",
+    department_code: "IT",
+    department_name: "Information Technology",
+    graduation_year: 2018,
+    current_company: "Stripe",
+    current_role: "Staff Platform Engineer",
+    experience_years: 7.0,
+    location_city: "Bengaluru",
+    location_country: "India",
+    linkedin_url: "https://linkedin.com/in/example-jordan-vance",
+    github_url: "https://github.com/example-jordan",
+    skills: ["System Design", "Cloud Infrastructure (AWS/GCP)", "Go", "Distributed Systems", "Technical Interview Prep"],
+    is_verified: true,
+    created_at: "2026-06-10T08:00:00Z",
+  },
+  {
     id: "alum-101",
     email: "karthik.s@example.com",
     full_name: "Karthik Subramanian",
