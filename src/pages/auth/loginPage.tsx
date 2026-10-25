@@ -14,7 +14,6 @@ import {
   Sparkles,
   GraduationCap,
   Briefcase,
-  ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 import { AuthBrandPanel } from "../../components/auth/authBrandPanel";
@@ -279,14 +278,6 @@ export default function LoginPage() {
             >
               Create an account
             </Link>
-          </div>
-
-          {/* Privacy Note */}
-          <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm text-[11px] text-secondary flex items-start gap-2">
-            <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
-            <p className="leading-snug">
-              Accounts must meet verification requirements before access is granted. Unverified or pending registrations undergo manual review by alumni trustees.
-            </p>
           </div>
         </div>
       </main>

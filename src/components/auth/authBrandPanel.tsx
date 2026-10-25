@@ -119,22 +119,6 @@ export function AuthBrandPanel({ className }: AuthBrandPanelProps) {
             </div>
           </div>
         </div>
-
-        {/* Platform Integrity Value Props */}
-        <div className="space-y-2.5 text-xs">
-          <div className="flex items-start gap-2.5 text-secondary">
-            <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-            <p className="leading-snug">
-              <strong className="text-primary font-medium">Independent Platform Governance:</strong> Administered independently by three senior alumni trustees. Not an official college portal.
-            </p>
-          </div>
-          <div className="flex items-start gap-2.5 text-secondary">
-            <Sparkles className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-            <p className="leading-snug">
-              <strong className="text-primary font-medium">Zero-Compromise Privacy:</strong> Student and alumni document uploads are reviewed securely and never shared publicly.
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* Bottom Footer Statement */}
