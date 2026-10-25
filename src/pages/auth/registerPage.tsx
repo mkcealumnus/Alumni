@@ -323,11 +323,11 @@ export default function RegisterPage() {
       {/* 1. LEFT PANEL — BRAND IDENTITY (~42% Desktop) */}
       <AuthBrandPanel className="w-full lg:w-[42%] xl:w-[40%]" />
 
-      {/* 2. RIGHT PANEL — REGISTRATION FORM (~58% Desktop) */}
-      <main className="w-full lg:w-[58%] xl:w-[60%] min-h-screen flex flex-col justify-start items-center p-6 sm:p-10 lg:p-12 bg-surface overflow-y-auto">
-        <div className="w-full max-w-2xl space-y-6 py-2">
+      {/* 2. RIGHT PANEL — REGISTRATION FORM (~58% Desktop, No scrolling layout) */}
+      <main className="w-full lg:w-[58%] xl:w-[60%] min-h-screen flex flex-col justify-center items-center p-4 sm:p-6 lg:p-6 bg-surface overflow-y-auto">
+        <div className="w-full max-w-2xl space-y-3.5 py-1">
           {/* Top Quick Links & Back to Home */}
-          <div className="flex items-center justify-between pb-1">
+          <div className="flex items-center justify-between pb-0.5">
             <Link
               to="/"
               className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-primary transition-colors font-mono"
@@ -348,28 +348,28 @@ export default function RegisterPage() {
 
           {/* Submission Success Screen: Pending Approval State */}
           {submittedApplication ? (
-            <div className="space-y-6 bg-surface border border-border rounded-md p-6 sm:p-8 shadow-subtle">
-              <div className="text-center space-y-2">
-                <div className="w-14 h-14 rounded-full bg-amber-100 text-amber-700 mx-auto flex items-center justify-center">
-                  <Clock className="w-7 h-7" />
+            <div className="space-y-5 bg-surface border border-border rounded-md p-6 shadow-subtle">
+              <div className="text-center space-y-1.5">
+                <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-700 mx-auto flex items-center justify-center">
+                  <Clock className="w-6 h-6" />
                 </div>
                 <Badge
                   variant="outline"
-                  className="bg-amber-50 text-amber-800 border-amber-300 font-mono text-xs uppercase"
+                  className="bg-amber-50 text-amber-800 border-amber-300 font-mono text-[10px] uppercase"
                 >
                   Pending Approval
                 </Badge>
-                <h1 className="text-2xl font-bold tracking-tight text-primary">
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-primary">
                   Application submitted successfully
                 </h1>
-                <p className="text-xs sm:text-sm text-secondary leading-relaxed max-w-md mx-auto">
+                <p className="text-xs text-secondary leading-relaxed max-w-md mx-auto">
                   Your registration is awaiting review. You will be able to access the verified Alumnux features after your application is approved by an alumni administrator.
                 </p>
               </div>
 
               {/* Application Details Summary */}
-              <div className="bg-[#FAF9F5] border border-border rounded-sm p-4 space-y-3 text-xs">
-                <div className="flex items-center justify-between border-b border-border pb-2">
+              <div className="bg-[#FAF9F5] border border-border rounded-sm p-3.5 space-y-2.5 text-xs">
+                <div className="flex items-center justify-between border-b border-border pb-1.5">
                   <span className="font-mono text-secondary text-[11px]">
                     Reference ID:
                   </span>
@@ -404,7 +404,7 @@ export default function RegisterPage() {
                   </div>
                 </div>
 
-                <div className="border-t border-border pt-2 text-[11px] space-y-1">
+                <div className="border-t border-border pt-1.5 text-[11px] space-y-1">
                   <span className="text-secondary block font-semibold">
                     Submitted Identity Documents:
                   </span>
@@ -425,20 +425,20 @@ export default function RegisterPage() {
               </div>
 
               {/* Administrative Explanation */}
-              <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm text-xs text-secondary space-y-1">
-                <div className="flex items-center gap-1.5 font-semibold text-primary">
-                  <ShieldCheck className="w-4 h-4 text-accent shrink-0" />
+              <div className="p-2.5 bg-[#F8F8F5] border border-border rounded-sm text-xs text-secondary space-y-1">
+                <div className="flex items-center gap-1.5 font-semibold text-primary text-[11px]">
+                  <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0" />
                   <span>Manual Trustee Review Policy</span>
                 </div>
                 <p className="text-[11px] leading-relaxed">
-                  To ensure student safety and authentic industry mentorship, all Anna University student IDs and graduation certificates are inspected manually by one of three senior alumni trustees.
+                  To ensure student safety and authentic mentorship, all student IDs and graduation certificates are inspected manually by one of three senior alumni trustees.
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
                 <Link to="/login" className="w-full sm:flex-1">
-                  <Button className="w-full text-xs h-10 gap-1.5 font-semibold shadow-subtle">
+                  <Button className="w-full text-xs h-9.5 gap-1.5 font-semibold shadow-subtle">
                     <span>Return to Sign In</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Button>
@@ -446,7 +446,7 @@ export default function RegisterPage() {
                 <Link to="/" className="w-full sm:w-auto">
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto text-xs h-10 border-border gap-1.5"
+                    className="w-full sm:w-auto text-xs h-9.5 border-border gap-1.5"
                   >
                     <Home className="w-3.5 h-3.5 text-secondary" />
                     <span>Home Page</span>
@@ -456,20 +456,20 @@ export default function RegisterPage() {
             </div>
           ) : (
             /* Active Registration Form */
-            <div className="space-y-6">
+            <div className="space-y-3.5">
               {/* Header Title */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-primary">
                     Create Your Account
                   </h1>
-                  <Badge variant="outline" className="text-[10px] font-mono bg-[#FAF9F5] border-border">
-                    Phase 1 Registration
-                  </Badge>
+                  <p className="text-xs text-secondary">
+                    Step 1: Role &amp; common credentials • Step 2: Role verification
+                  </p>
                 </div>
-                <p className="text-xs sm:text-sm text-secondary">
-                  Complete Step 1 with your role &amp; account details, then provide your role-specific verification in Step 2.
-                </p>
+                <Badge variant="outline" className="text-[10px] font-mono bg-[#FAF9F5] border-border shrink-0">
+                  Phase 1 Registration
+                </Badge>
               </div>
 
               {submissionError && (
@@ -481,11 +481,11 @@ export default function RegisterPage() {
               {/* ========================================================================= */}
               {/* 2-TAB BAR CONTROLLER: TAB 1 (ROLE & COMMON DATA) vs TAB 2 (ROLE SPECIFIC)  */}
               {/* ========================================================================= */}
-              <div className="bg-[#EFEFEA] p-1.5 rounded-sm border border-border">
+              <div className="bg-[#EFEFEA] p-1 rounded-sm border border-border">
                 <div
                   role="tablist"
                   aria-label="Registration Form Steps"
-                  className="grid grid-cols-2 gap-1.5"
+                  className="grid grid-cols-2 gap-1"
                 >
                   {/* TAB 1: Role & Common Data */}
                   <button
@@ -495,14 +495,14 @@ export default function RegisterPage() {
                     aria-selected={activeTab === 1}
                     aria-controls="panel-step-1"
                     onClick={() => handleTabClick(1)}
-                    className={`flex items-center gap-2.5 py-3 px-3 sm:px-4 rounded-xs font-semibold text-xs sm:text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    className={`flex items-center gap-2 py-2 px-3 rounded-xs font-semibold text-xs sm:text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                       activeTab === 1
                         ? "bg-surface text-primary shadow-subtle border border-border"
                         : "text-secondary hover:text-primary hover:bg-surface/50"
                     }`}
                   >
                     <span
-                      className={`w-6 h-6 rounded-xs flex items-center justify-center font-mono text-xs font-bold shrink-0 ${
+                      className={`w-5 h-5 rounded-xs flex items-center justify-center font-mono text-[11px] font-bold shrink-0 ${
                         activeTab === 1
                           ? "bg-accent text-white"
                           : "bg-[#E2E2DC] text-secondary"
@@ -513,9 +513,6 @@ export default function RegisterPage() {
                     <div className="text-left flex flex-col min-w-0">
                       <span className="leading-tight font-bold truncate">
                         Step 1: Role &amp; Common Data
-                      </span>
-                      <span className="text-[10px] font-mono text-secondary hidden sm:inline">
-                        Select role &amp; credentials
                       </span>
                     </div>
                   </button>
@@ -528,14 +525,14 @@ export default function RegisterPage() {
                     aria-selected={activeTab === 2}
                     aria-controls="panel-step-2"
                     onClick={() => handleTabClick(2)}
-                    className={`flex items-center gap-2.5 py-3 px-3 sm:px-4 rounded-xs font-semibold text-xs sm:text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    className={`flex items-center gap-2 py-2 px-3 rounded-xs font-semibold text-xs sm:text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                       activeTab === 2
                         ? "bg-surface text-primary shadow-subtle border border-border"
                         : "text-secondary hover:text-primary hover:bg-surface/50"
                     }`}
                   >
                     <span
-                      className={`w-6 h-6 rounded-xs flex items-center justify-center font-mono text-xs font-bold shrink-0 ${
+                      className={`w-5 h-5 rounded-xs flex items-center justify-center font-mono text-[11px] font-bold shrink-0 ${
                         activeTab === 2
                           ? "bg-accent text-white"
                           : "bg-[#E2E2DC] text-secondary"
@@ -547,55 +544,52 @@ export default function RegisterPage() {
                       <span className="leading-tight font-bold truncate">
                         Step 2: {selectedRole === "student" ? "Student" : "Alumni"} Verification
                       </span>
-                      <span className="text-[10px] font-mono text-secondary hidden sm:inline">
-                        Role data &amp; documents
-                      </span>
                     </div>
                   </button>
                 </div>
               </div>
 
               {/* FORM WRAPPER */}
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
                 {/* ========================================================================= */}
-                {/* TAB 1: ROLE SELECTION (FIRST FIELD) & COMMON DATA                          */}
+                {/* TAB 1: ROLE SELECTION (FIRST FIELD) & COMMON DATA (3 ROWS FOR 6 FIELDS)   */}
                 {/* ========================================================================= */}
                 {activeTab === 1 && (
                   <div
                     role="tabpanel"
                     id="panel-step-1"
                     aria-labelledby="tab-step-1"
-                    className="space-y-6"
+                    className="space-y-3"
                   >
-                    {/* FIRST FIELD: SELECT THE ROLE */}
-                    <div className="p-4 sm:p-5 bg-surface border border-border rounded-sm shadow-subtle space-y-3">
-                      <div className="flex items-center justify-between border-b border-border pb-2">
-                        <label className="text-xs font-bold uppercase tracking-wider text-primary font-mono block">
+                    {/* FIRST FIELD: SELECT YOUR ROLE (KEPT EXACTLY AS IT IS) */}
+                    <div className="p-3 sm:p-3.5 bg-surface border border-border rounded-sm shadow-subtle space-y-2">
+                      <div className="flex items-center justify-between border-b border-border pb-1">
+                        <label className="text-[11px] font-bold uppercase tracking-wider text-primary font-mono block">
                           Field 1: Select Your Role <span className="text-accent">*</span>
                         </label>
-                        <Badge variant="outline" className="text-[10px] font-mono">
+                        <Badge variant="outline" className="text-[9px] font-mono py-0">
                           Required
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-0.5">
                         {/* Student Card */}
                         <div
                           onClick={() => handleRoleSelect("student")}
-                          className={`p-3.5 rounded-sm border-2 cursor-pointer transition-all flex items-start gap-3 ${
+                          className={`p-3 rounded-sm border-2 cursor-pointer transition-all flex items-start gap-2.5 ${
                             selectedRole === "student"
                               ? "border-accent bg-accent/5 shadow-xs"
                               : "border-border hover:border-accent/40 bg-surface"
                           }`}
                         >
                           <div
-                            className={`w-9 h-9 rounded-xs flex items-center justify-center shrink-0 ${
+                            className={`w-8 h-8 rounded-xs flex items-center justify-center shrink-0 ${
                               selectedRole === "student"
                                 ? "bg-accent text-white"
                                 : "bg-[#F8F8F5] text-secondary"
                             }`}
                           >
-                            <GraduationCap className="w-5 h-5" />
+                            <GraduationCap className="w-4 h-4" />
                           </div>
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-1.5">
@@ -620,20 +614,20 @@ export default function RegisterPage() {
                         {/* Alumni Card */}
                         <div
                           onClick={() => handleRoleSelect("alumni")}
-                          className={`p-3.5 rounded-sm border-2 cursor-pointer transition-all flex items-start gap-3 ${
+                          className={`p-3 rounded-sm border-2 cursor-pointer transition-all flex items-start gap-2.5 ${
                             selectedRole === "alumni"
                               ? "border-accent bg-accent/5 shadow-xs"
                               : "border-border hover:border-accent/40 bg-surface"
                           }`}
                         >
                           <div
-                            className={`w-9 h-9 rounded-xs flex items-center justify-center shrink-0 ${
+                            className={`w-8 h-8 rounded-xs flex items-center justify-center shrink-0 ${
                               selectedRole === "alumni"
                                 ? "bg-accent text-white"
                                 : "bg-[#F8F8F5] text-secondary"
                             }`}
                           >
-                            <Briefcase className="w-5 h-5" />
+                            <Briefcase className="w-4 h-4" />
                           </div>
                           <div className="space-y-0.5">
                             <div className="flex items-center gap-1.5">
@@ -657,10 +651,10 @@ export default function RegisterPage() {
                       </div>
                     </div>
 
-                    {/* COMMON DATA SECTION */}
-                    <div className="p-4 sm:p-5 bg-surface border border-border rounded-sm shadow-subtle space-y-4">
-                      <div className="border-b border-border pb-2 flex items-center justify-between">
-                        <span className="text-xs font-bold uppercase tracking-wider text-primary font-mono block">
+                    {/* FIELD 2: COMMON ACCOUNT DATA — EXACTLY 3 ROWS FOR 6 FIELDS */}
+                    <div className="p-3 sm:p-3.5 bg-surface border border-border rounded-sm shadow-subtle space-y-2.5">
+                      <div className="border-b border-border pb-1 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-primary font-mono block">
                           Field 2: Common Account Data
                         </span>
                         <span className="text-[10px] font-mono text-secondary">
@@ -668,8 +662,9 @@ export default function RegisterPage() {
                         </span>
                       </div>
 
-                      <div className="space-y-4">
-                        {/* Full Name */}
+                      {/* 3 ROWS FOR 6 FIELDS */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3.5 gap-y-2">
+                        {/* ROW 1 — Col 1: Full Name */}
                         <div className="space-y-1">
                           <label
                             htmlFor="reg-fullName"
@@ -678,76 +673,73 @@ export default function RegisterPage() {
                             Full Name <span className="text-accent">*</span>
                           </label>
                           <div className="relative">
-                            <User className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                            <User className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
                             <Input
                               id="reg-fullName"
                               {...register("fullName")}
-                              placeholder="e.g. Alex Rivera"
-                              className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                              placeholder="e.g. Jayanthan S"
+                              className="pl-8.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
                             />
                           </div>
                           {errors.fullName && (
-                            <p className="text-[11px] text-red-600">
+                            <p className="text-[10px] text-red-600">
                               {errors.fullName.message}
                             </p>
                           )}
                         </div>
 
-                        {/* Email & Username */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                          {/* Email ID */}
-                          <div className="space-y-1">
-                            <label
-                              htmlFor="reg-email"
-                              className="text-xs font-semibold text-primary block"
-                            >
-                              Email ID <span className="text-accent">*</span>
-                            </label>
-                            <div className="relative">
-                              <Mail className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
-                              <Input
-                                id="reg-email"
-                                type="email"
-                                {...register("email")}
-                                placeholder="name@domain.com"
-                                className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
-                              />
-                            </div>
-                            {errors.email && (
-                              <p className="text-[11px] text-red-600">
-                                {errors.email.message}
-                              </p>
-                            )}
+                        {/* ROW 1 — Col 2: Email ID */}
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="reg-email"
+                            className="text-xs font-semibold text-primary block"
+                          >
+                            Email ID <span className="text-accent">*</span>
+                          </label>
+                          <div className="relative">
+                            <Mail className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                            <Input
+                              id="reg-email"
+                              type="email"
+                              {...register("email")}
+                              placeholder="name@domain.com"
+                              className="pl-8.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                            />
                           </div>
-
-                          {/* Username */}
-                          <div className="space-y-1">
-                            <label
-                              htmlFor="reg-username"
-                              className="text-xs font-semibold text-primary block"
-                            >
-                              Username <span className="text-accent">*</span>
-                            </label>
-                            <div className="relative">
-                              <span className="text-secondary text-xs absolute left-3 top-1/2 -translate-y-1/2 font-mono">
-                                @
-                              </span>
-                              <Input
-                                id="reg-username"
-                                {...register("username")}
-                                placeholder="alexrivera"
-                                className="pl-8 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
-                              />
-                            </div>
-                            {errors.username && (
-                              <p className="text-[11px] text-red-600">
-                                {errors.username.message}
-                              </p>
-                            )}
-                          </div>
+                          {errors.email && (
+                            <p className="text-[10px] text-red-600">
+                              {errors.email.message}
+                            </p>
+                          )}
                         </div>
 
-                        {/* Academic Department */}
+                        {/* ROW 2 — Col 1: Username */}
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="reg-username"
+                            className="text-xs font-semibold text-primary block"
+                          >
+                            Username <span className="text-accent">*</span>
+                          </label>
+                          <div className="relative">
+                            <span className="text-secondary text-xs absolute left-3 top-1/2 -translate-y-1/2 font-mono">
+                              @
+                            </span>
+                            <Input
+                              id="reg-username"
+                              {...register("username")}
+                              placeholder="jayanthansenthilkumar"
+                              className="pl-7.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                            />
+                          </div>
+                          {errors.username && (
+                            <p className="text-[10px] text-red-600">
+                              {errors.username.message}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* ROW 2 — Col 2: Academic Department */}
                         <div className="space-y-1">
                           <label
                             htmlFor="reg-department"
@@ -758,7 +750,7 @@ export default function RegisterPage() {
                           <select
                             id="reg-department"
                             {...register("department")}
-                            className="w-full h-10 rounded-sm border border-border bg-[#F8F8F5] px-3 text-xs text-primary focus:outline-none focus:ring-1 focus:ring-accent"
+                            className="w-full h-9 rounded-sm border border-border bg-[#F8F8F5] px-2.5 text-xs text-primary focus:outline-none focus:ring-1 focus:ring-accent"
                           >
                             {ALLOWED_DEPARTMENTS.map((dept) => (
                               <option key={dept} value={dept}>
@@ -780,73 +772,70 @@ export default function RegisterPage() {
                             ))}
                           </select>
                           {errors.department && (
-                            <p className="text-[11px] text-red-600">
+                            <p className="text-[10px] text-red-600">
                               {errors.department.message}
                             </p>
                           )}
                         </div>
 
-                        {/* Password & Confirm Password */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1 border-t border-border">
-                          {/* Password */}
-                          <div className="space-y-1">
-                            <label
-                              htmlFor="reg-password"
-                              className="text-xs font-semibold text-primary block"
-                            >
-                              Password <span className="text-accent">*</span>
-                            </label>
-                            <div className="relative">
-                              <Lock className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
-                              <Input
-                                id="reg-password"
-                                type="password"
-                                {...register("password")}
-                                placeholder="Min 6 chars, uppercase & number"
-                                className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
-                              />
-                            </div>
-                            {errors.password && (
-                              <p className="text-[11px] text-red-600">
-                                {errors.password.message}
-                              </p>
-                            )}
+                        {/* ROW 3 — Col 1: Password */}
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="reg-password"
+                            className="text-xs font-semibold text-primary block"
+                          >
+                            Password <span className="text-accent">*</span>
+                          </label>
+                          <div className="relative">
+                            <Lock className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                            <Input
+                              id="reg-password"
+                              type="password"
+                              {...register("password")}
+                              placeholder="Min 6 chars, uppercase & number"
+                              className="pl-8.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                            />
                           </div>
+                          {errors.password && (
+                            <p className="text-[10px] text-red-600">
+                              {errors.password.message}
+                            </p>
+                          )}
+                        </div>
 
-                          {/* Confirm Password */}
-                          <div className="space-y-1">
-                            <label
-                              htmlFor="reg-confirmPassword"
-                              className="text-xs font-semibold text-primary block"
-                            >
-                              Confirm Password <span className="text-accent">*</span>
-                            </label>
-                            <div className="relative">
-                              <Lock className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
-                              <Input
-                                id="reg-confirmPassword"
-                                type="password"
-                                {...register("confirmPassword")}
-                                placeholder="Repeat your password"
-                                className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
-                              />
-                            </div>
-                            {errors.confirmPassword && (
-                              <p className="text-[11px] text-red-600">
-                                {errors.confirmPassword.message}
-                              </p>
-                            )}
+                        {/* ROW 3 — Col 2: Confirm Password */}
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="reg-confirmPassword"
+                            className="text-xs font-semibold text-primary block"
+                          >
+                            Confirm Password <span className="text-accent">*</span>
+                          </label>
+                          <div className="relative">
+                            <Lock className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                            <Input
+                              id="reg-confirmPassword"
+                              type="password"
+                              {...register("confirmPassword")}
+                              placeholder="Repeat your password"
+                              className="pl-8.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                            />
                           </div>
+                          {errors.confirmPassword && (
+                            <p className="text-[10px] text-red-600">
+                              {errors.confirmPassword.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
 
                     {/* Step 1 Action Button */}
-                    <div className="pt-2">
+                    <div className="pt-0.5">
                       <Button
                         type="button"
                         onClick={handleProceedToStep2}
-                        className="w-full h-11 text-xs font-semibold gap-2 shadow-subtle"
+                        className="w-full h-10 text-xs font-semibold gap-2 shadow-subtle"
                       >
                         <span>Continue to Step 2: {selectedRole === "student" ? "Student" : "Alumni"} Verification</span>
                         <ArrowRight className="w-4 h-4" />
@@ -863,16 +852,16 @@ export default function RegisterPage() {
                     role="tabpanel"
                     id="panel-step-2"
                     aria-labelledby="tab-step-2"
-                    className="space-y-6"
+                    className="space-y-3"
                   >
                     {/* Role Confirmation Banner */}
-                    <div className="p-3 bg-[#FAF9F5] border border-border rounded-sm flex items-center justify-between">
+                    <div className="p-2.5 bg-[#FAF9F5] border border-border rounded-sm flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-xs bg-accent text-white flex items-center justify-center">
+                        <div className="w-6 h-6 rounded-xs bg-accent text-white flex items-center justify-center">
                           {selectedRole === "student" ? (
-                            <GraduationCap className="w-4 h-4" />
+                            <GraduationCap className="w-3.5 h-3.5" />
                           ) : (
-                            <Briefcase className="w-4 h-4" />
+                            <Briefcase className="w-3.5 h-3.5" />
                           )}
                         </div>
                         <div>
@@ -881,8 +870,8 @@ export default function RegisterPage() {
                           </span>
                           <span className="text-[10px] text-secondary font-mono block">
                             {selectedRole === "student"
-                              ? "Collecting undergraduate study data & college ID"
-                              : "Collecting graduation year, employer, and degree certificate"}
+                              ? "Undergraduate academic year & college ID cards"
+                              : "Degree graduation year, employer, and certificate"}
                           </span>
                         </div>
                       </div>
@@ -893,19 +882,19 @@ export default function RegisterPage() {
                         className="text-[11px] font-mono text-accent hover:underline flex items-center gap-1"
                       >
                         <ArrowLeft className="w-3 h-3" />
-                        <span>Change Role in Step 1</span>
+                        <span>Edit Common Data</span>
                       </button>
                     </div>
 
                     {/* ROLE-SPECIFIC FIELDS & UPLOADS */}
                     {selectedRole === "student" ? (
                       /* STUDENT-SPECIFIC DATA ALONE */
-                      <div className="p-4 sm:p-5 bg-surface border border-border rounded-sm shadow-subtle space-y-4">
-                        <div className="border-b border-border pb-2 flex items-center justify-between">
-                          <span className="text-xs font-bold uppercase tracking-wider text-primary font-mono block">
-                            Student Academic Details &amp; Documents
+                      <div className="p-3.5 bg-surface border border-border rounded-sm shadow-subtle space-y-3">
+                        <div className="border-b border-border pb-1 flex items-center justify-between">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-primary font-mono block">
+                            Student Academic Data &amp; ID Documents
                           </span>
-                          <Badge variant="outline" className="text-[10px] font-mono bg-blue-50 text-blue-800 border-blue-200">
+                          <Badge variant="outline" className="text-[9px] font-mono bg-blue-50 text-blue-800 border-blue-200">
                             Student Role
                           </Badge>
                         </div>
@@ -921,7 +910,7 @@ export default function RegisterPage() {
                           <select
                             id="reg-academicYear"
                             {...register("academicYear")}
-                            className="w-full h-10 rounded-sm border border-border bg-[#F8F8F5] px-3 text-xs text-primary focus:outline-none focus:ring-1 focus:ring-accent"
+                            className="w-full h-9 rounded-sm border border-border bg-[#F8F8F5] px-2.5 text-xs text-primary focus:outline-none focus:ring-1 focus:ring-accent"
                           >
                             {ACADEMIC_YEARS.map((yr) => (
                               <option key={yr} value={yr}>
@@ -933,18 +922,18 @@ export default function RegisterPage() {
                             Note: Selecting Final Year does not automatically graduate your account. Official promotion requires degree completion.
                           </p>
                           {errors.academicYear && (
-                            <p className="text-[11px] text-red-600">
+                            <p className="text-[10px] text-red-600">
                               {errors.academicYear.message}
                             </p>
                           )}
                         </div>
 
-                        {/* Student ID — Front & Back Document Uploads */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        {/* Student ID — Front & Back Document Uploads Side by Side */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                           <DocumentUploadCard
                             id="student-id-front"
-                            label="Student ID — Front Side"
-                            helperText="Clear photo with name &amp; photo"
+                            label="Student ID — Front"
+                            helperText="Photo & name"
                             required
                             value={studentIdFront}
                             onChange={(file) => {
@@ -958,8 +947,8 @@ export default function RegisterPage() {
 
                           <DocumentUploadCard
                             id="student-id-back"
-                            label="Student ID — Back Side"
-                            helperText="Clear photo with register number &amp; validity"
+                            label="Student ID — Back"
+                            helperText="Reg no & validity"
                             required
                             value={studentIdBack}
                             onChange={(file) => {
@@ -973,27 +962,27 @@ export default function RegisterPage() {
                         </div>
 
                         {/* Review Callout */}
-                        <div className="p-3 bg-[#FAF9F5] border border-border rounded-sm text-xs text-secondary flex items-start gap-2">
-                          <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                        <div className="p-2.5 bg-[#FAF9F5] border border-border rounded-sm text-xs text-secondary flex items-start gap-2">
+                          <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                           <p className="leading-snug text-[11px]">
-                            Manual Trustee Review: Your college ID is inspected securely by one of three senior alumni trustees before access is granted. Files are encrypted and confidential.
+                            Manual Trustee Review: College ID photos are verified by senior alumni trustees. Stored securely and confidentially.
                           </p>
                         </div>
                       </div>
                     ) : (
                       /* ALUMNI-SPECIFIC DATA ALONE */
-                      <div className="p-4 sm:p-5 bg-surface border border-border rounded-sm shadow-subtle space-y-4">
-                        <div className="border-b border-border pb-2 flex items-center justify-between">
-                          <span className="text-xs font-bold uppercase tracking-wider text-primary font-mono block">
-                            Alumni Career Details &amp; Graduation Certificate
+                      <div className="p-3.5 bg-surface border border-border rounded-sm shadow-subtle space-y-3">
+                        <div className="border-b border-border pb-1 flex items-center justify-between">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-primary font-mono block">
+                            Alumni Career Data &amp; Certificate
                           </span>
-                          <Badge variant="outline" className="text-[10px] font-mono bg-emerald-50 text-emerald-800 border-emerald-200">
+                          <Badge variant="outline" className="text-[9px] font-mono bg-emerald-50 text-emerald-800 border-emerald-200">
                             Alumni Role
                           </Badge>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                          {/* Passed-out Year */}
+                        {/* Row 1: Passed-out Year & Current Company */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div className="space-y-1">
                             <label
                               htmlFor="reg-passedOutYear"
@@ -1002,11 +991,11 @@ export default function RegisterPage() {
                               Passed-out Year <span className="text-accent">*</span>
                             </label>
                             <div className="relative">
-                              <Calendar className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                              <Calendar className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
                               <select
                                 id="reg-passedOutYear"
                                 {...register("passedOutYear")}
-                                className="w-full h-10 pl-9 rounded-sm border border-border bg-[#F8F8F5] pr-3 text-xs text-primary focus:outline-none focus:ring-1 focus:ring-accent"
+                                className="w-full h-9 pl-8.5 rounded-sm border border-border bg-[#F8F8F5] pr-3 text-xs text-primary focus:outline-none focus:ring-1 focus:ring-accent"
                               >
                                 {PASSED_OUT_YEARS.map((yr) => (
                                   <option key={yr} value={yr}>
@@ -1016,38 +1005,39 @@ export default function RegisterPage() {
                               </select>
                             </div>
                             {errors.passedOutYear && (
-                              <p className="text-[11px] text-red-600">
+                              <p className="text-[10px] text-red-600">
                                 {errors.passedOutYear.message}
                               </p>
                             )}
                           </div>
 
-                          {/* Current Company */}
                           <div className="space-y-1">
                             <label
                               htmlFor="reg-company"
                               className="text-xs font-semibold text-primary block"
                             >
-                              Current Employer / Company <span className="text-accent">*</span>
+                              Current Company / Employer <span className="text-accent">*</span>
                             </label>
                             <div className="relative">
-                              <Building2 className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                              <Building2 className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
                               <Input
                                 id="reg-company"
                                 {...register("currentCompany")}
                                 placeholder="e.g. Stripe, AWS, Zoho"
-                                className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                                className="pl-8.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
                               />
                             </div>
                             {errors.currentCompany && (
-                              <p className="text-[11px] text-red-600">
+                              <p className="text-[10px] text-red-600">
                                 {errors.currentCompany.message}
                               </p>
                             )}
                           </div>
+                        </div>
 
-                          {/* LinkedIn Profile */}
-                          <div className="space-y-1 sm:col-span-2">
+                        {/* Row 2: LinkedIn Profile & Graduation Certificate */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
+                          <div className="space-y-1">
                             <label
                               htmlFor="reg-linkedin"
                               className="text-xs font-semibold text-primary block"
@@ -1055,63 +1045,61 @@ export default function RegisterPage() {
                               LinkedIn Profile URL <span className="text-accent">*</span>
                             </label>
                             <div className="relative">
-                              <Linkedin className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                              <Linkedin className="w-3.5 h-3.5 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
                               <Input
                                 id="reg-linkedin"
                                 {...register("linkedinUrl")}
                                 placeholder="https://linkedin.com/in/username"
-                                className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                                className="pl-8.5 h-9 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
                               />
                             </div>
                             {errors.linkedinUrl && (
-                              <p className="text-[11px] text-red-600">
+                              <p className="text-[10px] text-red-600">
                                 {errors.linkedinUrl.message}
                               </p>
                             )}
-                          </div>
-                        </div>
 
-                        {/* Graduation Certificate Upload */}
-                        <div className="pt-2">
-                          <DocumentUploadCard
-                            id="alumni-certificate"
-                            label="Anna University Graduation Certificate"
-                            helperText="Degree Certificate or Provisional scan (PDF/PNG/JPG)"
-                            required
-                            value={graduationCert}
-                            onChange={(file) => {
-                              setGraduationCert(file);
-                              if (file) {
-                                setDocumentErrors((prev) => ({ ...prev, cert: undefined }));
-                              }
-                            }}
-                            error={documentErrors.cert}
-                          />
-                        </div>
-
-                        {/* Mentorship Privileges Callout */}
-                        <div className="p-2.5 bg-[#FAF9F5] border border-border rounded-sm text-xs text-secondary space-y-1">
-                          <div className="flex items-center gap-1.5 font-semibold text-primary text-[11px]">
-                            <Sparkles className="w-3.5 h-3.5 text-accent shrink-0" />
-                            <span>Verified Mentor Matrix Access</span>
+                            <div className="p-2 bg-[#FAF9F5] border border-border rounded-xs text-[10px] text-secondary space-y-0.5 mt-2">
+                              <div className="flex items-center gap-1 text-primary font-semibold">
+                                <Sparkles className="w-3 h-3 text-accent" />
+                                <span>Mentorship Matrix</span>
+                              </div>
+                              <p className="leading-tight">
+                                Verified alumni can guide students 1-on-1 and share referrals.
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-[11px] leading-snug">
-                            As a verified alumnus, you can mentor current students 1-on-1, review student portfolios, and share verified job/internship opportunities.
-                          </p>
+
+                          <div>
+                            <DocumentUploadCard
+                              id="alumni-certificate"
+                              label="Graduation Certificate"
+                              helperText="Degree or Provisional scan"
+                              required
+                              value={graduationCert}
+                              onChange={(file) => {
+                                setGraduationCert(file);
+                                if (file) {
+                                  setDocumentErrors((prev) => ({ ...prev, cert: undefined }));
+                                }
+                              }}
+                              error={documentErrors.cert}
+                            />
+                          </div>
                         </div>
 
                         {/* Review Callout */}
-                        <div className="p-3 bg-[#FAF9F5] border border-border rounded-sm text-xs text-secondary flex items-start gap-2">
-                          <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                        <div className="p-2.5 bg-[#FAF9F5] border border-border rounded-sm text-xs text-secondary flex items-start gap-2">
+                          <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
                           <p className="leading-snug text-[11px]">
-                            Manual Trustee Review: Graduation credentials are authenticated by senior alumni trustees. Your information is confidential and protected.
+                            Manual Trustee Review: Graduation certificates are authenticated by three senior alumni trustees before account approval.
                           </p>
                         </div>
                       </div>
                     )}
 
                     {/* TERMS AND CONDITIONS */}
-                    <div className="p-4 bg-surface border border-border rounded-sm shadow-subtle space-y-3">
+                    <div className="p-3 bg-surface border border-border rounded-sm shadow-subtle space-y-2">
                       <div className="flex items-start gap-2">
                         <input
                           type="checkbox"
@@ -1121,7 +1109,7 @@ export default function RegisterPage() {
                         />
                         <label
                           htmlFor="terms-accepted"
-                          className="text-xs text-secondary leading-normal select-none cursor-pointer"
+                          className="text-[11px] text-secondary leading-normal select-none cursor-pointer"
                         >
                           I confirm that all submitted details and documents are authentic, and I agree to the{" "}
                           <Link to="/terms" className="text-accent underline font-medium">
@@ -1131,32 +1119,32 @@ export default function RegisterPage() {
                           <Link to="/privacy" className="text-accent underline font-medium">
                             Privacy Policy
                           </Link>
-                          . I understand Alumnux is independently administered by 3 senior alumni trustees.
+                          .
                         </label>
                       </div>
                       {errors.termsAccepted && (
-                        <p className="text-[11px] text-red-600">
+                        <p className="text-[10px] text-red-600">
                           {errors.termsAccepted.message}
                         </p>
                       )}
                     </div>
 
                     {/* ACTIONS: BACK TO STEP 1 & SUBMIT */}
-                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
                       <Button
                         type="button"
                         variant="outline"
                         onClick={() => setActiveTab(1)}
-                        className="w-full sm:w-auto h-11 text-xs font-semibold gap-1.5 border-border"
+                        className="w-full sm:w-auto h-10 text-xs font-semibold gap-1.5 border-border"
                       >
-                        <ArrowLeft className="w-4 h-4" />
-                        <span>Back to Step 1: Common Data</span>
+                        <ArrowLeft className="w-3.5 h-3.5" />
+                        <span>Back to Step 1</span>
                       </Button>
 
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full sm:flex-1 h-11 text-xs font-semibold gap-2 shadow-subtle"
+                        className="w-full sm:flex-1 h-10 text-xs font-semibold gap-2 shadow-subtle"
                       >
                         {isSubmitting ? (
                           <span>Submitting application for review...</span>

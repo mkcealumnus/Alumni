@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, Briefcase, ShieldCheck, Sparkles, ArrowUpRight } from "lucide-react";
+import { GraduationCap, Briefcase, Sparkles, ArrowUpRight } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 interface AuthBrandPanelProps {
