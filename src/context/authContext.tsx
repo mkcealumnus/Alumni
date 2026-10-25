@@ -5,26 +5,33 @@ import {
   DEMO_ALUMNI_ACCOUNT,
 } from "../data/demoData";
 
-interface AuthResult {
+export interface AuthResult {
   success: boolean;
   error?: string;
   user?: DemoUser;
 }
 
-interface RegisterData {
+export interface RegisterData {
   fullName: string;
   email: string;
+  username: string;
   role: "student" | "alumni";
-  department?: string;
-  graduationYear?: number;
+  department: string;
+  academicYear?: "First Year" | "Second Year" | "Third Year" | "Final Year";
+  passedOutYear?: number;
   password?: string;
+  company?: string;
+  linkedinUrl?: string;
+  studentIdFrontName?: string;
+  studentIdBackName?: string;
+  graduationCertificateName?: string;
 }
 
 interface AuthContextType {
   user: DemoUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<AuthResult>;
+  login: (identifier: string, password: string) => Promise<AuthResult>;
   loginAsDemo: (role: "student" | "alumni") => Promise<DemoUser>;
   registerDemo: (data: RegisterData) => Promise<AuthResult>;
   logout: () => void;
@@ -32,6 +39,8 @@ interface AuthContextType {
 }
 
 const STORAGE_KEY = "alumnux_demo_session";
+const REGISTERED_USERS_KEY = "alumnux_registered_users";
+const ADMIN_QUEUE_KEY = "alumnux_admin_verification_queue";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -67,14 +76,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const login = async (email: string, password: string): Promise<AuthResult> => {
+  const login = async (identifier: string, password: string): Promise<AuthResult> => {
     // Artificial small delay for realistic UX feedback
     await new Promise((resolve) => setTimeout(resolve, 350));
 
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanId = identifier.trim().toLowerCase();
 
-    // Check student demo account
-    if (cleanEmail === "student@alumnux.demo") {
+    // 1. Check student demo account by email or username
+    if (
+      cleanId === DEMO_STUDENT_ACCOUNT.email.toLowerCase() ||
+      cleanId === DEMO_STUDENT_ACCOUNT.username?.toLowerCase()
+    ) {
       if (password === "Student@123") {
         persistUser(DEMO_STUDENT_ACCOUNT);
         return { success: true, user: DEMO_STUDENT_ACCOUNT };
@@ -85,8 +97,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       };
     }
 
-    // Check alumni demo account
-    if (cleanEmail === "alumni@alumnux.demo") {
+    // 2. Check alumni demo account by email or username
+    if (
+      cleanId === DEMO_ALUMNI_ACCOUNT.email.toLowerCase() ||
+      cleanId === DEMO_ALUMNI_ACCOUNT.username?.toLowerCase()
+    ) {
       if (password === "Alumni@123") {
         persistUser(DEMO_ALUMNI_ACCOUNT);
         return { success: true, user: DEMO_ALUMNI_ACCOUNT };
@@ -97,26 +112,79 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       };
     }
 
-    // Check if there is an active registered demo account stored in localStorage
+    // 3. Check registered custom accounts in localStorage
     try {
-      const regKey = `alumnux_registered_${cleanEmail}`;
-      const savedCustom = localStorage.getItem(regKey);
-      if (savedCustom) {
-        const customUser = JSON.parse(savedCustom) as DemoUser & { passwordHash?: string };
-        if (customUser.passwordHash && customUser.passwordHash !== password) {
-          return { success: false, error: "Incorrect password for this demo account." };
+      const rawStored = localStorage.getItem(REGISTERED_USERS_KEY);
+      const registeredUsers: Array<DemoUser & { passwordHash?: string }> = rawStored
+        ? JSON.parse(rawStored)
+        : [];
+
+      // Also check legacy single-key entries
+      const legacyKey = `alumnux_registered_${cleanId}`;
+      const legacySaved = localStorage.getItem(legacyKey);
+      if (legacySaved) {
+        const legacyUser = JSON.parse(legacySaved);
+        if (!registeredUsers.some((u) => u.email === legacyUser.email)) {
+          registeredUsers.push(legacyUser);
         }
-        persistUser(customUser);
-        return { success: true, user: customUser };
       }
-    } catch {
-      // fallback
+
+      const matchedUser = registeredUsers.find(
+        (u) =>
+          u.email.toLowerCase() === cleanId ||
+          (u.username && u.username.toLowerCase() === cleanId)
+      );
+
+      if (matchedUser) {
+        if (matchedUser.passwordHash && matchedUser.passwordHash !== password) {
+          return { success: false, error: "Incorrect password for this account." };
+        }
+
+        // Section 4 Verification Status Enforcement:
+        // Do not grant access solely because a user registered.
+        if (matchedUser.verification_status === "pending") {
+          return {
+            success: false,
+            error:
+              "Your registration is currently awaiting review by an Alumnux administrator. You will be able to access the platform once your credentials are verified.",
+          };
+        }
+
+        if (matchedUser.verification_status === "needs_review") {
+          return {
+            success: false,
+            error:
+              "Your application requires clarification. Please review administrator feedback or re-upload your document credentials.",
+          };
+        }
+
+        if (matchedUser.verification_status === "rejected") {
+          return {
+            success: false,
+            error:
+              "Your application was rejected by the platform administrators. Reason: Verification documents could not be authenticated.",
+          };
+        }
+
+        if (matchedUser.verification_status === "suspended") {
+          return {
+            success: false,
+            error: "This account has been suspended by Alumnux administrators.",
+          };
+        }
+
+        // Verified account
+        persistUser(matchedUser);
+        return { success: true, user: matchedUser };
+      }
+    } catch (e) {
+      console.warn("Error reading registered users", e);
     }
 
     return {
       success: false,
       error:
-        "Account not recognized in demo mode. Please use 'student@alumnux.demo' (Student@123), 'alumni@alumnux.demo' (Alumni@123), or click one of the instant Demo Login buttons below.",
+        "Account not recognized. Please verify your email/username, or use 'student@alumnux.demo' (Student@123) / 'alumni@alumnux.demo' (Alumni@123).",
     };
   };
 
@@ -129,35 +197,155 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const registerDemo = async (data: RegisterData): Promise<AuthResult> => {
     await new Promise((resolve) => setTimeout(resolve, 400));
-    const initials = data.fullName
-      .split(" ")
-      .map((n) => n[0])
-      .slice(0, 2)
-      .join("")
-      .toUpperCase() || "AL";
+    const initials =
+      data.fullName
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase() || "AL";
 
+    const cleanEmail = data.email.trim().toLowerCase();
+    const cleanUsername = data.username.trim().toLowerCase();
+
+    // Check for collision with preset demo accounts
+    if (
+      cleanEmail === DEMO_STUDENT_ACCOUNT.email.toLowerCase() ||
+      cleanEmail === DEMO_ALUMNI_ACCOUNT.email.toLowerCase() ||
+      cleanUsername === DEMO_STUDENT_ACCOUNT.username?.toLowerCase() ||
+      cleanUsername === DEMO_ALUMNI_ACCOUNT.username?.toLowerCase()
+    ) {
+      return {
+        success: false,
+        error: "An account with this email address or username already exists.",
+      };
+    }
+
+    const calculatedGradYear =
+      data.role === "alumni"
+        ? data.passedOutYear || 2020
+        : data.academicYear === "First Year"
+        ? 2029
+        : data.academicYear === "Second Year"
+        ? 2028
+        : data.academicYear === "Third Year"
+        ? 2027
+        : 2026;
+
+    // Build the new user record in PENDING verification state (Section 4)
     const newUser: DemoUser = {
-      id: `demo-${Date.now()}`,
-      email: data.email.trim().toLowerCase(),
+      id: `usr-${Date.now()}`,
+      email: cleanEmail,
+      username: cleanUsername,
       fullName: data.fullName.trim(),
       role: data.role,
-      department: data.department || (data.role === "student" ? "Computer Science & Engineering" : "Information Technology"),
-      graduationYear: data.graduationYear || (data.role === "student" ? 2026 : 2019),
+      verification_status: "pending", // strictly pending!
+      academic_completion_status: data.role === "alumni" ? "graduated" : "studying",
+      academic_year: data.academicYear,
+      passed_out_year: data.passedOutYear,
+      expected_graduation_date:
+        data.role === "student" ? `${calculatedGradYear}-05-31` : undefined,
+      verified_graduation_date:
+        data.role === "alumni" ? `${calculatedGradYear}-05-15` : null,
+      department: data.department,
+      graduationYear: calculatedGradYear,
+      company: data.company,
+      roleTitle: data.role === "alumni" ? "Alumnus / Professional" : undefined,
+      linkedin_url: data.linkedinUrl,
+      student_id_front_name: data.studentIdFrontName,
+      student_id_back_name: data.studentIdBackName,
+      graduation_certificate_name: data.graduationCertificateName,
       initials,
-      bio: `Newly registered demo ${data.role} profile. Ready to explore Alumnux connections.`,
-      skills: ["General Engineering", "Problem Solving", "Networking"],
-      company: data.role === "alumni" ? "Independent Tech Alum" : undefined,
-      roleTitle: data.role === "alumni" ? "Software Engineer" : undefined,
+      bio: `${data.role === "student" ? "Student" : "Alumnus"} registered on Alumnux. Awaiting administrator verification.`,
+      skills: ["Engineering", "Networking"],
     };
 
-    // Store custom registered user in localStorage for demo reuse
+    // 1. Store in registered users collection
     try {
-      localStorage.setItem(`alumnux_registered_${newUser.email}`, JSON.stringify({ ...newUser, passwordHash: data.password }));
+      const rawStored = localStorage.getItem(REGISTERED_USERS_KEY);
+      const registeredUsers: Array<DemoUser & { passwordHash?: string }> = rawStored
+        ? JSON.parse(rawStored)
+        : [];
+
+      // Check duplicate in custom users
+      if (
+        registeredUsers.some(
+          (u) =>
+            u.email.toLowerCase() === cleanEmail ||
+            (u.username && u.username.toLowerCase() === cleanUsername)
+        )
+      ) {
+        return {
+          success: false,
+          error: "An account with this email or username has already been submitted.",
+        };
+      }
+
+      registeredUsers.push({ ...newUser, passwordHash: data.password });
+      localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(registeredUsers));
+      localStorage.setItem(`alumnux_registered_${cleanEmail}`, JSON.stringify({ ...newUser, passwordHash: data.password }));
     } catch (e) {
       console.warn("Storage quota exceeded", e);
     }
 
-    persistUser(newUser);
+    // 2. Add entry to Admin Verification Queue (Section 4)
+    try {
+      const queueRaw = localStorage.getItem(ADMIN_QUEUE_KEY);
+      const queueList = queueRaw ? JSON.parse(queueRaw) : [];
+
+      const evidenceItems = [];
+      if (data.studentIdFrontName) {
+        evidenceItems.push({
+          id: `ev-${Date.now()}-1`,
+          document_type: "student_id_front",
+          file_name: data.studentIdFrontName,
+          file_size_bytes: 1250000,
+          mime_type: "image/jpeg",
+          uploaded_at: new Date().toISOString(),
+        });
+      }
+      if (data.studentIdBackName) {
+        evidenceItems.push({
+          id: `ev-${Date.now()}-2`,
+          document_type: "student_id_back",
+          file_name: data.studentIdBackName,
+          file_size_bytes: 1180000,
+          mime_type: "image/jpeg",
+          uploaded_at: new Date().toISOString(),
+        });
+      }
+      if (data.graduationCertificateName) {
+        evidenceItems.push({
+          id: `ev-${Date.now()}-cert`,
+          document_type: "degree_certificate",
+          file_name: data.graduationCertificateName,
+          file_size_bytes: 1840000,
+          mime_type: "application/pdf",
+          uploaded_at: new Date().toISOString(),
+        });
+      }
+
+      const queueItem = {
+        id: `req-${Date.now()}`,
+        user_id: newUser.id,
+        full_name: newUser.fullName,
+        email: newUser.email,
+        account_type: newUser.role,
+        department_code: newUser.department,
+        graduation_year: newUser.graduationYear,
+        status: "pending",
+        submitted_at: new Date().toISOString(),
+        current_company: newUser.company,
+        evidence: evidenceItems,
+      };
+
+      queueList.unshift(queueItem);
+      localStorage.setItem(ADMIN_QUEUE_KEY, JSON.stringify(queueList));
+    } catch (e) {
+      console.warn("Failed to sync with admin verification queue", e);
+    }
+
+    // Do NOT call persistUser(newUser) because pending accounts cannot log in until approved
     return { success: true, user: newUser };
   };
 

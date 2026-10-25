@@ -2,12 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import {
   Lock,
-  Mail,
+  User,
   Eye,
   EyeOff,
   ArrowRight,
@@ -17,13 +16,14 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
+import { AuthBrandPanel } from "../../components/auth/authBrandPanel";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, loginAsDemo } = useAuth();
 
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -37,13 +37,18 @@ export default function LoginPage() {
     e.preventDefault();
     setErrorMessage("");
 
-    if (!email.trim() || !password) {
-      setErrorMessage("Please enter both email and password.");
+    if (!identifier.trim()) {
+      setErrorMessage("Please enter your email address or username.");
+      return;
+    }
+
+    if (!password) {
+      setErrorMessage("Please enter your password.");
       return;
     }
 
     setIsLoading(true);
-    const result = await login(email, password);
+    const result = await login(identifier, password);
     setIsLoading(false);
 
     if (result.success && result.user) {
@@ -54,7 +59,7 @@ export default function LoginPage() {
     } else {
       setErrorMessage(
         result.error ||
-          "Invalid credentials. Use the Demo Login buttons below for instant 1-click access."
+          "Invalid credentials. Check your email/username and password, or use the 1-Click Demo accounts below."
       );
     }
   };
@@ -70,196 +75,206 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-14rem)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md space-y-6">
-        {/* Brand identity header */}
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-sm bg-accent text-white font-bold text-sm flex items-center justify-center shadow-sm">
-              AL
+    <div className="min-h-screen bg-surface flex flex-col lg:flex-row text-primary font-sans antialiased">
+      {/* 1. LEFT PANEL — BRAND IDENTITY (~45% Desktop) */}
+      <AuthBrandPanel />
+
+      {/* 2. RIGHT PANEL — LOGIN FORM (~55% Desktop) */}
+      <main className="w-full lg:w-[55%] xl:w-[58%] min-h-screen flex flex-col justify-center items-center p-6 sm:p-10 lg:p-12 bg-surface">
+        <div className="w-full max-w-md space-y-6">
+          {/* Header Typography */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary">
+                Welcome back
+              </h1>
+              <Badge variant="outline" className="text-[10px] font-mono">
+                Sign In
+              </Badge>
             </div>
-            <span className="font-bold text-lg text-primary tracking-tight">
-              ALUMNUX
-            </span>
-          </Link>
-          <h1 className="text-2xl font-bold tracking-tight text-primary">
-            Sign In to Alumnux
-          </h1>
-          <p className="text-xs text-secondary font-mono">
-            Your Network. Your Next Chapter.
-          </p>
-        </div>
+            <p className="text-xs sm:text-sm text-secondary">
+              Sign in to continue your Alumnux career &amp; mentorship journey.
+            </p>
+          </div>
 
-        {/* Demo Fast-Access Section (Highlighted prominently per prompt requirements) */}
-        <div className="bg-surface border-2 border-accent/40 rounded-md p-4 sm:p-5 shadow-subtle space-y-3.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-primary font-mono uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-accent" />
-              <span>1-Click Demo Login</span>
+          {/* Error Feedback Alert */}
+          {errorMessage && (
+            <Alert variant="error" title="Sign In Notice">
+              {errorMessage}
+            </Alert>
+          )}
+
+          {/* Standard Credentials Form */}
+          <form onSubmit={handleStandardLogin} className="space-y-4">
+            {/* Email or Username Input */}
+            <div className="space-y-1.5">
+              <label
+                htmlFor="login-identifier"
+                className="text-xs font-semibold text-primary block"
+              >
+                Email or Username <span className="text-accent">*</span>
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                <Input
+                  id="login-identifier"
+                  type="text"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="student@alumnux.demo or alexrivera"
+                  required
+                  autoComplete="username"
+                  className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                />
+              </div>
             </div>
-            <Badge variant="outline" className="text-[10px] bg-[#F8F8F5]">
-              No Password Needed
-            </Badge>
-          </div>
-          <p className="text-xs text-secondary leading-snug">
-            Instantly enter the platform as either a Student or Verified Alumni to test dashboard interactions without database setup.
-          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleInstantDemoLogin("student")}
-              disabled={isLoading}
-              className="w-full text-xs h-10 border-border hover:border-accent hover:bg-accent/5 justify-between px-3"
-            >
-              <div className="flex items-center gap-2 text-left">
-                <GraduationCap className="w-4 h-4 text-accent" />
-                <div>
-                  <div className="font-semibold text-primary leading-tight">Student Demo</div>
-                  <div className="text-[10px] text-secondary font-mono">student@alumnux.demo</div>
-                </div>
-              </div>
-              <ArrowRight className="w-3 h-3 text-secondary" />
-            </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleInstantDemoLogin("alumni")}
-              disabled={isLoading}
-              className="w-full text-xs h-10 border-border hover:border-accent hover:bg-accent/5 justify-between px-3"
-            >
-              <div className="flex items-center gap-2 text-left">
-                <Briefcase className="w-4 h-4 text-accent" />
-                <div>
-                  <div className="font-semibold text-primary leading-tight">Alumni Demo</div>
-                  <div className="text-[10px] text-secondary font-mono">alumni@alumnux.demo</div>
-                </div>
-              </div>
-              <ArrowRight className="w-3 h-3 text-secondary" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Standard Credentials Card */}
-        <Card className="shadow-subtle border-border">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-bold text-primary">
-              Manual Demo Credentials
-            </CardTitle>
-            <CardDescription className="text-xs">
-              Enter test credentials or prefill via the instant buttons above.
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            {errorMessage && (
-              <Alert variant="error" title="Sign In Error">
-                {errorMessage}
-              </Alert>
-            )}
-
-            <form onSubmit={handleStandardLogin} className="space-y-3.5">
-              {/* Email Input */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-primary">
-                  Email Address
+            {/* Password Input with Show/Hide Toggle */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <label
+                  htmlFor="login-password"
+                  className="font-semibold text-primary"
+                >
+                  Password <span className="text-accent">*</span>
                 </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="student@alumnux.demo or alumni@alumnux.demo"
-                    className="pl-9 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
-                  />
-                </div>
+                <Link
+                  to="/forgot-password"
+                  className="text-accent hover:underline text-[11px] font-mono"
+                >
+                  Forgot password?
+                </Link>
               </div>
-
-              {/* Password Input with Show/Hide toggle */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs">
-                  <label className="font-medium text-primary">
-                    Password
-                  </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-accent hover:underline text-[11px]"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Student@123 or Alumni@123"
-                    className="pl-9 pr-10 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                <Input
+                  id="login-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your account password"
+                  required
+                  autoComplete="current-password"
+                  className="pl-9 pr-10 h-10 text-xs bg-[#F8F8F5] border-border focus-visible:ring-accent"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-primary p-0.5 rounded-xs"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
+            </div>
 
-              {/* Remember Me Checkbox */}
-              <div className="flex items-center gap-2 pt-1">
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center justify-between text-xs pt-0.5">
+              <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="remember-me"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="rounded-xs border-border text-accent focus:ring-accent w-3.5 h-3.5"
+                  className="rounded-xs border-border text-accent focus:ring-accent w-4 h-4"
                 />
-                <label htmlFor="remember-me" className="text-xs text-secondary select-none">
-                  Remember demo session on this browser
+                <label
+                  htmlFor="remember-me"
+                  className="text-xs text-secondary select-none cursor-pointer"
+                >
+                  Remember session on this device
                 </label>
               </div>
+            </div>
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-10 text-xs font-semibold gap-2 shadow-subtle"
-              >
-                {isLoading ? (
-                  <span>Authenticating...</span>
-                ) : (
-                  <>
-                    <span>Sign In</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </Button>
-            </form>
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-10 text-xs font-semibold gap-2 shadow-subtle"
+            >
+              {isLoading ? (
+                <span>Authenticating credentials...</span>
+              ) : (
+                <>
+                  <span>Sign In</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </>
+              )}
+            </Button>
+          </form>
 
-            {/* Security Disclaimer Note */}
-            <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm text-[11px] text-secondary flex items-start gap-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
-              <span>
-                <strong className="text-primary font-medium">Demo Limitation:</strong> These accounts operate in client demonstration mode. In future milestones, Supabase Auth handles federated authentication and zero-trust identity verification.
+          {/* Discreet Demo Accounts Panel */}
+          <div className="pt-4 border-t border-border space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-mono text-secondary text-[11px] uppercase tracking-wider flex items-center gap-1.5 font-bold">
+                <Sparkles className="w-3.5 h-3.5 text-accent" />
+                <span>Instant Demo Access</span>
+              </span>
+              <span className="text-[10px] text-secondary font-mono">
+                1-Click Preset
               </span>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Link to Registration */}
-        <p className="text-center text-xs text-secondary">
-          Don&apos;t have an account yet?{" "}
-          <Link to="/register" className="text-accent font-semibold hover:underline">
-            Register for Alumnux demo
-          </Link>
-        </p>
-      </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleInstantDemoLogin("student")}
+                disabled={isLoading}
+                className="w-full text-xs h-9 border-border bg-[#F8F8F5] hover:border-accent hover:bg-accent/5 justify-between px-3"
+              >
+                <div className="flex items-center gap-2 text-left truncate">
+                  <GraduationCap className="w-3.5 h-3.5 text-accent shrink-0" />
+                  <span className="font-semibold text-primary truncate">
+                    Student Demo
+                  </span>
+                </div>
+                <ArrowRight className="w-3 h-3 text-secondary shrink-0" />
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleInstantDemoLogin("alumni")}
+                disabled={isLoading}
+                className="w-full text-xs h-9 border-border bg-[#F8F8F5] hover:border-accent hover:bg-accent/5 justify-between px-3"
+              >
+                <div className="flex items-center gap-2 text-left truncate">
+                  <Briefcase className="w-3.5 h-3.5 text-accent shrink-0" />
+                  <span className="font-semibold text-primary truncate">
+                    Alumni Demo
+                  </span>
+                </div>
+                <ArrowRight className="w-3 h-3 text-secondary shrink-0" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Registration Link */}
+          <div className="pt-2 text-center text-xs text-secondary">
+            <span>New to the Alumnux network?</span>{" "}
+            <Link
+              to="/register"
+              className="text-accent font-semibold hover:underline"
+            >
+              Create an account
+            </Link>
+          </div>
+
+          {/* Privacy Note */}
+          <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm text-[11px] text-secondary flex items-start gap-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+            <p className="leading-snug">
+              Accounts must meet verification requirements before access is granted. Unverified or pending registrations undergo manual review by alumni trustees.
+            </p>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -1,15 +1,26 @@
 export interface DemoUser {
   id: string;
   email: string;
+  username?: string;
   fullName: string;
   role: "student" | "alumni";
+  verification_status?: "pending" | "needs_review" | "verified" | "rejected" | "suspended";
+  academic_completion_status?: "studying" | "final_year" | "course_completed" | "graduated";
+  academic_year?: "First Year" | "Second Year" | "Third Year" | "Final Year";
+  expected_graduation_date?: string;
+  verified_graduation_date?: string | null;
   department: string;
   graduationYear: number;
+  passed_out_year?: number;
   rollNumber?: string;
   company?: string;
   roleTitle?: string;
   experienceYears?: number;
   locationCity?: string;
+  linkedin_url?: string;
+  student_id_front_name?: string;
+  student_id_back_name?: string;
+  graduation_certificate_name?: string;
   initials: string;
   bio: string;
   skills: string[];
@@ -89,8 +100,13 @@ export interface DemoNotification {
 export const DEMO_STUDENT_ACCOUNT: DemoUser = {
   id: "student-demo-alex",
   email: "student@alumnux.demo",
+  username: "alexrivera",
   fullName: "Alex Rivera",
   role: "student",
+  verification_status: "verified",
+  academic_completion_status: "studying",
+  academic_year: "Third Year",
+  expected_graduation_date: "2026-05-31",
   department: "Computer Science & Engineering",
   graduationYear: 2026,
   rollNumber: "2022CSE1084",
@@ -103,8 +119,13 @@ export const DEMO_STUDENT_ACCOUNT: DemoUser = {
 export const DEMO_ALUMNI_ACCOUNT: DemoUser = {
   id: "alumni-demo-jordan",
   email: "alumni@alumnux.demo",
+  username: "jordanvance",
   fullName: "Jordan Vance",
   role: "alumni",
+  verification_status: "verified",
+  academic_completion_status: "graduated",
+  passed_out_year: 2018,
+  verified_graduation_date: "2018-05-15",
   department: "Information Technology",
   graduationYear: 2018,
   company: "Stripe",

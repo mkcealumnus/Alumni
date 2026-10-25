@@ -23,7 +23,18 @@ import { VerificationQueueItem, VerificationStatus } from "@/lib/types";
 export default function AdminConsolePage() {
   const [activeTab, setActiveTab] = useState<"verifications" | "jobs" | "events" | "audit">("verifications");
   const [reviewFilter, setReviewFilter] = useState<"all" | "student" | "alumni">("all");
-  const [queue, setQueue] = useState<VerificationQueueItem[]>(MOCK_VERIFICATION_QUEUE);
+  const [queue, setQueue] = useState<VerificationQueueItem[]>(() => {
+    try {
+      const stored = localStorage.getItem("alumnux_admin_verification_queue");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.warn("Failed to load stored admin queue", e);
+    }
+    return MOCK_VERIFICATION_QUEUE;
+  });
 
   // Selected item for review (used in modal on smaller screens, and in persistent side pane on 21.5"+ / ultrawide screens)
   const [selectedItem, setSelectedItem] = useState<VerificationQueueItem | null>(queue[0] || null);
@@ -47,18 +58,37 @@ export default function AdminConsolePage() {
 
   const handleApplyDecision = () => {
     if (!selectedItem) return;
-    setQueue((prev) =>
-      prev.map((item) =>
-        item.id === selectedItem.id
-          ? {
-              ...item,
-              status: decisionAction,
-              rejection_reason: decisionAction !== "verified" ? decisionReason : undefined,
-            }
-          : item
-      )
+    const updated = queue.map((item) =>
+      item.id === selectedItem.id
+        ? {
+            ...item,
+            status: decisionAction,
+            rejection_reason: decisionAction !== "verified" ? decisionReason : undefined,
+          }
+        : item
     );
+    setQueue(updated);
+    setSelectedItem((prev) => (prev && prev.id === selectedItem.id ? { ...prev, status: decisionAction } : prev));
     setDecisionModalOpen(false);
+
+    try {
+      localStorage.setItem("alumnux_admin_verification_queue", JSON.stringify(updated));
+
+      // Synchronize with registered users
+      const regRaw = localStorage.getItem("alumnux_registered_users");
+      if (regRaw) {
+        const users = JSON.parse(regRaw);
+        const idx = users.findIndex(
+          (u: any) => u.id === selectedItem.user_id || u.email.toLowerCase() === selectedItem.email.toLowerCase()
+        );
+        if (idx !== -1) {
+          users[idx].verification_status = decisionAction;
+          localStorage.setItem("alumnux_registered_users", JSON.stringify(users));
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to persist verification decision", e);
+    }
   };
 
   const filteredQueue = queue.filter(
