@@ -13,8 +13,10 @@ import {
 } from "lucide-react";
 import { MOCK_ALUMNI } from "../../lib/mockData";
 import { UserProfile } from "../../lib/types";
+import { useMentorship } from "../../context/mentorshipContext";
 
 export default function StudentAlumniPage() {
+  const { createMentorshipRequest } = useMentorship();
   const [search, setSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [connectedIds, setConnectedIds] = useState<string[]>([]);
@@ -45,8 +47,20 @@ export default function StudentAlumniPage() {
     );
   };
 
-  const handleSendMentorshipRequest = (e: React.FormEvent) => {
+  const handleSendMentorshipRequest = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedAlum) return;
+
+    await createMentorshipRequest({
+      alumniId: selectedAlum.id,
+      alumniName: selectedAlum.full_name,
+      alumniRoleTitle: selectedAlum.current_role || "Alumni Mentor",
+      alumniCompany: selectedAlum.current_company || "Alumnux Network",
+      topic: mentorshipTopic,
+      introductoryMessage: mentorshipNote.trim() || `Interested in mentorship on ${mentorshipTopic}.`,
+      preferredCadence: "Bi-weekly Check-in",
+    });
+
     setRequestSent(true);
     setTimeout(() => {
       setRequestSent(false);

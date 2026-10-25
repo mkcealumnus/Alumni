@@ -18,6 +18,8 @@ import {
   X,
   ExternalLink,
   ChevronDown,
+  Globe,
+  Lock,
 } from "lucide-react";
 import { useAuth } from "../context/authContext";
 import { DEMO_NOTIFICATIONS } from "../data/demoData";
@@ -30,7 +32,11 @@ export function StudentDashboardLayout() {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => {
+    if (pathname === path) return true;
+    if (path !== "/student/dashboard" && pathname.startsWith(path)) return true;
+    return false;
+  };
 
   const handleLogout = () => {
     logout();
@@ -39,8 +45,10 @@ export function StudentDashboardLayout() {
 
   const navItems = [
     { name: "Overview", href: "/student/dashboard", icon: LayoutDashboard },
+    { name: "Open Chat Mentorship", href: "/student/mentorship/open-chat", icon: Globe },
+    { name: "1-on-1 Mentorship", href: "/student/mentorship/one-on-one", icon: Lock },
+    { name: "Mentorship Hub", href: "/student/mentorship", icon: GraduationCap },
     { name: "Alumni Directory", href: "/student/alumni", icon: Users },
-    { name: "Find a Mentor", href: "/student/mentorship", icon: GraduationCap },
     { name: "Jobs & Internships", href: "/student/jobs", icon: Briefcase },
     { name: "Saved Opportunities", href: "/student/saved", icon: Bookmark },
     { name: "Messages", href: "/student/messages", icon: MessageSquare },

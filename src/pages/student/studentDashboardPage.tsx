@@ -8,8 +8,12 @@ import {
   Bookmark,
   Calendar,
   ArrowRight,
+  Globe,
+  Lock,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
+import { useMentorship } from "../../context/mentorshipContext";
 import {
   DEMO_CAREER_OPPORTUNITIES,
   DEMO_EVENTS,
@@ -20,31 +24,51 @@ import { MOCK_ALUMNI } from "../../lib/mockData";
 export default function StudentDashboardPage() {
   const { user } = useAuth();
   const displayName = user?.fullName?.split(" ")[0] || "Alex";
+  const {
+    openChatMessages,
+    mentorshipRequests,
+    conversations,
+  } = useMentorship();
+
+  const studentId = user?.id || "student-demo-alex";
+  const myRequests = mentorshipRequests.filter((r) => r.student_id === studentId);
+  const pendingRequests = myRequests.filter((r) => r.status === "pending");
+  const myConversations = conversations.filter((c) => c.student_id === studentId);
+
+  // Recent open chat messages
+  const recentOpenChat = openChatMessages.slice(-3);
+
+  // Unanswered community questions
+  const unansweredQuestions = openChatMessages.filter(
+    (m) =>
+      m.sender_role === "student" &&
+      !openChatMessages.some((r) => r.reply_to_message_id === m.id)
+  );
 
   const stats = [
     {
-      label: "Alumni Connections",
-      value: "12",
-      change: "+2 this month",
-      icon: Users,
+      label: "Open Chat Questions",
+      value: openChatMessages.length.toString(),
+      change: "Active community",
+      icon: Globe,
     },
     {
-      label: "Mentorship Requests",
-      value: "3",
-      change: "1 Pending Review",
+      label: "1-on-1 Requests",
+      value: myRequests.length.toString(),
+      change: `${pendingRequests.length} Pending Review`,
       icon: GraduationCap,
+    },
+    {
+      label: "Active Mentorships",
+      value: myConversations.length.toString(),
+      change: "Private tracks",
+      icon: Lock,
     },
     {
       label: "Saved Opportunities",
       value: "8",
       change: "2 Deadlines soon",
       icon: Bookmark,
-    },
-    {
-      label: "Upcoming Events",
-      value: "2",
-      change: "Next: Saturday",
-      icon: Calendar,
     },
   ];
 
@@ -53,7 +77,7 @@ export default function StudentDashboardPage() {
 
   return (
     <div className="space-y-8 pb-12">
-      {/* 1. Welcome Section & Quick Actions */}
+      {/* 1. Welcome Section & Quick Actions (Section 5 Spec) */}
       <div className="bg-surface border border-border rounded-md p-6 sm:p-8 shadow-subtle flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-2 max-w-2xl">
           <div className="flex items-center gap-2">
@@ -68,22 +92,22 @@ export default function StudentDashboardPage() {
             Welcome back, {displayName}!
           </h1>
           <p className="text-xs sm:text-sm text-secondary leading-relaxed">
-            Discover opportunities, connect with experienced alumni, and take your next career step.
+            Ask questions publicly in Open Chat, request personalized 1-on-1 mentorship, and discover career opportunities.
           </p>
         </div>
 
-        {/* Quick Action Buttons */}
+        {/* Quick Action Buttons (Section 5: "Ask the Community", "Find an Alumni Mentor") */}
         <div className="flex flex-wrap gap-2.5">
-          <Link to="/student/mentorship">
+          <Link to="/student/mentorship/open-chat">
             <Button size="sm" className="text-xs gap-1.5 shadow-subtle">
-              <GraduationCap className="w-3.5 h-3.5" />
-              <span>Find a Mentor</span>
+              <Globe className="w-3.5 h-3.5" />
+              <span>Ask the Community</span>
             </Button>
           </Link>
-          <Link to="/student/jobs">
+          <Link to="/student/mentorship/one-on-one">
             <Button variant="outline" size="sm" className="text-xs gap-1.5 border-border bg-[#F8F8F5]">
-              <Briefcase className="w-3.5 h-3.5 text-accent" />
-              <span>Explore Jobs</span>
+              <Lock className="w-3.5 h-3.5 text-accent" />
+              <span>Find an Alumni Mentor</span>
             </Button>
           </Link>
         </div>
@@ -119,7 +143,153 @@ export default function StudentDashboardPage() {
         })}
       </div>
 
-      {/* 3. Main Dashboard Grid */}
+      {/* 3. Mentorship Highlights: Open Chat & 1-on-1 Widgets (Section 5) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Recent Open Chat Discussions */}
+        <div className="lg:col-span-6 bg-surface border border-border rounded-md p-6 shadow-subtle space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-accent" />
+              <h2 className="text-sm font-bold text-primary">
+                Recent Open Chat Discussions
+              </h2>
+            </div>
+            <Link
+              to="/student/mentorship/open-chat"
+              className="text-xs text-accent font-medium hover:underline flex items-center gap-1"
+            >
+              <span>Ask Community</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          <div className="space-y-3">
+            {recentOpenChat.map((msg) => (
+              <div
+                key={msg.id}
+                className="p-3.5 rounded-sm border border-border bg-[#F8F8F5] space-y-1.5"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-xs text-primary">
+                      {msg.sender_name}
+                    </span>
+                    <Badge variant="outline" className="text-[9px] py-0 px-1 font-mono">
+                      {msg.sender_role === "alumni" ? "Alumni" : "Student"}
+                    </Badge>
+                    {msg.category_tag && (
+                      <span className="text-[9px] font-mono text-secondary bg-surface px-1 py-0.5 rounded-xs border border-border">
+                        {msg.category_tag}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] font-mono text-secondary">
+                    {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </div>
+                <p className="text-xs text-secondary leading-relaxed line-clamp-2">
+                  {msg.content}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {unansweredQuestions.length > 0 && (
+            <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-sm text-xs flex items-center justify-between">
+              <span className="text-amber-800">
+                <strong>{unansweredQuestions.length}</strong> active student questions currently open for discussion.
+              </span>
+              <Link
+                to="/student/mentorship/open-chat"
+                className="font-semibold text-amber-900 underline"
+              >
+                Contribute
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column: 1-on-1 Mentorship Status */}
+        <div className="lg:col-span-6 bg-surface border border-border rounded-md p-6 shadow-subtle space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <Lock className="w-4 h-4 text-accent" />
+              <h2 className="text-sm font-bold text-primary">
+                1-on-1 Mentorships &amp; Requests
+              </h2>
+            </div>
+            <Link
+              to="/student/mentorship/one-on-one"
+              className="text-xs text-accent font-medium hover:underline flex items-center gap-1"
+            >
+              <span>Manage 1-on-1</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          {myConversations.length === 0 && pendingRequests.length === 0 ? (
+            <div className="p-6 text-center space-y-2 bg-[#F8F8F5] rounded-sm border border-border">
+              <GraduationCap className="w-8 h-8 text-secondary mx-auto" />
+              <p className="text-xs font-semibold text-primary">No active private mentorship tracks</p>
+              <p className="text-[11px] text-secondary">
+                Connect with verified alumni at Stripe, Google, or AWS for personalized code reviews.
+              </p>
+              <Link to="/student/mentorship/one-on-one" className="inline-block pt-1">
+                <Button size="sm" className="text-xs">Find a Mentor</Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {myConversations.map((conv) => (
+                <div
+                  key={conv.id}
+                  className="p-3.5 bg-[#F8F8F5] border border-border rounded-sm flex items-center justify-between gap-3"
+                >
+                  <div className="space-y-0.5 overflow-hidden">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-xs text-primary truncate">
+                        {conv.alumni_name}
+                      </span>
+                      <Badge className="text-[9px] bg-semantic-success text-white py-0 px-1 font-mono">
+                        Active 1-on-1
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] text-accent truncate">{conv.topic}</p>
+                    <p className="text-[10px] text-secondary truncate">
+                      {conv.last_message_preview || "Ready for next check-in"}
+                    </p>
+                  </div>
+                  <Link to={`/student/mentorship/one-on-one/${conv.id}`}>
+                    <Button size="sm" className="text-xs h-8 px-3 gap-1 shadow-xs">
+                      <MessageSquare className="w-3 h-3" />
+                      <span>Chat</span>
+                    </Button>
+                  </Link>
+                </div>
+              ))}
+
+              {pendingRequests.map((req) => (
+                <div
+                  key={req.id}
+                  className="p-3.5 bg-amber-50/50 border border-amber-200 rounded-sm flex items-center justify-between gap-3 text-xs"
+                >
+                  <div className="space-y-0.5 overflow-hidden">
+                    <span className="font-semibold text-primary truncate">
+                      Request with {req.alumni_name}
+                    </span>
+                    <p className="text-[11px] text-secondary truncate">{req.topic}</p>
+                  </div>
+                  <Badge variant="outline" className="text-[10px] border-amber-300 text-amber-700 bg-amber-50 font-mono">
+                    Pending
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 4. Secondary Grid: Recommended Alumni & Featured Jobs */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column (Recommended Alumni & Featured Jobs) */}
         <div className="lg:col-span-8 space-y-8">
@@ -133,7 +303,7 @@ export default function StudentDashboardPage() {
                 </h2>
               </div>
               <Link
-                to="/student/alumni"
+                to="/student/mentorship/one-on-one"
                 className="text-xs text-accent font-medium hover:underline flex items-center gap-1"
               >
                 <span>View All</span>
@@ -170,7 +340,7 @@ export default function StudentDashboardPage() {
                     </p>
                   </div>
 
-                  <Link to="/student/mentorship">
+                  <Link to="/student/mentorship/one-on-one">
                     <Button variant="outline" size="sm" className="w-full text-[11px] h-7 border-border hover:border-accent">
                       Request Guidance
                     </Button>
@@ -232,30 +402,8 @@ export default function StudentDashboardPage() {
           </div>
         </div>
 
-        {/* Right Column (Profile Completion, Recent Activity, Upcoming Events) */}
+        {/* Right Column (Recent Activity & Upcoming Events) */}
         <div className="lg:col-span-4 space-y-6">
-          {/* Profile Completion Card */}
-          <div className="bg-surface border border-border rounded-md p-5 shadow-subtle space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-xs text-primary">
-                Profile Completion
-              </h3>
-              <span className="text-xs font-mono font-bold text-accent">85%</span>
-            </div>
-            {/* Progress Bar */}
-            <div className="w-full bg-[#F2F2EC] h-2 rounded-full overflow-hidden">
-              <div className="bg-accent h-full w-[85%] rounded-full" />
-            </div>
-            <p className="text-[11px] text-secondary leading-snug">
-              Add your target engineering roles and GitHub profile link to boost connection acceptance by alumni.
-            </p>
-            <Link to="/student/profile" className="block pt-1">
-              <Button variant="outline" size="sm" className="w-full text-xs h-7 border-border">
-                Complete Profile
-              </Button>
-            </Link>
-          </div>
-
           {/* Recent Activity */}
           <div className="bg-surface border border-border rounded-md p-5 shadow-subtle space-y-4">
             <h3 className="font-semibold text-xs text-primary pb-2 border-b border-border">

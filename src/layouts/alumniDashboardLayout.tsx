@@ -7,7 +7,6 @@ import {
   Users,
   GraduationCap,
   PlusCircle,
-  Briefcase,
   MessageSquare,
   Calendar,
   User,
@@ -18,6 +17,8 @@ import {
   X,
   ExternalLink,
   ChevronDown,
+  Globe,
+  Lock,
 } from "lucide-react";
 import { useAuth } from "../context/authContext";
 
@@ -29,7 +30,11 @@ export function AlumniDashboardLayout() {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => {
+    if (pathname === path) return true;
+    if (path !== "/alumni/dashboard" && pathname.startsWith(path)) return true;
+    return false;
+  };
 
   const handleLogout = () => {
     logout();
@@ -38,11 +43,13 @@ export function AlumniDashboardLayout() {
 
   const navItems = [
     { name: "Overview", href: "/alumni/dashboard", icon: LayoutDashboard },
+    { name: "Open Chat Mentorship", href: "/alumni/mentorship/open-chat", icon: Globe },
+    { name: "Mentorship Requests", href: "/alumni/mentorship/requests", icon: GraduationCap },
+    { name: "Active Mentorships", href: "/alumni/mentorship/active", icon: Users },
+    { name: "Private Messages", href: "/alumni/messages", icon: MessageSquare },
+    { name: "Mentorship Hub", href: "/alumni/mentorship", icon: Lock },
     { name: "Student Directory", href: "/alumni/students", icon: Users },
-    { name: "Mentorship Requests", href: "/alumni/mentorship", icon: GraduationCap },
     { name: "Share an Opportunity", href: "/alumni/opportunities", icon: PlusCircle },
-    { name: "My Opportunities", href: "/alumni/opportunities", icon: Briefcase },
-    { name: "Messages", href: "/alumni/messages", icon: MessageSquare },
     { name: "Events", href: "/alumni/events", icon: Calendar },
     { name: "My Profile", href: "/alumni/profile", icon: User },
     { name: "Settings", href: "/alumni/settings", icon: Settings },

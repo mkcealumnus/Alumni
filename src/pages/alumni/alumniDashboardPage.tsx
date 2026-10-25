@@ -8,19 +8,19 @@ import {
   GraduationCap,
   Briefcase,
   PlusCircle,
-  Calendar,
   Check,
   X,
   CheckCircle2,
-  Sparkles,
+  Globe,
+  Lock,
+  MessageSquare,
+  ArrowRight,
+  Video,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
+import { useMentorship } from "../../context/mentorshipContext";
 import {
-  INITIAL_MENTORSHIP_REQUESTS,
   DEMO_CAREER_OPPORTUNITIES,
-  DEMO_ALUMNI_ACTIVITIES,
-  DEMO_EVENTS,
-  MentorshipRequest,
   CareerOpportunity,
 } from "../../data/demoData";
 
@@ -28,8 +28,31 @@ export default function AlumniDashboardPage() {
   const { user } = useAuth();
   const displayName = user?.fullName?.split(" ")[0] || "Jordan";
 
-  // State for mentorship requests with working accept/decline simulation
-  const [requests, setRequests] = useState<MentorshipRequest[]>(INITIAL_MENTORSHIP_REQUESTS);
+  const {
+    openChatMessages,
+    mentorshipRequests,
+    conversations,
+    respondToMentorshipRequest,
+  } = useMentorship();
+
+  const alumniId = user?.id || "alumni-demo-jordan";
+  const myRequests = mentorshipRequests.filter(
+    (r) =>
+      r.alumni_id === alumniId ||
+      r.alumni_name.toLowerCase().includes(user?.fullName?.toLowerCase() || "jordan")
+  );
+  const pendingRequests = myRequests.filter((r) => r.status === "pending");
+  const myConversations = conversations.filter(
+    (c) =>
+      c.alumni_id === alumniId ||
+      c.alumni_name.toLowerCase().includes(user?.fullName?.toLowerCase() || "jordan")
+  );
+
+  // Recent student questions in Open Chat
+  const recentStudentQuestions = openChatMessages
+    .filter((m) => m.sender_role === "student")
+    .slice(-3);
+
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
 
   // State for share opportunity modal
@@ -45,16 +68,22 @@ export default function AlumniDashboardPage() {
 
   const stats = [
     {
-      label: "Incoming Requests",
-      value: "4",
-      change: "2 Pending Review",
+      label: "Pending Inquiries",
+      value: pendingRequests.length.toString(),
+      change: "Action required",
       icon: GraduationCap,
     },
     {
       label: "Active Mentees",
-      value: "6",
-      change: "+1 this week",
+      value: myConversations.length.toString(),
+      change: "1-on-1 private tracks",
       icon: Users,
+    },
+    {
+      label: "Open Chat Inquiries",
+      value: openChatMessages.length.toString(),
+      change: "Community active",
+      icon: Globe,
     },
     {
       label: "Opportunities Shared",
@@ -62,26 +91,19 @@ export default function AlumniDashboardPage() {
       change: "14 Total Views",
       icon: Briefcase,
     },
-    {
-      label: "Student Connections",
-      value: "28",
-      change: "Active network",
-      icon: Sparkles,
-    },
   ];
 
-  const handleRequestAction = (id: string, action: "accepted" | "declined") => {
-    setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: action } : r))
-    );
-    const target = requests.find((r) => r.id === id);
-    const studentName = target?.studentName || "Student";
-    setActionFeedback(
-      action === "accepted"
-        ? `Mentorship request from ${studentName} accepted. Session scheduled!`
-        : `Mentorship request from ${studentName} declined.`
-    );
-    setTimeout(() => setActionFeedback(null), 3000);
+  const handleRequestAction = async (id: string, action: "accepted" | "declined") => {
+    const target = myRequests.find((r) => r.id === id);
+    const result = await respondToMentorshipRequest(id, action);
+    if (result.success) {
+      setActionFeedback(
+        action === "accepted"
+          ? `Mentorship request from ${target?.student_name} accepted. Private conversation activated!`
+          : `Mentorship request from ${target?.student_name} declined.`
+      );
+      setTimeout(() => setActionFeedback(null), 3500);
+    }
   };
 
   const handleShareOpportunity = (e: React.FormEvent) => {
@@ -119,7 +141,7 @@ export default function AlumniDashboardPage() {
 
   return (
     <div className="space-y-8 pb-12">
-      {/* 1. Welcome Section & Quick Actions */}
+      {/* 1. Welcome Section & Quick Actions (Section 5 Spec) */}
       <div className="bg-surface border border-border rounded-md p-6 sm:p-8 shadow-subtle flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-2 max-w-2xl">
           <div className="flex items-center gap-2">
@@ -134,30 +156,37 @@ export default function AlumniDashboardPage() {
             Welcome back, {displayName}!
           </h1>
           <p className="text-xs sm:text-sm text-secondary leading-relaxed">
-            Share your experience, guide emerging professionals, and help students discover their next opportunity.
+            Answer questions in the community Open Chat, manage your incoming 1-on-1 mentorship requests, and guide active mentees.
           </p>
         </div>
 
-        {/* Quick Action Buttons */}
+        {/* Quick Action Buttons (Section 5 Spec: "Answer a Question", "Review Mentorship Requests") */}
         <div className="flex flex-wrap gap-2.5">
-          <Button
-            size="sm"
-            onClick={() => setShareModalOpen(true)}
-            className="text-xs gap-1.5 shadow-subtle"
-          >
-            <PlusCircle className="w-3.5 h-3.5" />
-            <span>Share an Opportunity</span>
-          </Button>
-          <Link to="/alumni/mentorship">
+          <Link to="/alumni/mentorship/open-chat">
+            <Button size="sm" className="text-xs gap-1.5 shadow-subtle">
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Answer a Question</span>
+            </Button>
+          </Link>
+          <Link to="/alumni/mentorship/requests">
             <Button
               variant="outline"
               size="sm"
               className="text-xs gap-1.5 border-border bg-[#F8F8F5]"
             >
               <GraduationCap className="w-3.5 h-3.5 text-accent" />
-              <span>Review Requests</span>
+              <span>Review Mentorship Requests ({pendingRequests.length})</span>
             </Button>
           </Link>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setShareModalOpen(true)}
+            className="text-xs gap-1.5 border-border bg-surface"
+          >
+            <PlusCircle className="w-3.5 h-3.5 text-secondary" />
+            <span>Post Opportunity</span>
+          </Button>
         </div>
       </div>
 
@@ -199,317 +228,358 @@ export default function AlumniDashboardPage() {
         })}
       </div>
 
-      {/* 3. Main Dashboard Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Pending Mentorship Requests & Recently Shared Opportunities */}
-        <div className="lg:col-span-8 space-y-8">
-          {/* Pending Mentorship Requests with working Accept / Decline */}
-          <div className="bg-surface border border-border rounded-md p-6 shadow-subtle space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-border">
-              <div className="flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-accent" />
-                <h2 className="text-sm font-bold text-primary">
-                  Pending Mentorship Requests
-                </h2>
-              </div>
-              <Badge variant="outline" className="text-[10px] font-mono">
-                {requests.filter((r) => r.status === "pending").length} Awaiting Decision
-              </Badge>
+      {/* 3. Mentorship Focus: Open Chat Questions & Pending 1-on-1 Requests (Section 5) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Recent Student Questions in Open Chat */}
+        <div className="lg:col-span-6 bg-surface border border-border rounded-md p-6 shadow-subtle space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-accent" />
+              <h2 className="text-sm font-bold text-primary">
+                Student Questions in Open Chat
+              </h2>
             </div>
-
-            <div className="space-y-4">
-              {requests.map((req) => (
-                <div
-                  key={req.id}
-                  className="p-4 rounded-sm border border-border bg-[#F8F8F5] space-y-3"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-xs sm:text-sm text-primary">
-                          {req.studentName}
-                        </span>
-                        <Badge variant="outline" className="text-[9px]">
-                          {req.studentDepartment} ({req.studentGraduationYear})
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-accent font-medium mt-0.5">
-                        Topic: {req.topic}
-                      </p>
-                    </div>
-
-                    <div className="text-[11px] font-mono text-secondary">
-                      {req.requestedDate}
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-secondary leading-relaxed bg-surface p-2.5 rounded-sm border border-border/80">
-                    &ldquo;{req.message}&rdquo;
-                  </p>
-
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-[11px] text-secondary font-mono">
-                      Preferred: {req.preferredCadence}
-                    </span>
-
-                    {req.status === "pending" ? (
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleRequestAction(req.id, "declined")}
-                          className="text-xs h-7 px-2.5 text-secondary hover:text-red-600 border-border"
-                        >
-                          <X className="w-3 h-3 mr-1" />
-                          Decline
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handleRequestAction(req.id, "accepted")}
-                          className="text-xs h-7 px-3 gap-1"
-                        >
-                          <Check className="w-3 h-3" />
-                          Accept Request
-                        </Button>
-                      </div>
-                    ) : (
-                      <Badge
-                        variant={req.status === "accepted" ? "default" : "outline"}
-                        className="text-[10px] capitalize"
-                      >
-                        {req.status}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Link
+              to="/alumni/mentorship/open-chat"
+              className="text-xs text-accent font-medium hover:underline flex items-center gap-1"
+            >
+              <span>View All Discussions</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
 
-          {/* Recently Shared Opportunities */}
-          <div className="bg-surface border border-border rounded-md p-6 shadow-subtle space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-border">
-              <div className="flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-accent" />
-                <h2 className="text-sm font-bold text-primary">
-                  Recently Shared Opportunities
-                </h2>
-              </div>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setShareModalOpen(true)}
-                className="text-xs h-7 gap-1 border-border"
+          <div className="space-y-3">
+            {recentStudentQuestions.map((msg) => (
+              <div
+                key={msg.id}
+                className="p-3.5 rounded-sm border border-border bg-[#F8F8F5] space-y-2"
               >
-                <PlusCircle className="w-3 h-3 text-accent" />
-                <span>Post New</span>
-              </Button>
-            </div>
-
-            <div className="space-y-3">
-              {sharedListings.map((opp) => (
-                <div
-                  key={opp.id}
-                  className="p-4 rounded-sm border border-border bg-[#F8F8F5] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-[9px] uppercase font-mono">
-                        {opp.opportunityType}
-                      </Badge>
-                      <span className="text-[10px] font-mono text-secondary">
-                        Posted {opp.postedDate}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-xs text-primary">
+                      {msg.sender_name}
+                    </span>
+                    <Badge variant="outline" className="text-[9px] font-mono">
+                      {msg.sender_department || "Student"}
+                    </Badge>
+                    {msg.category_tag && (
+                      <span className="text-[9px] font-mono text-secondary bg-surface px-1 py-0.5 rounded-xs border border-border">
+                        {msg.category_tag}
                       </span>
-                    </div>
-                    <h3 className="font-semibold text-xs sm:text-sm text-primary">
-                      {opp.title}
-                    </h3>
-                    <p className="text-[11px] text-secondary">
-                      {opp.organization} &bull; {opp.location}
-                    </p>
+                    )}
                   </div>
+                  <span className="text-[10px] font-mono text-secondary">
+                    {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                </div>
 
-                  <Link to="/career">
-                    <Button variant="outline" size="sm" className="text-xs h-8 border-border">
-                      View on Board
+                <p className="text-xs text-secondary leading-relaxed line-clamp-2">
+                  &ldquo;{msg.content}&rdquo;
+                </p>
+
+                <div className="pt-1 flex items-center justify-end">
+                  <Link to="/alumni/mentorship/open-chat">
+                    <Button size="sm" variant="outline" className="text-xs h-7 px-3 border-border bg-surface gap-1 hover:border-accent">
+                      <MessageSquare className="w-3 h-3 text-accent" />
+                      <span>Answer Question</span>
                     </Button>
                   </Link>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Right Column: Recent Activity & Upcoming Events */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Quick Mentorship Guidelines */}
-          <div className="bg-surface border border-border rounded-md p-5 shadow-subtle space-y-3">
-            <h3 className="font-semibold text-xs text-primary">
-              Mentor Best Practices
-            </h3>
-            <ul className="text-xs text-secondary space-y-2">
-              <li className="flex items-start gap-2">
-                <span className="text-accent font-bold">&bull;</span>
-                <span>Prioritize concrete feedback on projects over generic talk.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-accent font-bold">&bull;</span>
-                <span>Encourage students to practice mock design interview questions.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-accent font-bold">&bull;</span>
-                <span>Review student resumes before submitting company referrals.</span>
-              </li>
-            </ul>
+        {/* Right Column: Pending 1-on-1 Requests (Section 5) */}
+        <div className="lg:col-span-6 bg-surface border border-border rounded-md p-6 shadow-subtle space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <GraduationCap className="w-4 h-4 text-accent" />
+              <h2 className="text-sm font-bold text-primary">
+                Pending Mentorship Requests ({pendingRequests.length})
+              </h2>
+            </div>
+            <Link
+              to="/alumni/mentorship/requests"
+              className="text-xs text-accent font-medium hover:underline flex items-center gap-1"
+            >
+              <span>Manage Requests</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
 
-          {/* Recent Activity */}
-          <div className="bg-surface border border-border rounded-md p-5 shadow-subtle space-y-4">
-            <h3 className="font-semibold text-xs text-primary pb-2 border-b border-border">
-              Recent Activity
-            </h3>
-            <div className="space-y-3 text-xs">
-              {DEMO_ALUMNI_ACTIVITIES.map((act) => (
-                <div key={act.id} className="space-y-0.5">
-                  <p className="font-medium text-primary text-[11px] leading-tight">
-                    {act.title}
+          {pendingRequests.length === 0 ? (
+            <div className="p-8 text-center space-y-2 bg-[#F8F8F5] rounded-sm border border-border">
+              <CheckCircle2 className="w-8 h-8 text-semantic-success mx-auto" />
+              <p className="text-xs font-semibold text-primary">All caught up!</p>
+              <p className="text-[11px] text-secondary">
+                No pending mentorship requests waiting for your decision.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {pendingRequests.map((req) => (
+                <div
+                  key={req.id}
+                  className="p-4 rounded-sm border border-border bg-[#F8F8F5] space-y-2.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-bold text-xs text-primary">
+                        {req.student_name}
+                      </span>{" "}
+                      <span className="text-[11px] text-secondary font-mono">
+                        &bull; {req.student_department} ({req.student_graduation_year})
+                      </span>
+                      <p className="text-xs text-accent font-medium mt-0.5">
+                        Focus: {req.topic}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-mono text-secondary">
+                      {new Date(req.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-secondary leading-relaxed bg-surface p-2.5 rounded-sm border border-border italic line-clamp-2">
+                    &ldquo;{req.introductory_message}&rdquo;
                   </p>
-                  <p className="text-[10px] text-secondary leading-tight">
-                    {act.detail}
-                  </p>
-                  <p className="text-[9px] font-mono text-secondary pt-0.5">
-                    {act.timestamp}
-                  </p>
+
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="text-[10px] font-mono text-secondary">
+                      Cadence: {req.preferred_cadence}
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleRequestAction(req.id, "declined")}
+                        className="text-xs h-7 px-2.5 text-secondary hover:text-red-600 border-border"
+                      >
+                        <X className="w-3 h-3 mr-1" />
+                        Decline
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleRequestAction(req.id, "accepted")}
+                        className="text-xs h-7 px-3 gap-1 shadow-xs"
+                      >
+                        <Check className="w-3 h-3" />
+                        Accept
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Upcoming Event Hosted/Attending */}
-          <div className="bg-surface border border-border rounded-md p-5 shadow-subtle space-y-3">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-primary">
-              <Calendar className="w-3.5 h-3.5 text-accent" />
-              <span>Upcoming Webinar You Co-Host</span>
-            </div>
-            <div className="p-3 bg-[#F8F8F5] border border-border rounded-sm space-y-1.5">
-              <p className="text-xs font-bold text-primary">
-                {DEMO_EVENTS[0].title}
-              </p>
-              <p className="text-[10px] text-secondary font-mono">
-                {DEMO_EVENTS[0].date} &bull; {DEMO_EVENTS[0].time}
-              </p>
-              <p className="text-[10px] text-emerald-700 font-medium">
-                {DEMO_EVENTS[0].registeredCount} students registered
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Share an Opportunity Interactive Modal */}
-      {shareModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-surface border border-border rounded-md max-w-lg w-full p-6 space-y-5 shadow-xl">
-            <div className="flex items-start justify-between border-b border-border pb-3">
-              <div>
-                <h3 className="font-bold text-sm text-primary">
-                  Share a Career Opportunity or Referral
+      {/* 4. Active Mentees & Ongoing Tracks */}
+      <div className="bg-surface border border-border rounded-md p-6 shadow-subtle space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
+          <div className="flex items-center gap-2">
+            <Lock className="w-4 h-4 text-accent" />
+            <h2 className="text-sm font-bold text-primary">
+              Active Student Mentorships ({myConversations.length})
+            </h2>
+          </div>
+          <Link
+            to="/alumni/mentorship/active"
+            className="text-xs text-accent font-medium hover:underline flex items-center gap-1"
+          >
+            <span>View All Cohorts</span>
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+
+        {myConversations.length === 0 ? (
+          <div className="py-6 text-center text-xs text-secondary">
+            No active mentees. Accept pending requests to activate 1-on-1 guidance tracks.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {myConversations.map((conv) => (
+              <div
+                key={conv.id}
+                className="p-4 bg-[#F8F8F5] border border-border rounded-sm space-y-3 flex flex-col justify-between"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xs text-primary">{conv.student_name}</span>
+                    <Badge className="text-[9px] bg-semantic-success text-white py-0 px-1 font-mono">
+                      Active Track
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-accent font-medium">Topic: {conv.topic}</p>
+                  <p className="text-[11px] text-secondary font-mono">
+                    Cadence: {conv.cadence}
+                  </p>
+                  <p className="text-xs text-secondary bg-surface p-2 rounded-xs border border-border line-clamp-1">
+                    {conv.last_message_preview || "Mentorship active"}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 pt-2 border-t border-border">
+                  <Link to={`/alumni/mentorship/one-on-one/${conv.id}`} className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full text-xs h-7 border-border gap-1">
+                      <MessageSquare className="w-3 h-3 text-accent" />
+                      <span>Chat</span>
+                    </Button>
+                  </Link>
+                  <Button
+                    size="sm"
+                    className="text-xs h-7 px-3 gap-1 flex-1"
+                    onClick={() =>
+                      window.open("https://meet.google.com/demo-alumnux-mentorship", "_blank")
+                    }
+                  >
+                    <Video className="w-3 h-3" />
+                    <span>Meet</span>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 5. Shared Opportunities List */}
+      <div className="bg-surface border border-border rounded-md p-6 shadow-subtle space-y-5">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
+          <div className="flex items-center gap-2">
+            <Briefcase className="w-4 h-4 text-accent" />
+            <h2 className="text-sm font-bold text-primary">
+              Opportunities You&apos;ve Shared
+            </h2>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => setShareModalOpen(true)}
+            className="text-xs gap-1.5 h-8"
+          >
+            <PlusCircle className="w-3 h-3" />
+            <span>Post New Listing</span>
+          </Button>
+        </div>
+
+        <div className="space-y-3">
+          {sharedListings.map((job) => (
+            <div
+              key={job.id}
+              className="p-4 rounded-sm border border-border bg-[#F8F8F5] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            >
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-[9px] font-mono uppercase">
+                    {job.opportunityType}
+                  </Badge>
+                  <span className="text-[10px] font-mono text-secondary">
+                    Posted {job.postedDate} &bull; Deadline: {job.deadline}
+                  </span>
+                </div>
+                <h3 className="font-semibold text-xs sm:text-sm text-primary">
+                  {job.title}
                 </h3>
-                <p className="text-xs text-secondary">
-                  Post an early-career vacancy, internship, or referral opportunity for students.
+                <p className="text-[11px] text-secondary">
+                  {job.organization} &bull; {job.location} ({job.workMode})
                 </p>
               </div>
+
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-[10px] font-mono text-secondary">
+                  14 Student Views
+                </Badge>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Share Opportunity Modal */}
+      {shareModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-surface border border-border rounded-md p-6 max-w-lg w-full space-y-4 shadow-xl">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
+              <h3 className="font-bold text-sm text-primary">Share Career Opportunity</h3>
               <button
+                type="button"
                 onClick={() => setShareModalOpen(false)}
-                className="p-1 rounded-sm border border-border text-secondary hover:text-primary"
+                className="text-secondary hover:text-primary"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleShareOpportunity} className="space-y-3.5">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-primary">
-                  Role Title <span className="text-accent">*</span>
-                </label>
+            <form onSubmit={handleShareOpportunity} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold block mb-1">Opportunity Title</label>
                 <Input
-                  required
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="e.g. Junior Systems Engineer, Cloud Intern..."
-                  className="h-9 text-xs bg-[#F8F8F5]"
+                  placeholder="e.g. Junior Backend Engineer (Go / Distributed Systems)"
+                  className="text-xs h-9 bg-surface border-border"
+                  required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-primary">
-                    Organization
-                  </label>
+                <div>
+                  <label className="font-semibold block mb-1">Organization</label>
                   <Input
-                    required
                     value={newOrg}
                     onChange={(e) => setNewOrg(e.target.value)}
-                    placeholder="e.g. Stripe, Google, Startup"
-                    className="h-9 text-xs bg-[#F8F8F5]"
+                    className="text-xs h-9 bg-surface border-border"
+                    required
                   />
                 </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-primary">
-                    Opportunity Type
-                  </label>
+                <div>
+                  <label className="font-semibold block mb-1">Type</label>
                   <select
                     value={newType}
-                    onChange={(e) =>
-                      setNewType(e.target.value as "Full-time" | "Internship" | "Referral")
-                    }
-                    className="w-full h-9 rounded-sm border border-border bg-[#F8F8F5] px-3 text-xs text-primary focus:outline-none"
+                    onChange={(e) => setNewType(e.target.value as any)}
+                    className="w-full text-xs h-9 p-2 bg-surface border border-border rounded-sm"
                   >
-                    <option value="Referral">Alumni Referral</option>
-                    <option value="Full-time">Full-time Vacancy</option>
+                    <option value="Referral">Employee Referral</option>
                     <option value="Internship">Internship</option>
+                    <option value="Full-time">Full-time Role</option>
                   </select>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-primary">
-                  Location &amp; Work Mode
-                </label>
+              <div>
+                <label className="font-semibold block mb-1">Location &amp; Work Mode</label>
                 <Input
                   value={newLocation}
                   onChange={(e) => setNewLocation(e.target.value)}
-                  placeholder="e.g. Bengaluru (Hybrid) or Remote"
-                  className="h-9 text-xs bg-[#F8F8F5]"
+                  className="text-xs h-9 bg-surface border-border"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-primary">
-                  Role Description &amp; Candidate Criteria
-                </label>
+              <div>
+                <label className="font-semibold block mb-1">Short Description / Instructions</label>
                 <textarea
                   rows={3}
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
-                  placeholder="Briefly state target skills, branch criteria, and how students can request a referral..."
-                  className="w-full rounded-sm border border-border bg-[#F8F8F5] p-2.5 text-xs text-primary focus:outline-none resize-none"
+                  placeholder="Briefly describe responsibilities and how students can apply or connect..."
+                  className="w-full text-xs p-2 bg-surface border border-border rounded-sm resize-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-border">
+              <div className="flex justify-end gap-2 pt-2 border-t border-border">
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   onClick={() => setShareModalOpen(false)}
-                  className="text-xs"
+                  className="text-xs border-border"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="text-xs font-semibold">
-                  Post Opportunity
+                <Button type="submit" size="sm" className="text-xs">
+                  Publish to Student Board
                 </Button>
               </div>
             </form>

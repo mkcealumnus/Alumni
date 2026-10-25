@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/authContext";
+import { MentorshipProvider } from "./context/mentorshipContext";
 import { ProtectedRoute } from "./components/auth/protectedRoute";
 import { RootLayout } from "./components/layout/rootLayout";
 
@@ -22,7 +23,8 @@ import ForgotPasswordPage from "./pages/auth/forgotPasswordPage";
 import { StudentDashboardLayout } from "./layouts/studentDashboardLayout";
 import StudentDashboardPage from "./pages/student/studentDashboardPage";
 import StudentAlumniPage from "./pages/student/studentAlumniPage";
-import StudentMentorshipPage from "./pages/student/studentMentorshipPage";
+import StudentMentorshipHubPage from "./pages/student/studentMentorshipHubPage";
+import StudentOneOnOnePage from "./pages/student/studentOneOnOnePage";
 import StudentJobsPage from "./pages/student/studentJobsPage";
 import StudentSavedPage from "./pages/student/studentSavedPage";
 import StudentMessagesPage from "./pages/student/studentMessagesPage";
@@ -34,12 +36,18 @@ import StudentSettingsPage from "./pages/student/studentSettingsPage";
 import { AlumniDashboardLayout } from "./layouts/alumniDashboardLayout";
 import AlumniDashboardPage from "./pages/alumni/alumniDashboardPage";
 import AlumniStudentsPage from "./pages/alumni/alumniStudentsPage";
-import AlumniMentorshipPage from "./pages/alumni/alumniMentorshipPage";
+import AlumniMentorshipHubPage from "./pages/alumni/alumniMentorshipHubPage";
+import AlumniMentorshipRequestsPage from "./pages/alumni/alumniMentorshipRequestsPage";
+import AlumniActiveMentorshipsPage from "./pages/alumni/alumniActiveMentorshipsPage";
+import AlumniOneOnOnePage from "./pages/alumni/alumniOneOnOnePage";
 import AlumniOpportunitiesPage from "./pages/alumni/alumniOpportunitiesPage";
 import AlumniMessagesPage from "./pages/alumni/alumniMessagesPage";
 import AlumniEventsPage from "./pages/alumni/alumniEventsPage";
 import AlumniProfilePage from "./pages/alumni/alumniProfilePage";
 import AlumniSettingsPage from "./pages/alumni/alumniSettingsPage";
+
+// Shared Open Chat Mentorship
+import OpenChatMentorshipPage from "./pages/mentorship/openChatMentorshipPage";
 
 // Specialized Legacy / Verification Workflows
 import StudentOnboardingPage from "./pages/onboarding/studentPage";
@@ -51,7 +59,8 @@ import AdminConsolePage from "./pages/admin/adminPage";
 export default function App() {
   return (
     <AuthProvider>
-      <Routes>
+      <MentorshipProvider>
+        <Routes>
         {/* Public Website Shell (Header & Footer) */}
         <Route element={<RootLayout />}>
           {/* Five Primary Public Pages */}
@@ -106,7 +115,14 @@ export default function App() {
           <Route path="/student" element={<Navigate to="/student/dashboard" replace />} />
           <Route path="/student/dashboard" element={<StudentDashboardPage />} />
           <Route path="/student/alumni" element={<StudentAlumniPage />} />
-          <Route path="/student/mentorship" element={<StudentMentorshipPage />} />
+
+          {/* Student Mentorship Routes (Section 6 Specification) */}
+          <Route path="/student/mentorship" element={<StudentMentorshipHubPage />} />
+          <Route path="/student/mentorship/open-chat" element={<OpenChatMentorshipPage />} />
+          <Route path="/student/mentorship/one-on-one" element={<StudentOneOnOnePage />} />
+          <Route path="/student/mentorship/one-on-one/:conversationId" element={<StudentOneOnOnePage />} />
+          <Route path="/student/mentorship/requests" element={<StudentOneOnOnePage initialTab="requests" />} />
+
           <Route path="/student/jobs" element={<StudentJobsPage />} />
           <Route path="/student/saved" element={<StudentSavedPage />} />
           <Route path="/student/messages" element={<StudentMessagesPage />} />
@@ -126,7 +142,14 @@ export default function App() {
           <Route path="/alumni" element={<Navigate to="/alumni/dashboard" replace />} />
           <Route path="/alumni/dashboard" element={<AlumniDashboardPage />} />
           <Route path="/alumni/students" element={<AlumniStudentsPage />} />
-          <Route path="/alumni/mentorship" element={<AlumniMentorshipPage />} />
+
+          {/* Alumni Mentorship Routes (Section 6 Specification) */}
+          <Route path="/alumni/mentorship" element={<AlumniMentorshipHubPage />} />
+          <Route path="/alumni/mentorship/open-chat" element={<OpenChatMentorshipPage />} />
+          <Route path="/alumni/mentorship/requests" element={<AlumniMentorshipRequestsPage />} />
+          <Route path="/alumni/mentorship/active" element={<AlumniActiveMentorshipsPage />} />
+          <Route path="/alumni/mentorship/one-on-one/:conversationId" element={<AlumniOneOnOnePage />} />
+
           <Route path="/alumni/opportunities" element={<AlumniOpportunitiesPage />} />
           <Route path="/alumni/messages" element={<AlumniMessagesPage />} />
           <Route path="/alumni/events" element={<AlumniEventsPage />} />
@@ -134,6 +157,7 @@ export default function App() {
           <Route path="/alumni/settings" element={<AlumniSettingsPage />} />
         </Route>
       </Routes>
+      </MentorshipProvider>
     </AuthProvider>
   );
 }
