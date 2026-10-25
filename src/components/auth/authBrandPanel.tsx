@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { GraduationCap, Briefcase, ShieldCheck, Sparkles, ArrowUpRight } from "lucide-react";
+import { cn } from "../../lib/utils";
 
-export function AuthBrandPanel() {
+interface AuthBrandPanelProps {
+  className?: string;
+}
+
+export function AuthBrandPanel({ className }: AuthBrandPanelProps) {
   return (
-    <aside className="w-full lg:w-[45%] xl:w-[42%] bg-[#FAF9F5] border-b lg:border-b-0 lg:border-r border-border p-6 sm:p-8 lg:p-12 flex flex-col justify-between relative overflow-hidden select-none">
+    <aside
+      className={cn(
+        "w-full lg:w-[45%] xl:w-[42%] bg-[#FAF9F5] border-b lg:border-b-0 lg:border-r border-border p-6 sm:p-8 lg:p-12 flex flex-col justify-between relative overflow-hidden select-none",
+        className
+      )}
+    >
       {/* Background Decorative Grid Line Pattern */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.035]"

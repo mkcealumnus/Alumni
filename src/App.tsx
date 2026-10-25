@@ -61,6 +61,17 @@ export default function App() {
     <AuthProvider>
       <MentorshipProvider>
         <Routes>
+          {/* Dedicated Standalone Authentication Routes (Split-screen layout without public Navbar & Footer) */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/authLogin" element={<LoginPage />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/authRegister" element={<RegisterPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
+
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
         {/* Public Website Shell (Header & Footer) */}
         <Route element={<RootLayout />}>
           {/* Five Primary Public Pages */}
@@ -69,17 +80,6 @@ export default function App() {
           <Route path="/our-goal" element={<OurGoalPage />} />
           <Route path="/career" element={<CareerPage />} />
           <Route path="/contact" element={<ContactPage />} />
-
-          {/* Authentication Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/authLogin" element={<LoginPage />} />
-          <Route path="/auth/login" element={<LoginPage />} />
-
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/authRegister" element={<RegisterPage />} />
-          <Route path="/auth/register" element={<RegisterPage />} />
-
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
           {/* Public / Directory & Policy Pages */}
           <Route path="/directory" element={<AlumniDirectoryPage />} />

@@ -10,6 +10,7 @@ import {
   Eye,
   EyeOff,
   ArrowRight,
+  ArrowLeft,
   Sparkles,
   GraduationCap,
   Briefcase,
@@ -82,6 +83,20 @@ export default function LoginPage() {
       {/* 2. RIGHT PANEL — LOGIN FORM (~55% Desktop) */}
       <main className="w-full lg:w-[55%] xl:w-[58%] min-h-screen flex flex-col justify-center items-center p-6 sm:p-10 lg:p-12 bg-surface">
         <div className="w-full max-w-md space-y-6">
+          {/* Top Return Navigation */}
+          <div className="flex items-center justify-between pb-1">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-primary transition-colors font-mono"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Home</span>
+            </Link>
+            <span className="text-[10px] font-mono text-secondary uppercase tracking-wider">
+              Secure Sign In
+            </span>
+          </div>
+
           {/* Header Typography */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
