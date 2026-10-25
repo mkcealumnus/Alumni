@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import {
   Lock,
   Mail,
@@ -17,7 +16,6 @@ import {
   ShieldCheck,
   GraduationCap,
   Briefcase,
-  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 

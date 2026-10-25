@@ -3,16 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowRight,
-  Compass,
   Users,
   Briefcase,
   GraduationCap,
   ShieldCheck,
-  CheckCircle2,
-  Bookmark,
-  Sparkles,
   MapPin,
-  Clock,
   Building2,
   TrendingUp,
 } from "lucide-react";

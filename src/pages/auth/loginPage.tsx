@@ -15,7 +15,6 @@ import {
   GraduationCap,
   Briefcase,
   ShieldCheck,
-  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "../../context/authContext";
 
@@ -62,7 +61,7 @@ export default function LoginPage() {
 
   const handleInstantDemoLogin = async (role: "student" | "alumni") => {
     setIsLoading(true);
-    const demoUser = await loginAsDemo(role);
+    await loginAsDemo(role);
     setIsLoading(false);
 
     const destination =
