@@ -1,0 +1,28 @@
+{
+  "name": "@alumnux/mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alumnux Mobile Application (Expo / React Native)",
+  "main": "App.tsx",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@alumnux/api-client": "workspace:*",
+    "@alumnux/types": "workspace:*",
+    "@alumnux/ui-tokens": "workspace:*",
+    "expo": "~52.0.0",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.6"
+  },
+  "devDependencies": {
+    "@alumnux/config": "workspace:*",
+    "@types/react": "~18.3.12",
+    "typescript": "^5.6.3"
+  }
+}
