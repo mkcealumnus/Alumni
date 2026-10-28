@@ -6,7 +6,6 @@
 > **Frontend Architecture:** React 19 + Vite 6 + TypeScript (Strict Mode) + React Router v7 + Tailwind CSS
 
 ---
-
 ## 1. Project Overview & Governance
 
 Alumnux is an independent student and alumni career guidance platform designed to connect students with experienced alumni through career guidance, mentorship, professional networking, job opportunities, internships, and referrals.
