@@ -1,194 +1,216 @@
-# ALUMNUX — “Your Network. Your Next Chapter.”
+# ALUMNUX — Monorepo Architecture & Clean App Foundation
 
 > **Platform Tagline:** Your Network. Your Next Chapter.  
 > **Category:** Independent Student Career Guidance & Alumni Networking Platform  
-> **Design Philosophy:** Refined Nano-Brutalism  
-> **Frontend Architecture:** React 19 + Vite 6 + TypeScript (Strict Mode) + React Router v7 + Tailwind CSS
+> **Production Domain:** [https://mkcealumni.org](https://mkcealumni.org/)  
+> **Monorepo Architecture:** pnpm Workspaces + Turborepo  
+> **Backend Service:** Fastify 5 + TypeScript (Node.js)  
+> **Target Database:** MySQL 8.0+ on cPanel Shared Hosting  
+> **Client Applications:** Web (React 19 + Vite), Mobile (Expo React Native), Desktop (Tauri Foundation)
 
 ---
 
 ## 1. Project Overview & Governance
 
-Alumnux is an independent student and alumni career guidance platform designed to connect students with experienced alumni through career guidance, mentorship, professional networking, job opportunities, internships, and referrals.
+**Alumnux** is an independent career guidance and alumni networking ecosystem connecting ambitious students with industry-experienced alumni. The platform offers mentorship workflows, directory searches, job referrals, and structured institutional verification.
 
-### 1.1 Independent Platform Notice
-Alumnux is independently developed and administered by **three senior alumni trustees**. It is **not** an officially managed college platform, and college administration or academic faculty have no operational involvement or administrative access.
-
----
-
-## 2. Refined Nano-Brutalist Design System
-
-The platform implements **Refined Nano-Brutalism** (distinct from cartoon Neo-Brutalism):
-- **Core Principles:** Editorial minimalism, precise geometry, subtle 1px neutral borders, clear typography hierarchy, generous whitespace, crisp cards, purposeful grids, and subtle motion transitions.
-- **Color Palette:**
-  - Page Background: `#F8F8F5` (warm off-white)
-  - Surface Neutral: `#FFFFFF` and `#F2F2EC`
-  - Primary Typography: `#171717` (near-black)
-  - Secondary Typography: `#666660`
-  - Border System: `#E5E5DF` / `#D8D8D2` (restrained 1px line work)
-  - Vivid Accent: `#2563EB` (Cobalt blue, used selectively)
-  - Semantic Status: Emerald (`#16A34A`), Amber (`#D97706`), Crimson (`#DC2626`)
-- **Responsive Coverage:** Built to scale cleanly from mobile devices (6.1" to 6.8") up through desktop monitors and 49" super ultrawide screens.
+### Independent Governance Notice
+Alumnux is independently maintained and governed by **three senior alumni trustees**. It is not an officially managed college platform, and institutional administration or faculty have no direct operational access or control over user verification.
 
 ---
 
-## 3. Implemented Routes & Screen Deliverables
+## 2. Monorepo Architecture Summary
 
-### Part A — Public Website (5 Primary Pages)
-1. **Home (`/`):**
-   - **Hero Section:** Headline *"Your Network. Your Next Chapter."*, supporting message, *"Explore Careers"* primary CTA, *"Join Alumnux"* secondary CTA, live mentorship preview visual, and independent trust statement.
-   - **What Alumnux Offers:** 4 concise feature cards (Career Guidance, Alumni Networking, Mentorship, Jobs & Internships) with Lucide icons and hover transitions.
-   - **How It Works:** 3-step student journey (Create profile &rarr; Connect with alumni &rarr; Build skills & advance career).
-   - **Career Opportunities Preview:** 3 realistic sample listings marked clearly as demo content, with quick link to the Career page.
-   - **Final CTA Banner:** High-contrast conversion banner leading to registration and platform discovery.
-2. **About (`/about`):**
-   - Detailed platform introduction, the student guidance gap, mutual value creation for students and working alumni, 4 core values (Accessibility, Collaboration, Professional Growth, Responsible Networking), and independent platform statement.
-3. **Our Goal (`/our-goal`):**
-   - Mission and vision statements, 5 strategic goals, and a phased visual development roadmap (Phase 1 through Phase 4) without fabricated statistics.
-4. **Career Discovery (`/career`):**
-   - Interactive search input with multi-select filters for opportunity type (Full-time, Internship, Referral, Mentorship), work mode (Remote, Hybrid, Onsite), and locations.
-   - Interactive save/bookmark toggle state persisted in local storage.
-   - Opportunity detail modal with requirements, compensation bands, and referral notes.
-   - Empty state handling with quick filter-reset.
-   - Alumni CTA to share opportunities.
-5. **Contact & Feedback (`/contact`):**
-   - Validated inquiry form using React Hook Form + Zod across 4 inquiry categories (General Inquiry, Technical Support, Partnership Inquiry, Feedback).
-   - Instant client-side validation, error messages, and simulated submission feedback.
-   - Expandable FAQ accordion addressing common student/alumni questions.
+The repository is structured as a **pnpm monorepo** managed with **Turborepo** to ensure code reuse, contract consistency, and fast cached builds across all deployment targets:
 
-### Part B — Header, Navigation & Footer
-- **Sticky Shared Header (`Navbar`):**
-  - Alumnux logo/wordmark, links to all 5 public pages, active route styling, accessible mobile responsive drawer.
-  - Far-right actions: Login (secondary button) and Register (primary button).
-  - When logged in: displays active dashboard button and instant logout.
-- **Shared Footer (`Footer`):**
-  - Brand wordmark, tagline, links to all 5 public pages, login/register links, dynamic copyright year (`new Date().getFullYear()`), and prominent non-institutional disclaimer.
+```mermaid
+graph TD
+    subgraph Clients ["Applications (apps/)"]
+        Web["@alumnux/web<br/>(React 19 + Vite)"]
+        Mobile["@alumnux/mobile<br/>(Expo React Native)"]
+        Desktop["@alumnux/desktop<br/>(Tauri Foundation)"]
+    end
 
-### Part C — Demo Authentication & Role Guards
-- **Dedicated Routes:** `/login`, `/register`, `/forgot-password`.
-- **Zero-Dependency Demo Accounts:** Fully operational without Supabase credentials.
-  - **Student Demo:**
-    - Email: `student@alumnux.demo`
-    - Password: `Student@123`
-    - Destination: `/student/dashboard`
-  - **Alumni Demo:**
-    - Email: `alumni@alumnux.demo`
-    - Password: `Alumni@123`
-    - Destination: `/alumni/dashboard`
-- **1-Click Demo Login:** Dedicated buttons on `/login` to instantly authenticate as either role.
-- **Registration Flow:** Full name, email, password, confirm password, account type selector (Student/Alumni), terms acknowledgement, and demo success state.
-- **Route Protection (`ProtectedRoute`):**
-  - Unauthenticated access to `/student/*` or `/alumni/*` is blocked and redirected to `/login`.
-  - Cross-role access is guarded (e.g. Students cannot view `/alumni/*` and vice versa).
-  - Functional logout clears browser session and returns to login.
+    subgraph Core ["Shared Core (packages/)"]
+        Types["@alumnux/types"]
+        Schemas["@alumnux/schemas"]
+        Domain["@alumnux/domain"]
+        Tokens["@alumnux/ui-tokens"]
+        Client["@alumnux/api-client"]
+        Config["@alumnux/config"]
+    end
 
-### Part D — Student Dashboard (`/student/*`)
-- **Layout:** Fixed desktop sidebar + responsive mobile drawer, top header with user avatar (`AR`), display name (*Alex Rivera*), notifications popover, search, and profile dropdown.
-- **Overview (`/student/dashboard`):** Personalized welcome greeting, 4 statistics cards (Alumni Connections: 12, Mentorship Requests: 3, Saved Opportunities: 8, Upcoming Events: 2), recommended alumni, featured opportunities, profile completion progress (85%), and activity feed.
-- **Sub-pages:**
-  - `/student/alumni` — Filterable alumni directory with direct mentorship request modal.
-  - `/student/mentorship` — Scheduled mentorship sessions with video meeting links.
-  - `/student/jobs` — Job & internship board with quick-apply demo application modal.
-  - `/student/saved` — Bookmarked opportunities with removal actions.
-  - `/student/messages` — Simulated live 1-on-1 chat interface with alumni mentor Jordan Vance.
-  - `/student/events` — Upcoming webinars and technical AMAs with interactive RSVP toggle.
-  - `/student/profile` — Student profile view with editable bio and skills manager.
-  - `/student/settings` — Notification preferences, role switcher, and demo reset.
+    subgraph Backend ["Services (services/)"]
+        API["@alumnux/api<br/>(Fastify 5 Node REST)"]
+    end
 
-### Part E — Alumni Dashboard (`/alumni/*`)
-- **Layout:** Alumni-optimized sidebar and header with avatar (`JV`), display name (*Jordan Vance*), and quick actions.
-- **Overview (`/alumni/dashboard`):** Personalized welcome greeting, 4 statistics cards (Incoming Requests: 4, Active Mentees: 6, Opportunities Shared: 3, Student Connections: 28), pending mentorship requests with **functional Accept / Decline actions**, and recently shared opportunities.
-- **Sub-pages:**
-  - `/alumni/students` — Student directory to explore aspiring engineers and offer guidance.
-  - `/alumni/mentorship` — Mentorship schedule and incoming request management.
-  - `/alumni/opportunities` — Manage shared listings and **Post New Opportunity** modal form.
-  - `/alumni/messages` — Direct message threads with student mentees.
-  - `/alumni/events` — Host an AMA / workshop scheduling modal.
-  - `/alumni/profile` — Alumni profile with current company (Stripe), role, and expertise editor.
-  - `/alumni/settings` — Mentorship capacity limits (max mentees, monthly hours), role switcher, and reset.
+    subgraph Storage ["Database (database/)"]
+        MySQL[("MySQL 8.0+<br/>(cPanel Hosted)")]
+    end
 
----
+    Web --> Core
+    Mobile --> Core
+    Desktop --> Core
+    API --> Types
+    API --> Schemas
+    API --> Domain
 
-## 4. Reusable Project Structure
-
-```text
-src/
-├── components/
-│   ├── auth/
-│   │   └── protectedRoute.tsx       # Role-based route guard
-│   ├── layout/
-│   │   ├── footer.tsx               # Public shared footer with disclaimer
-│   │   ├── navbar.tsx               # Public sticky header with mobile drawer
-│   │   └── rootLayout.tsx           # Public page shell
-│   └── ui/                          # Button, Input, Badge, Card, Dialog, Table, Tabs
-├── context/
-│   └── authContext.tsx              # Isolated demo authentication provider & local session
-├── data/
-│   └── demoData.ts                  # Typed centralized demo accounts, jobs, events, requests
-├── layouts/
-│   ├── alumniDashboardLayout.tsx    # Alumni sidebar, header, and navigation shell
-│   └── studentDashboardLayout.tsx   # Student sidebar, header, and navigation shell
-├── lib/
-│   ├── mockData.ts                  # Seeded alumni profiles & verification records
-│   ├── tokens.ts                    # Refined Nano-Brutalism design system tokens
-│   ├── types.ts                     # Core TypeScript interfaces
-│   ├── utils.ts                     # cn class merger utility
-│   └── validation/                  # Zod validation schemas
-├── pages/
-│   ├── admin/
-│   │   └── adminPage.tsx            # Senior Alumni Trustee Console
-│   ├── alumni/                      # 7 Alumni dashboard views
-│   ├── auth/
-│   │   ├── forgotPasswordPage.tsx   # Password recovery simulation
-│   │   ├── loginPage.tsx            # Sign in with 1-click student & alumni demo buttons
-│   │   └── registerPage.tsx         # Account registration with role selection
-│   ├── directory/
-│   │   └── directoryPage.tsx        # Public directory catalog
-│   ├── onboarding/                  # Academic verification intake workflows
-│   ├── public/
-│   │   ├── aboutPage.tsx            # About Alumnux page
-│   │   ├── careerPage.tsx           # Searchable opportunity discovery page
-│   │   ├── contactPage.tsx          # Validated inquiry form & FAQ accordion
-│   │   └── ourGoalPage.tsx          # Mission, vision, goals & phased roadmap
-│   ├── student/                     # 8 Student dashboard views
-│   ├── landingPage.tsx              # 5-section refined Home landing page
-│   ├── notFoundPage.tsx             # 404 handler
-│   ├── privacyPage.tsx              # DPDP 2023 privacy policy
-│   └── termsPage.tsx                # Terms of service
-├── styles/
-│   └── index.css                    # Tailwind directives & CSS variables
-├── App.tsx                          # App routing tree & route guards
-└── main.tsx                         # React 19 bootstrap
+    Web -.->|HTTP REST| API
+    Mobile -.->|HTTP REST| API
+    Desktop -.->|HTTP REST| API
+    API -.->|mysql2| MySQL
 ```
 
 ---
 
-## 5. Technical Validation & Scripts
+## 3. Repository Directory Tree
 
-Every mandatory verification gate passes with zero errors and zero warnings:
+```
+Alumni/
+├── apps/
+│   ├── web/                     # Preserved web frontend (React 19, Vite, Tailwind CSS, React Router 7)
+│   ├── mobile/                  # Minimal Expo React Native foundation for Android & iOS
+│   └── desktop/                 # Lightweight Tauri desktop application foundation
+├── services/
+│   └── api/                     # Node.js Fastify REST API service with /health endpoint
+├── packages/
+│   ├── types/                   # @alumnux/types: Domain, user, verification, and API types
+│   ├── schemas/                 # @alumnux/schemas: Shared Zod validation schemas
+│   ├── domain/                  # @alumnux/domain: Pure business logic & lifecycle rules
+│   ├── ui-tokens/               # @alumnux/ui-tokens: Cross-platform design tokens
+│   ├── api-client/              # @alumnux/api-client: Typed HTTP client for all apps
+│   └── config/                  # @alumnux/config: ESLint & TypeScript presets
+├── database/
+│   ├── schema/                  # Production MySQL DDL schema for cPanel / phpMyAdmin
+│   └── migrations/              # Database migration history
+├── docs/
+│   ├── architecture/            # Monorepo architecture & request flow specs
+│   ├── migration/               # Phase 1 migration logs & verification data
+│   ├── development/             # Comprehensive local development workflows
+│   └── deployment/              # cPanel shared hosting production deployment guide
+├── .github/
+│   └── workflows/ci.yml         # GitHub Actions CI workflow (Build, Lint, Typecheck, Test)
+├── .env.example                 # Root environment template
+├── .gitignore                   # Multi-workspace Git exclusion rules
+├── .npmrc                       # pnpm configuration
+├── package.json                 # Monorepo root manifest
+├── pnpm-workspace.yaml          # Workspace package mapping & build script approvals
+├── turbo.json                   # Turborepo task pipeline configuration
+├── tsconfig.base.json           # Shared base TypeScript configuration
+└── README.md                    # Project documentation
+```
 
-| Command | Status | Description |
-| :--- | :--- | :--- |
-| `npm run typecheck` | **Passed (Exit 0)** | TypeScript compiler (`tsc --noEmit`) with strict mode enabled |
-| `npm run test` | **Passed (Exit 0)** | 33 / 33 automated Vitest tests passing across 5 test suites |
-| `npm run lint` | **Passed (Exit 0)** | ESLint passing with 0 warnings (`--max-warnings 0`) |
-| `npm run build` | **Passed (Exit 0)** | Vite 6 production bundle generated in `dist/` in ~7.6s |
-| `npx wrangler deploy --dry-run` | **Passed (Exit 0)** | Cloudflare SPA deployment verification |
+---
 
-### Running the Application Locally
+## 4. Workspace Packages
+
+| Package / App | Version | Status | Purpose |
+| :--- | :---: | :---: | :--- |
+| **`@alumnux/web`** | `1.0.0` | Active | Full-featured responsive website preserving all pages, components, and tests |
+| **`@alumnux/mobile`** | `1.0.0` | Foundation | Expo React Native app with API health check and role picker |
+| **`@alumnux/desktop`** | `1.0.0` | Placeholder | Tauri v2 desktop client foundation with API client binding |
+| **`@alumnux/api`** | `1.0.0` | Active | Fastify REST API with `/health`, CORS, error handling, and request logging |
+| **`@alumnux/types`** | `1.0.0` | Core | Shared domain interfaces (`UserRole`, `UserProfile`, `VerificationStatus`) |
+| **`@alumnux/schemas`** | `1.0.0` | Core | Shared Zod schemas (Student/Alumni verification, Admin decision, Auth) |
+| **`@alumnux/domain`** | `1.0.0` | Core | Business rules (Department catalog, verification lifecycle, grad year rules) |
+| **`@alumnux/ui-tokens`** | `1.0.0` | Core | Design system tokens (colors, radii, spacing, typography, motion) |
+| **`@alumnux/api-client`** | `1.0.0` | Core | Universal typed fetch client with configurable base URL and error models |
+| **`@alumnux/config`** | `1.0.0` | Core | Reusable TypeScript compiler options and ESLint configurations |
+
+---
+
+## 5. Prerequisites & Getting Started
+
+### Prerequisites
+- **Node.js:** `v20.x`, `v22.x`, or `v24.x` (Tested with `v24.15.0`)
+- **pnpm:** `v10.x` or `v11.x` (Tested with `11.21.0`)
+
+### Installation
+```bash
+# 1. Clone the repository
+git clone https://github.com/mkcealumnus/Alumni.git
+cd Alumni
+
+# 2. Checkout the migration branch
+git checkout chore/monorepo-foundation
+
+# 3. Install all workspace dependencies
+pnpm install
+```
+
+### Environment Setup
+Copy the environment template files:
+```bash
+# Windows PowerShell
+Copy-Item .env.example .env
+Copy-Item apps/web/.env.example apps/web/.env.local
+Copy-Item services/api/.env.example services/api/.env
+Copy-Item apps/mobile/.env.example apps/mobile/.env.local
+```
+```bash
+# Unix / macOS
+cp .env.example .env
+cp apps/web/.env.example apps/web/.env.local
+cp services/api/.env.example services/api/.env
+cp apps/mobile/.env.example apps/mobile/.env.local
+```
+
+---
+
+## 6. Development & Running Applications
+
+### Run All Dev Tasks Concurrently
+```bash
+pnpm run dev
+```
+
+### Run Specific Workspaces
+```bash
+# Web application (http://localhost:3000)
+pnpm --filter @alumnux/web dev
+
+# API Backend (http://localhost:4000)
+pnpm --filter @alumnux/api dev
+
+# Mobile application (Expo Metro bundler)
+pnpm --filter @alumnux/mobile start
+```
+
+---
+
+## 7. Build, Test, Typecheck & Lint
+
+Run repository-wide commands powered by Turborepo:
 
 ```bash
-# 1. Install dependencies
-npm install
+# Run typechecks across all 10 workspaces
+pnpm run typecheck
 
-# 2. Start local Vite development server
-npm run dev
+# Run unit tests (Web vitest + API health check tests)
+pnpm run test
 
-# 3. Open in browser: http://localhost:3000
+# Run ESLint across codebases
+pnpm run lint
+
+# Build all packages, API, and web distribution bundle
+pnpm run build
 ```
 
-### Reviewer Walkthrough Guide
-1. **Public Exploration:** Browse through `/`, `/about`, `/our-goal`, `/career`, and `/contact`. Test the career search, filters, and bookmarking interactions.
-2. **Student Demo:** Navigate to `/login`, click **"Student Demo"** (or use `student@alumnux.demo` / `Student@123`). Explore `/student/dashboard`, request guidance in `/student/alumni`, test job application in `/student/jobs`, and view chat in `/student/messages`.
-3. **Alumni Demo:** Switch roles in Settings or log in as **"Alumni Demo"** (`alumni@alumnux.demo` / `Alumni@123`). Accept or decline pending student requests in `/alumni/dashboard`, open the **"Share an Opportunity"** modal, and view mentee milestones.
-4. **Security & Guarding:** Attempt entering `/alumni/dashboard` while logged in as a student; notice the automatic redirection back to `/student/dashboard`. Log out to clear the session.
+---
+
+## 8. Current Limitations & Next Phases
+
+### Current Phase 1 Status
+- Monorepo restructuring complete with pnpm workspaces and Turborepo.
+- The existing website is running from `apps/web` with all functionality preserved.
+- Shared packages (`types`, `schemas`, `domain`, `ui-tokens`, `api-client`, `config`) are established.
+- API foundation (`services/api`) is operational with `/health` endpoint and tests.
+- Minimal mobile (`apps/mobile`) and desktop (`apps/desktop`) foundations established.
+- Complete MySQL schema for cPanel phpMyAdmin created in `database/schema/`.
+
+### Phase 2 Roadmap
+1. **Server-Backed Authentication:** Transition from client-side mock auth in `apps/web` to JWT-based session management in `services/api`.
+2. **Database Migrations:** Connect `services/api` to MySQL via `mysql2` or `knex` with automated migrations.
+3. **Verification Pipeline:** Implement secure document upload handling on cPanel for student and degree credentials.
+4. **Mobile Screens:** Build out native student and alumni screens in `apps/mobile` consuming the shared API.
+5. **Redesigned Web Application:** Launch the next-generation web frontend using the shared design tokens and API client.
