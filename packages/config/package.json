@@ -6,5 +6,9 @@
   "files": [
     "typescript",
     "eslint"
-  ]
+  ],
+  "exports": {
+    "./typescript/*": "./typescript/*",
+    "./eslint/*": "./eslint/*"
+  }
 }
