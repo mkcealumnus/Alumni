@@ -8,6 +8,7 @@ import {
   Text,
   Platform,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BRUTAL_COLORS,
   BRUTAL_BORDERS,
@@ -25,6 +26,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   onSend,
   isSending = false,
 }) => {
+  const insets = useSafeAreaInsets();
   const [content, setContent] = useState("");
 
   const handleSend = async () => {
@@ -43,7 +45,12 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   const canSend = content.trim().length > 0 && !isSending;
 
   return (
-    <View style={styles.composerContainer}>
+    <View
+      style={[
+        styles.composerContainer,
+        { paddingBottom: Math.max(insets.bottom, BRUTAL_SPACING[3]) },
+      ]}
+    >
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}

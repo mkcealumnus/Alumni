@@ -6,8 +6,8 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Conversation, ChatMessage } from "@alumnux/types";
 import {
   BRUTAL_COLORS,
@@ -33,6 +33,7 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
 }) => {
   const { user } = useMobileAuth();
   const { messages, isSending, sendMessage } = useMessages(conversation.id);
+  const insets = useSafeAreaInsets();
 
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
 
@@ -56,13 +57,15 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
   }, [messages.length]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ChatHeader
-        partnerName={partnerName}
-        partnerRole={partnerRole}
-        topic={conversation.topic}
-        onBack={onBack}
-      />
+    <View style={styles.safeArea}>
+      <View style={{ paddingTop: insets.top, backgroundColor: BRUTAL_COLORS.SURFACE }}>
+        <ChatHeader
+          partnerName={partnerName}
+          partnerRole={partnerRole}
+          topic={conversation.topic}
+          onBack={onBack}
+        />
+      </View>
 
       {conversation.topic ? (
         <View style={styles.trackBanner}>
@@ -75,7 +78,6 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
       >
         <FlatList
           ref={flatListRef}
@@ -117,7 +119,7 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
           isSending={isSending}
         />
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 

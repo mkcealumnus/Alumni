@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
-  StatusBar,
   TouchableOpacity,
   ActivityIndicator,
-  ScrollView,
   Platform,
 } from "react-native";
 import { registerRootComponent } from "expo";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { NavigationBar } from "expo-navigation-bar";
 import {
   BRUTAL_COLORS,
   BRUTAL_BORDERS,
@@ -81,11 +84,23 @@ function NavigationRoot() {
     }
   };
 
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      try {
+        NavigationBar.setStyle("light");
+      } catch {
+        // Graceful fallback for non-native environments
+      }
+    }
+  }, []);
+
   // Session restoration loading screen
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.splashSafeArea}>
-        <StatusBar barStyle="dark-content" />
+      <View style={[styles.splashSafeArea, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <StatusBar style="dark" />
         <View style={styles.splashContainer}>
           <View style={styles.splashCard}>
             <View style={styles.splashTag}>
@@ -100,7 +115,7 @@ function NavigationRoot() {
             </View>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -157,22 +172,30 @@ function NavigationRoot() {
   // If a conversation is actively open, render full-screen 1-on-1 ConversationScreen
   if (activeConversation) {
     return (
-      <SafeAreaView style={styles.mainSafeArea}>
-        <StatusBar barStyle="dark-content" />
+      <View style={styles.mainSafeArea}>
+        <StatusBar style="dark" />
         <ConversationScreen
           conversation={activeConversation}
           onBack={() => setActiveConversation(null)}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.mainSafeArea}>
-      <StatusBar barStyle="dark-content" />
+    <View style={styles.mainSafeArea}>
+      <StatusBar style="dark" />
 
-      {/* Persistent Nano-Brutalist Header */}
-      <View style={styles.topHeader}>
+      {/* Persistent Nano-Brutalist Header with dynamic top status bar inset */}
+      <View
+        style={[
+          styles.topHeader,
+          {
+            paddingTop: insets.top,
+            height: 56 + insets.top,
+          },
+        ]}
+      >
         <View style={styles.brandRow}>
           <Text style={styles.brandLogo}>ALUMNUX</Text>
           <View style={styles.networkTag}>
@@ -218,7 +241,14 @@ function NavigationRoot() {
       </View>
 
       {/* Persistent Bottom Tab Bar with Role-Aware Tabs & Unread Badge */}
-      <View style={styles.tabBar}>
+      <View
+        style={[
+          styles.tabBar,
+          {
+            paddingBottom: Math.max(insets.bottom, 6),
+          },
+        ]}
+      >
         <View style={styles.tabScrollContainer}>
           {navTabs.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -261,15 +291,17 @@ function NavigationRoot() {
           })}
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 export default function App() {
   return (
-    <MobileAuthProvider>
-      <NavigationRoot />
-    </MobileAuthProvider>
+    <SafeAreaProvider>
+      <MobileAuthProvider>
+        <NavigationRoot />
+      </MobileAuthProvider>
+    </SafeAreaProvider>
   );
 }
 

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BRUTAL_COLORS,
   BRUTAL_BORDERS,
@@ -33,6 +34,7 @@ export interface MentorshipScreenProps {
 
 export const MentorshipScreen: React.FC<MentorshipScreenProps> = ({ onOpenChat }) => {
   const { user } = useMobileAuth();
+  const insets = useSafeAreaInsets();
   const isAlumni = user?.role === "ALUMNI";
 
   const [activeTab, setActiveTab] = useState<"requests" | "find">("requests");
@@ -339,7 +341,7 @@ export const MentorshipScreen: React.FC<MentorshipScreenProps> = ({ onOpenChat }
         onRequestClose={() => setNewModalVisible(false)}
       >
         <View style={styles.modalBackdrop}>
-          <View style={styles.formDialogCard}>
+          <View style={[styles.formDialogCard, { paddingBottom: Math.max(insets.bottom, BRUTAL_SPACING[5]) }]}>
             <View style={styles.formHeaderRow}>
               <Text style={styles.formTitle}>// CREATE GUIDANCE REQUEST</Text>
               <TouchableOpacity

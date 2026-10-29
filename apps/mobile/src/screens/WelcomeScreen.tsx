@@ -3,10 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
-  StatusBar,
   ScrollView,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import {
   BRUTAL_COLORS,
   BRUTAL_BORDERS,
@@ -30,12 +30,16 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onNavigateToRegister,
 }) => {
   const { loginAsDemo } = useMobileAuth();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.safeArea, { paddingTop: insets.top }]}>
+      <StatusBar style="dark" />
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: Math.max(insets.bottom, BRUTAL_SPACING[8]) },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Top Header Tag */}
@@ -181,7 +185,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           Alumnux Independent Community • Anna University Affiliated
         </Text>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

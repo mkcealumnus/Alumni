@@ -8,6 +8,7 @@ import {
   Modal,
   ScrollView,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BRUTAL_COLORS,
   BRUTAL_BORDERS,
@@ -120,6 +121,7 @@ export interface DirectoryScreenProps {
 
 export const DirectoryScreen: React.FC<DirectoryScreenProps> = ({ onOpenChat }) => {
   const { user } = useMobileAuth();
+  const insets = useSafeAreaInsets();
 
   const [search, setSearch] = useState("");
   const [selectedDept, setSelectedDept] = useState("ALL");
@@ -341,7 +343,7 @@ export const DirectoryScreen: React.FC<DirectoryScreenProps> = ({ onOpenChat }) 
         onRequestClose={() => setSelectedUser(null)}
       >
         <View style={styles.modalBackdrop}>
-          <View style={styles.detailCard}>
+          <View style={[styles.detailCard, { paddingBottom: Math.max(insets.bottom, BRUTAL_SPACING[5]) }]}>
             <View style={styles.detailHeaderRow}>
               <BrutalBadge label={`CLASS OF ${selectedUser?.graduationYear}`} variant="accent" />
               <TouchableOpacity
@@ -425,7 +427,7 @@ export const DirectoryScreen: React.FC<DirectoryScreenProps> = ({ onOpenChat }) 
         onRequestClose={() => setRequestModalVisible(false)}
       >
         <View style={styles.modalBackdrop}>
-          <View style={styles.requestDialogCard}>
+          <View style={[styles.requestDialogCard, { paddingBottom: Math.max(insets.bottom, BRUTAL_SPACING[5]) }]}>
             <View style={styles.detailHeaderRow}>
               <Text style={styles.dialogTag}>// NEW MENTORSHIP REQUEST</Text>
               <TouchableOpacity

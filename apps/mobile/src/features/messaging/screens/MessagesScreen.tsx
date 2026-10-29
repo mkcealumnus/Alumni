@@ -10,6 +10,7 @@ import {
   RefreshControl,
   Alert,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Conversation } from "@alumnux/types";
 import {
   BRUTAL_COLORS,
@@ -63,6 +64,7 @@ export const MessagesScreen: React.FC<MessagesScreenProps> = ({
   onSelectConversation,
 }) => {
   const { user } = useMobileAuth();
+  const insets = useSafeAreaInsets();
   const {
     conversations,
     isLoading,
@@ -223,7 +225,7 @@ export const MessagesScreen: React.FC<MessagesScreenProps> = ({
         onRequestClose={() => setNewModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, { paddingBottom: insets.bottom }]}>
             <View style={styles.modalHeader}>
               <View style={styles.modalTag}>
                 <Text style={styles.modalTagText}>// INITIATE PRIVATE CHAT</Text>
@@ -239,7 +241,7 @@ export const MessagesScreen: React.FC<MessagesScreenProps> = ({
 
             <ScrollView
               style={styles.modalBody}
-              contentContainerStyle={{ paddingBottom: BRUTAL_SPACING[8] }}
+              contentContainerStyle={{ paddingBottom: Math.max(insets.bottom, BRUTAL_SPACING[8]) }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
