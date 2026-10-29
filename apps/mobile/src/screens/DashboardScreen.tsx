@@ -23,7 +23,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigateTab 
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.page} />
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.container}>
         {/* Welcome Header */}
         <View style={styles.header}>

@@ -34,7 +34,7 @@ function NavigationRoot() {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.splashContainer}>
-        <StatusBar barStyle="dark-content" backgroundColor={colors.page} />
+        <StatusBar barStyle="dark-content" />
         <View style={styles.splashCard}>
           <Text style={styles.splashTitle}>Alumnux</Text>
           <Text style={styles.splashSubtitle}>
@@ -88,7 +88,7 @@ function NavigationRoot() {
   // Authenticated Navigation Flow
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.surface} />
+      <StatusBar barStyle="dark-content" />
 
       {/* Persistent App Header */}
       <View style={styles.topHeader}>

@@ -71,7 +71,7 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.page} />
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         {/* Profile Card Header */}
         <View style={styles.headerCard}>

@@ -6,10 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#F8F8F5"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.mkcealumni.mobile"

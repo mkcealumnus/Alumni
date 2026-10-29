@@ -169,7 +169,7 @@ export const DirectoryScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.page} />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         {/* Title */}
         <View style={styles.titleSection}>

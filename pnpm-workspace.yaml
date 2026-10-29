@@ -4,3 +4,29 @@ packages:
   - "packages/*"
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - '@expo/cli@58.1.17'
+  - '@expo/config-plugins@58.0.11'
+  - '@expo/config@58.0.9'
+  - '@expo/image-utils@0.12.6'
+  - '@expo/inline-modules@0.2.8'
+  - '@expo/local-build-cache-provider@58.0.9'
+  - '@expo/metro-config@58.0.19'
+  - '@expo/modules-macros-linux-arm64@0.27.1'
+  - '@expo/modules-macros-linux-x64@0.27.1'
+  - '@expo/modules-macros-win32-arm64@0.27.1'
+  - '@expo/modules-macros-win32-x64@0.27.1'
+  - '@expo/prebuild-config@58.0.17'
+  - '@expo/require-utils@58.0.5'
+  - '@expo/router-server@58.0.19'
+  - babel-preset-expo@58.0.22
+  - expo-asset@58.0.19
+  - expo-constants@58.0.14
+  - expo-file-system@58.0.13
+  - expo-font@58.0.11
+  - expo-modules-autolinking@58.0.16
+  - expo-modules-cli@0.4.0
+  - expo-modules-core@58.0.28
+  - expo-modules-jsi@58.0.21
+  - expo-modules-macros@0.27.1
+  - expo@58.0.21
