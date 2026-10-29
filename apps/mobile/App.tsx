@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { registerRootComponent } from "expo";
 import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
 import { MobileAuthProvider, useMobileAuth } from "./src/context/AuthContext";
 import { WelcomeScreen } from "./src/screens/WelcomeScreen";
@@ -194,6 +195,8 @@ export default function App() {
     </MobileAuthProvider>
   );
 }
+
+registerRootComponent(App);
 
 const styles = StyleSheet.create({
   mainContainer: {

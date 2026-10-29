@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Alumnux Mobile Application (Expo / React Native)",
-  "main": "App.tsx",
+  "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
