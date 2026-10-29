@@ -1,60 +1,129 @@
-# cPanel Shared Hosting Deployment Guide
+# cPanel Shared Hosting Deployment Guide — Phase 2 Production Runbook
 
-This document details the production deployment model for **Alumnux** on cPanel shared hosting (`https://mkcealumni.org`).
+This document details the production deployment, database provisioning, migration management, and application lifecycle for **Alumnux** on cPanel shared hosting (`https://mkcealumni.org`).
 
-> [!NOTE]
-> This guide defines the deployment architecture for Phase 2. No live deployment or modifications to `mkcealumni.org` or live production databases are performed during Phase 1.
+> [!IMPORTANT]
+> Never commit real database passwords, JWT secrets, or production `.env` files into source control. All database credentials and secret keys must be supplied exclusively through cPanel environment variables or protected server configuration files.
 
 ---
 
-## 1. Production Hosting Environment Constraints
+## 1. Hosting Environment Specifications
 
 - **Domain:** `https://mkcealumni.org`
-- **Hosting Type:** cPanel Shared Hosting (CloudLinux / Apache)
-- **Node.js Support:** cPanel "Setup Node.js App" (Phusion Passenger runner)
-- **Database:** MySQL 8.0+ / MariaDB managed via phpMyAdmin
-- **Access Level:** cPanel File Manager, phpMyAdmin, and SSH / Terminal
+- **Hosting Type:** cPanel Shared Hosting (CloudLinux / Apache / Phusion Passenger)
+- **Node.js Engine:** Node.js `20.x` or `22.x` via cPanel **Setup Node.js App**
+- **Database Engine:** MySQL 8.0+ / MariaDB 10.5+ managed via phpMyAdmin and MySQL Databases
+- **Access Channels:** cPanel File Manager, phpMyAdmin, and SSH / Terminal
 
 ---
 
-## 2. Deployment Architecture Model
+## 2. Architecture & File Hierarchy
 
 ```mermaid
 graph TD
-    User["End User (Browser / Mobile)"]
+    User["End User (Web Browser / Native Mobile App)"]
 
     subgraph cPanel ["cPanel Server (mkcealumni.org)"]
         Apache["Apache Web Server / LiteSpeed"]
-        StaticRoot["public_html/<br/>(Web App Static Build)"]
-        Passenger["Phusion Passenger<br/>(Node.js App Runner)"]
-        NodeApp["services/api/dist/<br/>(Fastify API Service)"]
-        MySQL[("cPanel MySQL DB<br/>(alumnux_production)")]
+        StaticRoot["public_html/<br/>(React Web App Bundle)"]
+        Passenger["Phusion Passenger<br/>(Node.js Process Supervisor)"]
+        NodeApp["alumnux_api/<br/>(Fastify API Service)"]
+        MySQL[("cPanel MySQL Database<br/>(mkcealum_alumnux)")]
     end
 
     User -->|HTTPS GET /| Apache
-    Apache -->|Direct File Serving| StaticRoot
-    User -->|HTTPS /api/*| Apache
+    Apache -->|Direct Static Serving| StaticRoot
+    User -->|HTTPS /api/* or api.mkcealumni.org| Apache
     Apache -->|Reverse Proxy / Passenger| Passenger
     Passenger --> NodeApp
-    NodeApp -->|Localhost / Socket| MySQL
+    NodeApp -->|Localhost / Socket Pool| MySQL
 ```
+
+### Directory Placement on Server:
+- **Web App Static Root:** `/home/username/public_html/`
+- **API Application Root:** `/home/username/alumnux_api/` *(Kept strictly outside `public_html` so source files and environment variables cannot be accessed via direct HTTP GET requests)*
+- **API Startup Script:** `dist/server.js`
 
 ---
 
-## 3. Web Application Deployment (`apps/web`)
+## 3. Database Provisioning & Versioned Migrations
 
-1. **Build Static Distribution:**
-   From the local monorepo root:
+### 3.1 Creating Database in cPanel
+1. Navigate to **cPanel > MySQL Databases**.
+2. Create database: `mkcealum_alumnux`.
+3. Create user: `mkcealum_dbuser` with a strong 32+ character random password.
+4. Add user to database with complete privileges (`ALL PRIVILEGES`: `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER`, `INDEX`, `DROP`, `REFERENCES`).
+
+### 3.2 Running Database Migrations
+Migrations are tracked through the `schema_migrations` table so they are repeatable, deterministic, and safe to execute:
+
+#### Method A: Via SSH / Terminal (Recommended)
+```bash
+cd ~/alumnux_api
+node dist/db/migrator.js
+```
+
+#### Method B: Via phpMyAdmin UI
+If SSH access is restricted, import the SQL migration files sequentially in **phpMyAdmin**:
+1. Open **phpMyAdmin** and select `mkcealum_alumnux`.
+2. Import `database/migrations/003_create_auth_tables.sql` (Creates `users`, `profiles`, `auth_sessions`, and `schema_migrations`).
+3. Import `database/migrations/004_create_mentorship_tables.sql` (Creates `mentorship_requests`).
+4. Verify table integrity and foreign keys.
+
+### 3.3 Core Database Tables (Phase 2)
+| Table | Description | Key Indexes & Constraints |
+| :--- | :--- | :--- |
+| `users` | User credentials, roles, and status | `PRIMARY KEY (id)`, `UNIQUE (email)` |
+| `profiles` | Extended academic and career profiles | `PRIMARY KEY (id)`, `UNIQUE (user_id)`, `INDEX (department)` |
+| `auth_sessions` | Server-side refresh sessions & rotation hashes | `PRIMARY KEY (id)`, `INDEX (refresh_token_hash)`, `INDEX (user_id)` |
+| `mentorship_requests` | 1-on-1 guidance requests and status transitions | `PRIMARY KEY (id)`, `INDEX (requester_id)`, `INDEX (recipient_id)` |
+| `schema_migrations` | Versioned migration tracker | `PRIMARY KEY (version)` |
+
+---
+
+## 4. API Backend Configuration (`services/api`)
+
+### 4.1 Required Production Environment Variables
+Set these variables inside **cPanel > Setup Node.js App > Environment Variables**:
+
+| Variable | Recommended Production Value | Description |
+| :--- | :--- | :--- |
+| `NODE_ENV` | `production` | Enables production optimizations and security rules |
+| `PORT` | Auto-assigned by Passenger or `3001` | Listen port |
+| `APP_ORIGIN` | `https://mkcealumni.org` | CORS allowed origin for credentialed requests |
+| `DATABASE_HOST` | `127.0.0.1` or `localhost` | MySQL host provided by cPanel |
+| `DATABASE_PORT` | `3306` | MySQL port |
+| `DATABASE_NAME` | `mkcealum_alumnux` | cPanel database name |
+| `DATABASE_USER` | `mkcealum_dbuser` | cPanel database user |
+| `DATABASE_PASSWORD` | `[SECURE_DB_PASSWORD]` | Database password |
+| `DATABASE_POOL_LIMIT` | `10` | Limit pool connections on shared hosting |
+| `JWT_ACCESS_SECRET` | `[64_CHAR_RANDOM_SECRET]` | Cryptographic secret for signing short-lived access JWTs |
+| `JWT_ACCESS_TTL` | `15m` | Access token lifespan |
+| `REFRESH_TOKEN_TTL_DAYS` | `30` | Refresh token session expiration |
+| `COOKIE_SECRET` | `[64_CHAR_RANDOM_SECRET]` | Cookie signing key for HttpOnly cookies |
+
+### 4.2 Application Deployment Steps
+1. Build the production package locally:
+   ```bash
+   pnpm run build
+   ```
+2. Upload `services/api/dist/` and `services/api/package.json` into `/home/username/alumnux_api/`.
+3. In **Setup Node.js App**:
+   - Set **Application Root**: `alumnux_api`
+   - Set **Application Startup file**: `dist/server.js`
+   - Click **Run NPM Install** (or install production dependencies).
+   - Click **Restart Application**.
+
+---
+
+## 5. Web Frontend Deployment (`apps/web`)
+
+1. Build static production distribution:
    ```bash
    pnpm --filter @alumnux/web build
    ```
-   This generates optimized static assets in `apps/web/dist/`.
-
-2. **Upload to cPanel:**
-   Upload the contents of `apps/web/dist/` into `public_html/`.
-
-3. **SPA Routing Configuration (`.htaccess`):**
-   Ensure an `.htaccess` file exists in `public_html/` to support React Router single-page navigation:
+2. Upload contents of `apps/web/dist/` into `/home/username/public_html/`.
+3. Ensure `.htaccess` exists in `public_html/` with SPA fallback routing:
    ```apache
    <IfModule mod_rewrite.c>
      RewriteEngine On
@@ -69,58 +138,38 @@ graph TD
 
 ---
 
-## 4. API Backend Deployment (`services/api`)
+## 6. Restarting and Verifying the API
 
-cPanel executes Node.js applications through the **Setup Node.js App** module (Phusion Passenger).
-
-### 4.1 Standalone Artifact Generation
-Shared hosting environments should not run the entire monorepo or compiler toolchains in production. Instead, a clean production deployment bundle is generated:
+### Restarting the API Process:
 ```bash
-# 1. Build the API and all workspace dependencies
-pnpm run build
+# Touch passenger restart trigger
+touch ~/alumnux_api/tmp/restart.txt
+```
+Or click the **Restart** button in cPanel **Setup Node.js App**.
 
-# 2. Package services/api/dist along with package.json and production dependencies
+### Health Check Verification:
+Verify the live API health:
+```bash
+curl -i https://mkcealumni.org/api/health
+```
+Expected response:
+```json
+HTTP/2 200
+content-type: application/json; charset=utf-8
+
+{
+  "status": "ok",
+  "service": "alumnux-api",
+  "version": "1.0.0",
+  "database": "connected"
+}
 ```
 
-### 4.2 cPanel Node.js Application Configuration
-In cPanel > **Setup Node.js App**:
-- **Node.js Version:** `20.x` or `22.x`
-- **Application Mode:** `Production`
-- **Application Root:** `alumnux_api` (outside `public_html`)
-- **Application URL:** `api.mkcealumni.org` or `mkcealumni.org/api`
-- **Application Startup File:** `dist/server.js`
-
-### 4.3 Environment Variables
-Configure environment variables securely inside the cPanel Node.js App UI (never commit real credentials to Git):
-- `NODE_ENV`: `production`
-- `PORT`: Assigned automatically by Passenger or specified port
-- `CORS_ORIGIN`: `https://mkcealumni.org`
-- `DB_HOST`: `localhost`
-- `DB_NAME`: `mkcealum_alumnux`
-- `DB_USER`: `mkcealum_user`
-- `DB_PASSWORD`: `[SECURE_GENERATED_PASSWORD]`
-- `JWT_SECRET`: `[STRONG_RANDOM_SECRET]`
-
 ---
 
-## 5. MySQL Database Provisioning
+## 7. Safe Rollback Procedure
 
-1. **Create Database in cPanel:**
-   - Navigate to **MySQL Databases** in cPanel.
-   - Create database (e.g. `mkcealum_alumnux`).
-   - Create user and assign all permissions (`SELECT`, `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER`, `INDEX`).
-2. **Import Initial Schema:**
-   - Open **phpMyAdmin**.
-   - Select the new database.
-   - Import `database/schema/alumnux_mysql_schema.sql`.
-   - Verify table generation: `departments`, `users`, `profiles`, `verification_requests`, `verification_evidence`, `mentorship_topics`, `mentorship_requests`, `audit_logs`.
-
----
-
-## 6. Security & Operational Checklist
-
-- [ ] **HTTPS Enforced:** Force SSL redirection in cPanel SSL/TLS Status (Let's Encrypt / AutoSSL).
-- [ ] **Directory Browsing Disabled:** `Options -Indexes` in `.htaccess`.
-- [ ] **Secret Isolation:** Database credentials and JWT secrets strictly managed via cPanel environment variables.
-- [ ] **Health Monitoring:** Endpoint `https://mkcealumni.org/api/health` monitored via uptime checker (UptimeRobot).
-- [ ] **Backup Automation:** Weekly cPanel MySQL dumps scheduled via Cron Jobs.
+If any issue arises during cutover:
+1. **API Rollback:** Restore previous `dist/` directory in `~/alumnux_api/` and run `touch ~/alumnux_api/tmp/restart.txt`.
+2. **Web Rollback:** Restore previous `public_html/` backup.
+3. **Database Rollback:** Database migrations in Phase 2 are strictly additive (`users`, `profiles`, `auth_sessions`, `mentorship_requests`), ensuring zero destructive changes to legacy tables.

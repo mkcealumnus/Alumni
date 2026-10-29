@@ -16,6 +16,7 @@ export const departmentSchema = z.enum(ALLOWED_DEPARTMENTS);
 // Roles and Status
 export const userRoleSchema = z.enum(["STUDENT", "ALUMNI", "ADMIN"]);
 export const accountTypeSchema = z.enum(["student", "alumni", "admin"]);
+export const userStatusSchema = z.enum(["ACTIVE", "PENDING_VERIFICATION", "SUSPENDED"]);
 
 export const verificationStatusSchema = z.enum([
   "PENDING",
@@ -149,13 +150,78 @@ export const directoryFilterSchema = z.object({
 
 export type DirectoryFilterInput = z.infer<typeof directoryFilterSchema>;
 
-// 5. Auth Schemas
-export const authLoginSchema = z.object({
-  email: z.string().email("Please provide a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+// 5. Authentication Schemas (Phase 2)
+export const signupSchema = z.object({
+  email: z
+    .string()
+    .email("Please provide a valid email address")
+    .max(255, "Email address is too long")
+    .transform((val) => val.trim().toLowerCase()),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(100, "Password exceeds maximum length"),
+  fullName: z
+    .string()
+    .min(2, "Full name must be at least 2 characters")
+    .max(150, "Full name exceeds maximum length")
+    .transform((val) => val.trim()),
+  role: z.enum(["STUDENT", "ALUMNI"], {
+    errorMap: () => ({ message: "Role must be either STUDENT or ALUMNI" }),
+  }),
+  departmentCode: departmentSchema,
+  graduationYear: z.coerce
+    .number({ invalid_type_error: "Graduation year must be a number" })
+    .int()
+    .min(1970, "Graduation year must be 1970 or later")
+    .max(2035, "Graduation year is invalid"),
+  rollNumber: z.string().max(50).optional(),
+  currentCompany: z.string().max(150).optional(),
+  currentRole: z.string().max(150).optional(),
+  linkedinUrl: z.string().url().max(500).optional().or(z.literal("")),
+  skills: z.array(z.string()).optional(),
+  bio: z.string().max(1000).optional(),
 });
 
-export type AuthLoginInput = z.infer<typeof authLoginSchema>;
+export type SignupInput = z.infer<typeof signupSchema>;
+
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .email("Please provide a valid email address")
+    .transform((val) => val.trim().toLowerCase()),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type LoginInput = z.infer<typeof loginSchema>;
+
+export const refreshSchema = z.object({
+  refreshToken: z.string().optional(),
+});
+
+export type RefreshInput = z.infer<typeof refreshSchema>;
+
+export const updateProfileSchema = z.object({
+  fullName: z.string().min(2).max(150).optional(),
+  headline: z.string().max(200).optional(),
+  bio: z.string().max(1000).optional(),
+  departmentCode: departmentSchema.optional(),
+  graduationYear: z.coerce.number().int().min(1970).max(2035).optional(),
+  currentCompany: z.string().max(150).optional(),
+  currentRole: z.string().max(150).optional(),
+  locationCity: z.string().max(100).optional(),
+  locationCountry: z.string().max(100).optional(),
+  linkedinUrl: z.string().url().max(500).optional().or(z.literal("")),
+  githubUrl: z.string().url().max(500).optional().or(z.literal("")),
+  portfolioUrl: z.string().url().max(500).optional().or(z.literal("")),
+  skills: z.array(z.string()).optional(),
+});
+
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+
+// Legacy Auth Schemas for backward compatibility
+export const authLoginSchema = loginSchema;
+export type AuthLoginInput = LoginInput;
 
 export const authRegisterSchema = z.object({
   email: z.string().email("Please provide a valid email address"),
@@ -165,7 +231,6 @@ export const authRegisterSchema = z.object({
   departmentCode: departmentSchema,
   graduationYear: z.number().int().min(1970).max(2032),
 });
-
 export type AuthRegisterInput = z.infer<typeof authRegisterSchema>;
 
 // 6. Pagination Schema
@@ -177,11 +242,41 @@ export const paginationQuerySchema = z.object({
 
 export type PaginationQueryInput = z.infer<typeof paginationQuerySchema>;
 
-// 7. Health Check Schema
+export const directoryQuerySchema = paginationQuerySchema.extend({
+  query: z.string().optional(),
+  department: z.string().optional(),
+  graduationYear: z.coerce.number().int().optional(),
+  role: z.enum(["STUDENT", "ALUMNI"]).optional(),
+});
+
+export type DirectoryQueryInput = z.infer<typeof directoryQuerySchema>;
+
+// 7. Mentorship Schemas
+export const createMentorshipRequestSchema = z.object({
+  recipientId: z.string().min(1, "Recipient ID is required"),
+  topicId: z.string().optional(),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message exceeds 1000 characters"),
+});
+
+export type CreateMentorshipRequestInput = z.infer<typeof createMentorshipRequestSchema>;
+
+export const updateMentorshipStatusSchema = z.object({
+  status: z.enum(["ACCEPTED", "DECLINED", "CANCELLED"]),
+});
+
+export type UpdateMentorshipStatusInput = z.infer<typeof updateMentorshipStatusSchema>;
+
+// 8. Health Check Schema
 export const healthCheckResponseSchema = z.object({
   status: z.enum(["ok", "degraded", "error"]),
   service: z.string(),
   version: z.string(),
   uptime: z.number(),
   timestamp: z.string(),
+  database: z.enum(["connected", "disconnected", "mock"]).optional(),
 });
+
+export type HealthCheckResponseInput = z.infer<typeof healthCheckResponseSchema>;

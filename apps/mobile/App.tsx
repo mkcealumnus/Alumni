@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,210 +9,299 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
-import type { UserRole, HealthCheckResponse } from "@alumnux/types";
+import { MobileAuthProvider, useMobileAuth } from "./src/context/AuthContext";
+import { WelcomeScreen } from "./src/screens/WelcomeScreen";
+import { LoginScreen } from "./src/screens/LoginScreen";
+import { RegisterScreen } from "./src/screens/RegisterScreen";
+import { DashboardScreen } from "./src/screens/DashboardScreen";
+import { DirectoryScreen } from "./src/screens/DirectoryScreen";
+import { MentorshipScreen } from "./src/screens/MentorshipScreen";
+import { ProfileScreen } from "./src/screens/ProfileScreen";
 
-export default function App() {
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL || "http://localhost:4000";
-  const [selectedRole, setSelectedRole] = useState<UserRole>("STUDENT");
-  const [apiStatus, setApiStatus] = useState<string>("checking...");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+type AuthScreenState = "welcome" | "login" | "register";
+type AppTab = "dashboard" | "directory" | "mentorship" | "profile";
 
-  const checkApiHealth = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${apiUrl}/health`);
-      if (response.ok) {
-        const data: HealthCheckResponse = await response.json();
-        setApiStatus(`Connected (${data.status.toUpperCase()} - v${data.version})`);
-      } else {
-        setApiStatus(`HTTP ${response.status}`);
-      }
-    } catch {
-      setApiStatus("API Offline / Unreachable");
-    } finally {
-      setIsLoading(false);
+function NavigationRoot() {
+  const { isAuthenticated, isLoading, user } = useMobileAuth();
+
+  // Auth flow state
+  const [authScreen, setAuthScreen] = useState<AuthScreenState>("welcome");
+  const [registerRole, setRegisterRole] = useState<"STUDENT" | "ALUMNI">("STUDENT");
+
+  // Authenticated tab state
+  const [activeTab, setActiveTab] = useState<AppTab>("dashboard");
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.splashContainer}>
+        <StatusBar barStyle="dark-content" backgroundColor={colors.page} />
+        <View style={styles.splashCard}>
+          <Text style={styles.splashTitle}>Alumnux</Text>
+          <Text style={styles.splashSubtitle}>
+            Restoring native session credentials...
+          </Text>
+          <ActivityIndicator
+            size="large"
+            color={colors.accent.DEFAULT}
+            style={styles.splashSpinner}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Unauthenticated Flow
+  if (!isAuthenticated) {
+    if (authScreen === "login") {
+      return (
+        <LoginScreen
+          onBack={() => setAuthScreen("welcome")}
+          onNavigateToRegister={() => {
+            setRegisterRole("STUDENT");
+            setAuthScreen("register");
+          }}
+        />
+      );
     }
-  };
 
-  useEffect(() => {
-    checkApiHealth();
-  }, []);
+    if (authScreen === "register") {
+      return (
+        <RegisterScreen
+          initialRole={registerRole}
+          onBack={() => setAuthScreen("welcome")}
+          onNavigateToLogin={() => setAuthScreen("login")}
+        />
+      );
+    }
 
+    return (
+      <WelcomeScreen
+        onNavigateToLogin={() => setAuthScreen("login")}
+        onNavigateToRegister={(role = "STUDENT") => {
+          setRegisterRole(role);
+          setAuthScreen("register");
+        }}
+      />
+    );
+  }
+
+  // Authenticated Navigation Flow
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.page} />
-      <View style={styles.card}>
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>PHASE 1 FOUNDATION</Text>
-        </View>
+    <SafeAreaView style={styles.mainContainer}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.surface} />
 
-        <Text style={styles.title}>Alumnux Mobile</Text>
-        <Text style={styles.subtitle}>
-          Independent Alumni & Student Career Guidance Platform
-        </Text>
-
-        <View style={styles.divider} />
-
-        <View style={styles.infoSection}>
-          <Text style={styles.label}>Configured API Base URL:</Text>
-          <Text style={styles.value}>{apiUrl}</Text>
-
-          <Text style={[styles.label, { marginTop: spacing[3] }]}>API Health Status:</Text>
-          <View style={styles.statusRow}>
-            {isLoading ? (
-              <ActivityIndicator size="small" color={colors.accent.DEFAULT} />
-            ) : (
-              <Text style={styles.statusText}>{apiStatus}</Text>
-            )}
+      {/* Persistent App Header */}
+      <View style={styles.topHeader}>
+        <View style={styles.brandRow}>
+          <Text style={styles.brandText}>Alumnux</Text>
+          <View style={styles.roleChip}>
+            <Text style={styles.roleChipText}>{user?.role}</Text>
           </View>
         </View>
+        <TouchableOpacity
+          onPress={() => setActiveTab("profile")}
+          style={styles.headerProfileBtn}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.headerAvatarText}>
+            {(user?.email || "U").charAt(0).toUpperCase()}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.roleSelector}>
-          <Text style={styles.label}>Select Workspace Preview Role:</Text>
-          <View style={styles.buttonGroup}>
-            {(["STUDENT", "ALUMNI", "ADMIN"] as const).map((role) => (
-              <TouchableOpacity
-                key={role}
-                style={[
-                  styles.roleButton,
-                  selectedRole === role && styles.roleButtonActive,
-                ]}
-                onPress={() => setSelectedRole(role)}
-              >
-                <Text
-                  style={[
-                    styles.roleButtonText,
-                    selectedRole === role && styles.roleButtonTextActive,
-                  ]}
-                >
-                  {role}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+      {/* Screen Container */}
+      <View style={styles.screenContainer}>
+        {activeTab === "dashboard" && <DashboardScreen onNavigateTab={setActiveTab} />}
+        {activeTab === "directory" && <DirectoryScreen />}
+        {activeTab === "mentorship" && <MentorshipScreen />}
+        {activeTab === "profile" && <ProfileScreen />}
+      </View>
 
-        <TouchableOpacity style={styles.refreshButton} onPress={checkApiHealth}>
-          <Text style={styles.refreshButtonText}>Refresh API Health</Text>
+      {/* Bottom Tab Bar */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[styles.tabItem, activeTab === "dashboard" && styles.tabItemActive]}
+          onPress={() => setActiveTab("dashboard")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.tabIcon}>🏠</Text>
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "dashboard" && styles.tabLabelActive,
+            ]}
+          >
+            Home
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.tabItem, activeTab === "directory" && styles.tabItemActive]}
+          onPress={() => setActiveTab("directory")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.tabIcon}>🔍</Text>
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "directory" && styles.tabLabelActive,
+            ]}
+          >
+            Directory
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.tabItem, activeTab === "mentorship" && styles.tabItemActive]}
+          onPress={() => setActiveTab("mentorship")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.tabIcon}>🤝</Text>
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "mentorship" && styles.tabLabelActive,
+            ]}
+          >
+            Mentorship
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.tabItem, activeTab === "profile" && styles.tabItemActive]}
+          onPress={() => setActiveTab("profile")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.tabIcon}>👤</Text>
+          <Text
+            style={[
+              styles.tabLabel,
+              activeTab === "profile" && styles.tabLabelActive,
+            ]}
+          >
+            Profile
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
+export default function App() {
+  return (
+    <MobileAuthProvider>
+      <NavigationRoot />
+    </MobileAuthProvider>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
+    flex: 1,
+    backgroundColor: colors.page,
+  },
+  splashContainer: {
     flex: 1,
     backgroundColor: colors.page,
     justifyContent: "center",
     alignItems: "center",
-    padding: spacing[4],
   },
-  card: {
-    width: "100%",
-    maxWidth: 420,
+  splashCard: {
     backgroundColor: colors.surface,
-    borderRadius: radii.md,
     padding: spacing[6],
+    borderRadius: radii.md,
     borderWidth: 1,
     borderColor: colors.border,
+    alignItems: "center",
+    width: "85%",
+    maxWidth: 360,
   },
-  badge: {
-    alignSelf: "flex-start",
+  splashTitle: {
+    fontSize: typography.sizes["3xl"],
+    fontWeight: "800",
+    color: colors.primary.DEFAULT,
+  },
+  splashSubtitle: {
+    fontSize: typography.sizes.xs,
+    color: colors.secondary.DEFAULT,
+    marginTop: spacing[1],
+  },
+  splashSpinner: {
+    marginTop: spacing[5],
+  },
+  topHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[3],
+    backgroundColor: colors.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  brandRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing[2],
+  },
+  brandText: {
+    fontSize: typography.sizes.lg,
+    fontWeight: "800",
+    color: colors.primary.DEFAULT,
+  },
+  roleChip: {
     backgroundColor: colors.accent.subtle,
     paddingHorizontal: spacing[2],
-    paddingVertical: spacing[1],
+    paddingVertical: 2,
     borderRadius: radii.sm,
-    marginBottom: spacing[2],
   },
-  badgeText: {
-    color: colors.accent.DEFAULT,
+  roleChipText: {
     fontSize: typography.sizes.xs,
-    fontWeight: "600",
-  },
-  title: {
-    fontSize: typography.sizes["2xl"],
     fontWeight: "700",
-    color: colors.primary.DEFAULT,
+    color: colors.accent.DEFAULT,
   },
-  subtitle: {
-    fontSize: typography.sizes.sm,
-    color: colors.secondary.DEFAULT,
-    marginTop: spacing[1],
-  },
-  divider: {
-    height: 1,
-    backgroundColor: colors.border,
-    marginVertical: spacing[4],
-  },
-  infoSection: {
-    backgroundColor: colors.page,
-    padding: spacing[3],
-    borderRadius: radii.base,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  label: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    fontWeight: "600",
-    textTransform: "uppercase",
-  },
-  value: {
-    fontSize: typography.sizes.sm,
-    color: colors.primary.DEFAULT,
-    marginTop: spacing[1],
-    fontFamily: "monospace",
-  },
-  statusRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: spacing[1],
-  },
-  statusText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: "500",
-    color: colors.semantic.success,
-  },
-  roleSelector: {
-    marginTop: spacing[4],
-  },
-  buttonGroup: {
-    flexDirection: "row",
-    gap: spacing[2],
-    marginTop: spacing[2],
-  },
-  roleButton: {
-    flex: 1,
-    paddingVertical: spacing[2],
-    borderRadius: radii.base,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    alignItems: "center",
-  },
-  roleButtonActive: {
+  headerProfileBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: radii.full,
     backgroundColor: colors.primary.DEFAULT,
-    borderColor: colors.primary.DEFAULT,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  roleButtonText: {
+  headerAvatarText: {
     fontSize: typography.sizes.xs,
-    fontWeight: "600",
-    color: colors.primary.DEFAULT,
-  },
-  roleButtonTextActive: {
+    fontWeight: "700",
     color: colors.primary.foreground,
   },
-  refreshButton: {
-    marginTop: spacing[5],
-    backgroundColor: colors.accent.DEFAULT,
-    paddingVertical: spacing[3],
-    borderRadius: radii.base,
-    alignItems: "center",
+  screenContainer: {
+    flex: 1,
   },
-  refreshButtonText: {
-    color: colors.accent.foreground,
+  tabBar: {
+    flexDirection: "row",
+    backgroundColor: colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    paddingVertical: spacing[2],
+    paddingBottom: spacing[3],
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: "center",
+    gap: 2,
+  },
+  tabItemActive: {
+    opacity: 1,
+  },
+  tabIcon: {
+    fontSize: 20,
+  },
+  tabLabel: {
+    fontSize: typography.sizes.xs,
+    color: colors.secondary.DEFAULT,
     fontWeight: "600",
-    fontSize: typography.sizes.sm,
+  },
+  tabLabelActive: {
+    color: colors.accent.DEFAULT,
+    fontWeight: "700",
   },
 });

@@ -4,6 +4,9 @@ import {
   DEMO_STUDENT_ACCOUNT,
   DEMO_ALUMNI_ACCOUNT,
 } from "../data/demoData";
+import { api } from "../lib/api";
+import { ApiClientError } from "@alumnux/api-client";
+import type { AuthenticatedUser, UserProfile } from "@alumnux/types";
 
 export interface AuthResult {
   success: boolean;
@@ -31,196 +34,192 @@ interface AuthContextType {
   user: DemoUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isDemoMode: boolean;
   login: (identifier: string, password: string) => Promise<AuthResult>;
   loginAsDemo: (role: "student" | "alumni") => Promise<DemoUser>;
   registerDemo: (data: RegisterData) => Promise<AuthResult>;
+  register: (data: RegisterData) => Promise<AuthResult>;
   logout: () => void;
   updateUserBio: (bio: string, skills?: string[]) => void;
 }
 
-const STORAGE_KEY = "alumnux_demo_session";
-const REGISTERED_USERS_KEY = "alumnux_registered_users";
-const ADMIN_QUEUE_KEY = "alumnux_admin_verification_queue";
+const STORAGE_SESSION_BACKUP = "alumnux_web_session_cache";
+const IS_DEV = import.meta.env.DEV;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+function mapServerToUser(authUser: AuthenticatedUser, profile: UserProfile): DemoUser {
+  const initials =
+    profile.fullName
+      .split(" ")
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "AL";
+
+  let verificationStatus: DemoUser["verification_status"] = "pending";
+  if (authUser.isVerified) {
+    verificationStatus = "verified";
+  } else if (authUser.status === "SUSPENDED") {
+    verificationStatus = "suspended";
+  } else if (authUser.status === "PENDING_VERIFICATION") {
+    verificationStatus = "pending";
+  }
+
+  return {
+    id: authUser.id,
+    email: authUser.email,
+    username: authUser.email.split("@")[0],
+    fullName: profile.fullName,
+    role: authUser.role === "ALUMNI" ? "alumni" : "student",
+    verification_status: verificationStatus,
+    academic_completion_status: authUser.role === "ALUMNI" ? "graduated" : "studying",
+    department: profile.departmentName || profile.departmentCode,
+    graduationYear: profile.graduationYear,
+    passed_out_year: authUser.role === "ALUMNI" ? profile.graduationYear : undefined,
+    company: profile.currentCompany,
+    roleTitle: profile.currentRole || (authUser.role === "ALUMNI" ? "Alumnus / Professional" : "Student"),
+    experienceYears: profile.experienceYears,
+    locationCity: profile.locationCity,
+    linkedin_url: profile.linkedinUrl,
+    initials,
+    bio: profile.bio || "",
+    skills: profile.skills || ["Engineering", "Networking"],
+    avatarUrl: profile.avatarUrl,
+  };
+}
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<DemoUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
 
-  // Restore session from localStorage on initial mount
+  // Restore session from API or local cache on initial mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as DemoUser;
-        setUser(parsed);
+    let isMounted = true;
+
+    async function restoreSession() {
+      try {
+        const token = await api.tokenStorage.getAccessToken();
+        const refreshToken = await api.tokenStorage.getRefreshToken();
+
+        if (token || refreshToken) {
+          const { user: authUser, profile } = await api.getMe();
+          if (isMounted) {
+            const mapped = mapServerToUser(authUser, profile);
+            setUser(mapped);
+            setIsDemoMode(false);
+            localStorage.setItem(STORAGE_SESSION_BACKUP, JSON.stringify(mapped));
+          }
+          return;
+        }
+
+        // Check if demo session was active in dev mode
+        if (IS_DEV) {
+          const cached = localStorage.getItem(STORAGE_SESSION_BACKUP);
+          if (cached) {
+            const parsed = JSON.parse(cached) as DemoUser;
+            if (isMounted) {
+              setUser(parsed);
+              setIsDemoMode(true);
+            }
+          }
+        }
+      } catch {
+        // Token invalid or expired
+        await api.tokenStorage.clear();
+        localStorage.removeItem(STORAGE_SESSION_BACKUP);
+        if (isMounted) {
+          setUser(null);
+          setIsDemoMode(false);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
-    } catch (e) {
-      console.warn("Failed to read demo session from localStorage", e);
-    } finally {
-      setIsLoading(false);
     }
+
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const persistUser = (newUser: DemoUser | null) => {
-    setUser(newUser);
-    try {
-      if (newUser) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } catch (e) {
-      console.warn("Failed to persist demo session", e);
-    }
-  };
-
   const login = async (identifier: string, password: string): Promise<AuthResult> => {
-    // Artificial small delay for realistic UX feedback
-    await new Promise((resolve) => setTimeout(resolve, 350));
-
     const cleanId = identifier.trim().toLowerCase();
 
-    // 1. Check student demo account by email or username
-    if (
-      cleanId === DEMO_STUDENT_ACCOUNT.email.toLowerCase() ||
-      cleanId === DEMO_STUDENT_ACCOUNT.username?.toLowerCase()
-    ) {
-      if (password === "Student@123") {
-        persistUser(DEMO_STUDENT_ACCOUNT);
-        return { success: true, user: DEMO_STUDENT_ACCOUNT };
-      }
-      return {
-        success: false,
-        error: "Invalid password for student demo. Required password is: Student@123",
-      };
-    }
-
-    // 2. Check alumni demo account by email or username
-    if (
-      cleanId === DEMO_ALUMNI_ACCOUNT.email.toLowerCase() ||
-      cleanId === DEMO_ALUMNI_ACCOUNT.username?.toLowerCase()
-    ) {
-      if (password === "Alumni@123") {
-        persistUser(DEMO_ALUMNI_ACCOUNT);
-        return { success: true, user: DEMO_ALUMNI_ACCOUNT };
-      }
-      return {
-        success: false,
-        error: "Invalid password for alumni demo. Required password is: Alumni@123",
-      };
-    }
-
-    // 3. Check registered custom accounts in localStorage
+    // 1. Try real API authentication first
     try {
-      const rawStored = localStorage.getItem(REGISTERED_USERS_KEY);
-      const registeredUsers: Array<DemoUser & { passwordHash?: string }> = rawStored
-        ? JSON.parse(rawStored)
-        : [];
+      const response = await api.login({
+        email: cleanId,
+        password,
+      });
 
-      // Also check legacy single-key entries
-      const legacyKey = `alumnux_registered_${cleanId}`;
-      const legacySaved = localStorage.getItem(legacyKey);
-      if (legacySaved) {
-        const legacyUser = JSON.parse(legacySaved);
-        if (!registeredUsers.some((u) => u.email === legacyUser.email)) {
-          registeredUsers.push(legacyUser);
+      const mapped = mapServerToUser(response.user, response.profile);
+      setUser(mapped);
+      setIsDemoMode(false);
+      localStorage.setItem(STORAGE_SESSION_BACKUP, JSON.stringify(mapped));
+
+      return { success: true, user: mapped };
+    } catch (err) {
+      if (err instanceof ApiClientError) {
+        // If API explicitly rejected credentials, check dev demo fallback ONLY in local development
+        if (IS_DEV && (cleanId === DEMO_STUDENT_ACCOUNT.email.toLowerCase() || cleanId === "student")) {
+          if (password === "Student@123") {
+            setUser(DEMO_STUDENT_ACCOUNT);
+            setIsDemoMode(true);
+            localStorage.setItem(STORAGE_SESSION_BACKUP, JSON.stringify(DEMO_STUDENT_ACCOUNT));
+            return { success: true, user: DEMO_STUDENT_ACCOUNT };
+          }
+        }
+
+        if (IS_DEV && (cleanId === DEMO_ALUMNI_ACCOUNT.email.toLowerCase() || cleanId === "alumni")) {
+          if (password === "Alumni@123") {
+            setUser(DEMO_ALUMNI_ACCOUNT);
+            setIsDemoMode(true);
+            localStorage.setItem(STORAGE_SESSION_BACKUP, JSON.stringify(DEMO_ALUMNI_ACCOUNT));
+            return { success: true, user: DEMO_ALUMNI_ACCOUNT };
+          }
+        }
+
+        return {
+          success: false,
+          error: err.message || "Invalid email or password.",
+        };
+      }
+
+      // Network or connection failure fallback in dev
+      if (IS_DEV) {
+        if (cleanId === DEMO_STUDENT_ACCOUNT.email.toLowerCase() && password === "Student@123") {
+          setUser(DEMO_STUDENT_ACCOUNT);
+          setIsDemoMode(true);
+          return { success: true, user: DEMO_STUDENT_ACCOUNT };
+        }
+        if (cleanId === DEMO_ALUMNI_ACCOUNT.email.toLowerCase() && password === "Alumni@123") {
+          setUser(DEMO_ALUMNI_ACCOUNT);
+          setIsDemoMode(true);
+          return { success: true, user: DEMO_ALUMNI_ACCOUNT };
         }
       }
 
-      const matchedUser = registeredUsers.find(
-        (u) =>
-          u.email.toLowerCase() === cleanId ||
-          (u.username && u.username.toLowerCase() === cleanId)
-      );
-
-      if (matchedUser) {
-        if (matchedUser.passwordHash && matchedUser.passwordHash !== password) {
-          return { success: false, error: "Incorrect password for this account." };
-        }
-
-        // Section 4 Verification Status Enforcement:
-        // Do not grant access solely because a user registered.
-        if (matchedUser.verification_status === "pending") {
-          return {
-            success: false,
-            error:
-              "Your registration is currently awaiting review by an Alumnux administrator. You will be able to access the platform once your credentials are verified.",
-          };
-        }
-
-        if (matchedUser.verification_status === "needs_review") {
-          return {
-            success: false,
-            error:
-              "Your application requires clarification. Please review administrator feedback or re-upload your document credentials.",
-          };
-        }
-
-        if (matchedUser.verification_status === "rejected") {
-          return {
-            success: false,
-            error:
-              "Your application was rejected by the platform administrators. Reason: Verification documents could not be authenticated.",
-          };
-        }
-
-        if (matchedUser.verification_status === "suspended") {
-          return {
-            success: false,
-            error: "This account has been suspended by Alumnux administrators.",
-          };
-        }
-
-        // Verified account
-        persistUser(matchedUser);
-        return { success: true, user: matchedUser };
-      }
-    } catch (e) {
-      console.warn("Error reading registered users", e);
+      return {
+        success: false,
+        error: "Unable to connect to the authentication service. Please check your network connection.",
+      };
     }
-
-    return {
-      success: false,
-      error:
-        "Account not recognized. Please verify your email/username, or use 'student@alumnux.demo' (Student@123) / 'alumni@alumnux.demo' (Alumni@123).",
-    };
   };
 
   const loginAsDemo = async (role: "student" | "alumni"): Promise<DemoUser> => {
-    await new Promise((resolve) => setTimeout(resolve, 200));
     const demoAccount = role === "student" ? DEMO_STUDENT_ACCOUNT : DEMO_ALUMNI_ACCOUNT;
-    persistUser(demoAccount);
+    setUser(demoAccount);
+    setIsDemoMode(true);
+    localStorage.setItem(STORAGE_SESSION_BACKUP, JSON.stringify(demoAccount));
     return demoAccount;
   };
 
-  const registerDemo = async (data: RegisterData): Promise<AuthResult> => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-    const initials =
-      data.fullName
-        .split(" ")
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase() || "AL";
-
-    const cleanEmail = data.email.trim().toLowerCase();
-    const cleanUsername = data.username.trim().toLowerCase();
-
-    // Check for collision with preset demo accounts
-    if (
-      cleanEmail === DEMO_STUDENT_ACCOUNT.email.toLowerCase() ||
-      cleanEmail === DEMO_ALUMNI_ACCOUNT.email.toLowerCase() ||
-      cleanUsername === DEMO_STUDENT_ACCOUNT.username?.toLowerCase() ||
-      cleanUsername === DEMO_ALUMNI_ACCOUNT.username?.toLowerCase()
-    ) {
-      return {
-        success: false,
-        error: "An account with this email address or username already exists.",
-      };
-    }
-
+  const register = async (data: RegisterData): Promise<AuthResult> => {
     const calculatedGradYear =
       data.role === "alumni"
         ? data.passedOutYear || 2020
@@ -232,135 +231,58 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         ? 2027
         : 2026;
 
-    // Build the new user record in PENDING verification state (Section 4)
-    const newUser: DemoUser = {
-      id: `usr-${Date.now()}`,
-      email: cleanEmail,
-      username: cleanUsername,
-      fullName: data.fullName.trim(),
-      role: data.role,
-      verification_status: "pending", // strictly pending!
-      academic_completion_status: data.role === "alumni" ? "graduated" : "studying",
-      academic_year: data.academicYear,
-      passed_out_year: data.passedOutYear,
-      expected_graduation_date:
-        data.role === "student" ? `${calculatedGradYear}-05-31` : undefined,
-      verified_graduation_date:
-        data.role === "alumni" ? `${calculatedGradYear}-05-15` : null,
-      department: data.department,
-      graduationYear: calculatedGradYear,
-      company: data.company,
-      roleTitle: data.role === "alumni" ? "Alumnus / Professional" : undefined,
-      linkedin_url: data.linkedinUrl,
-      student_id_front_name: data.studentIdFrontName,
-      student_id_back_name: data.studentIdBackName,
-      graduation_certificate_name: data.graduationCertificateName,
-      initials,
-      bio: `${data.role === "student" ? "Student" : "Alumnus"} registered on Alumnux. Awaiting administrator verification.`,
-      skills: ["Engineering", "Networking"],
-    };
-
-    // 1. Store in registered users collection
     try {
-      const rawStored = localStorage.getItem(REGISTERED_USERS_KEY);
-      const registeredUsers: Array<DemoUser & { passwordHash?: string }> = rawStored
-        ? JSON.parse(rawStored)
-        : [];
+      const response = await api.signup({
+        email: data.email.trim().toLowerCase(),
+        password: data.password || "SecurePassword123!",
+        fullName: data.fullName.trim(),
+        role: data.role.toUpperCase() as "STUDENT" | "ALUMNI",
+        departmentCode: data.department,
+        graduationYear: calculatedGradYear,
+        currentCompany: data.company,
+        linkedinUrl: data.linkedinUrl,
+      });
 
-      // Check duplicate in custom users
-      if (
-        registeredUsers.some(
-          (u) =>
-            u.email.toLowerCase() === cleanEmail ||
-            (u.username && u.username.toLowerCase() === cleanUsername)
-        )
-      ) {
-        return {
-          success: false,
-          error: "An account with this email or username has already been submitted.",
-        };
+      const mapped = mapServerToUser(response.user, response.profile);
+      return { success: true, user: mapped };
+    } catch (err: unknown) {
+      if (err instanceof ApiClientError) {
+        return { success: false, error: err.message };
       }
-
-      registeredUsers.push({ ...newUser, passwordHash: data.password });
-      localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(registeredUsers));
-      localStorage.setItem(`alumnux_registered_${cleanEmail}`, JSON.stringify({ ...newUser, passwordHash: data.password }));
-    } catch (e) {
-      console.warn("Storage quota exceeded", e);
-    }
-
-    // 2. Add entry to Admin Verification Queue (Section 4)
-    try {
-      const queueRaw = localStorage.getItem(ADMIN_QUEUE_KEY);
-      const queueList = queueRaw ? JSON.parse(queueRaw) : [];
-
-      const evidenceItems = [];
-      if (data.studentIdFrontName) {
-        evidenceItems.push({
-          id: `ev-${Date.now()}-1`,
-          document_type: "student_id_front",
-          file_name: data.studentIdFrontName,
-          file_size_bytes: 1250000,
-          mime_type: "image/jpeg",
-          uploaded_at: new Date().toISOString(),
-        });
-      }
-      if (data.studentIdBackName) {
-        evidenceItems.push({
-          id: `ev-${Date.now()}-2`,
-          document_type: "student_id_back",
-          file_name: data.studentIdBackName,
-          file_size_bytes: 1180000,
-          mime_type: "image/jpeg",
-          uploaded_at: new Date().toISOString(),
-        });
-      }
-      if (data.graduationCertificateName) {
-        evidenceItems.push({
-          id: `ev-${Date.now()}-cert`,
-          document_type: "degree_certificate",
-          file_name: data.graduationCertificateName,
-          file_size_bytes: 1840000,
-          mime_type: "application/pdf",
-          uploaded_at: new Date().toISOString(),
-        });
-      }
-
-      const queueItem = {
-        id: `req-${Date.now()}`,
-        user_id: newUser.id,
-        full_name: newUser.fullName,
-        email: newUser.email,
-        account_type: newUser.role,
-        department_code: newUser.department,
-        graduation_year: newUser.graduationYear,
-        status: "pending",
-        submitted_at: new Date().toISOString(),
-        current_company: newUser.company,
-        evidence: evidenceItems,
+      return {
+        success: false,
+        error: "Registration failed. Please check your network connection and try again.",
       };
-
-      queueList.unshift(queueItem);
-      localStorage.setItem(ADMIN_QUEUE_KEY, JSON.stringify(queueList));
-    } catch (e) {
-      console.warn("Failed to sync with admin verification queue", e);
     }
-
-    // Do NOT call persistUser(newUser) because pending accounts cannot log in until approved
-    return { success: true, user: newUser };
   };
 
-  const logout = () => {
-    persistUser(null);
+  const logout = async () => {
+    try {
+      await api.logout();
+    } catch {
+      // Ignore network errors on logout
+    } finally {
+      setUser(null);
+      setIsDemoMode(false);
+      localStorage.removeItem(STORAGE_SESSION_BACKUP);
+      await api.tokenStorage.clear();
+    }
   };
 
-  const updateUserBio = (bio: string, skills?: string[]) => {
+  const updateUserBio = async (bio: string, skills?: string[]) => {
     if (!user) return;
-    const updated: DemoUser = {
-      ...user,
-      bio,
-      skills: skills || user.skills,
-    };
-    persistUser(updated);
+
+    try {
+      if (!isDemoMode) {
+        const { profile } = await api.updateMe({ bio, skills });
+        setUser((prev) => (prev ? { ...prev, bio: profile.bio || bio, skills: profile.skills || skills || prev.skills } : null));
+      } else {
+        setUser((prev) => (prev ? { ...prev, bio, skills: skills || prev.skills } : null));
+      }
+    } catch {
+      // Optimistic update
+      setUser((prev) => (prev ? { ...prev, bio, skills: skills || prev.skills } : null));
+    }
   };
 
   return (
@@ -369,9 +291,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         user,
         isAuthenticated: !!user,
         isLoading,
+        isDemoMode,
         login,
         loginAsDemo,
-        registerDemo,
+        registerDemo: register,
+        register,
         logout,
         updateUserBio,
       }}

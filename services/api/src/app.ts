@@ -1,8 +1,12 @@
 import Fastify, { FastifyError, FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
+import cookie from "@fastify/cookie";
 import type { ApiErrorResponse } from "@alumnux/types";
 import { env } from "./config/env.js";
 import { healthRoutes } from "./routes/health.js";
+import { authRoutes } from "./modules/auth/auth.routes.js";
+import { directoryRoutes } from "./modules/directory/directory.routes.js";
+import { mentorshipRoutes } from "./modules/mentorship/mentorship.routes.js";
 
 export function buildApp(): FastifyInstance {
   const isDev = env.NODE_ENV === "development";
@@ -33,8 +37,17 @@ export function buildApp(): FastifyInstance {
     credentials: true,
   });
 
+  // Cookie Support for HttpOnly refresh tokens
+  app.register(cookie, {
+    secret: env.COOKIE_SECRET,
+    hook: "onRequest",
+  });
+
   // Register Routes
   app.register(healthRoutes);
+  app.register(authRoutes);
+  app.register(directoryRoutes);
+  app.register(mentorshipRoutes);
 
   // 404 Not Found Handler
   app.setNotFoundHandler((request, reply) => {
