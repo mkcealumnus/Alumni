@@ -1,30 +1,54 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  SafeAreaView,
-  StatusBar,
-  TextInput,
-  TouchableOpacity,
+  Text,
   ScrollView,
-  ActivityIndicator,
+  TouchableOpacity,
+  Modal,
   Alert,
 } from "react-native";
-import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
+import {
+  BRUTAL_COLORS,
+  BRUTAL_BORDERS,
+  BRUTAL_RADII,
+  BRUTAL_SHADOWS,
+  BRUTAL_SPACING,
+  BRUTAL_TYPOGRAPHY,
+  ScreenHeader,
+  SectionHeader,
+  BrutalCard,
+  BrutalBadge,
+  BrutalButton,
+  BrutalInput,
+  Avatar,
+  Divider,
+  ConfirmDialog,
+} from "../design-system";
 import { useMobileAuth } from "../context/AuthContext";
 import { mobileApi } from "../lib/api";
 
 export const ProfileScreen: React.FC = () => {
-  const { user, profile, logout, refreshProfile } = useMobileAuth();
+  const { user, profile, logout, refreshProfile, loginWithPreset } = useMobileAuth();
 
+  const isAlumni = user?.role === "ALUMNI";
+  const isAdmin = user?.role === "ADMIN";
+
+  // Edit Profile Modal State
+  const [editModalVisible, setEditModalVisible] = useState(false);
   const [headline, setHeadline] = useState(profile?.headline || "");
   const [bio, setBio] = useState(profile?.bio || "");
   const [locationCity, setLocationCity] = useState(profile?.locationCity || "");
   const [currentCompany, setCurrentCompany] = useState(profile?.currentCompany || "");
   const [currentRole, setCurrentRole] = useState(profile?.currentRole || "");
-
   const [isSaving, setIsSaving] = useState(false);
+
+  // Verification Modal State
+  const [verificationModalVisible, setVerificationModalVisible] = useState(false);
+  const [docUploaded, setDocUploaded] = useState(false);
+
+  // Logout Dialog State
+  const [logoutDialogVisible, setLogoutDialogVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleSaveProfile = async () => {
@@ -38,7 +62,8 @@ export const ProfileScreen: React.FC = () => {
         currentRole: currentRole.trim() || undefined,
       });
       await refreshProfile();
-      Alert.alert("Success", "Your profile details have been saved.");
+      setEditModalVisible(false);
+      Alert.alert("Profile Updated", "Your changes have been persisted to the central database.");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to update profile.";
       Alert.alert("Update Error", msg);
@@ -47,303 +72,654 @@ export const ProfileScreen: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    Alert.alert(
-      "Sign Out",
-      "Are you sure you want to end this session? Your refresh session will be revoked on the server.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Sign Out",
-          style: "destructive",
-          onPress: async () => {
-            setIsLoggingOut(true);
-            try {
-              await logout();
-            } finally {
-              setIsLoggingOut(false);
-            }
-          },
-        },
-      ]
-    );
+  const handleConfirmLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      setIsLoggingOut(false);
+      setLogoutDialogVisible(false);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" />
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        {/* Profile Card Header */}
-        <View style={styles.headerCard}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {(profile?.fullName || "U").charAt(0).toUpperCase()}
-            </Text>
-          </View>
-          <View style={styles.headerInfo}>
-            <Text style={styles.userName}>{profile?.fullName}</Text>
-            <Text style={styles.userEmail}>{user?.email}</Text>
-            <View style={styles.badgeRow}>
-              <View style={styles.roleBadge}>
-                <Text style={styles.roleBadgeText}>{user?.role}</Text>
+    <View style={styles.container}>
+      <ScreenHeader
+        title="PROFILE"
+        categoryTag="// IDENTITY & ACCOUNT"
+        subtitle="Manage public directory presence, academic verification & credentials."
+      />
+
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Identity Hero Card */}
+        <BrutalCard
+          style={styles.heroCard}
+          accentStrip="top"
+          accentColor={BRUTAL_COLORS.ACCENT}
+        >
+          <View style={styles.heroTopRow}>
+            <Avatar name={profile?.fullName || "User"} size={60} />
+            <View style={styles.heroIdentity}>
+              <Text style={styles.heroName}>{profile?.fullName || "Alumnux User"}</Text>
+              <Text style={styles.heroEmail}>{user?.email}</Text>
+              <View style={styles.badgeRow}>
+                <BrutalBadge
+                  label={user?.role || "STUDENT"}
+                  variant={isAdmin ? "warning" : isAlumni ? "accent" : "neutral"}
+                />
+                <BrutalBadge
+                  label={profile?.departmentCode || "ENGINEERING"}
+                  variant="outline"
+                />
+                {profile?.graduationYear ? (
+                  <BrutalBadge
+                    label={`'${String(profile.graduationYear).slice(-2)}`}
+                    variant="neutral"
+                  />
+                ) : null}
               </View>
-              <Text style={styles.deptBadge}>
-                {profile?.departmentName || profile?.departmentCode || "General"}
+            </View>
+          </View>
+
+          {profile?.headline ? (
+            <Text style={styles.headlineText}>"{profile.headline}"</Text>
+          ) : null}
+
+          <View style={styles.metaGrid}>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaLabel}>ROLE / POSITION</Text>
+              <Text style={styles.metaValue}>
+                {profile?.currentRole || (isAlumni ? "Software Engineer" : "Final Year Student")}
+              </Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaLabel}>ORGANIZATION / CAMPUS</Text>
+              <Text style={styles.metaValue}>
+                {profile?.currentCompany || (isAlumni ? "Industry" : "MKCE Campus")}
+              </Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaLabel}>CITY / REGION</Text>
+              <Text style={styles.metaValue}>
+                {profile?.locationCity || "Tamil Nadu, India"}
+              </Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Text style={styles.metaLabel}>DEPARTMENT</Text>
+              <Text style={styles.metaValue}>
+                {profile?.departmentName || profile?.departmentCode || "Computer Science"}
               </Text>
             </View>
           </View>
-        </View>
 
-        {/* Edit Profile Form */}
-        <View style={styles.formSection}>
-          <Text style={styles.sectionHeader}>Edit Public Information</Text>
+          {profile?.bio ? (
+            <View style={styles.bioBox}>
+              <Text style={styles.bioLabel}>// BIOGRAPHY</Text>
+              <Text style={styles.bioText}>{profile.bio}</Text>
+            </View>
+          ) : null}
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Professional Headline</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g. AI Researcher | Former Systems Engineer"
-              placeholderTextColor={colors.secondary.DEFAULT + "80"}
-              value={headline}
-              onChangeText={setHeadline}
+          <View style={styles.heroActions}>
+            <BrutalButton
+              label="EDIT PUBLIC PROFILE ✎"
+              variant="dark"
+              fullWidth
+              onPress={() => {
+                setHeadline(profile?.headline || "");
+                setBio(profile?.bio || "");
+                setLocationCity(profile?.locationCity || "");
+                setCurrentCompany(profile?.currentCompany || "");
+                setCurrentRole(profile?.currentRole || "");
+                setEditModalVisible(true);
+              }}
+            />
+          </View>
+        </BrutalCard>
+
+        {/* Verification Status Card */}
+        <SectionHeader
+          title="ACADEMIC VERIFICATION"
+          category="// TRUST & GOVERNANCE"
+        />
+
+        <BrutalCard
+          style={styles.verificationCard}
+          accentStrip="left"
+          accentColor={
+            docUploaded || profile?.isVerified
+              ? BRUTAL_COLORS.SUCCESS
+              : BRUTAL_COLORS.WARNING
+          }
+        >
+          <View style={styles.verifHeaderRow}>
+            <View>
+              <Text style={styles.verifDocTitle}>
+                {isAlumni
+                  ? "Anna University Graduation Certificate"
+                  : "College ID Card (Front & Back)"}
+              </Text>
+              <Text style={styles.verifDocSubtitle}>
+                {isAlumni
+                  ? "Official degree certificate verified against Anna University registers."
+                  : "Active MKCE identity card validating student roll number and graduation year."}
+              </Text>
+            </View>
+            <BrutalBadge
+              label={docUploaded || profile?.isVerified ? "VERIFIED ✓" : "SUBMITTED"}
+              variant={docUploaded || profile?.isVerified ? "success" : "warning"}
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Biography / Overview</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Share your interests, career path, or advice for juniors..."
-              placeholderTextColor={colors.secondary.DEFAULT + "80"}
-              value={bio}
-              onChangeText={setBio}
-              multiline
-              numberOfLines={4}
-              textAlignVertical="top"
-            />
+          <View style={styles.verifPolicyBox}>
+            <Text style={styles.policyText}>
+              🛡️ <Text style={{ fontWeight: "700" }}>Trustee Governance:</Text> All student and alumni verification documents are independently reviewed by senior alumni trustees. Private documents are never made public.
+            </Text>
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>City / Location</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g. Bengaluru, India"
-              placeholderTextColor={colors.secondary.DEFAULT + "80"}
-              value={locationCity}
-              onChangeText={setLocationCity}
-            />
-          </View>
+          <BrutalButton
+            label={docUploaded ? "DOCUMENT FILED // PENDING TRUSTEE REVIEW" : "UPLOAD UPDATED CREDENTIALS ⇪"}
+            variant="outline"
+            fullWidth
+            onPress={() => setVerificationModalVisible(true)}
+          />
+        </BrutalCard>
 
-          {user?.role === "ALUMNI" && (
-            <>
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Current Employer / Company</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="e.g. Microsoft"
-                  placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                  value={currentCompany}
-                  onChangeText={setCurrentCompany}
-                />
-              </View>
+        {/* Testing & Role Switcher */}
+        <SectionHeader
+          title="SIMULATED ROLE SWITCHER"
+          category="// TESTING LAUNCHPAD"
+        />
 
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Job Title / Designation</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="e.g. Senior Software Engineer"
-                  placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                  value={currentRole}
-                  onChangeText={setCurrentRole}
-                />
-              </View>
-            </>
-          )}
-
-          <TouchableOpacity
-            style={[styles.saveButton, isSaving && styles.disabledButton]}
-            onPress={handleSaveProfile}
-            disabled={isSaving}
-            activeOpacity={0.85}
-          >
-            {isSaving ? (
-              <ActivityIndicator color={colors.accent.foreground} size="small" />
-            ) : (
-              <Text style={styles.saveButtonText}>Save Profile Changes</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-
-        {/* Security & Account Controls */}
-        <View style={styles.accountSection}>
-          <Text style={styles.sectionHeader}>Session Security</Text>
-          <Text style={styles.accountNote}>
-            User ID: {user?.id}
-          </Text>
-          <Text style={styles.accountNote}>
-            Account Status: {user?.status}
+        <BrutalCard style={styles.switcherCard}>
+          <Text style={styles.switcherDesc}>
+            Quickly switch active role persona to audit Student, Alumni, and Senior Trustee administrative workflows:
           </Text>
 
-          <TouchableOpacity
-            style={styles.logoutButton}
-            onPress={handleLogout}
-            disabled={isLoggingOut}
-            activeOpacity={0.85}
-          >
-            {isLoggingOut ? (
-              <ActivityIndicator color={colors.semantic.error} size="small" />
-            ) : (
-              <Text style={styles.logoutButtonText}>Revoke Session & Sign Out</Text>
-            )}
-          </TouchableOpacity>
+          <View style={styles.switcherBtns}>
+            <TouchableOpacity
+              style={[
+                styles.switcherPill,
+                user?.role === "STUDENT" && styles.switcherPillActive,
+              ]}
+              onPress={() => loginWithPreset("STUDENT")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.switcherPillTag}>STUDENT</Text>
+              <Text style={styles.switcherPillName}>Priya Dharshini (CSE '26)</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.switcherPill,
+                user?.role === "ALUMNI" && styles.switcherPillActive,
+              ]}
+              onPress={() => loginWithPreset("ALUMNI")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.switcherPillTag}>ALUMNI</Text>
+              <Text style={styles.switcherPillName}>Jordan Vance (Stripe '18)</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.switcherPill,
+                user?.role === "ADMIN" && styles.switcherPillActive,
+              ]}
+              onPress={() => loginWithPreset("ADMIN")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.switcherPillTag}>TRUSTEE ADMIN</Text>
+              <Text style={styles.switcherPillName}>Trustee Arunachalam</Text>
+            </TouchableOpacity>
+          </View>
+        </BrutalCard>
+
+        {/* Account Termination & Logout */}
+        <View style={styles.logoutSection}>
+          <BrutalButton
+            label="END NATIVE SESSION (LOGOUT) ➔"
+            variant="destructive"
+            fullWidth
+            onPress={() => setLogoutDialogVisible(true)}
+          />
         </View>
       </ScrollView>
-    </SafeAreaView>
+
+      {/* Edit Profile Modal */}
+      <Modal
+        visible={editModalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setEditModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalHeaderTag}>
+                <Text style={styles.modalHeaderCategory}>
+                  // EDIT PUBLIC DIRECTORY INFO
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={styles.modalCloseBtn}
+                onPress={() => setEditModalVisible(false)}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalCloseText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              style={styles.modalBody}
+              contentContainerStyle={{ paddingBottom: BRUTAL_SPACING[8] }}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+            >
+              <Text style={styles.modalTitle}>Public Information</Text>
+              <Text style={styles.modalSubtitle}>
+                Changes are immediately reflected in the search directory and alumni network.
+              </Text>
+
+              <BrutalInput
+                label="HEADLINE"
+                value={headline}
+                onChangeText={setHeadline}
+                placeholder="e.g. Senior Software Engineer at Stripe | Cloud & System Design"
+              />
+
+              <BrutalInput
+                label="CURRENT ROLE"
+                value={currentRole}
+                onChangeText={setCurrentRole}
+                placeholder="e.g. Staff Architect, Backend Engineer"
+              />
+
+              <BrutalInput
+                label="COMPANY / ORGANIZATION"
+                value={currentCompany}
+                onChangeText={setCurrentCompany}
+                placeholder="e.g. Stripe, AWS, Zoho, MKCE"
+              />
+
+              <BrutalInput
+                label="CITY / LOCATION"
+                value={locationCity}
+                onChangeText={setLocationCity}
+                placeholder="e.g. Bengaluru, Chennai, Remote"
+              />
+
+              <BrutalInput
+                label="PROFESSIONAL BIO"
+                value={bio}
+                onChangeText={setBio}
+                placeholder="Write a concise overview of your background, areas of mentorship expertise, and career advice..."
+                multiline
+                numberOfLines={4}
+              />
+
+              <View style={{ marginTop: BRUTAL_SPACING[4] }}>
+                <BrutalButton
+                  label="SAVE PROFILE DETAILS ✓"
+                  variant="primary"
+                  fullWidth
+                  loading={isSaving}
+                  onPress={handleSaveProfile}
+                />
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Verification Upload Modal */}
+      <Modal
+        visible={verificationModalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setVerificationModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalHeaderTag}>
+                <Text style={styles.modalHeaderCategory}>
+                  // DOCUMENT SUBMISSION
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={styles.modalCloseBtn}
+                onPress={() => setVerificationModalVisible(false)}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalCloseText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              style={styles.modalBody}
+              contentContainerStyle={{ paddingBottom: BRUTAL_SPACING[8] }}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.modalTitle}>Upload Verification Proof</Text>
+              <Text style={styles.modalSubtitle}>
+                {isAlumni
+                  ? "Submit a clear, scanned PDF or image of your Anna University Degree Certificate or Provisional Certificate."
+                  : "Submit a clear photo of your MKCE College ID Card (showing front and back with your Roll Number)."}
+              </Text>
+
+              <View style={styles.uploadBox}>
+                <Text style={styles.uploadIcon}>📄</Text>
+                <Text style={styles.uploadTitle}>
+                  {isAlumni ? "anna_university_degree_scan.pdf" : "mkce_student_id_front_back.jpg"}
+                </Text>
+                <Text style={styles.uploadMeta}>
+                  Size: 2.4 MB • Status: Ready to upload
+                </Text>
+                <View style={styles.docSecureBadge}>
+                  <Text style={styles.docSecureText}>🔒 END-TO-END ENCRYPTED TRUSTEE ARCHIVE</Text>
+                </View>
+              </View>
+
+              <View style={{ marginTop: BRUTAL_SPACING[4] }}>
+                <BrutalButton
+                  label="SUBMIT TO TRUSTEES FOR APPROVAL ⚡"
+                  variant="primary"
+                  fullWidth
+                  onPress={() => {
+                    setDocUploaded(true);
+                    setVerificationModalVisible(false);
+                    Alert.alert(
+                      "Document Submitted",
+                      "Your credentials have been securely routed to the senior alumni trustee queue. Verification typically completes within 24 hours."
+                    );
+                  }}
+                />
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Logout Confirmation */}
+      <ConfirmDialog
+        visible={logoutDialogVisible}
+        title="SIGN OUT OF ALUMNUX"
+        description="Are you sure you want to end this native session? Your local tokens will be revoked and cleared from Expo SecureStore."
+        confirmLabel="END SESSION"
+        cancelLabel="STAY SIGNED IN"
+        destructive
+        onConfirm={handleConfirmLogout}
+        onCancel={() => setLogoutDialogVisible(false)}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.page,
-  },
   container: {
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[5],
-    gap: spacing[4],
+    flex: 1,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
   },
-  headerCard: {
+  scrollContent: {
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingBottom: BRUTAL_SPACING[12],
+  },
+  heroCard: {
+    marginBottom: BRUTAL_SPACING[6],
+  },
+  heroTopRow: {
     flexDirection: "row",
-    backgroundColor: colors.surface,
-    padding: spacing[4],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    gap: BRUTAL_SPACING[4],
     alignItems: "center",
-    gap: spacing[3],
+    marginBottom: BRUTAL_SPACING[3],
   },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: radii.base,
-    backgroundColor: colors.accent.DEFAULT,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avatarText: {
-    fontSize: typography.sizes["2xl"],
-    fontWeight: "800",
-    color: colors.accent.foreground,
-  },
-  headerInfo: {
+  heroIdentity: {
     flex: 1,
   },
-  userName: {
-    fontSize: typography.sizes.lg,
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
+  heroName: {
+    fontSize: BRUTAL_TYPOGRAPHY["2xl"],
+    fontWeight: BRUTAL_TYPOGRAPHY.black,
+    color: BRUTAL_COLORS.INK,
+    lineHeight: 28,
   },
-  userEmail: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    marginTop: 1,
+  heroEmail: {
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    marginBottom: BRUTAL_SPACING[2],
   },
   badgeRow: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: spacing[2],
-    marginTop: spacing[2],
+    gap: BRUTAL_SPACING[2],
+    flexWrap: "wrap",
   },
-  roleBadge: {
-    backgroundColor: colors.primary.DEFAULT,
-    paddingHorizontal: spacing[2],
+  headlineText: {
+    fontSize: BRUTAL_TYPOGRAPHY.sm,
+    fontStyle: "italic",
+    color: BRUTAL_COLORS.INK,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    padding: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[4],
+  },
+  metaGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[4],
+  },
+  metaItem: {
+    width: "47%",
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    padding: BRUTAL_SPACING[2],
+  },
+  metaLabel: {
+    fontSize: 9,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  metaValue: {
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.INK,
+  },
+  bioBox: {
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    padding: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[4],
+  },
+  bioLabel: {
+    fontSize: 10,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    letterSpacing: 1,
+    marginBottom: BRUTAL_SPACING[1],
+  },
+  bioText: {
+    fontSize: BRUTAL_TYPOGRAPHY.sm,
+    color: BRUTAL_COLORS.INK,
+    lineHeight: 20,
+  },
+  heroActions: {
+    marginTop: BRUTAL_SPACING[2],
+  },
+  verificationCard: {
+    marginBottom: BRUTAL_SPACING[6],
+  },
+  verifHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: BRUTAL_SPACING[3],
+    gap: BRUTAL_SPACING[2],
+  },
+  verifDocTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.base,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.INK,
+    marginBottom: 2,
+  },
+  verifDocSubtitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    maxWidth: 240,
+    lineHeight: 16,
+  },
+  verifPolicyBox: {
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    padding: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[3],
+  },
+  policyText: {
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    color: BRUTAL_COLORS.INK,
+    lineHeight: 18,
+  },
+  switcherCard: {
+    marginBottom: BRUTAL_SPACING[6],
+  },
+  switcherDesc: {
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    marginBottom: BRUTAL_SPACING[3],
+    lineHeight: 18,
+  },
+  switcherBtns: {
+    gap: BRUTAL_SPACING[2],
+  },
+  switcherPill: {
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    padding: BRUTAL_SPACING[3],
+  },
+  switcherPillActive: {
+    backgroundColor: BRUTAL_COLORS.ACCENT,
+    ...BRUTAL_SHADOWS.subtle,
+  },
+  switcherPillTag: {
+    fontSize: 9,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  switcherPillName: {
+    fontSize: BRUTAL_TYPOGRAPHY.sm,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.INK,
+  },
+  logoutSection: {
+    marginTop: BRUTAL_SPACING[2],
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.65)",
+    justifyContent: "flex-end",
+  },
+  modalContent: {
+    backgroundColor: BRUTAL_COLORS.SURFACE,
+    borderTopWidth: BRUTAL_BORDERS.standard,
+    borderLeftWidth: BRUTAL_BORDERS.standard,
+    borderRightWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    maxHeight: "90%",
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingVertical: BRUTAL_SPACING[4],
+    borderBottomWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+  },
+  modalHeaderTag: {
+    backgroundColor: BRUTAL_COLORS.INK,
+    paddingHorizontal: BRUTAL_SPACING[2],
     paddingVertical: 2,
-    borderRadius: radii.sm,
   },
-  roleBadgeText: {
-    color: colors.primary.foreground,
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
+  modalHeaderCategory: {
+    fontSize: 10,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.ACCENT,
+    letterSpacing: 1,
   },
-  deptBadge: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
+  modalCloseBtn: {
+    width: 32,
+    height: 32,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    backgroundColor: BRUTAL_COLORS.SURFACE,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  formSection: {
-    backgroundColor: colors.surface,
-    padding: spacing[4],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    gap: spacing[3],
+  modalCloseText: {
+    fontSize: 14,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.INK,
   },
-  sectionHeader: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.secondary.DEFAULT,
-    textTransform: "uppercase",
+  modalBody: {
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingVertical: BRUTAL_SPACING[4],
+  },
+  modalTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY["2xl"],
+    fontWeight: BRUTAL_TYPOGRAPHY.black,
+    color: BRUTAL_COLORS.INK,
+    marginBottom: BRUTAL_SPACING[1],
+  },
+  modalSubtitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sm,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    marginBottom: BRUTAL_SPACING[4],
+    lineHeight: 20,
+  },
+  uploadBox: {
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: BRUTAL_COLORS.INK,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    padding: BRUTAL_SPACING[4],
+    alignItems: "center",
+    marginVertical: BRUTAL_SPACING[3],
+  },
+  uploadIcon: {
+    fontSize: 36,
+    marginBottom: BRUTAL_SPACING[2],
+  },
+  uploadTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sm,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.INK,
+    marginBottom: 4,
+  },
+  uploadMeta: {
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    marginBottom: BRUTAL_SPACING[3],
+  },
+  docSecureBadge: {
+    backgroundColor: BRUTAL_COLORS.INK,
+    paddingHorizontal: BRUTAL_SPACING[2],
+    paddingVertical: 4,
+  },
+  docSecureText: {
+    fontSize: 9,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.SURFACE,
     letterSpacing: 0.5,
-  },
-  inputGroup: {
-    gap: 4,
-  },
-  label: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "600",
-    color: colors.primary.DEFAULT,
-  },
-  input: {
-    backgroundColor: colors.page,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.base,
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[2],
-    fontSize: typography.sizes.sm,
-    color: colors.primary.DEFAULT,
-  },
-  textArea: {
-    height: 80,
-  },
-  saveButton: {
-    backgroundColor: colors.accent.DEFAULT,
-    paddingVertical: spacing[3],
-    borderRadius: radii.base,
-    alignItems: "center",
-    marginTop: spacing[2],
-  },
-  saveButtonText: {
-    color: colors.accent.foreground,
-    fontSize: typography.sizes.sm,
-    fontWeight: "700",
-  },
-  disabledButton: {
-    opacity: 0.7,
-  },
-  accountSection: {
-    backgroundColor: colors.surface,
-    padding: spacing[4],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    gap: spacing[2],
-  },
-  accountNote: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-  },
-  logoutButton: {
-    marginTop: spacing[3],
-    backgroundColor: colors.semantic.errorSubtle,
-    borderWidth: 1,
-    borderColor: colors.semantic.errorBorder,
-    paddingVertical: spacing[3],
-    borderRadius: radii.base,
-    alignItems: "center",
-  },
-  logoutButtonText: {
-    color: colors.semantic.error,
-    fontSize: typography.sizes.sm,
-    fontWeight: "700",
   },
 });

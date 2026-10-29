@@ -5,105 +5,180 @@ import {
   View,
   SafeAreaView,
   StatusBar,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
+import {
+  BRUTAL_COLORS,
+  BRUTAL_BORDERS,
+  BRUTAL_RADII,
+  BRUTAL_SHADOWS,
+  BRUTAL_SPACING,
+  BRUTAL_TYPOGRAPHY,
+  BrutalButton,
+  BrutalCard,
+  BrutalBadge,
+} from "../design-system";
+import { useMobileAuth } from "../context/AuthContext";
 
 interface WelcomeScreenProps {
   onNavigateToLogin: () => void;
-  onNavigateToRegister: (initialRole?: "STUDENT" | "ALUMNI") => void;
+  onNavigateToRegister: (role?: "STUDENT" | "ALUMNI") => void;
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onNavigateToLogin,
   onNavigateToRegister,
 }) => {
+  const { loginAsDemo } = useMobileAuth();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Brand Banner */}
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Top Header Tag */}
+        <View style={styles.topBar}>
+          <BrutalBadge label="INDEPENDENT ALUMNI PLATFORM" variant="accent" />
+          <Text style={styles.versionTag}>v2.0-NANO</Text>
+        </View>
+
+        {/* Hero Section */}
         <View style={styles.heroSection}>
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>MKCE ALUMNI & STUDENT PLATFORM</Text>
-          </View>
-          <Text style={styles.heroTitle}>Alumnux</Text>
-          <Text style={styles.heroSubtitle}>
-            Bridging students and alumni through structured mentorship, industry guidance, and verified networking.
+          <Text style={styles.brandTitle}>ALUMNUX</Text>
+          <Text style={styles.brandTagline}>
+            YOUR NETWORK.{"\n"}YOUR NEXT CHAPTER.
           </Text>
         </View>
 
-        {/* Value Proposition Cards */}
-        <View style={styles.featureList}>
-          <View style={styles.featureCard}>
-            <View style={styles.featureBullet}>
-              <Text style={styles.featureIcon}>🎓</Text>
+        {/* Acid Lime Statement Card */}
+        <BrutalCard variant="accent" padding={5} style={styles.statementCard}>
+          <View style={styles.cardHeaderRow}>
+            <Text style={styles.cardTag}>// VERIFIED COMMUNITY</Text>
+            <View style={styles.dotIndicator} />
+          </View>
+          <Text style={styles.statementText}>
+            Direct 1-on-1 industry mentorship, off-campus referrals, and lifelong alumni collaboration.
+          </Text>
+          <View style={styles.statsRow}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>100%</Text>
+              <Text style={styles.statLabel}>VERIFIED</Text>
             </View>
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Verified Directory</Text>
-              <Text style={styles.featureDesc}>
-                Explore alumni working across leading engineering and technology companies.
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>1-on-1</Text>
+              <Text style={styles.statLabel}>GUIDANCE</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>ZERO</Text>
+              <Text style={styles.statLabel}>SPAM ADS</Text>
+            </View>
+          </View>
+        </BrutalCard>
+
+        {/* Core Pillars Feature List */}
+        <View style={styles.pillarsSection}>
+          <View style={styles.pillarRow}>
+            <View style={styles.pillarBullet}>
+              <Text style={styles.pillarBulletText}>01</Text>
+            </View>
+            <View style={styles.pillarTextGroup}>
+              <Text style={styles.pillarTitle}>Alumni Discovery</Text>
+              <Text style={styles.pillarDesc}>
+                Search senior alumni across Google, AWS, Stripe, and Zoho by department and graduation year.
               </Text>
             </View>
           </View>
 
-          <View style={styles.featureCard}>
-            <View style={styles.featureBullet}>
-              <Text style={styles.featureIcon}>🤝</Text>
+          <View style={styles.pillarRow}>
+            <View style={styles.pillarBullet}>
+              <Text style={styles.pillarBulletText}>02</Text>
             </View>
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>1-on-1 Mentorship</Text>
-              <Text style={styles.featureDesc}>
-                Send guidance requests, get resume feedback, and receive career advice.
+            <View style={styles.pillarTextGroup}>
+              <Text style={styles.pillarTitle}>Structured Mentorship</Text>
+              <Text style={styles.pillarDesc}>
+                Send guidance requests with custom topics, resume critiques, and interview preparation.
               </Text>
             </View>
           </View>
 
-          <View style={styles.featureCard}>
-            <View style={styles.featureBullet}>
-              <Text style={styles.featureIcon}>🔒</Text>
+          <View style={styles.pillarRow}>
+            <View style={styles.pillarBullet}>
+              <Text style={styles.pillarBulletText}>03</Text>
             </View>
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Secure & Shared Backend</Text>
-              <Text style={styles.featureDesc}>
-                Native token storage via Expo SecureStore and enterprise session security.
+            <View style={styles.pillarTextGroup}>
+              <Text style={styles.pillarTitle}>Referral Opportunities</Text>
+              <Text style={styles.pillarDesc}>
+                Browse verified campus job referral listings with direct contact to alumni referrers.
               </Text>
             </View>
           </View>
         </View>
 
-        {/* Action Buttons */}
-        <View style={styles.actionSection}>
-          <TouchableOpacity
-            style={styles.primaryButton}
+        {/* Action Buttons Section */}
+        <View style={styles.actionsSection}>
+          <BrutalButton
+            title="SIGN IN WITH ACCOUNT"
             onPress={onNavigateToLogin}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.primaryButtonText}>Sign In to Account</Text>
-          </TouchableOpacity>
+            variant="primary"
+            fullWidth
+          />
 
-          <View style={styles.secondaryButtonGroup}>
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={() => onNavigateToRegister("STUDENT")}
-              activeOpacity={0.85}
-            >
-              <Text style={styles.secondaryButtonText}>Student Register</Text>
-            </TouchableOpacity>
+          <View style={styles.splitButtonRow}>
+            <View style={styles.splitButtonCol}>
+              <BrutalButton
+                title="STUDENT JOIN"
+                onPress={() => onNavigateToRegister("STUDENT")}
+                variant="secondary"
+                size="compact"
+                fullWidth
+              />
+            </View>
+            <View style={styles.splitButtonCol}>
+              <BrutalButton
+                title="ALUMNI JOIN"
+                onPress={() => onNavigateToRegister("ALUMNI")}
+                variant="secondary"
+                size="compact"
+                fullWidth
+              />
+            </View>
+          </View>
 
-            <TouchableOpacity
-              style={[styles.secondaryButton, styles.alumniButton]}
-              onPress={() => onNavigateToRegister("ALUMNI")}
-              activeOpacity={0.85}
-            >
-              <Text style={styles.secondaryButtonText}>Alumni Register</Text>
-            </TouchableOpacity>
+          {/* Quick Demo Launch Bar */}
+          <View style={styles.demoBox}>
+            <Text style={styles.demoBoxTitle}>// 1-CLICK INSTANT PREVIEW</Text>
+            <View style={styles.demoButtonsRow}>
+              <BrutalButton
+                title="STUDENT"
+                onPress={() => loginAsDemo("STUDENT")}
+                variant="dark"
+                size="small"
+                style={styles.demoBtn}
+              />
+              <BrutalButton
+                title="ALUMNI"
+                onPress={() => loginAsDemo("ALUMNI")}
+                variant="dark"
+                size="small"
+                style={styles.demoBtn}
+              />
+              <BrutalButton
+                title="TRUSTEE"
+                onPress={() => loginAsDemo("ADMIN")}
+                variant="dark"
+                size="small"
+                style={styles.demoBtn}
+              />
+            </View>
           </View>
         </View>
 
-        <Text style={styles.footerNote}>
-          Independent student & alumni network. No third-party data tracking.
+        <Text style={styles.footerCaption}>
+          Alumnux Independent Community • Anna University Affiliated
         </Text>
       </ScrollView>
     </SafeAreaView>
@@ -113,124 +188,183 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.page,
+    backgroundColor: BRUTAL_COLORS.background,
   },
-  container: {
-    paddingHorizontal: spacing[5],
-    paddingVertical: spacing[6],
+  scrollContent: {
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingTop: BRUTAL_SPACING[4],
+    paddingBottom: BRUTAL_SPACING[8],
+  },
+  topBar: {
+    flexDirection: "row",
     justifyContent: "space-between",
-    minHeight: "100%",
+    alignItems: "center",
+    marginBottom: BRUTAL_SPACING[5],
+  },
+  versionTag: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.ink,
+    letterSpacing: 1,
   },
   heroSection: {
-    marginTop: spacing[4],
+    marginBottom: BRUTAL_SPACING[4],
   },
-  badge: {
-    alignSelf: "flex-start",
-    backgroundColor: colors.accent.subtle,
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[1],
-    borderRadius: radii.sm,
-    marginBottom: spacing[3],
-    borderWidth: 1,
-    borderColor: colors.accent.DEFAULT + "20",
+  brandTitle: {
+    fontSize: 44,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.ink,
+    letterSpacing: -1.5,
+    lineHeight: 46,
   },
-  badgeText: {
-    color: colors.accent.DEFAULT,
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
+  brandTagline: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.lg,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.heavy,
+    color: BRUTAL_COLORS.textSecondary,
     letterSpacing: 0.5,
+    marginTop: BRUTAL_SPACING[2],
+    lineHeight: 24,
   },
-  heroTitle: {
-    fontSize: typography.sizes["4xl"],
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
-    letterSpacing: -0.5,
+  statementCard: {
+    marginVertical: BRUTAL_SPACING[3],
   },
-  heroSubtitle: {
-    fontSize: typography.sizes.base,
-    color: colors.secondary.DEFAULT,
-    lineHeight: 22,
-    marginTop: spacing[2],
-  },
-  featureList: {
-    marginVertical: spacing[6],
-    gap: spacing[3],
-  },
-  featureCard: {
+  cardHeaderRow: {
     flexDirection: "row",
-    backgroundColor: colors.surface,
-    padding: spacing[4],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: BRUTAL_SPACING[2],
+  },
+  cardTag: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    letterSpacing: 1,
+    color: BRUTAL_COLORS.ink,
+  },
+  dotIndicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 9999,
+    backgroundColor: BRUTAL_COLORS.ink,
+  },
+  statementText: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.base,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.heavy,
+    color: BRUTAL_COLORS.ink,
+    lineHeight: 22,
+    marginBottom: BRUTAL_SPACING[4],
+  },
+  statsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: BRUTAL_COLORS.surface,
+    borderWidth: BRUTAL_BORDERS.thin,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    paddingVertical: BRUTAL_SPACING[2],
+    paddingHorizontal: BRUTAL_SPACING[3],
+  },
+  statItem: {
+    flex: 1,
     alignItems: "center",
   },
-  featureBullet: {
-    width: 44,
-    height: 44,
-    borderRadius: radii.base,
-    backgroundColor: colors.page,
+  statNumber: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.base,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.ink,
+  },
+  statLabel: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.heavy,
+    color: BRUTAL_COLORS.textSecondary,
+    letterSpacing: 0.5,
+    marginTop: 1,
+  },
+  statDivider: {
+    width: 1.5,
+    height: 24,
+    backgroundColor: BRUTAL_COLORS.ink,
+  },
+  pillarsSection: {
+    marginVertical: BRUTAL_SPACING[4],
+    gap: BRUTAL_SPACING[3],
+  },
+  pillarRow: {
+    flexDirection: "row",
+    backgroundColor: BRUTAL_COLORS.surface,
+    borderWidth: BRUTAL_BORDERS.thin,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[3],
+    alignItems: "center",
+    ...BRUTAL_SHADOWS.sm,
+  },
+  pillarBullet: {
+    width: 36,
+    height: 36,
+    backgroundColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.micro,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: spacing[3],
+    marginRight: BRUTAL_SPACING[3],
   },
-  featureIcon: {
-    fontSize: 22,
+  pillarBulletText: {
+    color: BRUTAL_COLORS.accent,
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
   },
-  featureContent: {
+  pillarTextGroup: {
     flex: 1,
   },
-  featureTitle: {
-    fontSize: typography.sizes.sm,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
-    marginBottom: 2,
+  pillarTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.sm,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.ink,
   },
-  featureDesc: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    lineHeight: 18,
+  pillarDesc: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    color: BRUTAL_COLORS.textSecondary,
+    lineHeight: 17,
+    marginTop: 2,
   },
-  actionSection: {
-    gap: spacing[3],
-    marginTop: "auto",
+  actionsSection: {
+    marginTop: BRUTAL_SPACING[3],
+    gap: BRUTAL_SPACING[3],
   },
-  primaryButton: {
-    backgroundColor: colors.accent.DEFAULT,
-    paddingVertical: spacing[4],
-    borderRadius: radii.md,
-    alignItems: "center",
-  },
-  primaryButtonText: {
-    color: colors.accent.foreground,
-    fontSize: typography.sizes.base,
-    fontWeight: "700",
-  },
-  secondaryButtonGroup: {
+  splitButtonRow: {
     flexDirection: "row",
-    gap: spacing[3],
+    gap: BRUTAL_SPACING[3],
   },
-  secondaryButton: {
+  splitButtonCol: {
     flex: 1,
-    backgroundColor: colors.surface,
-    paddingVertical: spacing[3],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: "center",
   },
-  alumniButton: {
-    borderColor: colors.primary.DEFAULT,
+  demoBox: {
+    backgroundColor: BRUTAL_COLORS.surface,
+    borderWidth: BRUTAL_BORDERS.width,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[3],
+    marginTop: BRUTAL_SPACING[2],
+    ...BRUTAL_SHADOWS.sm,
   },
-  secondaryButtonText: {
-    color: colors.primary.DEFAULT,
-    fontSize: typography.sizes.sm,
-    fontWeight: "600",
+  demoBoxTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.ink,
+    letterSpacing: 1,
+    marginBottom: BRUTAL_SPACING[2],
   },
-  footerNote: {
+  demoButtonsRow: {
+    flexDirection: "row",
+    gap: BRUTAL_SPACING[2],
+  },
+  demoBtn: {
+    flex: 1,
+  },
+  footerCaption: {
     textAlign: "center",
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    marginTop: spacing[4],
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    color: BRUTAL_COLORS.textSecondary,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.medium,
+    marginTop: BRUTAL_SPACING[6],
   },
 });

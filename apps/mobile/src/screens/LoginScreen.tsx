@@ -1,19 +1,28 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
+  Text,
   SafeAreaView,
   StatusBar,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  Alert,
+  TouchableOpacity,
 } from "react-native";
-import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
+import {
+  BRUTAL_COLORS,
+  BRUTAL_BORDERS,
+  BRUTAL_RADII,
+  BRUTAL_SHADOWS,
+  BRUTAL_SPACING,
+  BRUTAL_TYPOGRAPHY,
+  ScreenHeader,
+  BrutalButton,
+  BrutalInput,
+  BrutalCard,
+  BrutalBadge,
+} from "../design-system";
 import { useMobileAuth } from "../context/AuthContext";
 
 interface LoginScreenProps {
@@ -26,221 +35,157 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   onNavigateToRegister,
 }) => {
   const { login, loginAsDemo } = useMobileAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleLogin = async () => {
-    setErrorMessage(null);
-
-    const trimmedEmail = email.trim().toLowerCase();
-    if (!trimmedEmail) {
-      setErrorMessage("Please enter your email address.");
-      return;
-    }
-    if (!password) {
-      setErrorMessage("Please enter your account password.");
+  const handleSubmit = async () => {
+    if (!email.trim() || !password) {
+      setErrorMessage("Please enter both email and password.");
       return;
     }
 
     setIsLoading(true);
-    try {
-      const result = await login({ email: trimmedEmail, password });
-      if (!result.success) {
-        setErrorMessage(
-          result.error || "Authentication failed. Check your credentials or use the 1-Click Sample login below."
-        );
-      }
-    } catch {
-      setErrorMessage("An unexpected network error occurred.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleQuickDemo = async (role: "STUDENT" | "ALUMNI") => {
     setErrorMessage(null);
-    setIsLoading(true);
-    try {
-      if (role === "STUDENT") {
-        setEmail("student@alumnux.demo");
-        setPassword("Student@123");
-      } else {
-        setEmail("alumni@alumnux.demo");
-        setPassword("Alumni@123");
-      }
-      await loginAsDemo(role);
-    } catch {
-      setErrorMessage("Could not activate demo session.");
-    } finally {
-      setIsLoading(false);
+
+    const result = await login({ email, password });
+    setIsLoading(false);
+
+    if (!result.success) {
+      setErrorMessage(result.error || "Authentication failed. Check your credentials.");
     }
   };
 
-  const handleForgotPassword = () => {
-    Alert.alert(
-      "Password Reset",
-      "Self-service password recovery is coordinated via institution administrative verification. For testing, you can use the sample accounts: student@alumnux.demo (Student@123) or alumni@alumnux.demo (Alumni@123).",
-      [{ text: "OK" }]
-    );
+  const handleApplyPreset = (demoEmail: string, demoPass: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPass);
+    setErrorMessage(null);
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView
-        style={styles.keyboardView}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={styles.keyboardContainer}
       >
+        <ScreenHeader
+          title="SIGN IN"
+          subtitle="Access verified student-alumni guidance and networking"
+          onBack={onBack}
+          categoryTag="SECURE AUTH"
+        />
+
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          {/* Top navigation bar */}
-          <View style={styles.navBar}>
-            <TouchableOpacity
-              onPress={onBack}
-              style={styles.backButton}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.backButtonText}>← Back</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.title}>Welcome back</Text>
-            <Text style={styles.subtitle}>
-              Sign in with your Alumnux credentials or use sample access.
-            </Text>
-          </View>
-
           {/* Error Banner */}
           {errorMessage && (
             <View style={styles.errorBanner}>
-              <Text style={styles.errorBannerText}>{errorMessage}</Text>
+              <Text style={styles.errorIcon}>⚠</Text>
+              <Text style={styles.errorText}>{errorMessage}</Text>
             </View>
           )}
 
-          {/* Form */}
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email Address</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="name@mkce.ac.in"
-                placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                value={email}
-                onChangeText={(val) => {
-                  setEmail(val);
-                  if (errorMessage) setErrorMessage(null);
-                }}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                autoComplete="email"
-                editable={!isLoading}
-              />
-            </View>
+          {/* Form Card */}
+          <BrutalCard variant="surface" padding={5} style={styles.formCard}>
+            <BrutalInput
+              label="INSTITUTIONAL / ACCOUNT EMAIL"
+              placeholder="e.g. name@student.demo or user@alumnux.org"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              required
+            />
 
-            <View style={styles.inputGroup}>
-              <View style={styles.passwordLabelRow}>
-                <Text style={styles.label}>Password</Text>
-                <TouchableOpacity
-                  onPress={() => setIsPasswordVisible(!isPasswordVisible)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.visibilityToggle}>
-                    {isPasswordVisible ? "Hide" : "Show"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••••••"
-                placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                value={password}
-                onChangeText={(val) => {
-                  setPassword(val);
-                  if (errorMessage) setErrorMessage(null);
-                }}
-                secureTextEntry={!isPasswordVisible}
-                autoCapitalize="none"
-                editable={!isLoading}
-              />
+            <BrutalInput
+              label="ACCOUNT PASSWORD"
+              placeholder="••••••••••••"
+              value={password}
+              onChangeText={setPassword}
+              isPassword
+              required
+            />
+
+            <BrutalButton
+              title="AUTHENTICATE & ENTER"
+              onPress={handleSubmit}
+              loading={isLoading}
+              variant="primary"
+              fullWidth
+              style={styles.submitBtn}
+            />
+          </BrutalCard>
+
+          {/* Quick 1-Click Credentials Accordion */}
+          <View style={styles.presetsBox}>
+            <View style={styles.presetsHeader}>
+              <Text style={styles.presetsTitle}>// QUICK PRESETS FOR REVIEW</Text>
+              <BrutalBadge label="AUTO-FILL" variant="accent" size="small" />
             </View>
 
             <TouchableOpacity
-              onPress={handleForgotPassword}
-              style={styles.forgotPasswordButton}
+              style={styles.presetRow}
+              onPress={() => handleApplyPreset("student@alumnux.demo", "Student@123")}
               activeOpacity={0.7}
             >
-              <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+              <View style={styles.presetBadgeCol}>
+                <BrutalBadge label="STUDENT" variant="success" size="small" />
+              </View>
+              <View style={styles.presetTextCol}>
+                <Text style={styles.presetName}>Alex Rivera (CSE '26)</Text>
+                <Text style={styles.presetCreds}>student@alumnux.demo • Student@123</Text>
+              </View>
+              <Text style={styles.presetArrow}>→</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.submitButton, isLoading && styles.submitButtonDisabled]}
-              onPress={handleLogin}
-              disabled={isLoading}
-              activeOpacity={0.85}
+              style={styles.presetRow}
+              onPress={() => handleApplyPreset("alumni@alumnux.demo", "Alumni@123")}
+              activeOpacity={0.7}
             >
-              {isLoading ? (
-                <ActivityIndicator color={colors.accent.foreground} size="small" />
-              ) : (
-                <Text style={styles.submitButtonText}>Sign In</Text>
-              )}
+              <View style={styles.presetBadgeCol}>
+                <BrutalBadge label="ALUMNI" variant="accent" size="small" />
+              </View>
+              <View style={styles.presetTextCol}>
+                <Text style={styles.presetName}>Jordan Vance (Stripe '18)</Text>
+                <Text style={styles.presetCreds}>alumni@alumnux.demo • Alumni@123</Text>
+              </View>
+              <Text style={styles.presetArrow}>→</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.presetRow}
+              onPress={() => handleApplyPreset("admin@alumnux.demo", "Admin@123")}
+              activeOpacity={0.7}
+            >
+              <View style={styles.presetBadgeCol}>
+                <BrutalBadge label="TRUSTEE" variant="warning" size="small" />
+              </View>
+              <View style={styles.presetTextCol}>
+                <Text style={styles.presetName}>Arunachalam (Trustee Infra)</Text>
+                <Text style={styles.presetCreds}>admin@alumnux.demo • Admin@123</Text>
+              </View>
+              <Text style={styles.presetArrow}>→</Text>
             </TouchableOpacity>
           </View>
 
-          {/* 1-Click Sample Credentials Panel (matching website) */}
-          <View style={styles.demoSection}>
-            <View style={styles.demoHeader}>
-              <Text style={styles.demoHeaderTitle}>✨ 1-Click Sample Access</Text>
-              <Text style={styles.demoHeaderSubtitle}>Same accounts as web</Text>
-            </View>
-
-            <View style={styles.demoButtonGroup}>
-              <TouchableOpacity
-                style={styles.demoButton}
-                onPress={() => handleQuickDemo("STUDENT")}
-                disabled={isLoading}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.demoButtonIcon}>🎓</Text>
-                <View style={styles.demoButtonTextCol}>
-                  <Text style={styles.demoButtonTitle}>Student Sample</Text>
-                  <Text style={styles.demoButtonSub}>student@alumnux.demo</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.demoButton}
-                onPress={() => handleQuickDemo("ALUMNI")}
-                disabled={isLoading}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.demoButtonIcon}>💼</Text>
-                <View style={styles.demoButtonTextCol}>
-                  <Text style={styles.demoButtonTitle}>Alumni Sample</Text>
-                  <Text style={styles.demoButtonSub}>alumni@alumnux.demo</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.demoHintBox}>
-              <Text style={styles.demoHintText}>
-                🔑 Passwords: <Text style={styles.codeText}>Student@123</Text> | <Text style={styles.codeText}>Alumni@123</Text>
-              </Text>
-            </View>
-          </View>
-
-          {/* Footer switcher */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account yet? </Text>
-            <TouchableOpacity onPress={onNavigateToRegister} activeOpacity={0.7}>
-              <Text style={styles.registerLink}>Sign up</Text>
-            </TouchableOpacity>
+          {/* Footer Registration Action */}
+          <View style={styles.footerRow}>
+            <Text style={styles.footerPrompt}>DON'T HAVE AN ACCOUNT?</Text>
+            <BrutalButton
+              title="CREATE AN ACCOUNT"
+              onPress={onNavigateToRegister}
+              variant="outline"
+              size="compact"
+              fullWidth
+              style={styles.registerBtn}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -251,193 +196,109 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.page,
+    backgroundColor: BRUTAL_COLORS.background,
   },
-  keyboardView: {
+  keyboardContainer: {
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: spacing[5],
-    paddingBottom: spacing[8],
-  },
-  navBar: {
-    paddingVertical: spacing[3],
-  },
-  backButton: {
-    alignSelf: "flex-start",
-    paddingVertical: spacing[1],
-  },
-  backButtonText: {
-    fontSize: typography.sizes.sm,
-    color: colors.primary.DEFAULT,
-    fontWeight: "600",
-  },
-  header: {
-    marginTop: spacing[3],
-    marginBottom: spacing[6],
-  },
-  title: {
-    fontSize: typography.sizes["3xl"],
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
-  },
-  subtitle: {
-    fontSize: typography.sizes.sm,
-    color: colors.secondary.DEFAULT,
-    marginTop: spacing[1],
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingBottom: BRUTAL_SPACING[8],
   },
   errorBanner: {
-    backgroundColor: colors.semantic.errorSubtle,
-    borderWidth: 1,
-    borderColor: colors.semantic.errorBorder,
-    borderRadius: radii.base,
-    padding: spacing[3],
-    marginBottom: spacing[4],
-  },
-  errorBannerText: {
-    color: colors.semantic.error,
-    fontSize: typography.sizes.sm,
-    fontWeight: "500",
-  },
-  form: {
-    gap: spacing[4],
-  },
-  inputGroup: {
-    gap: spacing[1],
-  },
-  label: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  passwordLabelRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  visibilityToggle: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "600",
-    color: colors.accent.DEFAULT,
-  },
-  input: {
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[3],
-    fontSize: typography.sizes.base,
-    color: colors.primary.DEFAULT,
-  },
-  forgotPasswordButton: {
-    alignSelf: "flex-end",
-  },
-  forgotPasswordText: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    fontWeight: "500",
-  },
-  submitButton: {
-    backgroundColor: colors.accent.DEFAULT,
-    paddingVertical: spacing[4],
-    borderRadius: radii.md,
-    alignItems: "center",
-    marginTop: spacing[2],
-  },
-  submitButtonDisabled: {
-    opacity: 0.7,
-  },
-  submitButtonText: {
-    color: colors.accent.foreground,
-    fontSize: typography.sizes.base,
-    fontWeight: "700",
-  },
-  demoSection: {
-    marginTop: spacing[6],
-    paddingTop: spacing[5],
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    gap: spacing[3],
-  },
-  demoHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  demoHeaderTitle: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  demoHeaderSubtitle: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-  },
-  demoButtonGroup: {
-    gap: spacing[2],
-  },
-  demoButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[3],
-    gap: spacing[3],
+    backgroundColor: "#FFF2F2",
+    borderWidth: BRUTAL_BORDERS.width,
+    borderColor: BRUTAL_COLORS.danger,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[4],
+    gap: BRUTAL_SPACING[2],
+    ...BRUTAL_SHADOWS.sm,
   },
-  demoButtonIcon: {
-    fontSize: 22,
+  errorIcon: {
+    fontSize: 16,
+    color: BRUTAL_COLORS.dangerInk,
+    fontWeight: "900",
   },
-  demoButtonTextCol: {
+  errorText: {
     flex: 1,
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.bold,
+    color: BRUTAL_COLORS.dangerInk,
   },
-  demoButtonTitle: {
-    fontSize: typography.sizes.sm,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
+  formCard: {
+    marginBottom: BRUTAL_SPACING[5],
   },
-  demoButtonSub: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
+  submitBtn: {
+    marginTop: BRUTAL_SPACING[2],
+  },
+  presetsBox: {
+    backgroundColor: BRUTAL_COLORS.surface,
+    borderWidth: BRUTAL_BORDERS.width,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[4],
+    marginBottom: BRUTAL_SPACING[5],
+    ...BRUTAL_SHADOWS.base,
+  },
+  presetsHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: BRUTAL_SPACING[3],
+    borderBottomWidth: 1.5,
+    borderBottomColor: BRUTAL_COLORS.ink,
+    paddingBottom: BRUTAL_SPACING[2],
+  },
+  presetsTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    letterSpacing: 1,
+    color: BRUTAL_COLORS.ink,
+  },
+  presetRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: BRUTAL_SPACING[2],
+    borderBottomWidth: 1,
+    borderBottomColor: BRUTAL_COLORS.muted,
+  },
+  presetBadgeCol: {
+    width: 80,
+  },
+  presetTextCol: {
+    flex: 1,
+    marginLeft: BRUTAL_SPACING[2],
+  },
+  presetName: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.heavy,
+    color: BRUTAL_COLORS.ink,
+  },
+  presetCreds: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    color: BRUTAL_COLORS.textSecondary,
     marginTop: 1,
   },
-  demoHintBox: {
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.base,
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[2],
+  presetArrow: {
+    fontSize: 16,
+    fontWeight: "900",
+    color: BRUTAL_COLORS.ink,
+  },
+  footerRow: {
     alignItems: "center",
+    marginTop: BRUTAL_SPACING[2],
   },
-  demoHintText: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
+  footerPrompt: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.textSecondary,
+    letterSpacing: 1,
+    marginBottom: BRUTAL_SPACING[2],
   },
-  codeText: {
-    fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
-    color: colors.primary.DEFAULT,
-    fontWeight: "700",
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: spacing[6],
-  },
-  footerText: {
-    fontSize: typography.sizes.sm,
-    color: colors.secondary.DEFAULT,
-  },
-  registerLink: {
-    fontSize: typography.sizes.sm,
-    fontWeight: "700",
-    color: colors.accent.DEFAULT,
+  registerBtn: {
+    width: "100%",
   },
 });

@@ -59,13 +59,43 @@ export const SAMPLE_ALUMNI_ACCOUNT: { user: AuthenticatedUser; profile: UserProf
   },
 };
 
+export const SAMPLE_ADMIN_ACCOUNT: { user: AuthenticatedUser; profile: UserProfile } = {
+  user: {
+    id: "admin-trustee-arun",
+    email: "admin@alumnux.demo",
+    role: "ADMIN",
+    status: "ACTIVE",
+    isVerified: true,
+    createdAt: "2023-01-01T00:00:00Z",
+  },
+  profile: {
+    id: "prof-admin-arun",
+    email: "admin@alumnux.demo",
+    fullName: "Arunachalam S. (Trustee)",
+    role: "ADMIN",
+    departmentCode: "CSE",
+    departmentName: "Computer Science & Engineering",
+    graduationYear: 2012,
+    currentCompany: "Alumnux Independent Trust",
+    currentRole: "Senior Alumni Trustee & Infra Lead",
+    experienceYears: 14,
+    locationCity: "Chennai",
+    headline: "Independent Trustee @ Alumnux | Infrastructure Lead",
+    bio: "Senior Alumni Trustee governing platform verification integrity and student-alumni career initiatives.",
+    skills: ["Platform Governance", "Systems Engineering", "Trustee Oversight"],
+    isVerified: true,
+    createdAt: "2023-01-01T00:00:00Z",
+  },
+};
+
 interface MobileAuthContextType {
   user: AuthenticatedUser | null;
   profile: UserProfile | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (credentials: LoginRequest) => Promise<{ success: boolean; error?: string }>;
-  loginAsDemo: (role: "STUDENT" | "ALUMNI") => Promise<void>;
+  loginAsDemo: (role: "STUDENT" | "ALUMNI" | "ADMIN") => Promise<void>;
+  loginWithPreset: (role: "STUDENT" | "ALUMNI" | "ADMIN") => Promise<void>;
   signup: (data: SignupRequest) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -90,6 +120,11 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
         if (refreshToken === "mock-sample-alumni-refresh-token") {
           setUser(SAMPLE_ALUMNI_ACCOUNT.user);
           setProfile(SAMPLE_ALUMNI_ACCOUNT.profile);
+          return;
+        }
+        if (refreshToken === "mock-sample-admin-refresh-token") {
+          setUser(SAMPLE_ADMIN_ACCOUNT.user);
+          setProfile(SAMPLE_ADMIN_ACCOUNT.profile);
           return;
         }
 
@@ -145,6 +180,17 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
         return { success: true };
       }
 
+      if (
+        (cleanEmail === "admin@alumnux.demo" || cleanEmail === "admin") &&
+        pass === "Admin@123"
+      ) {
+        setUser(SAMPLE_ADMIN_ACCOUNT.user);
+        setProfile(SAMPLE_ADMIN_ACCOUNT.profile);
+        await mobileApi.tokenStorage.setAccessToken("mock-sample-admin-access-token");
+        await mobileApi.tokenStorage.setRefreshToken("mock-sample-admin-refresh-token");
+        return { success: true };
+      }
+
       if (err instanceof ApiClientError) {
         return { success: false, error: err.message };
       }
@@ -152,8 +198,11 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
     }
   };
 
-  const loginAsDemo = async (role: "STUDENT" | "ALUMNI"): Promise<void> => {
-    const sample = role === "STUDENT" ? SAMPLE_STUDENT_ACCOUNT : SAMPLE_ALUMNI_ACCOUNT;
+  const loginAsDemo = async (role: "STUDENT" | "ALUMNI" | "ADMIN"): Promise<void> => {
+    let sample = SAMPLE_STUDENT_ACCOUNT;
+    if (role === "ALUMNI") sample = SAMPLE_ALUMNI_ACCOUNT;
+    if (role === "ADMIN") sample = SAMPLE_ADMIN_ACCOUNT;
+
     setUser(sample.user);
     setProfile(sample.profile);
     await mobileApi.tokenStorage.setAccessToken(`mock-sample-${role.toLowerCase()}-access-token`);
@@ -205,6 +254,7 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
         isLoading,
         login,
         loginAsDemo,
+        loginWithPreset: loginAsDemo,
         signup,
         logout,
         refreshProfile,

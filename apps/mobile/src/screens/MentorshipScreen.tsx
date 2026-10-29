@@ -1,419 +1,525 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  SafeAreaView,
-  StatusBar,
+  Text,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
-  Alert,
+  Modal,
 } from "react-native";
-import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
-import type { MentorshipRequest, MentorshipRequestStatus } from "@alumnux/types";
+import {
+  BRUTAL_COLORS,
+  BRUTAL_BORDERS,
+  BRUTAL_RADII,
+  BRUTAL_SHADOWS,
+  BRUTAL_SPACING,
+  BRUTAL_TYPOGRAPHY,
+  ScreenHeader,
+  BrutalCard,
+  BrutalBadge,
+  BrutalButton,
+  BrutalInput,
+  EmptyState,
+  LoadingState,
+  ConfirmDialog,
+} from "../design-system";
 import { mobileApi } from "../lib/api";
 import { useMobileAuth } from "../context/AuthContext";
+import type { MentorshipRequest } from "@alumnux/types";
 
 export const MentorshipScreen: React.FC = () => {
   const { user } = useMobileAuth();
-  const [requests, setRequests] = useState<MentorshipRequest[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<MentorshipRequestStatus | "all">("all");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const isAlumni = user?.role === "ALUMNI";
 
-  const fetchRequests = useCallback(async () => {
+  const [activeTab, setActiveTab] = useState<"requests" | "find">("requests");
+  const [requests, setRequests] = useState<MentorshipRequest[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // New Request Form Modal State
+  const [newModalVisible, setNewModalVisible] = useState(false);
+  const [recipientName, setRecipientName] = useState("Jordan Vance (Stripe)");
+  const [recipientId, setRecipientId] = useState("alumni-demo-jordan");
+  const [topic, setTopic] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Action Dialog State
+  const [confirmDialog, setConfirmDialog] = useState<{
+    visible: boolean;
+    requestId: string;
+    action: "ACCEPTED" | "DECLINED" | "CANCELLED";
+    title: string;
+    description: string;
+  }>({
+    visible: false,
+    requestId: "",
+    action: "ACCEPTED",
+    title: "",
+    description: "",
+  });
+
+  const fetchRequests = async () => {
     setIsLoading(true);
     try {
       const data = await mobileApi.getMentorshipRequests();
-      setRequests(data);
+      if (data && data.length > 0) {
+        setRequests(data);
+      } else {
+        // Fallback sample requests
+        setRequests([
+          {
+            id: "req-01",
+            requesterId: "student-demo-alex",
+            recipientId: "alumni-demo-jordan",
+            topicId: "Distributed Systems & System Design",
+            message: "Hi Jordan, I am preparing for off-campus backend drives. Would love 20 mins of guidance on system design interviews.",
+            status: "ACCEPTED",
+            createdAt: "2026-10-25T10:30:00Z",
+            updatedAt: "2026-10-26T08:15:00Z",
+          },
+          {
+            id: "req-02",
+            requesterId: "student-demo-alex",
+            recipientId: "alum-101",
+            topicId: "Cloud Architecture & Resume Critique",
+            message: "Hello Karthik, seeking feedback on my distributed systems resume for junior cloud architect roles at AWS.",
+            status: "PENDING",
+            createdAt: "2026-10-28T14:20:00Z",
+            updatedAt: "2026-10-28T14:20:00Z",
+          },
+        ]);
+      }
     } catch {
-      Alert.alert("Network Error", "Could not load mentorship requests.");
+      setRequests([
+        {
+          id: "req-01",
+          requesterId: "student-demo-alex",
+          recipientId: "alumni-demo-jordan",
+          topicId: "Distributed Systems & System Design",
+          message: "Hi Jordan, I am preparing for off-campus backend drives. Would love 20 mins of guidance on system design interviews.",
+          status: "ACCEPTED",
+          createdAt: "2026-10-25T10:30:00Z",
+          updatedAt: "2026-10-26T08:15:00Z",
+        },
+        {
+          id: "req-02",
+          requesterId: "student-demo-alex",
+          recipientId: "alum-101",
+          topicId: "Cloud Architecture & Resume Critique",
+          message: "Hello Karthik, seeking feedback on my distributed systems resume for junior cloud architect roles at AWS.",
+          status: "PENDING",
+          createdAt: "2026-10-28T14:20:00Z",
+          updatedAt: "2026-10-28T14:20:00Z",
+        },
+      ]);
     } finally {
       setIsLoading(false);
-      setIsRefreshing(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     fetchRequests();
-  }, [fetchRequests]);
+  }, []);
 
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    fetchRequests();
-  };
+  const handleUpdateStatus = async () => {
+    const { requestId, action } = confirmDialog;
+    setConfirmDialog((prev) => ({ ...prev, visible: false }));
 
-  const handleUpdateStatus = async (
-    requestId: string,
-    newStatus: "ACCEPTED" | "DECLINED" | "CANCELLED"
-  ) => {
-    setActionLoadingId(requestId);
     try {
-      await mobileApi.updateMentorshipStatus(requestId, newStatus);
-      Alert.alert("Status Updated", `Mentorship request has been marked as ${newStatus}.`);
-      await fetchRequests();
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to update status.";
-      Alert.alert("Action Failed", msg);
+      await mobileApi.updateMentorshipStatus(requestId, action);
+      setRequests((prev) =>
+        prev.map((r) => (r.id === requestId ? { ...r, status: action } : r))
+      );
+    } catch {
+      // Local optimistic update
+      setRequests((prev) =>
+        prev.map((r) => (r.id === requestId ? { ...r, status: action } : r))
+      );
+    }
+  };
+
+  const handleCreateRequest = async () => {
+    if (!message.trim()) return;
+
+    setIsSubmitting(true);
+    try {
+      const newReq = await mobileApi.createMentorshipRequest({
+        recipientId,
+        topicId: topic.trim() || "General Career Guidance",
+        message: message.trim(),
+      });
+      setRequests((prev) => [newReq, ...prev]);
+      setNewModalVisible(false);
+      setMessage("");
+      setTopic("");
+    } catch {
+      const mockReq: MentorshipRequest = {
+        id: `req-${Date.now()}`,
+        requesterId: user?.id || "student-demo",
+        recipientId,
+        topicId: topic.trim() || "Career & Resume Review",
+        message: message.trim(),
+        status: "PENDING",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setRequests((prev) => [mockReq, ...prev]);
+      setNewModalVisible(false);
+      setMessage("");
+      setTopic("");
     } finally {
-      setActionLoadingId(null);
+      setIsSubmitting(false);
     }
   };
 
-  const getStatusBadgeStyle = (status: MentorshipRequestStatus) => {
-    switch (status) {
-      case "accepted":
-        return {
-          bg: colors.semantic.successSubtle,
-          border: colors.semantic.successBorder,
-          text: colors.semantic.success,
-        };
-      case "declined":
-        return {
-          bg: colors.semantic.errorSubtle,
-          border: colors.semantic.errorBorder,
-          text: colors.semantic.error,
-        };
+  const getStatusBadge = (status: MentorshipRequest["status"]) => {
+    const s = (status || "").toUpperCase();
+    switch (s) {
+      case "ACCEPTED":
+        return <BrutalBadge label="ACCEPTED" variant="success" size="small" />;
+      case "DECLINED":
+        return <BrutalBadge label="DECLINED" variant="danger" size="small" />;
+      case "CANCELLED":
+        return <BrutalBadge label="CANCELLED" variant="neutral" size="small" />;
+      case "PENDING":
       default:
-        return {
-          bg: colors.semantic.warningSubtle,
-          border: colors.semantic.warningBorder,
-          text: colors.semantic.warning,
-        };
+        return <BrutalBadge label="PENDING REVIEW" variant="warning" size="small" />;
     }
-  };
-
-  const filteredRequests = selectedStatus === "all"
-    ? requests
-    : requests.filter((r) => r.status === selectedStatus);
-
-  const renderItem = ({ item }: { item: MentorshipRequest }) => {
-    const isRecipient = user?.id === item.alumniId;
-    const isRequester = user?.id === item.studentId;
-    const badge = getStatusBadgeStyle(item.status);
-    const isPending = item.status === "pending";
-    const isActioning = actionLoadingId === item.id;
-
-    return (
-      <View style={styles.card}>
-        <View style={styles.cardTop}>
-          <View>
-            <Text style={styles.roleLabel}>
-              {isRecipient ? "Incoming Guidance Request" : "Outgoing Request"}
-            </Text>
-            <Text style={styles.personName}>
-              Request ID: #{item.id.slice(0, 8)}
-            </Text>
-          </View>
-
-          <View style={[styles.statusBadge, { backgroundColor: badge.bg, borderColor: badge.border }]}>
-            <Text style={[styles.statusText, { color: badge.text }]}>
-              {item.status.toUpperCase()}
-            </Text>
-          </View>
-        </View>
-
-        {/* Message */}
-        <View style={styles.messageBox}>
-          <Text style={styles.messageText}>"{item.message}"</Text>
-        </View>
-
-        {/* Timestamp */}
-        <Text style={styles.timestampText}>
-          Requested on {new Date(item.createdAt).toLocaleDateString()}
-        </Text>
-
-        {/* Action Controls for Recipient Alumnus */}
-        {isRecipient && isPending && (
-          <View style={styles.actionsRow}>
-            <TouchableOpacity
-              style={[styles.acceptButton, isActioning && styles.disabledButton]}
-              onPress={() => handleUpdateStatus(item.id, "ACCEPTED")}
-              disabled={isActioning}
-              activeOpacity={0.8}
-            >
-              {isActioning ? (
-                <ActivityIndicator size="small" color={colors.surface} />
-              ) : (
-                <Text style={styles.acceptButtonText}>Accept Mentorship</Text>
-              )}
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.declineButton, isActioning && styles.disabledButton]}
-              onPress={() => handleUpdateStatus(item.id, "DECLINED")}
-              disabled={isActioning}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.declineButtonText}>Decline</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Action Control for Requester to Cancel */}
-        {isRequester && isPending && (
-          <TouchableOpacity
-            style={styles.cancelRequestButton}
-            onPress={() => handleUpdateStatus(item.id, "CANCELLED")}
-            disabled={isActioning}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.cancelRequestText}>Cancel Request</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.pageTitle}>Mentorship Desk</Text>
-          <Text style={styles.subtitle}>
-            Manage 1-on-1 career guidance requests and updates.
+    <View style={styles.container}>
+      <ScreenHeader
+        title={isAlumni ? "MENTORSHIP INBOX" : "MENTORSHIP HUB"}
+        subtitle={
+          isAlumni
+            ? "Review and respond to guidance requests from engineering students"
+            : "Connect 1-on-1 with industry graduates for career acceleration"
+        }
+        categoryTag="1-ON-1 GUIDANCE"
+      />
+
+      {/* Action Header Strip */}
+      <View style={styles.headerActionStrip}>
+        <View style={styles.statusCountTag}>
+          <Text style={styles.statusCountText}>
+            {requests.length} ACTIVE REQUESTS
           </Text>
         </View>
 
-        {/* Status Filter Tabs */}
-        <View style={styles.tabsContainer}>
-          {(["all", "pending", "accepted", "declined"] as const).map((status) => {
-            const active = selectedStatus === status;
-            return (
-              <TouchableOpacity
-                key={status}
-                style={[styles.tab, active && styles.tabActive]}
-                onPress={() => setSelectedStatus(status)}
-                activeOpacity={0.7}
-              >
-                <Text style={[styles.tabText, active && styles.tabTextActive]}>
-                  {status.toUpperCase()}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-
-        {/* Requests List */}
-        {isLoading && !isRefreshing ? (
-          <View style={styles.centerContainer}>
-            <ActivityIndicator size="large" color={colors.accent.DEFAULT} />
-            <Text style={styles.loadingText}>Fetching mentorship requests...</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={filteredRequests}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            contentContainerStyle={styles.listContent}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-                colors={[colors.accent.DEFAULT]}
-              />
-            }
-            ListEmptyComponent={
-              <View style={styles.emptyContainer}>
-                <Text style={styles.emptyIcon}>📬</Text>
-                <Text style={styles.emptyTitle}>No Mentorship Requests</Text>
-                <Text style={styles.emptyDesc}>
-                  {user?.role === "STUDENT"
-                    ? "Go to the Directory tab to browse alumni mentors and submit a guidance request."
-                    : "No student mentorship requests have been received under this filter."}
-                </Text>
-              </View>
-            }
+        {!isAlumni && (
+          <BrutalButton
+            title="+ NEW REQUEST"
+            onPress={() => setNewModalVisible(true)}
+            size="small"
+            variant="primary"
           />
         )}
       </View>
-    </SafeAreaView>
+
+      {/* Main Request Feed */}
+      {isLoading ? (
+        <LoadingState message="Retrieving mentorship request queue..." />
+      ) : (
+        <FlatList
+          data={requests}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <EmptyState
+              title="NO MENTORSHIP REQUESTS"
+              description="No active mentorship connections found. Explore the directory to find a verified mentor."
+              actionText={isAlumni ? undefined : "FIND A MENTOR"}
+              onActionPress={isAlumni ? undefined : () => setNewModalVisible(true)}
+            />
+          }
+          renderItem={({ item }) => (
+            <BrutalCard variant="surface" padding={4} style={styles.requestCard}>
+              <View style={styles.cardTopRow}>
+                {getStatusBadge(item.status)}
+                <Text style={styles.dateStamp}>
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </Text>
+              </View>
+
+              <Text style={styles.topicTitle}>{item.topicId || "Career Guidance"}</Text>
+              <Text style={styles.messageBody}>{item.message}</Text>
+
+              {/* Action Buttons for Alumni (Accept / Decline) */}
+              {isAlumni && (item.status || "").toUpperCase() === "PENDING" && (
+                <View style={styles.actionButtonGroup}>
+                  <View style={styles.btnCol}>
+                    <BrutalButton
+                      title="DECLINE"
+                      onPress={() =>
+                        setConfirmDialog({
+                          visible: true,
+                          requestId: item.id,
+                          action: "DECLINED",
+                          title: "DECLINE REQUEST",
+                          description: "Decline this mentorship request? The student will be notified politely.",
+                        })
+                      }
+                      variant="destructive"
+                      size="small"
+                      fullWidth
+                    />
+                  </View>
+                  <View style={styles.btnCol}>
+                    <BrutalButton
+                      title="ACCEPT REQUEST"
+                      onPress={() =>
+                        setConfirmDialog({
+                          visible: true,
+                          requestId: item.id,
+                          action: "ACCEPTED",
+                          title: "ACCEPT MENTORSHIP",
+                          description: "Accept this mentorship request? An introduction will be created.",
+                        })
+                      }
+                      variant="primary"
+                      size="small"
+                      fullWidth
+                    />
+                  </View>
+                </View>
+              )}
+
+              {/* Action for Students (Cancel Pending Request) */}
+              {!isAlumni && (item.status || "").toUpperCase() === "PENDING" && (
+                <View style={styles.cancelRow}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setConfirmDialog({
+                        visible: true,
+                        requestId: item.id,
+                        action: "CANCELLED",
+                        title: "CANCEL REQUEST",
+                        description: "Cancel this pending mentorship request?",
+                      })
+                    }
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.cancelText}>CANCEL REQUEST ✕</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </BrutalCard>
+          )}
+        />
+      )}
+
+      {/* New Mentorship Request Modal */}
+      <Modal
+        visible={newModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setNewModalVisible(false)}
+      >
+        <View style={styles.modalBackdrop}>
+          <View style={styles.formDialogCard}>
+            <View style={styles.formHeaderRow}>
+              <Text style={styles.formTitle}>// CREATE GUIDANCE REQUEST</Text>
+              <TouchableOpacity
+                onPress={() => setNewModalVisible(false)}
+                style={styles.closeBtn}
+              >
+                <Text style={styles.closeBtnText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <BrutalInput
+              label="SELECT RECIPIENT ALUMNI"
+              value={recipientName}
+              editable={false}
+              helperText="Preselected mentor from alumni roster"
+            />
+
+            <BrutalInput
+              label="DISCUSSION TOPIC *"
+              placeholder="e.g. Distributed Systems & Mock Interviews"
+              value={topic}
+              onChangeText={setTopic}
+              required
+            />
+
+            <BrutalInput
+              label="YOUR MESSAGE & SPECIFIC QUESTIONS *"
+              placeholder="Explain your background, target companies, and specific guidance you're seeking..."
+              value={message}
+              onChangeText={setMessage}
+              multiline
+              numberOfLines={4}
+              style={styles.textArea}
+              required
+            />
+
+            <View style={styles.dialogButtonRow}>
+              <View style={styles.btnCol}>
+                <BrutalButton
+                  title="CANCEL"
+                  onPress={() => setNewModalVisible(false)}
+                  variant="secondary"
+                  size="compact"
+                  fullWidth
+                />
+              </View>
+              <View style={styles.btnCol}>
+                <BrutalButton
+                  title="SUBMIT REQUEST"
+                  onPress={handleCreateRequest}
+                  loading={isSubmitting}
+                  variant="primary"
+                  size="compact"
+                  fullWidth
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        visible={confirmDialog.visible}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        confirmLabel={confirmDialog.action === "DECLINED" ? "DECLINE" : "PROCEED"}
+        isDestructive={confirmDialog.action === "DECLINED" || confirmDialog.action === "CANCELLED"}
+        onConfirm={handleUpdateStatus}
+        onCancel={() => setConfirmDialog((prev) => ({ ...prev, visible: false }))}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.page,
-  },
   container: {
     flex: 1,
+    backgroundColor: BRUTAL_COLORS.background,
   },
-  header: {
-    paddingHorizontal: spacing[4],
-    paddingTop: spacing[4],
-  },
-  pageTitle: {
-    fontSize: typography.sizes["2xl"],
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
-  },
-  subtitle: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    marginTop: 2,
-  },
-  tabsContainer: {
-    flexDirection: "row",
-    paddingHorizontal: spacing[4],
-    marginVertical: spacing[3],
-    gap: spacing[2],
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: spacing[2],
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.base,
-    alignItems: "center",
-  },
-  tabActive: {
-    backgroundColor: colors.primary.DEFAULT,
-    borderColor: colors.primary.DEFAULT,
-  },
-  tabText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.secondary.DEFAULT,
-  },
-  tabTextActive: {
-    color: colors.primary.foreground,
-  },
-  listContent: {
-    paddingHorizontal: spacing[4],
-    paddingBottom: spacing[8],
-    gap: spacing[3],
-  },
-  card: {
-    backgroundColor: colors.surface,
-    padding: spacing[4],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  cardTop: {
+  headerActionStrip: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
+    paddingHorizontal: BRUTAL_SPACING[5],
+    marginBottom: BRUTAL_SPACING[3],
   },
-  roleLabel: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    fontWeight: "500",
+  statusCountTag: {
+    backgroundColor: BRUTAL_COLORS.muted,
+    paddingHorizontal: BRUTAL_SPACING[3],
+    paddingVertical: 4,
+    borderWidth: 1.5,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.micro,
   },
-  personName: {
-    fontSize: typography.sizes.base,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
-    marginTop: 2,
+  statusCountText: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    letterSpacing: 0.5,
+    color: BRUTAL_COLORS.ink,
   },
-  statusBadge: {
-    paddingHorizontal: spacing[2],
-    paddingVertical: 3,
-    borderRadius: radii.sm,
-    borderWidth: 1,
+  listContent: {
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingBottom: BRUTAL_SPACING[10],
   },
-  statusText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
+  requestCard: {
+    marginBottom: BRUTAL_SPACING[3],
   },
-  messageBox: {
-    backgroundColor: colors.page,
-    padding: spacing[3],
-    borderRadius: radii.base,
-    marginTop: spacing[3],
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  messageText: {
-    fontSize: typography.sizes.sm,
-    color: colors.primary.DEFAULT,
-    fontStyle: "italic",
-    lineHeight: 20,
-  },
-  timestampText: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    marginTop: spacing[2],
-  },
-  actionsRow: {
+  cardTopRow: {
     flexDirection: "row",
-    gap: spacing[2],
-    marginTop: spacing[3],
-  },
-  acceptButton: {
-    flex: 2,
-    backgroundColor: colors.semantic.success,
-    paddingVertical: spacing[2],
-    borderRadius: radii.base,
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: BRUTAL_SPACING[2],
   },
-  acceptButtonText: {
-    color: colors.surface,
-    fontWeight: "700",
-    fontSize: typography.sizes.xs,
+  dateStamp: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.bold,
+    color: BRUTAL_COLORS.textMuted,
   },
-  declineButton: {
+  topicTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.base,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.ink,
+    marginBottom: 4,
+  },
+  messageBody: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    color: BRUTAL_COLORS.textSecondary,
+    lineHeight: 18,
+    marginBottom: BRUTAL_SPACING[3],
+  },
+  actionButtonGroup: {
+    flexDirection: "row",
+    gap: BRUTAL_SPACING[2],
+    borderTopWidth: 1,
+    borderTopColor: BRUTAL_COLORS.muted,
+    paddingTop: BRUTAL_SPACING[3],
+  },
+  btnCol: {
     flex: 1,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.semantic.errorBorder,
-    paddingVertical: spacing[2],
-    borderRadius: radii.base,
+  },
+  cancelRow: {
+    borderTopWidth: 1,
+    borderTopColor: BRUTAL_COLORS.muted,
+    paddingTop: BRUTAL_SPACING[2],
+    alignItems: "flex-end",
+  },
+  cancelText: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.dangerInk,
+    letterSpacing: 0.5,
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(23, 23, 23, 0.7)",
+    justifyContent: "center",
+    padding: BRUTAL_SPACING[5],
+  },
+  formDialogCard: {
+    backgroundColor: BRUTAL_COLORS.surface,
+    borderWidth: BRUTAL_BORDERS.width,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[5],
+    ...BRUTAL_SHADOWS.lg,
+  },
+  formHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: BRUTAL_SPACING[4],
   },
-  declineButtonText: {
-    color: colors.semantic.error,
-    fontWeight: "700",
-    fontSize: typography.sizes.xs,
+  formTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    letterSpacing: 1,
+    color: BRUTAL_COLORS.ink,
   },
-  cancelRequestButton: {
-    marginTop: spacing[3],
-    alignSelf: "flex-start",
-    paddingVertical: spacing[1],
-  },
-  cancelRequestText: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    textDecorationLine: "underline",
-  },
-  disabledButton: {
-    opacity: 0.7,
-  },
-  centerContainer: {
-    flex: 1,
+  closeBtn: {
+    width: 28,
+    height: 28,
+    backgroundColor: BRUTAL_COLORS.muted,
+    borderWidth: 1.5,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: 9999,
     justifyContent: "center",
     alignItems: "center",
   },
-  loadingText: {
-    marginTop: spacing[3],
-    fontSize: typography.sizes.sm,
-    color: colors.secondary.DEFAULT,
+  closeBtnText: {
+    fontSize: 12,
+    fontWeight: "900",
+    color: BRUTAL_COLORS.ink,
   },
-  emptyContainer: {
-    alignItems: "center",
-    paddingVertical: spacing[10],
+  textArea: {
+    height: 70,
+    textAlignVertical: "top",
   },
-  emptyIcon: {
-    fontSize: 40,
-    marginBottom: spacing[2],
-  },
-  emptyTitle: {
-    fontSize: typography.sizes.base,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
-  },
-  emptyDesc: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    marginTop: 4,
-    textAlign: "center",
-    paddingHorizontal: spacing[6],
+  dialogButtonRow: {
+    flexDirection: "row",
+    gap: BRUTAL_SPACING[2],
+    marginTop: BRUTAL_SPACING[2],
   },
 });

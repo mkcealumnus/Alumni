@@ -7,9 +7,20 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
+  Platform,
 } from "react-native";
 import { registerRootComponent } from "expo";
-import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
+import {
+  BRUTAL_COLORS,
+  BRUTAL_BORDERS,
+  BRUTAL_RADII,
+  BRUTAL_SHADOWS,
+  BRUTAL_SPACING,
+  BRUTAL_TYPOGRAPHY,
+  BrutalBadge,
+  Avatar,
+} from "./src/design-system";
 import { MobileAuthProvider, useMobileAuth } from "./src/context/AuthContext";
 import { WelcomeScreen } from "./src/screens/WelcomeScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
@@ -17,41 +28,55 @@ import { RegisterScreen } from "./src/screens/RegisterScreen";
 import { DashboardScreen } from "./src/screens/DashboardScreen";
 import { DirectoryScreen } from "./src/screens/DirectoryScreen";
 import { MentorshipScreen } from "./src/screens/MentorshipScreen";
+import { CareersScreen } from "./src/screens/CareersScreen";
+import { EventsScreen } from "./src/screens/EventsScreen";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
+import { AdminConsoleScreen } from "./src/screens/AdminConsoleScreen";
 
 type AuthScreenState = "welcome" | "login" | "register";
-type AppTab = "dashboard" | "directory" | "mentorship" | "profile";
+export type AppTab =
+  | "dashboard"
+  | "directory"
+  | "mentorship"
+  | "careers"
+  | "events"
+  | "profile"
+  | "admin";
 
 function NavigationRoot() {
-  const { isAuthenticated, isLoading, user } = useMobileAuth();
+  const { isAuthenticated, isLoading, user, profile } = useMobileAuth();
 
-  // Auth flow state
+  // Auth flow navigation
   const [authScreen, setAuthScreen] = useState<AuthScreenState>("welcome");
   const [registerRole, setRegisterRole] = useState<"STUDENT" | "ALUMNI">("STUDENT");
 
-  // Authenticated tab state
+  // Authenticated active tab
   const [activeTab, setActiveTab] = useState<AppTab>("dashboard");
 
+  // Session restoration loading screen
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.splashContainer}>
+      <SafeAreaView style={styles.splashSafeArea}>
         <StatusBar barStyle="dark-content" />
-        <View style={styles.splashCard}>
-          <Text style={styles.splashTitle}>Alumnux</Text>
-          <Text style={styles.splashSubtitle}>
-            Restoring native session credentials...
-          </Text>
-          <ActivityIndicator
-            size="large"
-            color={colors.accent.DEFAULT}
-            style={styles.splashSpinner}
-          />
+        <View style={styles.splashContainer}>
+          <View style={styles.splashCard}>
+            <View style={styles.splashTag}>
+              <Text style={styles.splashTagText}>// NATIVE INITIALIZATION</Text>
+            </View>
+            <Text style={styles.splashTitle}>ALUMNUX</Text>
+            <Text style={styles.splashSubtitle}>
+              Restoring authenticated tokens from Expo SecureStore...
+            </Text>
+            <View style={styles.splashSpinnerWrapper}>
+              <ActivityIndicator size="large" color={BRUTAL_COLORS.INK} />
+            </View>
+          </View>
         </View>
       </SafeAreaView>
     );
   }
 
-  // Unauthenticated Flow
+  // Unauthenticated Public Flow
   if (!isAuthenticated) {
     if (authScreen === "login") {
       return (
@@ -86,103 +111,94 @@ function NavigationRoot() {
     );
   }
 
-  // Authenticated Navigation Flow
+  // Authenticated Application Flow
+  const isAdmin = user?.role === "ADMIN";
+  const isAlumni = user?.role === "ALUMNI";
+
+  // Build navigation items based on role
+  const navTabs: { id: AppTab; label: string; icon: string }[] = [
+    { id: "dashboard", label: "HOME", icon: "⌂" },
+    ...(isAdmin ? [{ id: "admin" as AppTab, label: "QUEUE", icon: "🛡" }] : []),
+    { id: "directory", label: "DIRECTORY", icon: "⚲" },
+    { id: "mentorship", label: isAlumni ? "INBOX" : "MENTORS", icon: "🤝" },
+    { id: "careers", label: "JOBS", icon: "💼" },
+    { id: "events", label: "EVENTS", icon: "📅" },
+    { id: "profile", label: "PROFILE", icon: "👤" },
+  ];
+
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainSafeArea}>
       <StatusBar barStyle="dark-content" />
 
-      {/* Persistent App Header */}
+      {/* Persistent Nano-Brutalist Header */}
       <View style={styles.topHeader}>
         <View style={styles.brandRow}>
-          <Text style={styles.brandText}>Alumnux</Text>
-          <View style={styles.roleChip}>
-            <Text style={styles.roleChipText}>{user?.role}</Text>
+          <Text style={styles.brandLogo}>ALUMNUX</Text>
+          <View style={styles.networkTag}>
+            <Text style={styles.networkTagText}>// MKCE</Text>
           </View>
+          <BrutalBadge
+            label={user?.role || "MEMBER"}
+            variant={isAdmin ? "warning" : isAlumni ? "accent" : "neutral"}
+          />
         </View>
+
         <TouchableOpacity
           onPress={() => setActiveTab("profile")}
-          style={styles.headerProfileBtn}
-          activeOpacity={0.7}
+          style={styles.avatarButton}
+          activeOpacity={0.8}
         >
-          <Text style={styles.headerAvatarText}>
-            {(user?.email || "U").charAt(0).toUpperCase()}
-          </Text>
+          <Avatar name={profile?.fullName || user?.email || "U"} size={32} />
         </TouchableOpacity>
       </View>
 
-      {/* Screen Container */}
+      {/* Active Screen View */}
       <View style={styles.screenContainer}>
-        {activeTab === "dashboard" && <DashboardScreen onNavigateTab={setActiveTab} />}
+        {activeTab === "dashboard" && (
+          <DashboardScreen onNavigateTab={setActiveTab} />
+        )}
         {activeTab === "directory" && <DirectoryScreen />}
         {activeTab === "mentorship" && <MentorshipScreen />}
+        {activeTab === "careers" && <CareersScreen />}
+        {activeTab === "events" && <EventsScreen />}
         {activeTab === "profile" && <ProfileScreen />}
+        {activeTab === "admin" && <AdminConsoleScreen />}
       </View>
 
-      {/* Bottom Tab Bar */}
+      {/* Persistent Bottom Tab Bar with Role-Aware Tabs */}
       <View style={styles.tabBar}>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "dashboard" && styles.tabItemActive]}
-          onPress={() => setActiveTab("dashboard")}
-          activeOpacity={0.7}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabScrollContainer}
         >
-          <Text style={styles.tabIcon}>🏠</Text>
-          <Text
-            style={[
-              styles.tabLabel,
-              activeTab === "dashboard" && styles.tabLabelActive,
-            ]}
-          >
-            Home
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "directory" && styles.tabItemActive]}
-          onPress={() => setActiveTab("directory")}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.tabIcon}>🔍</Text>
-          <Text
-            style={[
-              styles.tabLabel,
-              activeTab === "directory" && styles.tabLabelActive,
-            ]}
-          >
-            Directory
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "mentorship" && styles.tabItemActive]}
-          onPress={() => setActiveTab("mentorship")}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.tabIcon}>🤝</Text>
-          <Text
-            style={[
-              styles.tabLabel,
-              activeTab === "mentorship" && styles.tabLabelActive,
-            ]}
-          >
-            Mentorship
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "profile" && styles.tabItemActive]}
-          onPress={() => setActiveTab("profile")}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.tabIcon}>👤</Text>
-          <Text
-            style={[
-              styles.tabLabel,
-              activeTab === "profile" && styles.tabLabelActive,
-            ]}
-          >
-            Profile
-          </Text>
-        </TouchableOpacity>
+          {navTabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <TouchableOpacity
+                key={tab.id}
+                style={[
+                  styles.tabItem,
+                  isActive && styles.tabItemActive,
+                ]}
+                onPress={() => setActiveTab(tab.id)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.tabIcon, isActive && styles.tabIconActive]}>
+                  {tab.icon}
+                </Text>
+                <Text
+                  style={[
+                    styles.tabLabel,
+                    isActive && styles.tabLabelActive,
+                  ]}
+                >
+                  {tab.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -199,112 +215,145 @@ export default function App() {
 registerRootComponent(App);
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  mainSafeArea: {
     flex: 1,
-    backgroundColor: colors.page,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+  },
+  splashSafeArea: {
+    flex: 1,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
   },
   splashContainer: {
     flex: 1,
-    backgroundColor: colors.page,
     justifyContent: "center",
     alignItems: "center",
+    padding: BRUTAL_SPACING[6],
   },
   splashCard: {
-    backgroundColor: colors.surface,
-    padding: spacing[6],
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    backgroundColor: BRUTAL_COLORS.SURFACE,
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    padding: BRUTAL_SPACING[6],
+    width: "100%",
+    maxWidth: 340,
     alignItems: "center",
-    width: "85%",
-    maxWidth: 360,
+    ...BRUTAL_SHADOWS.card,
+  },
+  splashTag: {
+    backgroundColor: BRUTAL_COLORS.INK,
+    paddingHorizontal: BRUTAL_SPACING[2],
+    paddingVertical: 2,
+    marginBottom: BRUTAL_SPACING[4],
+  },
+  splashTagText: {
+    fontSize: 10,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.ACCENT,
+    letterSpacing: 1,
   },
   splashTitle: {
-    fontSize: typography.sizes["3xl"],
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
+    fontSize: BRUTAL_TYPOGRAPHY["3xl"],
+    fontWeight: BRUTAL_TYPOGRAPHY.black,
+    color: BRUTAL_COLORS.INK,
+    letterSpacing: -1,
+    marginBottom: BRUTAL_SPACING[2],
   },
   splashSubtitle: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    marginTop: spacing[1],
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    textAlign: "center",
+    lineHeight: 18,
+    marginBottom: BRUTAL_SPACING[4],
   },
-  splashSpinner: {
-    marginTop: spacing[5],
+  splashSpinnerWrapper: {
+    padding: BRUTAL_SPACING[2],
   },
   topHeader: {
+    height: 56,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[3],
-    backgroundColor: colors.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    paddingHorizontal: BRUTAL_SPACING[5],
+    backgroundColor: BRUTAL_COLORS.SURFACE,
+    borderBottomWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    ...BRUTAL_SHADOWS.subtle,
+    zIndex: 10,
   },
   brandRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing[2],
+    gap: BRUTAL_SPACING[2],
   },
-  brandText: {
-    fontSize: typography.sizes.lg,
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
+  brandLogo: {
+    fontSize: BRUTAL_TYPOGRAPHY.xl,
+    fontWeight: BRUTAL_TYPOGRAPHY.black,
+    color: BRUTAL_COLORS.INK,
+    letterSpacing: -0.5,
   },
-  roleChip: {
-    backgroundColor: colors.accent.subtle,
-    paddingHorizontal: spacing[2],
+  networkTag: {
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
+    borderWidth: 1,
+    borderColor: BRUTAL_COLORS.INK,
+    paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radii.sm,
   },
-  roleChipText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.accent.DEFAULT,
+  networkTagText: {
+    fontSize: 9,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    letterSpacing: 0.5,
   },
-  headerProfileBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: radii.full,
-    backgroundColor: colors.primary.DEFAULT,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerAvatarText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.primary.foreground,
+  avatarButton: {
+    padding: 2,
   },
   screenContainer: {
     flex: 1,
+    backgroundColor: BRUTAL_COLORS.BACKGROUND,
   },
   tabBar: {
+    backgroundColor: BRUTAL_COLORS.SURFACE,
+    borderTopWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+    paddingBottom: Platform.OS === "ios" ? 18 : 6,
+    paddingTop: 6,
+  },
+  tabScrollContainer: {
     flexDirection: "row",
-    backgroundColor: colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingVertical: spacing[2],
-    paddingBottom: spacing[3],
+    paddingHorizontal: BRUTAL_SPACING[2],
+    justifyContent: "space-around",
+    alignItems: "center",
+    minWidth: "100%",
   },
   tabItem: {
-    flex: 1,
+    paddingHorizontal: BRUTAL_SPACING[3],
+    paddingVertical: BRUTAL_SPACING[2],
     alignItems: "center",
-    gap: 2,
+    justifyContent: "center",
+    borderWidth: BRUTAL_BORDERS.standard,
+    borderColor: "transparent",
+    marginHorizontal: 2,
   },
   tabItemActive: {
-    opacity: 1,
+    backgroundColor: BRUTAL_COLORS.ACCENT,
+    borderColor: BRUTAL_COLORS.INK,
+    ...BRUTAL_SHADOWS.subtle,
   },
   tabIcon: {
-    fontSize: 20,
+    fontSize: 16,
+    marginBottom: 2,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+  },
+  tabIconActive: {
+    color: BRUTAL_COLORS.INK,
   },
   tabLabel: {
-    fontSize: typography.sizes.xs,
-    color: colors.secondary.DEFAULT,
-    fontWeight: "600",
+    fontSize: 10,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
+    color: BRUTAL_COLORS.SECONDARY_TEXT,
+    letterSpacing: 0.5,
   },
   tabLabelActive: {
-    color: colors.accent.DEFAULT,
-    fontWeight: "700",
+    color: BRUTAL_COLORS.INK,
   },
 });

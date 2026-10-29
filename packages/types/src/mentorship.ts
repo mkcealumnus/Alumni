@@ -2,7 +2,13 @@ export type MentorshipRequestStatus =
   | "pending"
   | "accepted"
   | "declined"
-  | "completed";
+  | "completed"
+  | "cancelled"
+  | "PENDING"
+  | "ACCEPTED"
+  | "DECLINED"
+  | "COMPLETED"
+  | "CANCELLED";
 
 export interface MentorshipTopic {
   id: string;
@@ -13,8 +19,10 @@ export interface MentorshipTopic {
 
 export interface MentorshipRequest {
   id: string;
-  studentId: string;
-  alumniId: string;
+  studentId?: string;
+  alumniId?: string;
+  requesterId?: string;
+  recipientId?: string;
   topicId: string;
   message: string;
   status: MentorshipRequestStatus;

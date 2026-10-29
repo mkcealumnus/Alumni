@@ -1,20 +1,30 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
+  Text,
   SafeAreaView,
   StatusBar,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  TouchableOpacity,
 } from "react-native";
-import { colors, radii, spacing, typography } from "@alumnux/ui-tokens";
-import { ALLOWED_DEPARTMENTS } from "@alumnux/schemas";
+import {
+  BRUTAL_COLORS,
+  BRUTAL_BORDERS,
+  BRUTAL_RADII,
+  BRUTAL_SHADOWS,
+  BRUTAL_SPACING,
+  BRUTAL_TYPOGRAPHY,
+  ScreenHeader,
+  BrutalButton,
+  BrutalInput,
+  BrutalCard,
+  BrutalBadge,
+} from "../design-system";
 import { useMobileAuth } from "../context/AuthContext";
+import { signupSchema } from "@alumnux/schemas";
 
 interface RegisterScreenProps {
   initialRole?: "STUDENT" | "ALUMNI";
@@ -22,77 +32,65 @@ interface RegisterScreenProps {
   onNavigateToLogin: () => void;
 }
 
+const DEPARTMENTS = [
+  { code: "CSE", name: "Computer Science & Engineering" },
+  { code: "IT", name: "Information Technology" },
+  { code: "ECE", name: "Electronics & Communication" },
+  { code: "EEE", name: "Electrical & Electronics" },
+  { code: "MECH", name: "Mechanical Engineering" },
+  { code: "AIDS", name: "AI & Data Science" },
+];
+
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({
   initialRole = "STUDENT",
   onBack,
   onNavigateToLogin,
 }) => {
   const { signup } = useMobileAuth();
+
   const [role, setRole] = useState<"STUDENT" | "ALUMNI">(initialRole);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [departmentCode, setDepartmentCode] = useState<string>(ALLOWED_DEPARTMENTS[0]);
-  const [graduationYear, setGraduationYear] = useState(
-    role === "STUDENT" ? "2026" : "2020"
-  );
+  const [departmentCode, setDepartmentCode] = useState("CSE");
+  const [graduationYear, setGraduationYear] = useState("2026");
+  const [rollNumber, setRollNumber] = useState("");
   const [currentCompany, setCurrentCompany] = useState("");
   const [currentRole, setCurrentRole] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleRoleChange = (newRole: "STUDENT" | "ALUMNI") => {
-    setRole(newRole);
-    setGraduationYear(newRole === "STUDENT" ? "2026" : "2020");
-    if (errorMessage) setErrorMessage(null);
-  };
-
-  const handleRegister = async () => {
+  const handleSubmit = async () => {
     setErrorMessage(null);
 
-    const trimmedName = fullName.trim();
-    const trimmedEmail = email.trim().toLowerCase();
-    const gradYearNum = parseInt(graduationYear, 10);
+    const yearNum = parseInt(graduationYear, 10) || 2026;
+    const payload = {
+      fullName: fullName.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+      role,
+      departmentCode,
+      graduationYear: yearNum,
+      ...(role === "STUDENT" && rollNumber.trim() ? { rollNumber: rollNumber.trim() } : {}),
+      ...(role === "ALUMNI" && currentCompany.trim() ? { currentCompany: currentCompany.trim() } : {}),
+      ...(role === "ALUMNI" && currentRole.trim() ? { currentRole: currentRole.trim() } : {}),
+    };
 
-    if (!trimmedName || trimmedName.length < 2) {
-      setErrorMessage("Please enter your full name.");
-      return;
-    }
-    if (!trimmedEmail || !trimmedEmail.includes("@")) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
-    }
-    if (password.length < 8) {
-      setErrorMessage("Password must be at least 8 characters long.");
-      return;
-    }
-    if (isNaN(gradYearNum) || gradYearNum < 1970 || gradYearNum > 2035) {
-      setErrorMessage("Please enter a valid 4-digit graduation year.");
+    // Client-side schema validation
+    const validation = signupSchema.safeParse(payload);
+    if (!validation.success) {
+      const firstIssue = validation.error.issues[0]?.message || "Validation failed. Please verify your details.";
+      setErrorMessage(firstIssue);
       return;
     }
 
     setIsLoading(true);
-    try {
-      const result = await signup({
-        email: trimmedEmail,
-        password,
-        role,
-        fullName: trimmedName,
-        departmentCode,
-        graduationYear: gradYearNum,
-        currentCompany: role === "ALUMNI" && currentCompany.trim() ? currentCompany.trim() : undefined,
-        currentRole: role === "ALUMNI" && currentRole.trim() ? currentRole.trim() : undefined,
-      });
+    const result = await signup(payload);
+    setIsLoading(false);
 
-      if (!result.success) {
-        setErrorMessage(result.error || "Registration could not be completed.");
-      }
-      // On success, AuthContext triggers authenticated tab switch
-    } catch {
-      setErrorMessage("An unexpected network error occurred.");
-    } finally {
-      setIsLoading(false);
+    if (!result.success) {
+      setErrorMessage(result.error || "Registration failed. Please try again.");
     }
   };
 
@@ -100,197 +98,188 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView
-        style={styles.keyboardView}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={styles.keyboardContainer}
       >
+        <ScreenHeader
+          title="CREATE ACCOUNT"
+          subtitle="Join the verified community of students and alumni"
+          onBack={onBack}
+          categoryTag="REGISTRATION INTAKE"
+        />
+
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          {/* Top navigation */}
-          <View style={styles.navBar}>
-            <TouchableOpacity onPress={onBack} style={styles.backButton} activeOpacity={0.7}>
-              <Text style={styles.backButtonText}>← Back</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.title}>Create Account</Text>
-            <Text style={styles.subtitle}>
-              Join the official Alumnux community network.
-            </Text>
-          </View>
-
-          {/* Role Switcher */}
-          <View style={styles.roleTabs}>
-            <TouchableOpacity
-              style={[styles.roleTab, role === "STUDENT" && styles.roleTabActive]}
-              onPress={() => handleRoleChange("STUDENT")}
-              activeOpacity={0.8}
-            >
-              <Text style={[styles.roleTabText, role === "STUDENT" && styles.roleTabTextActive]}>
-                Student
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.roleTab, role === "ALUMNI" && styles.roleTabActive]}
-              onPress={() => handleRoleChange("ALUMNI")}
-              activeOpacity={0.8}
-            >
-              <Text style={[styles.roleTabText, role === "ALUMNI" && styles.roleTabTextActive]}>
-                Alumni / Graduate
-              </Text>
-            </TouchableOpacity>
-          </View>
-
           {/* Error Banner */}
           {errorMessage && (
             <View style={styles.errorBanner}>
-              <Text style={styles.errorBannerText}>{errorMessage}</Text>
+              <Text style={styles.errorIcon}>⚠</Text>
+              <Text style={styles.errorText}>{errorMessage}</Text>
             </View>
           )}
 
-          {/* Form Fields */}
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Full Name</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Jane Doe"
-                placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                value={fullName}
-                onChangeText={setFullName}
-                autoCapitalize="words"
-                editable={!isLoading}
-              />
-            </View>
+          {/* Role Selector Tabs */}
+          <View style={styles.roleSelectorBox}>
+            <Text style={styles.roleSelectorTitle}>SELECT YOUR ROLE TYPE</Text>
+            <View style={styles.roleTabsRow}>
+              <TouchableOpacity
+                style={[
+                  styles.roleTab,
+                  role === "STUDENT" && styles.roleTabActiveStudent,
+                ]}
+                onPress={() => setRole("STUDENT")}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.roleEmoji}>🎓</Text>
+                <Text
+                  style={[
+                    styles.roleTabText,
+                    role === "STUDENT" && styles.roleTabTextActive,
+                  ]}
+                >
+                  CURRENT STUDENT
+                </Text>
+              </TouchableOpacity>
 
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email Address</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={role === "STUDENT" ? "student@mkce.ac.in" : "alumni@company.com"}
-                placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                editable={!isLoading}
-              />
+              <TouchableOpacity
+                style={[
+                  styles.roleTab,
+                  role === "ALUMNI" && styles.roleTabActiveAlumni,
+                ]}
+                onPress={() => setRole("ALUMNI")}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.roleEmoji}>💼</Text>
+                <Text
+                  style={[
+                    styles.roleTabText,
+                    role === "ALUMNI" && styles.roleTabTextActive,
+                  ]}
+                >
+                  GRADUATED ALUMNI
+                </Text>
+              </TouchableOpacity>
             </View>
+          </View>
 
-            <View style={styles.inputGroup}>
-              <View style={styles.labelRow}>
-                <Text style={styles.label}>Password (min 8 chars)</Text>
-                <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                  <Text style={styles.visibilityToggle}>
-                    {isPasswordVisible ? "Hide" : "Show"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••••••"
-                placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!isPasswordVisible}
-                autoCapitalize="none"
-                editable={!isLoading}
-              />
-            </View>
+          {/* Form Fields Card */}
+          <BrutalCard variant="surface" padding={5} style={styles.formCard}>
+            <BrutalInput
+              label="FULL NAME"
+              placeholder="e.g. Priyadharshini Ramesh"
+              value={fullName}
+              onChangeText={setFullName}
+              autoCapitalize="words"
+              required
+            />
 
-            {/* Department selector */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Academic Department</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.deptScroll}>
-                <View style={styles.deptChipRow}>
-                  {ALLOWED_DEPARTMENTS.map((dept) => {
-                    const isSelected = departmentCode === dept;
-                    return (
-                      <TouchableOpacity
-                        key={dept}
-                        style={[styles.deptChip, isSelected && styles.deptChipActive]}
-                        onPress={() => setDepartmentCode(dept)}
-                        activeOpacity={0.7}
+            <BrutalInput
+              label="INSTITUTIONAL EMAIL"
+              placeholder="name@student.demo or user@company.com"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              required
+            />
+
+            <BrutalInput
+              label="CREATE PASSWORD (MIN 8 CHARS)"
+              placeholder="••••••••••••"
+              value={password}
+              onChangeText={setPassword}
+              isPassword
+              helperText="Must include uppercase, lowercase, and numbers"
+              required
+            />
+
+            {/* Department Selection Pills */}
+            <View style={styles.fieldGroup}>
+              <Text style={styles.fieldLabel}>ENGINEERING DEPARTMENT *</Text>
+              <View style={styles.deptPillsRow}>
+                {DEPARTMENTS.map((dept) => {
+                  const isSelected = departmentCode === dept.code;
+                  return (
+                    <TouchableOpacity
+                      key={dept.code}
+                      style={[
+                        styles.deptPill,
+                        isSelected && styles.deptPillSelected,
+                      ]}
+                      onPress={() => setDepartmentCode(dept.code)}
+                      activeOpacity={0.7}
+                    >
+                      <Text
+                        style={[
+                          styles.deptPillText,
+                          isSelected && styles.deptPillTextSelected,
+                        ]}
                       >
-                        <Text style={[styles.deptChipText, isSelected && styles.deptChipTextActive]}>
-                          {dept}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </ScrollView>
+                        {dept.code}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
             </View>
 
-            {/* Graduation Year */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Graduation Year</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="2026"
-                placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                value={graduationYear}
-                onChangeText={setGraduationYear}
-                keyboardType="numeric"
-                maxLength={4}
-                editable={!isLoading}
+            <BrutalInput
+              label={role === "STUDENT" ? "EXPECTED GRADUATION YEAR" : "PASSED OUT YEAR"}
+              placeholder={role === "STUDENT" ? "2026" : "2019"}
+              value={graduationYear}
+              onChangeText={setGraduationYear}
+              keyboardType="number-pad"
+              required
+            />
+
+            {role === "STUDENT" ? (
+              <BrutalInput
+                label="COLLEGE ROLL NUMBER"
+                placeholder="e.g. 2022CSE1084"
+                value={rollNumber}
+                onChangeText={setRollNumber}
+                autoCapitalize="characters"
               />
-            </View>
-
-            {/* Alumni-specific fields */}
-            {role === "ALUMNI" && (
+            ) : (
               <>
-                <View style={styles.inputGroup}>
-                  <Text style={styles.label}>Current Company / Employer</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="e.g. Google, Zoho, Tata Elxsi"
-                    placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                    value={currentCompany}
-                    onChangeText={setCurrentCompany}
-                    editable={!isLoading}
-                  />
-                </View>
-
-                <View style={styles.inputGroup}>
-                  <Text style={styles.label}>Current Job Title / Designation</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="e.g. Senior Software Engineer"
-                    placeholderTextColor={colors.secondary.DEFAULT + "80"}
-                    value={currentRole}
-                    onChangeText={setCurrentRole}
-                    editable={!isLoading}
-                  />
-                </View>
+                <BrutalInput
+                  label="CURRENT COMPANY / EMPLOYER"
+                  placeholder="e.g. Google, Stripe, Zoho"
+                  value={currentCompany}
+                  onChangeText={setCurrentCompany}
+                />
+                <BrutalInput
+                  label="PROFESSIONAL ROLE TITLE"
+                  placeholder="e.g. Senior Software Engineer"
+                  value={currentRole}
+                  onChangeText={setCurrentRole}
+                />
               </>
             )}
 
-            <TouchableOpacity
-              style={[styles.submitButton, isLoading && styles.submitButtonDisabled]}
-              onPress={handleRegister}
-              disabled={isLoading}
-              activeOpacity={0.85}
-            >
-              {isLoading ? (
-                <ActivityIndicator color={colors.accent.foreground} size="small" />
-              ) : (
-                <Text style={styles.submitButtonText}>
-                  {role === "STUDENT" ? "Complete Student Registration" : "Join as Alumni"}
-                </Text>
-              )}
-            </TouchableOpacity>
-          </View>
+            <BrutalButton
+              title="COMPLETE REGISTRATION"
+              onPress={handleSubmit}
+              loading={isLoading}
+              variant="primary"
+              fullWidth
+              style={styles.submitBtn}
+            />
+          </BrutalCard>
 
-          {/* Switch to login */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Already have an account? </Text>
-            <TouchableOpacity onPress={onNavigateToLogin} activeOpacity={0.7}>
-              <Text style={styles.loginLink}>Sign in</Text>
-            </TouchableOpacity>
+          {/* Switch to Login */}
+          <View style={styles.footerRow}>
+            <Text style={styles.footerPrompt}>ALREADY HAVE AN ACCOUNT?</Text>
+            <BrutalButton
+              title="SIGN IN INSTEAD"
+              onPress={onNavigateToLogin}
+              variant="outline"
+              size="compact"
+              fullWidth
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -301,167 +290,141 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.page,
+    backgroundColor: BRUTAL_COLORS.background,
   },
-  keyboardView: {
+  keyboardContainer: {
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: spacing[5],
-    paddingBottom: spacing[8],
+    paddingHorizontal: BRUTAL_SPACING[5],
+    paddingBottom: BRUTAL_SPACING[8],
   },
-  navBar: {
-    paddingVertical: spacing[3],
-  },
-  backButton: {
-    alignSelf: "flex-start",
-    paddingVertical: spacing[1],
-  },
-  backButtonText: {
-    fontSize: typography.sizes.sm,
-    color: colors.primary.DEFAULT,
-    fontWeight: "600",
-  },
-  header: {
-    marginTop: spacing[2],
-    marginBottom: spacing[4],
-  },
-  title: {
-    fontSize: typography.sizes["3xl"],
-    fontWeight: "800",
-    color: colors.primary.DEFAULT,
-  },
-  subtitle: {
-    fontSize: typography.sizes.sm,
-    color: colors.secondary.DEFAULT,
-    marginTop: spacing[1],
-  },
-  roleTabs: {
+  errorBanner: {
     flexDirection: "row",
-    backgroundColor: colors.surface,
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing[1],
-    marginBottom: spacing[5],
+    alignItems: "center",
+    backgroundColor: "#FFF2F2",
+    borderWidth: BRUTAL_BORDERS.width,
+    borderColor: BRUTAL_COLORS.danger,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[4],
+    gap: BRUTAL_SPACING[2],
+    ...BRUTAL_SHADOWS.sm,
+  },
+  errorIcon: {
+    fontSize: 16,
+    color: BRUTAL_COLORS.dangerInk,
+    fontWeight: "900",
+  },
+  errorText: {
+    flex: 1,
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.bold,
+    color: BRUTAL_COLORS.dangerInk,
+  },
+  roleSelectorBox: {
+    backgroundColor: BRUTAL_COLORS.surface,
+    borderWidth: BRUTAL_BORDERS.width,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    padding: BRUTAL_SPACING[3],
+    marginBottom: BRUTAL_SPACING[4],
+    ...BRUTAL_SHADOWS.sm,
+  },
+  roleSelectorTitle: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    letterSpacing: 1,
+    color: BRUTAL_COLORS.ink,
+    marginBottom: BRUTAL_SPACING[2],
+  },
+  roleTabsRow: {
+    flexDirection: "row",
+    gap: BRUTAL_SPACING[2],
   },
   roleTab: {
     flex: 1,
-    paddingVertical: spacing[2],
+    flexDirection: "row",
     alignItems: "center",
-    borderRadius: radii.base,
+    justifyContent: "center",
+    paddingVertical: BRUTAL_SPACING[3],
+    borderWidth: BRUTAL_BORDERS.thin,
+    borderColor: BRUTAL_COLORS.ink,
+    borderRadius: BRUTAL_RADII.standard,
+    backgroundColor: BRUTAL_COLORS.background,
+    gap: BRUTAL_SPACING[1],
   },
-  roleTabActive: {
-    backgroundColor: colors.primary.DEFAULT,
+  roleTabActiveStudent: {
+    backgroundColor: BRUTAL_COLORS.success,
+    borderWidth: 2,
+    ...BRUTAL_SHADOWS.sm,
+  },
+  roleTabActiveAlumni: {
+    backgroundColor: BRUTAL_COLORS.accent,
+    borderWidth: 2,
+    ...BRUTAL_SHADOWS.sm,
+  },
+  roleEmoji: {
+    fontSize: 16,
   },
   roleTabText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.secondary.DEFAULT,
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.heavy,
+    color: BRUTAL_COLORS.ink,
   },
   roleTabTextActive: {
-    color: colors.primary.foreground,
+    color: BRUTAL_COLORS.ink,
   },
-  errorBanner: {
-    backgroundColor: colors.semantic.errorSubtle,
-    borderWidth: 1,
-    borderColor: colors.semantic.errorBorder,
-    borderRadius: radii.base,
-    padding: spacing[3],
-    marginBottom: spacing[4],
+  formCard: {
+    marginBottom: BRUTAL_SPACING[4],
   },
-  errorBannerText: {
-    color: colors.semantic.error,
-    fontSize: typography.sizes.sm,
-    fontWeight: "500",
+  fieldGroup: {
+    marginBottom: BRUTAL_SPACING[4],
   },
-  form: {
-    gap: spacing[4],
+  fieldLabel: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.heavy,
+    color: BRUTAL_COLORS.ink,
+    letterSpacing: BRUTAL_TYPOGRAPHY.letterSpacing.tracked,
+    marginBottom: BRUTAL_SPACING[2],
   },
-  inputGroup: {
-    gap: spacing[1],
-  },
-  label: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "700",
-    color: colors.primary.DEFAULT,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  labelRow: {
+  deptPillsRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: BRUTAL_SPACING[2],
+  },
+  deptPill: {
+    paddingHorizontal: BRUTAL_SPACING[3],
+    paddingVertical: 6,
+    borderRadius: BRUTAL_RADII.micro,
+    borderWidth: 1.5,
+    borderColor: BRUTAL_COLORS.ink,
+    backgroundColor: BRUTAL_COLORS.background,
+  },
+  deptPillSelected: {
+    backgroundColor: BRUTAL_COLORS.accent,
+    ...BRUTAL_SHADOWS.sm,
+  },
+  deptPillText: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.bold,
+    color: BRUTAL_COLORS.ink,
+  },
+  deptPillTextSelected: {
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+  },
+  submitBtn: {
+    marginTop: BRUTAL_SPACING[3],
+  },
+  footerRow: {
     alignItems: "center",
+    marginTop: BRUTAL_SPACING[2],
   },
-  visibilityToggle: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "600",
-    color: colors.accent.DEFAULT,
-  },
-  input: {
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[3],
-    fontSize: typography.sizes.base,
-    color: colors.primary.DEFAULT,
-  },
-  deptScroll: {
-    marginTop: spacing[1],
-  },
-  deptChipRow: {
-    flexDirection: "row",
-    gap: spacing[2],
-  },
-  deptChip: {
-    paddingHorizontal: spacing[3],
-    paddingVertical: spacing[2],
-    backgroundColor: colors.surface,
-    borderRadius: radii.full,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  deptChipActive: {
-    backgroundColor: colors.accent.DEFAULT,
-    borderColor: colors.accent.DEFAULT,
-  },
-  deptChipText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: "600",
-    color: colors.primary.DEFAULT,
-  },
-  deptChipTextActive: {
-    color: colors.accent.foreground,
-  },
-  submitButton: {
-    backgroundColor: colors.accent.DEFAULT,
-    paddingVertical: spacing[4],
-    borderRadius: radii.md,
-    alignItems: "center",
-    marginTop: spacing[3],
-  },
-  submitButtonDisabled: {
-    opacity: 0.7,
-  },
-  submitButtonText: {
-    color: colors.accent.foreground,
-    fontSize: typography.sizes.base,
-    fontWeight: "700",
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: spacing[6],
-  },
-  footerText: {
-    fontSize: typography.sizes.sm,
-    color: colors.secondary.DEFAULT,
-  },
-  loginLink: {
-    fontSize: typography.sizes.sm,
-    fontWeight: "700",
-    color: colors.accent.DEFAULT,
+  footerPrompt: {
+    fontSize: BRUTAL_TYPOGRAPHY.sizes.micro,
+    fontWeight: BRUTAL_TYPOGRAPHY.weights.black,
+    color: BRUTAL_COLORS.textSecondary,
+    letterSpacing: 1,
+    marginBottom: BRUTAL_SPACING[2],
   },
 });

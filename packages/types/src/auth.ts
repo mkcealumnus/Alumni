@@ -76,6 +76,7 @@ export interface PublicDirectoryUser {
   currentCompany?: string;
   currentRole?: string;
   locationCity?: string;
+  experienceYears?: number;
   skills: string[];
   avatarUrl?: string;
   linkedinUrl?: string;
