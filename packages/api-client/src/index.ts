@@ -12,6 +12,10 @@ import type {
   PublicDirectoryUser,
   DirectoryQueryParams,
   MentorshipRequest,
+  Conversation,
+  ChatMessage,
+  SendMessageRequest,
+  CreateConversationRequest,
 } from "@alumnux/types";
 
 export interface TokenStorageAdapter {
@@ -344,6 +348,37 @@ export class AlumnuxApiClient {
       `/v1/mentorship/requests/${id}/status`,
       { status }
     );
+    return res.data;
+  }
+
+  // Messaging & Conversations Endpoints
+  public async getConversations(): Promise<Conversation[]> {
+    const res = await this.get<ApiSuccessResponse<Conversation[]>>("/v1/conversations");
+    return res.data;
+  }
+
+  public async getConversationById(id: string): Promise<Conversation> {
+    const res = await this.get<ApiSuccessResponse<Conversation>>(`/v1/conversations/${id}`);
+    return res.data;
+  }
+
+  public async createOrGetConversation(data: CreateConversationRequest): Promise<Conversation> {
+    const res = await this.post<ApiSuccessResponse<Conversation>>("/v1/conversations", data);
+    return res.data;
+  }
+
+  public async getMessages(conversationId: string): Promise<ChatMessage[]> {
+    const res = await this.get<ApiSuccessResponse<ChatMessage[]>>(`/v1/conversations/${conversationId}/messages`);
+    return res.data;
+  }
+
+  public async sendMessage(conversationId: string, data: SendMessageRequest): Promise<ChatMessage> {
+    const res = await this.post<ApiSuccessResponse<ChatMessage>>(`/v1/conversations/${conversationId}/messages`, data);
+    return res.data;
+  }
+
+  public async markConversationRead(conversationId: string): Promise<{ success: boolean }> {
+    const res = await this.patch<ApiSuccessResponse<{ success: boolean }>>(`/v1/conversations/${conversationId}/read`, {});
     return res.data;
   }
 }

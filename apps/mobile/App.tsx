@@ -32,12 +32,19 @@ import { CareersScreen } from "./src/screens/CareersScreen";
 import { EventsScreen } from "./src/screens/EventsScreen";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { AdminConsoleScreen } from "./src/screens/AdminConsoleScreen";
+import type { Conversation } from "@alumnux/types";
+import {
+  MessagesScreen,
+  ConversationScreen,
+  useConversations,
+} from "./src/features/messaging";
 
 type AuthScreenState = "welcome" | "login" | "register";
 export type AppTab =
   | "dashboard"
   | "directory"
   | "mentorship"
+  | "messages"
   | "careers"
   | "events"
   | "profile"
@@ -50,8 +57,29 @@ function NavigationRoot() {
   const [authScreen, setAuthScreen] = useState<AuthScreenState>("welcome");
   const [registerRole, setRegisterRole] = useState<"STUDENT" | "ALUMNI">("STUDENT");
 
-  // Authenticated active tab
+  // Authenticated active tab & active 1-on-1 conversation
   const [activeTab, setActiveTab] = useState<AppTab>("dashboard");
+  const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
+
+  // Background polling & conversations provider
+  const { totalUnreadCount, startConversation } = useConversations();
+
+  const handleOpenChatWithUser = async (
+    participantId: string,
+    topic?: string,
+    mentorshipRequestId?: string
+  ) => {
+    try {
+      const conv = await startConversation({
+        participantId,
+        topic,
+        mentorshipRequestId,
+      });
+      setActiveConversation(conv);
+    } catch (err) {
+      console.warn("Could not initiate conversation:", err);
+    }
+  };
 
   // Session restoration loading screen
   if (isLoading) {
@@ -115,16 +143,29 @@ function NavigationRoot() {
   const isAdmin = user?.role === "ADMIN";
   const isAlumni = user?.role === "ALUMNI";
 
-  // Build navigation items based on role
-  const navTabs: { id: AppTab; label: string; icon: string }[] = [
+  // Build primary nano-brutalist navigation items:
+  // 1. Home, 2. Directory, 3. Mentorship, 4. Messages, 5. Profile
+  const navTabs: { id: AppTab; label: string; icon: string; badge?: number }[] = [
     { id: "dashboard", label: "HOME", icon: "⌂" },
-    ...(isAdmin ? [{ id: "admin" as AppTab, label: "QUEUE", icon: "🛡" }] : []),
     { id: "directory", label: "DIRECTORY", icon: "⚲" },
     { id: "mentorship", label: isAlumni ? "INBOX" : "MENTORS", icon: "🤝" },
-    { id: "careers", label: "JOBS", icon: "💼" },
-    { id: "events", label: "EVENTS", icon: "📅" },
+    { id: "messages", label: "MESSAGES", icon: "💬", badge: totalUnreadCount },
     { id: "profile", label: "PROFILE", icon: "👤" },
+    ...(isAdmin ? [{ id: "admin" as AppTab, label: "QUEUE", icon: "🛡" }] : []),
   ];
+
+  // If a conversation is actively open, render full-screen 1-on-1 ConversationScreen
+  if (activeConversation) {
+    return (
+      <SafeAreaView style={styles.mainSafeArea}>
+        <StatusBar barStyle="dark-content" />
+        <ConversationScreen
+          conversation={activeConversation}
+          onBack={() => setActiveConversation(null)}
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.mainSafeArea}>
@@ -157,21 +198,28 @@ function NavigationRoot() {
         {activeTab === "dashboard" && (
           <DashboardScreen onNavigateTab={setActiveTab} />
         )}
-        {activeTab === "directory" && <DirectoryScreen />}
-        {activeTab === "mentorship" && <MentorshipScreen />}
+        {activeTab === "directory" && (
+          <DirectoryScreen onOpenChat={(userId) => handleOpenChatWithUser(userId)} />
+        )}
+        {activeTab === "mentorship" && (
+          <MentorshipScreen
+            onOpenChat={(partnerId, topic, reqId) =>
+              handleOpenChatWithUser(partnerId, topic, reqId)
+            }
+          />
+        )}
+        {activeTab === "messages" && (
+          <MessagesScreen onSelectConversation={setActiveConversation} />
+        )}
         {activeTab === "careers" && <CareersScreen />}
         {activeTab === "events" && <EventsScreen />}
         {activeTab === "profile" && <ProfileScreen />}
         {activeTab === "admin" && <AdminConsoleScreen />}
       </View>
 
-      {/* Persistent Bottom Tab Bar with Role-Aware Tabs */}
+      {/* Persistent Bottom Tab Bar with Role-Aware Tabs & Unread Badge */}
       <View style={styles.tabBar}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tabScrollContainer}
-        >
+        <View style={styles.tabScrollContainer}>
           {navTabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -181,24 +229,37 @@ function NavigationRoot() {
                   styles.tabItem,
                   isActive && styles.tabItemActive,
                 ]}
-                onPress={() => setActiveTab(tab.id)}
+                onPress={() => {
+                  setActiveConversation(null);
+                  setActiveTab(tab.id);
+                }}
                 activeOpacity={0.7}
               >
-                <Text style={[styles.tabIcon, isActive && styles.tabIconActive]}>
-                  {tab.icon}
-                </Text>
+                <View style={styles.tabIconWrapper}>
+                  <Text style={[styles.tabIcon, isActive && styles.tabIconActive]}>
+                    {tab.icon}
+                  </Text>
+                  {tab.id === "messages" && (tab.badge ?? 0) > 0 && (
+                    <View style={styles.tabBadge}>
+                      <Text style={styles.tabBadgeText}>
+                        {(tab.badge ?? 0) > 9 ? "9+" : tab.badge}
+                      </Text>
+                    </View>
+                  )}
+                </View>
                 <Text
                   style={[
                     styles.tabLabel,
                     isActive && styles.tabLabelActive,
                   ]}
+                  numberOfLines={1}
                 >
                   {tab.label}
                 </Text>
               </TouchableOpacity>
             );
           })}
-        </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -320,24 +381,30 @@ const styles = StyleSheet.create({
   },
   tabScrollContainer: {
     flexDirection: "row",
-    paddingHorizontal: BRUTAL_SPACING[2],
-    justifyContent: "space-around",
+    paddingHorizontal: BRUTAL_SPACING[1],
+    justifyContent: "space-between",
     alignItems: "center",
-    minWidth: "100%",
+    width: "100%",
   },
   tabItem: {
-    paddingHorizontal: BRUTAL_SPACING[3],
+    flex: 1,
+    paddingHorizontal: 2,
     paddingVertical: BRUTAL_SPACING[2],
     alignItems: "center",
     justifyContent: "center",
     borderWidth: BRUTAL_BORDERS.standard,
     borderColor: "transparent",
-    marginHorizontal: 2,
+    marginHorizontal: 1,
   },
   tabItemActive: {
     backgroundColor: BRUTAL_COLORS.ACCENT,
     borderColor: BRUTAL_COLORS.INK,
     ...BRUTAL_SHADOWS.subtle,
+  },
+  tabIconWrapper: {
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
   },
   tabIcon: {
     fontSize: 16,
@@ -347,11 +414,29 @@ const styles = StyleSheet.create({
   tabIconActive: {
     color: BRUTAL_COLORS.INK,
   },
+  tabBadge: {
+    position: "absolute",
+    top: -4,
+    right: -10,
+    backgroundColor: BRUTAL_COLORS.ACCENT,
+    borderWidth: 1.5,
+    borderColor: BRUTAL_COLORS.INK,
+    minWidth: 16,
+    height: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 2,
+  },
+  tabBadgeText: {
+    fontSize: 9,
+    fontWeight: BRUTAL_TYPOGRAPHY.black,
+    color: BRUTAL_COLORS.INK,
+  },
   tabLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: BRUTAL_TYPOGRAPHY.bold,
     color: BRUTAL_COLORS.SECONDARY_TEXT,
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
   },
   tabLabelActive: {
     color: BRUTAL_COLORS.INK,

@@ -280,3 +280,23 @@ export const healthCheckResponseSchema = z.object({
 });
 
 export type HealthCheckResponseInput = z.infer<typeof healthCheckResponseSchema>;
+
+// 9. Messaging & Conversation Schemas
+export const sendMessageSchema = z.object({
+  content: z
+    .string()
+    .trim()
+    .min(1, "Message cannot be empty")
+    .max(2000, "Message cannot exceed 2000 characters"),
+});
+
+export type SendMessageInput = z.infer<typeof sendMessageSchema>;
+
+export const createConversationSchema = z.object({
+  participantId: z.string().min(1, "Participant ID is required"),
+  mentorshipRequestId: z.string().optional(),
+  topic: z.string().max(255).optional(),
+});
+
+export type CreateConversationInput = z.infer<typeof createConversationSchema>;
+

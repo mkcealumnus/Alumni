@@ -24,6 +24,8 @@ class MockDatabaseClient implements IDatabaseClient {
   private profiles = new Map<string, Record<string, unknown>>();
   private sessions = new Map<string, Record<string, unknown>>();
   private mentorshipRequests = new Map<string, Record<string, unknown>>();
+  private conversations = new Map<string, Record<string, unknown>>();
+  private messages = new Map<string, Record<string, unknown>>();
 
   constructor() {
     this.seedSampleData();
@@ -90,6 +92,61 @@ class MockDatabaseClient implements IDatabaseClient {
     this.profiles.set(studentProfile.id, studentProfile);
     this.users.set(alumniUser.id, alumniUser);
     this.profiles.set(alumniProfile.id, alumniProfile);
+
+    // Seed 1-on-1 Conversation
+    const convAlexJordan = {
+      id: "conv-alex-jordan",
+      student_id: "student-demo-alex",
+      alumni_id: "alumni-demo-jordan",
+      mentorship_request_id: "mr-104",
+      topic: "System Design & Distributed Queues",
+      status: "active",
+      last_message_at: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+      last_message_preview: "Bring your repository link and architecture diagram to Saturday's call.",
+      created_at: new Date(Date.now() - 1000 * 60 * 60 * 80).toISOString(),
+      updated_at: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+    };
+    this.conversations.set(convAlexJordan.id, convAlexJordan);
+
+    const msgs = [
+      {
+        id: "pm-aj-1",
+        conversation_id: "conv-alex-jordan",
+        sender_id: "alumni-demo-jordan",
+        sender_name: "Jordan Vance",
+        sender_role: "ALUMNI",
+        content: "Hi Alex! Thanks for reaching out about distributed queues and Stripe's backend architecture. What specific areas would you like to review in our upcoming session?",
+        status: "read",
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+        updated_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+      },
+      {
+        id: "pm-aj-2",
+        conversation_id: "conv-alex-jordan",
+        sender_id: "student-demo-alex",
+        sender_name: "Alex Rivera",
+        sender_role: "STUDENT",
+        content: "Hello Jordan! I've been implementing write-ahead logs and leader election in Go. I would love your advice on handling network partitions and idempotency keys.",
+        status: "read",
+        created_at: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
+        updated_at: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
+      },
+      {
+        id: "pm-aj-3",
+        conversation_id: "conv-alex-jordan",
+        sender_id: "alumni-demo-jordan",
+        sender_name: "Jordan Vance",
+        sender_role: "ALUMNI",
+        content: "Excellent project topic. Bring your repository link and architecture diagram to Saturday's call. We will walk through production failure modes together.",
+        status: "read",
+        created_at: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+        updated_at: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+      },
+    ];
+
+    for (const msg of msgs) {
+      this.messages.set(msg.id, msg);
+    }
   }
 
   isMock(): boolean {
@@ -105,6 +162,8 @@ class MockDatabaseClient implements IDatabaseClient {
     this.profiles.clear();
     this.sessions.clear();
     this.mentorshipRequests.clear();
+    this.conversations.clear();
+    this.messages.clear();
   }
 
   async transaction<T>(callback: (client: IDatabaseClient) => Promise<T>): Promise<T> {
@@ -206,6 +265,53 @@ class MockDatabaseClient implements IDatabaseClient {
       const id = String(params[0]);
       const req = this.mentorshipRequests.get(id);
       return req ? [req as unknown as T] : [];
+    }
+
+    // SELECT conversations for user
+    if (cleanSql.includes("FROM CONVERSATIONS")) {
+      if (cleanSql.includes("STUDENT_ID = ? AND ALUMNI_ID = ?")) {
+        const sId = String(params[0]);
+        const aId = String(params[1]);
+        for (const c of this.conversations.values()) {
+          if (
+            (c.student_id === sId && c.alumni_id === aId) ||
+            (c.student_id === aId && c.alumni_id === sId)
+          ) {
+            return [c as unknown as T];
+          }
+        }
+        return [];
+      }
+
+      if (cleanSql.includes("STUDENT_ID = ? OR ALUMNI_ID = ?") || cleanSql.includes("STUDENT_ID = ?") || cleanSql.includes("ALUMNI_ID = ?")) {
+        const userId = String(params[0]);
+        const results: Record<string, unknown>[] = [];
+        for (const c of this.conversations.values()) {
+          if (c.student_id === userId || c.alumni_id === userId) {
+            results.push(c);
+          }
+        }
+        return results as unknown as T[];
+      }
+
+      if (cleanSql.includes("WHERE ID = ?")) {
+        const id = String(params[0]);
+        const conv = this.conversations.get(id);
+        return conv ? [conv as unknown as T] : [];
+      }
+    }
+
+    // SELECT messages for conversation
+    if (cleanSql.includes("FROM MESSAGES") && cleanSql.includes("CONVERSATION_ID = ?")) {
+      const convId = String(params[0]);
+      const msgs: Record<string, unknown>[] = [];
+      for (const m of this.messages.values()) {
+        if (m.conversation_id === convId) {
+          msgs.push(m);
+        }
+      }
+      msgs.sort((a, b) => new Date(String(a.created_at)).getTime() - new Date(String(b.created_at)).getTime());
+      return msgs as unknown as T[];
     }
 
     return [];
@@ -425,6 +531,88 @@ class MockDatabaseClient implements IDatabaseClient {
         });
         return { rows: [], affectedRows: 1 };
       }
+    }
+
+    // INSERT INTO conversations
+    if (cleanSql.startsWith("INSERT INTO CONVERSATIONS")) {
+      const [id, studentId, alumniId, mentorshipRequestId, topic, status] = params as [
+        string,
+        string,
+        string,
+        string | null,
+        string | null,
+        string
+      ];
+
+      this.conversations.set(id, {
+        id,
+        student_id: studentId,
+        alumni_id: alumniId,
+        mentorship_request_id: mentorshipRequestId,
+        topic: topic || "Direct Mentorship Conversation",
+        status: status || "active",
+        last_message_at: new Date().toISOString(),
+        last_message_preview: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      return { rows: [], affectedRows: 1 };
+    }
+
+    // UPDATE conversations (last message)
+    if (cleanSql.startsWith("UPDATE CONVERSATIONS")) {
+      const preview = String(params[0]);
+      const id = String(params[1]);
+      const conv = this.conversations.get(id);
+      if (conv) {
+        this.conversations.set(id, {
+          ...conv,
+          last_message_preview: preview,
+          last_message_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+        return { rows: [], affectedRows: 1 };
+      }
+    }
+
+    // INSERT INTO messages
+    if (cleanSql.startsWith("INSERT INTO MESSAGES")) {
+      const [id, conversationId, senderId, senderName, senderRole, content, status] = params as [
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string
+      ];
+
+      this.messages.set(id, {
+        id,
+        conversation_id: conversationId,
+        sender_id: senderId,
+        sender_name: senderName,
+        sender_role: senderRole,
+        content,
+        status: status || "sent",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      return { rows: [], affectedRows: 1 };
+    }
+
+    // UPDATE messages SET status = 'read'
+    if (cleanSql.startsWith("UPDATE MESSAGES SET STATUS = READ")) {
+      const convId = String(params[0]);
+      const otherUserId = String(params[1]);
+      let count = 0;
+      for (const [id, m] of this.messages.entries()) {
+        if (m.conversation_id === convId && m.sender_id !== otherUserId && m.status !== "read") {
+          this.messages.set(id, { ...m, status: "read", updated_at: new Date().toISOString() });
+          count++;
+        }
+      }
+      return { rows: [], affectedRows: count };
     }
 
     return { rows: [], affectedRows: 0 };

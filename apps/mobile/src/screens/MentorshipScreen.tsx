@@ -27,7 +27,11 @@ import { mobileApi } from "../lib/api";
 import { useMobileAuth } from "../context/AuthContext";
 import type { MentorshipRequest } from "@alumnux/types";
 
-export const MentorshipScreen: React.FC = () => {
+export interface MentorshipScreenProps {
+  onOpenChat?: (partnerId: string, topic?: string, mentorshipRequestId?: string) => void;
+}
+
+export const MentorshipScreen: React.FC<MentorshipScreenProps> = ({ onOpenChat }) => {
   const { user } = useMobileAuth();
   const isAlumni = user?.role === "ALUMNI";
 
@@ -305,6 +309,23 @@ export const MentorshipScreen: React.FC = () => {
                   </TouchableOpacity>
                 </View>
               )}
+              {/* Direct Messaging for Accepted Mentorship Connections */}
+              {(item.status || "").toUpperCase() === "ACCEPTED" && (
+                <View style={styles.acceptedChatRow}>
+                  <BrutalButton
+                    title={isAlumni ? "OPEN CHAT WITH STUDENT 💬" : "MESSAGE MENTOR 💬"}
+                    onPress={() => {
+                      const partnerId = isAlumni ? item.requesterId : item.recipientId;
+                      if (partnerId) {
+                        onOpenChat?.(partnerId, item.topicId, item.id);
+                      }
+                    }}
+                    variant="primary"
+                    size="small"
+                    fullWidth
+                  />
+                </View>
+              )}
             </BrutalCard>
           )}
         />
@@ -521,5 +542,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: BRUTAL_SPACING[2],
     marginTop: BRUTAL_SPACING[2],
+  },
+  acceptedChatRow: {
+    marginTop: BRUTAL_SPACING[3],
   },
 });

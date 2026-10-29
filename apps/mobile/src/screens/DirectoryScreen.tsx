@@ -114,7 +114,11 @@ const FALLBACK_ALUMNI: PublicDirectoryUser[] = [
   },
 ];
 
-export const DirectoryScreen: React.FC = () => {
+export interface DirectoryScreenProps {
+  onOpenChat?: (userId: string) => void;
+}
+
+export const DirectoryScreen: React.FC<DirectoryScreenProps> = ({ onOpenChat }) => {
   const { user } = useMobileAuth();
 
   const [search, setSearch] = useState("");
@@ -384,16 +388,30 @@ export const DirectoryScreen: React.FC = () => {
                 </View>
               )}
 
-              {user?.role === "STUDENT" && (
-                <View style={styles.detailActionWrapper}>
+              <View style={styles.detailActionWrapper}>
+                {user?.role === "STUDENT" && (
                   <BrutalButton
                     title="REQUEST 1-ON-1 MENTORSHIP"
                     onPress={() => setRequestModalVisible(true)}
                     variant="primary"
                     fullWidth
                   />
-                </View>
-              )}
+                )}
+                {onOpenChat && (
+                  <View style={{ marginTop: BRUTAL_SPACING[2] }}>
+                    <BrutalButton
+                      title="SEND DIRECT MESSAGE 💬"
+                      onPress={() => {
+                        const targetId = selectedUser?.id;
+                        setSelectedUser(null);
+                        if (targetId) onOpenChat(targetId);
+                      }}
+                      variant="primary"
+                      fullWidth
+                    />
+                  </View>
+                )}
+              </View>
             </ScrollView>
           </View>
         </View>

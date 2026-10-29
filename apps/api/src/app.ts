@@ -7,6 +7,7 @@ import { healthRoutes } from "./routes/health.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { directoryRoutes } from "./modules/directory/directory.routes.js";
 import { mentorshipRoutes } from "./modules/mentorship/mentorship.routes.js";
+import { messagesRoutes } from "./modules/messages/messages.routes.js";
 
 export function buildApp(): FastifyInstance {
   const isDev = env.NODE_ENV === "development";
@@ -48,6 +49,7 @@ export function buildApp(): FastifyInstance {
   app.register(authRoutes);
   app.register(directoryRoutes);
   app.register(mentorshipRoutes);
+  app.register(messagesRoutes);
 
   // 404 Not Found Handler
   app.setNotFoundHandler((request, reply) => {

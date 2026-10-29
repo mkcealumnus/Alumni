@@ -136,7 +136,48 @@ CREATE TABLE IF NOT EXISTS `mentorship_requests` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ------------------------------------------------------------------------------
--- 7. Audit Log
+-- 7. 1-on-1 Mentorship & Direct Conversations
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `conversations` (
+  `id` VARCHAR(36) NOT NULL,
+  `student_id` VARCHAR(36) NOT NULL,
+  `alumni_id` VARCHAR(36) NOT NULL,
+  `mentorship_request_id` VARCHAR(36) NULL,
+  `topic` VARCHAR(255) NULL,
+  `status` ENUM('active', 'completed', 'closed') DEFAULT 'active',
+  `last_message_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `last_message_preview` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_conversation_student` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_conversation_alumni` FOREIGN KEY (`alumni_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  INDEX `idx_conv_student` (`student_id`),
+  INDEX `idx_conv_alumni` (`alumni_id`),
+  INDEX `idx_conv_last_msg` (`last_message_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------------------------
+-- 8. Messages
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` VARCHAR(36) NOT NULL,
+  `conversation_id` VARCHAR(36) NOT NULL,
+  `sender_id` VARCHAR(36) NOT NULL,
+  `sender_name` VARCHAR(150) NOT NULL,
+  `sender_role` VARCHAR(20) NOT NULL,
+  `content` TEXT NOT NULL,
+  `status` ENUM('sent', 'delivered', 'read') DEFAULT 'sent',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_message_conversation` FOREIGN KEY (`conversation_id`) REFERENCES `conversations` (`id`) ON DELETE CASCADE,
+  INDEX `idx_msg_conversation` (`conversation_id`),
+  INDEX `idx_msg_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------------------------
+-- 9. Audit Log
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `audit_logs` (
   `id` VARCHAR(36) NOT NULL,
