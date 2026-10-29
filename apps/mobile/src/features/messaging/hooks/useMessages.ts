@@ -44,10 +44,12 @@ const SEED_MESSAGES: Record<string, ChatMessage[]> = {
 export function useMessages(conversationId: string) {
   const { user, profile } = useMobileAuth();
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    return SEED_MESSAGES[conversationId] || [];
+    return __DEV__ ? (SEED_MESSAGES[conversationId] || []) : [];
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [sendError, setSendError] = useState<string | null>(null);
   const isMountedRef = useRef(true);
 
   const fetchMessages = useCallback(
@@ -56,11 +58,10 @@ export function useMessages(conversationId: string) {
 
       try {
         const data = await messagingApi.getMessages(conversationId);
-        if (data && data.length > 0) {
-          setMessages(data);
-        }
-      } catch {
-        // Retain fallback / local messages
+        setMessages(data || []);
+        setLoadError(null);
+      } catch (err) {
+        setLoadError(err instanceof Error ? err.message : "Failed to load messages.");
       } finally {
         if (isMountedRef.current) {
           setIsLoading(false);
@@ -74,7 +75,11 @@ export function useMessages(conversationId: string) {
   useEffect(() => {
     isMountedRef.current = true;
     fetchMessages();
-    messagingApi.markConversationRead(conversationId).catch(() => {});
+    messagingApi.markConversationRead(conversationId).catch((err: unknown) => {
+      if (isMountedRef.current) {
+        setLoadError(err instanceof Error ? err.message : "Could not update read status.");
+      }
+    });
 
     // Polling interval (every 4s) for active chat session
     const timer = setInterval(() => {
@@ -91,6 +96,7 @@ export function useMessages(conversationId: string) {
     if (!content.trim() || isSending) return;
 
     setIsSending(true);
+    setSendError(null);
 
     const tempId = `temp-${Date.now()}`;
     const optimisticMessage: ChatMessage = {
@@ -114,8 +120,10 @@ export function useMessages(conversationId: string) {
       setMessages((prev) =>
         prev.map((m) => (m.id === tempId ? persisted : m))
       );
-    } catch {
-      // Keep optimistic message or update status
+    } catch (err) {
+      setMessages((prev) => prev.filter((message) => message.id !== tempId));
+      setSendError("Message was not sent. Check your connection and try again.");
+      throw err;
     } finally {
       setIsSending(false);
     }
@@ -125,6 +133,8 @@ export function useMessages(conversationId: string) {
     messages,
     isLoading,
     isSending,
+    loadError,
+    sendError,
     sendMessage,
     refetch: fetchMessages,
   };

@@ -523,7 +523,7 @@ class MockDatabaseClient implements IDatabaseClient {
       const status = String(params[0]);
       const id = String(params[1]);
       const req = this.mentorshipRequests.get(id);
-      if (req) {
+      if (req && (!cleanSql.includes("AND STATUS = PENDING") || String(req.status).toUpperCase() === "PENDING")) {
         this.mentorshipRequests.set(id, {
           ...req,
           status,
@@ -722,8 +722,8 @@ export function getDatabaseClient(): IDatabaseClient {
     const pool = mysql.createPool({
       host: env.DATABASE_HOST,
       port: env.DATABASE_PORT,
-      user: env.DATABASE_USER,
-      password: env.DATABASE_PASSWORD,
+      user: env.DATABASE_USER!,
+      password: env.DATABASE_PASSWORD ?? "",
       database: env.DATABASE_NAME,
       waitForConnections: true,
       connectionLimit: env.DATABASE_CONNECTION_LIMIT,

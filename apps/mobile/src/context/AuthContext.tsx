@@ -112,17 +112,17 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
     try {
       const refreshToken = await mobileApi.tokenStorage.getRefreshToken();
       if (refreshToken) {
-        if (refreshToken === "mock-sample-student-refresh-token") {
+        if (__DEV__ && refreshToken === "mock-sample-student-refresh-token") {
           setUser(SAMPLE_STUDENT_ACCOUNT.user);
           setProfile(SAMPLE_STUDENT_ACCOUNT.profile);
           return;
         }
-        if (refreshToken === "mock-sample-alumni-refresh-token") {
+        if (__DEV__ && refreshToken === "mock-sample-alumni-refresh-token") {
           setUser(SAMPLE_ALUMNI_ACCOUNT.user);
           setProfile(SAMPLE_ALUMNI_ACCOUNT.profile);
           return;
         }
-        if (refreshToken === "mock-sample-admin-refresh-token") {
+        if (__DEV__ && refreshToken === "mock-sample-admin-refresh-token") {
           setUser(SAMPLE_ADMIN_ACCOUNT.user);
           setProfile(SAMPLE_ADMIN_ACCOUNT.profile);
           return;
@@ -157,6 +157,13 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
       setProfile(res.profile);
       return { success: true };
     } catch (err: unknown) {
+      if (!__DEV__) {
+        return {
+          success: false,
+          error: err instanceof ApiClientError ? err.message : "Network error during login. Check server connection.",
+        };
+      }
+
       // Check sample credentials matching the website presets
       if (
         (cleanEmail === "student@alumnux.demo" || cleanEmail === "student") &&
@@ -180,17 +187,6 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
         return { success: true };
       }
 
-      if (
-        (cleanEmail === "admin@alumnux.demo" || cleanEmail === "admin") &&
-        pass === "Admin@123"
-      ) {
-        setUser(SAMPLE_ADMIN_ACCOUNT.user);
-        setProfile(SAMPLE_ADMIN_ACCOUNT.profile);
-        await mobileApi.tokenStorage.setAccessToken("mock-sample-admin-access-token");
-        await mobileApi.tokenStorage.setRefreshToken("mock-sample-admin-refresh-token");
-        return { success: true };
-      }
-
       if (err instanceof ApiClientError) {
         return { success: false, error: err.message };
       }
@@ -199,6 +195,8 @@ export const MobileAuthProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   const loginAsDemo = async (role: "STUDENT" | "ALUMNI" | "ADMIN"): Promise<void> => {
+    if (!__DEV__) return;
+
     let sample = SAMPLE_STUDENT_ACCOUNT;
     if (role === "ALUMNI") sample = SAMPLE_ALUMNI_ACCOUNT;
     if (role === "ADMIN") sample = SAMPLE_ADMIN_ACCOUNT;

@@ -106,6 +106,29 @@ describe("Real Messaging & Conversations API Suite", () => {
     expect(JSON.parse(second.body).data.id).toBe(firstId);
   });
 
+  it("rejects conversation participants who are missing or have the same role", async () => {
+    const student = await registerAndLogin("role.check.student@alumnux.org", "STUDENT", "Role Check Student");
+    const anotherStudent = await registerAndLogin("role.check.other@alumnux.org", "STUDENT", "Another Student");
+
+    const sameRole = await app.inject({
+      method: "POST",
+      url: "/v1/conversations",
+      headers: { authorization: `Bearer ${student.accessToken}` },
+      payload: { participantId: anotherStudent.user.id },
+    });
+    expect(sameRole.statusCode).toBe(400);
+    expect(JSON.parse(sameRole.body).error.code).toBe("INVALID_PARTICIPANT_ROLE");
+
+    const missing = await app.inject({
+      method: "POST",
+      url: "/v1/conversations",
+      headers: { authorization: `Bearer ${student.accessToken}` },
+      payload: { participantId: "unknown-participant" },
+    });
+    expect(missing.statusCode).toBe(404);
+    expect(JSON.parse(missing.body).error.code).toBe("PARTICIPANT_NOT_FOUND");
+  });
+
   it("3. Sends message, updates conversation preview, and supports mark as read", async () => {
     const student = await registerAndLogin("sam.chat@alumnux.org", "STUDENT", "Sam K");
     const alumnus = await registerAndLogin("elena.chat@alumnux.org", "ALUMNI", "Elena Rostova");
@@ -181,5 +204,81 @@ describe("Real Messaging & Conversations API Suite", () => {
       payload: { content: "I am intruding into your chat!" },
     });
     expect(intruderSend.statusCode).toBe(403);
+  });
+
+  it("allows a conversation participant to mark incoming messages as read", async () => {
+    const student = await registerAndLogin("read.student@alumnux.org", "STUDENT", "Read Student");
+    const alumnus = await registerAndLogin("read.alumni@alumnux.org", "ALUMNI", "Read Alumni");
+    const convRes = await app.inject({
+      method: "POST",
+      url: "/v1/conversations",
+      headers: { authorization: `Bearer ${student.accessToken}` },
+      payload: { participantId: alumnus.user.id },
+    });
+    const convId = JSON.parse(convRes.body).data.id;
+    await app.inject({
+      method: "POST",
+      url: `/v1/conversations/${convId}/messages`,
+      headers: { authorization: `Bearer ${student.accessToken}` },
+      payload: { content: "Please mark this as read." },
+    });
+
+    const readRes = await app.inject({
+      method: "PATCH",
+      url: `/v1/conversations/${convId}/read`,
+      headers: { authorization: `Bearer ${alumnus.accessToken}` },
+    });
+    expect(readRes.statusCode).toBe(200);
+
+    const messagesRes = await app.inject({
+      method: "GET",
+      url: `/v1/conversations/${convId}/messages`,
+      headers: { authorization: `Bearer ${alumnus.accessToken}` },
+    });
+    expect(JSON.parse(messagesRes.body).data[0].status).toBe("read");
+  });
+
+  it("prevents a nonparticipant from changing another conversation's read state", async () => {
+    const student = await registerAndLogin("owner.student@alumnux.org", "STUDENT", "Owner Student");
+    const alumnus = await registerAndLogin("owner.alumni@alumnux.org", "ALUMNI", "Owner Alumni");
+    const intruder = await registerAndLogin("read.intruder@alumnux.org", "STUDENT", "Read Intruder");
+    const convRes = await app.inject({
+      method: "POST",
+      url: "/v1/conversations",
+      headers: { authorization: `Bearer ${student.accessToken}` },
+      payload: { participantId: alumnus.user.id },
+    });
+    const convId = JSON.parse(convRes.body).data.id;
+    await app.inject({
+      method: "POST",
+      url: `/v1/conversations/${convId}/messages`,
+      headers: { authorization: `Bearer ${student.accessToken}` },
+      payload: { content: "This must remain unread." },
+    });
+
+    const readRes = await app.inject({
+      method: "PATCH",
+      url: `/v1/conversations/${convId}/read`,
+      headers: { authorization: `Bearer ${intruder.accessToken}` },
+    });
+    expect(readRes.statusCode).toBe(403);
+
+    const messagesRes = await app.inject({
+      method: "GET",
+      url: `/v1/conversations/${convId}/messages`,
+      headers: { authorization: `Bearer ${alumnus.accessToken}` },
+    });
+    expect(JSON.parse(messagesRes.body).data[0].status).toBe("sent");
+  });
+
+  it("returns not found for an unknown conversation without changing messages", async () => {
+    const student = await registerAndLogin("missing.read@alumnux.org", "STUDENT", "Missing Read");
+    const readRes = await app.inject({
+      method: "PATCH",
+      url: "/v1/conversations/does-not-exist/read",
+      headers: { authorization: `Bearer ${student.accessToken}` },
+    });
+    expect(readRes.statusCode).toBe(404);
+    expect(JSON.parse(readRes.body).error.code).toBe("CONVERSATION_NOT_FOUND");
   });
 });

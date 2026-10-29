@@ -125,7 +125,45 @@ export const messagesRoutes: FastifyPluginAsync = async (fastify) => {
         });
       }
 
+      if (currentUserRole !== "STUDENT" && currentUserRole !== "ALUMNI") {
+        return reply.status(403).send({
+          success: false,
+          error: {
+            code: "FORBIDDEN",
+            message: "Only students and alumni can start conversations.",
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
       const db = getDatabaseClient();
+
+      const participants = await db.query<any>(
+        "SELECT `id`, `role` FROM `users` WHERE `id` = ? LIMIT 1;",
+        [participantId]
+      );
+      if (participants.length === 0) {
+        return reply.status(404).send({
+          success: false,
+          error: {
+            code: "PARTICIPANT_NOT_FOUND",
+            message: "Conversation participant not found.",
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      const expectedParticipantRole = currentUserRole === "STUDENT" ? "ALUMNI" : "STUDENT";
+      if (participants[0].role !== expectedParticipantRole) {
+        return reply.status(400).send({
+          success: false,
+          error: {
+            code: "INVALID_PARTICIPANT_ROLE",
+            message: "Conversations must be between one student and one alumni account.",
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
 
       // Resolve roles to assign student_id and alumni_id correctly
       let studentId = currentUserId;
@@ -399,10 +437,41 @@ export const messagesRoutes: FastifyPluginAsync = async (fastify) => {
       const userId = request.user!.id;
       const db = getDatabaseClient();
 
-      await db.execute(
-        "UPDATE `messages` SET `status` = 'read' WHERE `conversation_id` = ? AND `sender_id` != ? AND `status` != 'read';",
-        [id, userId]
-      );
+      const result = await db.transaction(async (trx) => {
+        const conversations = await trx.query<any>(
+          "SELECT `id`, `student_id`, `alumni_id` FROM `conversations` WHERE `id` = ? LIMIT 1 FOR UPDATE;",
+          [id]
+        );
+
+        if (conversations.length === 0) return "NOT_FOUND" as const;
+
+        const conversation = conversations[0];
+        if (conversation.student_id !== userId && conversation.alumni_id !== userId) {
+          return "FORBIDDEN" as const;
+        }
+
+        await trx.execute(
+          "UPDATE `messages` SET `status` = 'read' WHERE `conversation_id` = ? AND `sender_id` != ? AND `status` != 'read';",
+          [id, userId]
+        );
+        return "UPDATED" as const;
+      });
+
+      if (result === "NOT_FOUND") {
+        return reply.status(404).send({
+          success: false,
+          error: { code: "CONVERSATION_NOT_FOUND", message: "Conversation not found." },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      if (result === "FORBIDDEN") {
+        return reply.status(403).send({
+          success: false,
+          error: { code: "FORBIDDEN", message: "You are not authorized to update this conversation." },
+          timestamp: new Date().toISOString(),
+        });
+      }
 
       return reply.status(200).send({
         success: true,

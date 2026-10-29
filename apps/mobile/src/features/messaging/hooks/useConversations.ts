@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import type { Conversation, CreateConversationRequest } from "@alumnux/types";
 import { messagingApi } from "../api";
-import { useMobileAuth } from "../../../context/AuthContext";
 
 // Fallback seed conversation for offline/test environments
 const FALLBACK_CONVERSATIONS: Conversation[] = [
@@ -26,8 +25,7 @@ const FALLBACK_CONVERSATIONS: Conversation[] = [
 ];
 
 export function useConversations() {
-  const { user } = useMobileAuth();
-  const [conversations, setConversations] = useState<Conversation[]>(FALLBACK_CONVERSATIONS);
+  const [conversations, setConversations] = useState<Conversation[]>(() => __DEV__ ? FALLBACK_CONVERSATIONS : []);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,20 +36,15 @@ export function useConversations() {
 
     try {
       const data = await messagingApi.getConversations();
-      if (data && data.length > 0) {
-        setConversations(data);
-      }
+      setConversations(data || []);
     } catch (err: unknown) {
-      // In offline / fixture mode retain fallback data
       const msg = err instanceof Error ? err.message : "Failed to load conversations.";
-      if (!conversations.length) {
-        setError(msg);
-      }
+      setError(msg);
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [conversations.length]);
+  }, []);
 
   // Initial load
   useEffect(() => {
@@ -87,30 +80,11 @@ export function useConversations() {
         });
         return conv;
       } catch (err) {
-        // Fallback local conversation creation if offline
-        const localConv: Conversation = {
-          id: `conv-local-${Date.now()}`,
-          studentId: user?.role === "STUDENT" ? user.id : request.participantId,
-          studentName: user?.role === "STUDENT" ? "Student Participant" : "Candidate",
-          studentDepartment: "Engineering",
-          studentGraduationYear: 2026,
-          alumniId: user?.role === "ALUMNI" ? user.id : request.participantId,
-          alumniName: user?.role === "ALUMNI" ? "Alumni Mentor" : "Jordan Vance",
-          alumniRoleTitle: "Staff Platform Engineer",
-          alumniCompany: "Stripe",
-          mentorshipRequestId: request.mentorshipRequestId,
-          topic: request.topic || "Direct Mentorship Conversation",
-          status: "active",
-          createdAt: new Date().toISOString(),
-          lastMessageAt: new Date().toISOString(),
-          lastMessagePreview: "Conversation started.",
-          unreadCount: 0,
-        };
-        setConversations((prev) => [localConv, ...prev]);
-        return localConv;
+        setError(err instanceof Error ? err.message : "Could not start conversation.");
+        throw err;
       }
     },
-    [user]
+    []
   );
 
   return {

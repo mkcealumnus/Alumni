@@ -9,6 +9,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "db:migrate": "tsx src/db/migrator.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },

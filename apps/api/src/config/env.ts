@@ -15,8 +15,8 @@ const envSchema = z.object({
   DATABASE_HOST: z.string().default("127.0.0.1"),
   DATABASE_PORT: z.coerce.number().default(3306),
   DATABASE_NAME: z.string().default("alumnux"),
-  DATABASE_USER: z.string().default("alumnux_user"),
-  DATABASE_PASSWORD: z.string().default(""),
+  DATABASE_USER: z.string().min(1).optional(),
+  DATABASE_PASSWORD: z.string().optional(),
   DATABASE_CONNECTION_LIMIT: z.coerce.number().default(10),
   DATABASE_CONNECT_TIMEOUT_MS: z.coerce.number().default(5000),
 
@@ -32,12 +32,34 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
-export function loadEnv(): Env {
-  const result = envSchema.safeParse(process.env);
+const DEVELOPMENT_JWT_SECRET = "development_jwt_secret_key_change_in_production_min_16_chars";
+const INSECURE_JWT_SECRETS = new Set([
+  DEVELOPMENT_JWT_SECRET,
+  "replace_with_a_long_random_secret_at_least_32_chars",
+  "your_jwt_secret_here",
+  "change_me",
+]);
+
+export function loadEnv(environment: NodeJS.ProcessEnv = process.env): Env {
+  const result = envSchema.safeParse(environment);
   if (!result.success) {
-    const formatted = result.error.format();
-    throw new Error(`Environment validation failed: ${JSON.stringify(formatted)}`);
+    throw new Error("Environment validation failed. Check the required environment variable names and formats.");
   }
+
+  if (result.data.NODE_ENV === "production") {
+    const secret = environment.JWT_ACCESS_SECRET?.trim();
+    if (!secret || INSECURE_JWT_SECRETS.has(secret)) {
+      throw new Error("JWT_ACCESS_SECRET must be explicitly configured with a non-placeholder value in production.");
+    }
+  }
+
+  if (
+    result.data.NODE_ENV !== "test" &&
+    (!environment.DATABASE_USER?.trim() || !Object.prototype.hasOwnProperty.call(environment, "DATABASE_PASSWORD"))
+  ) {
+    throw new Error("DATABASE_USER and DATABASE_PASSWORD must be explicitly configured outside test mode.");
+  }
+
   return result.data;
 }
 

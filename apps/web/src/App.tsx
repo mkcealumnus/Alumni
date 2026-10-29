@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { useLayoutEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/authContext";
 import { MentorshipProvider } from "./context/mentorshipContext";
 import { ProtectedRoute } from "./components/auth/protectedRoute";
@@ -56,10 +57,21 @@ import VerificationStatusPage from "./pages/onboarding/statusPage";
 import AlumniDirectoryPage from "./pages/directory/directoryPage";
 import AdminConsolePage from "./pages/admin/adminPage";
 
+function ScrollToTopOnRouteChange() {
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <MentorshipProvider>
+        <ScrollToTopOnRouteChange />
         <Routes>
           {/* Dedicated Standalone Authentication Routes (Split-screen layout without public Navbar & Footer) */}
         <Route path="/login" element={<LoginPage />} />

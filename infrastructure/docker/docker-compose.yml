@@ -5,14 +5,13 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root_dev_password
-      MYSQL_DATABASE: alumnux_db
+      MYSQL_DATABASE: alumnux
       MYSQL_USER: alumnux_user
       MYSQL_PASSWORD: alumnux_dev_password
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init-mysql.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_dev_password"]
       interval: 5s
@@ -41,16 +40,17 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: development
-      PORT: 3001
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USER: alumnux_user
-      DB_PASSWORD: alumnux_dev_password
-      DB_NAME: alumnux_db
+      PORT: 4000
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_USER: alumnux_user
+      DATABASE_PASSWORD: alumnux_dev_password
+      DATABASE_NAME: alumnux
       REDIS_URL: redis://redis:6379
-      JWT_SECRET: dev_jwt_secret_key_change_in_production
+      JWT_ACCESS_SECRET: development_jwt_secret_key_change_in_production_min_16_chars
+      CORS_ORIGIN: http://localhost:3000,http://localhost:8081
     ports:
-      - "3001:3001"
+      - "4000:4000"
     depends_on:
       mysql:
         condition: service_healthy

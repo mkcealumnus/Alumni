@@ -126,8 +126,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
             />
           </BrutalCard>
 
-          {/* Quick 1-Click Credentials Accordion */}
-          <View style={styles.presetsBox}>
+          {/* Development-only demo credentials */}
+          {__DEV__ ? <View style={styles.presetsBox}>
             <View style={styles.presetsHeader}>
               <Text style={styles.presetsTitle}>// QUICK PRESETS FOR REVIEW</Text>
               <BrutalBadge label="AUTO-FILL" variant="accent" size="small" />
@@ -163,21 +163,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
               <Text style={styles.presetArrow}>→</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.presetRow}
-              onPress={() => handleApplyPreset("admin@alumnux.demo", "Admin@123")}
-              activeOpacity={0.7}
-            >
-              <View style={styles.presetBadgeCol}>
-                <BrutalBadge label="TRUSTEE" variant="warning" size="small" />
-              </View>
-              <View style={styles.presetTextCol}>
-                <Text style={styles.presetName}>Arunachalam (Trustee Infra)</Text>
-                <Text style={styles.presetCreds}>admin@alumnux.demo • Admin@123</Text>
-              </View>
-              <Text style={styles.presetArrow}>→</Text>
-            </TouchableOpacity>
-          </View>
+          </View> : null}
 
           {/* Footer Registration Action */}
           <View style={styles.footerRow}>

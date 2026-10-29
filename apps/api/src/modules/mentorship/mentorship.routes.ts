@@ -80,6 +80,33 @@ export const mentorshipRoutes: FastifyPluginAsync = async (fastify) => {
       }
 
       const db = getDatabaseClient();
+      if (request.user!.role !== "STUDENT") {
+        return reply.status(403).send({
+          success: false,
+          error: { code: "FORBIDDEN", message: "Only students can request mentorship." },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      const recipients = await db.query<any>(
+        "SELECT `id`, `role` FROM `users` WHERE `id` = ? LIMIT 1;",
+        [recipientId]
+      );
+      if (recipients.length === 0) {
+        return reply.status(404).send({
+          success: false,
+          error: { code: "RECIPIENT_NOT_FOUND", message: "Mentorship recipient not found." },
+          timestamp: new Date().toISOString(),
+        });
+      }
+      if (recipients[0].role !== "ALUMNI") {
+        return reply.status(400).send({
+          success: false,
+          error: { code: "INVALID_RECIPIENT_ROLE", message: "Mentorship requests must target an alumni account." },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
       const requestId = uuidv4();
 
       await db.execute(
@@ -133,12 +160,34 @@ export const mentorshipRoutes: FastifyPluginAsync = async (fastify) => {
       const { status } = parseResult.data;
       const db = getDatabaseClient();
 
-      const existing = await db.query<any>(
-        "SELECT * FROM `mentorship_requests` WHERE `id` = ? LIMIT 1;",
-        [id]
-      );
+      const result = await db.transaction(async (trx) => {
+        const existing = await trx.query<any>(
+          "SELECT * FROM `mentorship_requests` WHERE `id` = ? LIMIT 1 FOR UPDATE;",
+          [id]
+        );
+        if (existing.length === 0) return { outcome: "NOT_FOUND" as const };
 
-      if (!existing || existing.length === 0) {
+        const reqRecord = existing[0];
+        if (reqRecord.status.toUpperCase() !== "PENDING") {
+          return { outcome: "INVALID_TRANSITION" as const };
+        }
+
+        if ((status === "ACCEPTED" || status === "DECLINED") && reqRecord.recipient_id !== userId) {
+          return { outcome: "FORBIDDEN" as const };
+        }
+        if (status === "CANCELLED" && reqRecord.requester_id !== userId) {
+          return { outcome: "FORBIDDEN" as const };
+        }
+
+        const updateResult = await trx.execute(
+          "UPDATE `mentorship_requests` SET `status` = ?, `updated_at` = CURRENT_TIMESTAMP WHERE `id` = ? AND `status` = 'PENDING';",
+          [status, id]
+        );
+        if (updateResult.affectedRows !== 1) return { outcome: "INVALID_TRANSITION" as const };
+        return { outcome: "UPDATED" as const, request: reqRecord };
+      });
+
+      if (result.outcome === "NOT_FOUND") {
         return reply.status(404).send({
           success: false,
           error: {
@@ -149,37 +198,29 @@ export const mentorshipRoutes: FastifyPluginAsync = async (fastify) => {
         });
       }
 
-      const reqRecord = existing[0];
-
-      // Authorization checks:
-      // Only recipient can accept or decline
-      if ((status === "ACCEPTED" || status === "DECLINED") && reqRecord.recipient_id !== userId) {
+      if (result.outcome === "FORBIDDEN") {
         return reply.status(403).send({
           success: false,
           error: {
             code: "FORBIDDEN",
-            message: "Only the recipient can accept or decline this mentorship request.",
+            message: "You are not authorized to update this mentorship request.",
           },
           timestamp: new Date().toISOString(),
         });
       }
 
-      // Requester can cancel their own pending request
-      if (status === "CANCELLED" && reqRecord.requester_id !== userId) {
-        return reply.status(403).send({
+      if (result.outcome === "INVALID_TRANSITION") {
+        return reply.status(409).send({
           success: false,
           error: {
-            code: "FORBIDDEN",
-            message: "Only the requester can cancel this request.",
+            code: "INVALID_STATUS_TRANSITION",
+            message: "Only pending mentorship requests can be updated.",
           },
           timestamp: new Date().toISOString(),
         });
       }
 
-      await db.execute(
-        "UPDATE `mentorship_requests` SET `status` = ?, `updated_at` = CURRENT_TIMESTAMP WHERE `id` = ?;",
-        [status, id]
-      );
+      const reqRecord = result.request!;
 
       const updated: MentorshipRequest = {
         id,

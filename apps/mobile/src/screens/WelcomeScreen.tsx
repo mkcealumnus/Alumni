@@ -152,8 +152,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             </View>
           </View>
 
-          {/* Quick Demo Launch Bar */}
-          <View style={styles.demoBox}>
+          {/* Quick Demo Launch Bar (development builds only) */}
+          {__DEV__ ? <View style={styles.demoBox}>
             <Text style={styles.demoBoxTitle}>// 1-CLICK INSTANT PREVIEW</Text>
             <View style={styles.demoButtonsRow}>
               <BrutalButton
@@ -178,7 +178,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                 style={styles.demoBtn}
               />
             </View>
-          </View>
+          </View> : null}
         </View>
 
         <Text style={styles.footerCaption}>

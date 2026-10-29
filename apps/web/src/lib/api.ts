@@ -71,6 +71,7 @@ export class WebTokenStorageAdapter implements TokenStorageAdapter {
 export const webTokenStorage = new WebTokenStorageAdapter();
 
 export const api: AlumnuxApiClient = createApiClient({
-  baseUrl: (import.meta.env.VITE_API_URL as string) || "http://localhost:4000",
+  baseUrl: (import.meta.env.VITE_API_URL as string) ||
+    (import.meta.env.DEV ? "http://localhost:4000" : window.location.origin),
   tokenStorage: webTokenStorage,
 });

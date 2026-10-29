@@ -81,6 +81,12 @@ Starts Fastify API server with `tsx watch` on `http://localhost:4000`:
 ```powershell
 pnpm --filter @alumnux/api dev
 ```
+Before the first API start, initialize a **local or disposable MySQL database** with the current MySQL migration sequence:
+```powershell
+pnpm --filter @alumnux/api db:migrate
+```
+The API does not run schema changes automatically during startup. Do not point this command at production; inspect and back up any existing database before applying an upgrade.
+For XAMPP, configure `DATABASE_HOST=127.0.0.1`, `DATABASE_PORT=3306`, and `DATABASE_NAME=alumnux` in the ignored `apps/api/.env` file. Set `DATABASE_USER` and `DATABASE_PASSWORD` to the values confirmed from your local XAMPP configuration; do not assume a blank password. The tracked `.env.example` uses placeholders only.
 Test health check:
 ```powershell
 # Windows PowerShell

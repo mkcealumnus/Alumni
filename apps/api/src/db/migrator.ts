@@ -6,6 +6,24 @@ import { getDatabaseClient, IDatabaseClient } from "./connection.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// This is the MySQL API migration sequence. The directory also contains a
+// legacy PostgreSQL schema and duplicate historical MySQL migrations; neither
+// is part of the current API migration path.
+export const MYSQL_MIGRATION_FILES = [
+  "001_create_auth_tables.sql",
+  "002_create_mentorship_tables.sql",
+  "005_mysql_api_schema_alignment.sql",
+  "006_add_profile_avatar_url.sql",
+] as const;
+
+export function getMysqlMigrationFiles(directory: string): string[] {
+  const missing = MYSQL_MIGRATION_FILES.filter((file) => !fs.existsSync(path.join(directory, file)));
+  if (missing.length > 0) {
+    throw new Error(`Required MySQL migration files are missing: ${missing.join(", ")}`);
+  }
+  return [...MYSQL_MIGRATION_FILES];
+}
+
 export async function runMigrations(client: IDatabaseClient = getDatabaseClient()): Promise<string[]> {
   if (client.isMock()) {
     return ["mock_migrations_applied"];
@@ -25,15 +43,16 @@ export async function runMigrations(client: IDatabaseClient = getDatabaseClient(
   );
   const appliedSet = new Set(appliedRows.map((r) => r.name));
 
-  const migrationsDir = path.resolve(__dirname, "migrations");
+  const compiledMigrationsDir = path.resolve(__dirname, "migrations");
+  const sourceMigrationsDir = path.resolve(process.cwd(), "src", "db", "migrations");
+  const migrationsDir = fs.existsSync(compiledMigrationsDir)
+    ? compiledMigrationsDir
+    : sourceMigrationsDir;
   if (!fs.existsSync(migrationsDir)) {
     return [];
   }
 
-  const files = fs
-    .readdirSync(migrationsDir)
-    .filter((f) => f.endsWith(".sql"))
-    .sort();
+  const files = getMysqlMigrationFiles(migrationsDir);
 
   const newlyApplied: string[] = [];
 
@@ -45,15 +64,26 @@ export async function runMigrations(client: IDatabaseClient = getDatabaseClient(
     const filePath = path.join(migrationsDir, file);
     const sqlContent = fs.readFileSync(filePath, "utf-8");
 
-    // Execute migration inside transaction
+    // MySQL DDL implicitly commits. The statements in the canonical path are
+    // idempotent so an interrupted migration can be safely retried.
     await client.transaction(async (trx) => {
-      // Split into statements
       const statements = sqlContent
         .split(";")
         .map((s) => s.trim())
         .filter((s) => s.length > 0);
 
       for (const statement of statements) {
+        const executableStatement = statement.replace(/^(?:\s*--[^\r\n]*(?:\r?\n|$))+/, "").trim();
+        const addedColumn = executableStatement.match(
+          /^ALTER\s+TABLE\s+`?(\w+)`?\s+ADD\s+COLUMN\s+`?(\w+)`?/i
+        );
+        if (addedColumn) {
+          const existingColumn = await trx.query<{ found: number }>(
+            "SELECT 1 AS found FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ? LIMIT 1;",
+            [addedColumn[1], addedColumn[2]]
+          );
+          if (existingColumn.length > 0) continue;
+        }
         await trx.execute(statement);
       }
 
@@ -70,7 +100,7 @@ export async function runMigrations(client: IDatabaseClient = getDatabaseClient(
 }
 
 // CLI runner if executed directly
-if (process.argv[1] && process.argv[1].endsWith("migrator.js")) {
+if (process.argv[1] && /migrator\.(?:js|ts)$/.test(process.argv[1])) {
   runMigrations()
     .then((applied) => {
       console.log(`Migrations complete. Applied ${applied.length} migrations:`, applied);

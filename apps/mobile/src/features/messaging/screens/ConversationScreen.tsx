@@ -6,6 +6,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Conversation, ChatMessage } from "@alumnux/types";
@@ -32,7 +33,7 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
   onBack,
 }) => {
   const { user } = useMobileAuth();
-  const { messages, isSending, sendMessage } = useMessages(conversation.id);
+  const { messages, isSending, sendMessage, loadError, sendError, refetch } = useMessages(conversation.id);
   const insets = useSafeAreaInsets();
 
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
@@ -72,6 +73,17 @@ export const ConversationScreen: React.FC<ConversationScreenProps> = ({
           <Text style={styles.trackText}>
             // ACTIVE TRACK: {conversation.topic.toUpperCase()}
           </Text>
+        </View>
+      ) : null}
+
+      {loadError ? (
+        <TouchableOpacity onPress={() => refetch()} style={styles.errorBanner} accessibilityRole="button">
+          <Text style={styles.errorText}>{loadError}  •  TAP TO RETRY</Text>
+        </TouchableOpacity>
+      ) : null}
+      {sendError ? (
+        <View style={styles.errorBanner}>
+          <Text style={styles.errorText}>{sendError}</Text>
         </View>
       ) : null}
 
@@ -138,6 +150,18 @@ const styles = StyleSheet.create({
     borderColor: BRUTAL_COLORS.INK,
     paddingHorizontal: BRUTAL_SPACING[4],
     paddingVertical: 5,
+  },
+  errorBanner: {
+    paddingHorizontal: BRUTAL_SPACING[4],
+    paddingVertical: BRUTAL_SPACING[2],
+    backgroundColor: "#FEE2E2",
+    borderBottomWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+  },
+  errorText: {
+    color: BRUTAL_COLORS.INK,
+    fontSize: 11,
+    fontWeight: "700",
   },
   trackText: {
     fontSize: 10,

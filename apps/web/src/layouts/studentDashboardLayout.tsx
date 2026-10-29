@@ -58,9 +58,9 @@ export function StudentDashboardLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F8F5] flex flex-col md:flex-row text-primary font-sans antialiased">
+    <div className="min-h-screen bg-[#F8F8F5] flex flex-col lg:flex-row text-primary font-sans antialiased">
       {/* 1. DESKTOP LEFT SIDEBAR */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-border bg-surface shrink-0 h-screen sticky top-0 justify-between">
+      <aside className="hidden lg:flex flex-col w-64 border-r border-border bg-surface shrink-0 h-screen sticky top-0 justify-between">
         <div>
           {/* Top Logo */}
           <div className="h-16 px-6 border-b border-border flex items-center justify-between">
@@ -141,7 +141,7 @@ export function StudentDashboardLayout() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="md:hidden p-2 rounded-sm border border-border text-primary hover:bg-surface"
+              className="lg:hidden p-2 rounded-sm border border-border text-primary hover:bg-surface"
               onClick={() => setMobileSidebarOpen(true)}
               aria-label="Open sidebar"
             >
@@ -265,7 +265,7 @@ export function StudentDashboardLayout() {
 
       {/* 3. MOBILE SIDEBAR DRAWER */}
       {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden">
+        <div className="fixed inset-0 z-50 flex lg:hidden">
           <div
             className="fixed inset-0 bg-black/40 backdrop-blur-xs"
             onClick={() => setMobileSidebarOpen(false)}

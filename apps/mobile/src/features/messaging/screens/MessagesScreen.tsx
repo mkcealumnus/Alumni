@@ -72,6 +72,7 @@ export const MessagesScreen: React.FC<MessagesScreenProps> = ({
     onRefresh,
     totalUnreadCount,
     startConversation,
+    error,
   } = useConversations();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -182,6 +183,12 @@ export const MessagesScreen: React.FC<MessagesScreenProps> = ({
           })}
         </View>
       </View>
+
+      {error ? (
+        <TouchableOpacity onPress={onRefresh} style={styles.errorBanner} accessibilityRole="button">
+          <Text style={styles.errorText}>{error}  •  TAP TO RETRY</Text>
+        </TouchableOpacity>
+      ) : null}
 
       <FlatList
         data={filteredConversations}
@@ -309,6 +316,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BRUTAL_COLORS.BACKGROUND,
+  },
+  errorBanner: {
+    paddingHorizontal: BRUTAL_SPACING[4],
+    paddingVertical: BRUTAL_SPACING[2],
+    backgroundColor: "#FEE2E2",
+    borderBottomWidth: BRUTAL_BORDERS.standard,
+    borderColor: BRUTAL_COLORS.INK,
+  },
+  errorText: {
+    color: BRUTAL_COLORS.INK,
+    fontSize: BRUTAL_TYPOGRAPHY.xs,
+    fontWeight: BRUTAL_TYPOGRAPHY.bold,
   },
   newChatBtn: {
     backgroundColor: BRUTAL_COLORS.ACCENT,
