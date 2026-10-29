@@ -25,6 +25,73 @@ class MockDatabaseClient implements IDatabaseClient {
   private sessions = new Map<string, Record<string, unknown>>();
   private mentorshipRequests = new Map<string, Record<string, unknown>>();
 
+  constructor() {
+    this.seedSampleData();
+  }
+
+  private seedSampleData(): void {
+    const studentUser = {
+      id: "student-demo-alex",
+      email: "student@alumnux.demo",
+      password_hash: "$2b$10$2t5jJqWffkKw1FQpuXd0Bez6wzfAE4qOCjk6/VWGKKKznC6VglO9K",
+      role: "STUDENT",
+      status: "ACTIVE",
+      email_verified_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    const studentProfile = {
+      id: "prof-student-alex",
+      user_id: "student-demo-alex",
+      full_name: "Alex Rivera",
+      headline: "Pre-final year CSE student passionate about cloud distributed systems",
+      bio: "Pre-final year CSE student passionate about cloud distributed systems, Go, and high-performance backend engineering. Preparing for campus internships and product company off-campus drives.",
+      department_code: "CSE",
+      graduation_year: 2026,
+      current_company: null,
+      current_role: null,
+      location_city: "Chennai",
+      skills_json: JSON.stringify(["Go", "TypeScript", "React", "PostgreSQL", "Docker", "Algorithms & DS"]),
+      avatar_url: null,
+      linkedin_url: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    const alumniUser = {
+      id: "alumni-demo-jordan",
+      email: "alumni@alumnux.demo",
+      password_hash: "$2b$10$GX4IAaql6WSsQM7gWlxWg.1j.7mYs1UKXGKr.Df2dGf5ZMFyZx1sW",
+      role: "ALUMNI",
+      status: "ACTIVE",
+      email_verified_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    const alumniProfile = {
+      id: "prof-alumni-jordan",
+      user_id: "alumni-demo-jordan",
+      full_name: "Jordan Vance",
+      headline: "Staff Platform Engineer at Stripe specializing in payment reliability",
+      bio: "Staff Platform Engineer at Stripe specializing in payment reliability, global distributed architectures, and developer tooling. Offering mock interview guidance and resume critiques for aspiring engineers.",
+      department_code: "IT",
+      graduation_year: 2018,
+      current_company: "Stripe",
+      current_role: "Staff Platform Engineer",
+      location_city: "Bengaluru",
+      skills_json: JSON.stringify(["Distributed Systems", "Cloud Architecture (AWS/GCP)", "System Design", "Go", "Mentorship", "Referrals"]),
+      avatar_url: null,
+      linkedin_url: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    this.users.set(studentUser.id, studentUser);
+    this.profiles.set(studentProfile.id, studentProfile);
+    this.users.set(alumniUser.id, alumniUser);
+    this.profiles.set(alumniProfile.id, alumniProfile);
+  }
+
   isMock(): boolean {
     return true;
   }

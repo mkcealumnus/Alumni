@@ -25,7 +25,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   onBack,
   onNavigateToRegister,
 }) => {
-  const { login } = useMobileAuth();
+  const { login, loginAsDemo } = useMobileAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -36,8 +36,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
     setErrorMessage(null);
 
     const trimmedEmail = email.trim().toLowerCase();
-    if (!trimmedEmail || !trimmedEmail.includes("@")) {
-      setErrorMessage("Please enter a valid email address.");
+    if (!trimmedEmail) {
+      setErrorMessage("Please enter your email address.");
       return;
     }
     if (!password) {
@@ -49,11 +49,31 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
     try {
       const result = await login({ email: trimmedEmail, password });
       if (!result.success) {
-        setErrorMessage(result.error || "Authentication failed. Check your credentials.");
+        setErrorMessage(
+          result.error || "Authentication failed. Check your credentials or use the 1-Click Sample login below."
+        );
       }
-      // On success, AuthContext sets user and App.tsx automatically switches to authenticated tab navigation!
     } catch {
       setErrorMessage("An unexpected network error occurred.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleQuickDemo = async (role: "STUDENT" | "ALUMNI") => {
+    setErrorMessage(null);
+    setIsLoading(true);
+    try {
+      if (role === "STUDENT") {
+        setEmail("student@alumnux.demo");
+        setPassword("Student@123");
+      } else {
+        setEmail("alumni@alumnux.demo");
+        setPassword("Alumni@123");
+      }
+      await loginAsDemo(role);
+    } catch {
+      setErrorMessage("Could not activate demo session.");
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +82,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   const handleForgotPassword = () => {
     Alert.alert(
       "Password Reset",
-      "Self-service password recovery is coordinated via institution administrative verification. Please reach out to your department coordinator or administrator at admin@mkcealumni.org.",
+      "Self-service password recovery is coordinated via institution administrative verification. For testing, you can use the sample accounts: student@alumnux.demo (Student@123) or alumni@alumnux.demo (Alumni@123).",
       [{ text: "OK" }]
     );
   };
@@ -93,7 +113,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>Welcome back</Text>
             <Text style={styles.subtitle}>
-              Sign in with your Alumnux credentials to continue.
+              Sign in with your Alumnux credentials or use sample access.
             </Text>
           </View>
 
@@ -171,6 +191,48 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                 <Text style={styles.submitButtonText}>Sign In</Text>
               )}
             </TouchableOpacity>
+          </View>
+
+          {/* 1-Click Sample Credentials Panel (matching website) */}
+          <View style={styles.demoSection}>
+            <View style={styles.demoHeader}>
+              <Text style={styles.demoHeaderTitle}>✨ 1-Click Sample Access</Text>
+              <Text style={styles.demoHeaderSubtitle}>Same accounts as web</Text>
+            </View>
+
+            <View style={styles.demoButtonGroup}>
+              <TouchableOpacity
+                style={styles.demoButton}
+                onPress={() => handleQuickDemo("STUDENT")}
+                disabled={isLoading}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.demoButtonIcon}>🎓</Text>
+                <View style={styles.demoButtonTextCol}>
+                  <Text style={styles.demoButtonTitle}>Student Sample</Text>
+                  <Text style={styles.demoButtonSub}>student@alumnux.demo</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.demoButton}
+                onPress={() => handleQuickDemo("ALUMNI")}
+                disabled={isLoading}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.demoButtonIcon}>💼</Text>
+                <View style={styles.demoButtonTextCol}>
+                  <Text style={styles.demoButtonTitle}>Alumni Sample</Text>
+                  <Text style={styles.demoButtonSub}>alumni@alumnux.demo</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.demoHintBox}>
+              <Text style={styles.demoHintText}>
+                🔑 Passwords: <Text style={styles.codeText}>Student@123</Text> | <Text style={styles.codeText}>Alumni@123</Text>
+              </Text>
+            </View>
           </View>
 
           {/* Footer switcher */}
@@ -293,10 +355,81 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.base,
     fontWeight: "700",
   },
+  demoSection: {
+    marginTop: spacing[6],
+    paddingTop: spacing[5],
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    gap: spacing[3],
+  },
+  demoHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  demoHeaderTitle: {
+    fontSize: typography.sizes.xs,
+    fontWeight: "700",
+    color: colors.primary.DEFAULT,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  demoHeaderSubtitle: {
+    fontSize: typography.sizes.xs,
+    color: colors.secondary.DEFAULT,
+  },
+  demoButtonGroup: {
+    gap: spacing[2],
+  },
+  demoButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radii.md,
+    paddingHorizontal: spacing[3],
+    paddingVertical: spacing[3],
+    gap: spacing[3],
+  },
+  demoButtonIcon: {
+    fontSize: 22,
+  },
+  demoButtonTextCol: {
+    flex: 1,
+  },
+  demoButtonTitle: {
+    fontSize: typography.sizes.sm,
+    fontWeight: "700",
+    color: colors.primary.DEFAULT,
+  },
+  demoButtonSub: {
+    fontSize: typography.sizes.xs,
+    color: colors.secondary.DEFAULT,
+    marginTop: 1,
+  },
+  demoHintBox: {
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radii.base,
+    paddingHorizontal: spacing[3],
+    paddingVertical: spacing[2],
+    alignItems: "center",
+  },
+  demoHintText: {
+    fontSize: typography.sizes.xs,
+    color: colors.secondary.DEFAULT,
+  },
+  codeText: {
+    fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
+    color: colors.primary.DEFAULT,
+    fontWeight: "700",
+  },
   footer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: spacing[8],
+    marginTop: spacing[6],
   },
   footerText: {
     fontSize: typography.sizes.sm,
