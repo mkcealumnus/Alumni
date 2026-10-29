@@ -1,0 +1,23 @@
+{
+  "name": "@alumnux/queue-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alumnux Asynchronous Queue Worker Service",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@alumnux/domain": "workspace:*",
+    "@alumnux/types": "workspace:*",
+    "ioredis": "^5.6.0"
+  },
+  "devDependencies": {
+    "@alumnux/config": "workspace:*",
+    "@types/node": "^20.17.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

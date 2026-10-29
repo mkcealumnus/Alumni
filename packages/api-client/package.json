@@ -1,0 +1,26 @@
+{
+  "name": "@alumnux/api-client",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Typed HTTP API client foundation for Alumnux",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@alumnux/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@alumnux/config": "workspace:*",
+    "typescript": "^5.6.3"
+  }
+}

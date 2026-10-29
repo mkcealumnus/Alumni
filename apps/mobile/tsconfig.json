@@ -1,0 +1,10 @@
+{
+  "extends": "../../packages/config/typescript/base.json",
+  "compilerOptions": {
+    "jsx": "react-native",
+    "lib": ["DOM", "ESNext"],
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "include": ["App.tsx", "src/**/*"]
+}

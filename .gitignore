@@ -1,19 +1,30 @@
 # Dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
+.pnpm-store/
+
+# Turbo cache
+.turbo/
 
 # Testing
-/coverage
+coverage/
 
-# Next.js build output
-/.next/
-/out/
+# Next.js / Vite build output
+.next/
+out/
+dist/
+build/
+.wrangler/
 
-# Production build artifacts
-build
-dist
-.wrangler
+# Expo / React Native
+.expo/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
 
 # Environment and local secret files
 .env
@@ -24,8 +35,8 @@ dist
 *.pem
 
 # Sensitive verification uploads (never commit evidence)
-/uploads
-/evidence
+uploads/
+evidence/
 *.jpg
 *.jpeg
 *.png

@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Alumnux",
+    "slug": "alumnux-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#F7F6F2",
+      "translucent": true
+    },
+    "androidNavigationBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "org.mkcealumni.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F8F8F5"
+      },
+      "package": "org.mkcealumni.mobile"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
