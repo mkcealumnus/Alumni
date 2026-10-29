@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "description": "Alumnux — Independent Alumni & Student Career Guidance Platform Monorepo",
+  "author": "Alumnux Engineering Team",
   "packageManager": "pnpm@11.21.0",
   "scripts": {
     "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@alumnux/web",
+    "dev:desktop": "turbo run dev --filter=@alumnux/desktop",
+    "dev:mobile": "turbo run dev --filter=@alumnux/mobile",
+    "dev:api": "turbo run dev --filter=@alumnux/api",
+    "desktop:start": "node scripts/start-desktop.cjs",
+    "desktop:dev": "pnpm --filter=@alumnux/desktop run dev:tauri",
+    "desktop:build": "pnpm --filter=@alumnux/desktop run build:tauri",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "clean": "turbo run clean"
+    "clean": "node scripts/clean.js"
   },
   "devDependencies": {
     "turbo": "^2.4.4",

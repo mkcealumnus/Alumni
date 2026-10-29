@@ -1,0 +1,22 @@
+FROM node:20-alpine AS base
+WORKDIR /app
+RUN npm install -g pnpm@11.21.0
+
+FROM base AS builder
+COPY pnpm-lock.yaml* pnpm-workspace.yaml package.json turbo.json tsconfig.base.json ./
+COPY packages ./packages
+COPY workers ./workers
+RUN pnpm install --frozen-lockfile || pnpm install
+RUN pnpm --filter=@alumnux/*worker* build || true
+
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/workers ./workers
+COPY --from=builder /app/node_modules ./node_modules
+
+USER node
+CMD ["node", "workers/queue-worker/dist/index.js"]

@@ -1,7 +1,7 @@
 packages:
   - "apps/*"
-  - "services/*"
   - "packages/*"
+  - "workers/*"
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:

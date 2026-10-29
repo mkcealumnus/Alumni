@@ -40,12 +40,17 @@ graph TD
         Config["@alumnux/config"]
     end
 
-    subgraph Backend ["Services (services/)"]
+    subgraph Backend ["Backend Apps (apps/api)"]
         API["@alumnux/api<br/>(Fastify 5 Node REST)"]
     end
 
-    subgraph Storage ["Database (database/)"]
-        MySQL[("MySQL 8.0+<br/>(cPanel Hosted)")]
+    subgraph Workers ["Workers (workers/)"]
+        QueueWorker["@alumnux/queue-worker<br/>(Background Queue Worker)"]
+    end
+
+    subgraph Storage ["Infrastructure (infrastructure/docker)"]
+        MySQL[("MySQL 8.0+")]
+        Redis[("Redis 7+")]
     end
 
     Web --> Core
@@ -54,11 +59,14 @@ graph TD
     API --> Types
     API --> Schemas
     API --> Domain
+    QueueWorker --> Domain
+    QueueWorker --> Types
 
     Web -.->|HTTP REST| API
     Mobile -.->|HTTP REST| API
     Desktop -.->|HTTP REST| API
     API -.->|mysql2| MySQL
+    API -.->|ioredis| Redis
 ```
 
 ---
@@ -68,11 +76,17 @@ graph TD
 ```
 Alumni/
 ├── apps/
-│   ├── web/                     # Preserved web frontend (React 19, Vite, Tailwind CSS, React Router 7)
-│   ├── mobile/                  # Minimal Expo React Native foundation for Android & iOS
+│   ├── api/                     # Node.js Fastify REST API service with MySQL persistence
+│   ├── web/                     # Full-featured responsive website (React, Tailwind CSS, Vite)
+│   ├── mobile/                  # Expo React Native application for Android & iOS
 │   └── desktop/                 # Lightweight Tauri desktop application foundation
-├── services/
-│   └── api/                     # Node.js Fastify REST API service with /health endpoint
+├── docs/
+│   ├── architecture/            # Monorepo architecture & request flow specs
+│   ├── migration/               # Migration logs & verification data
+│   ├── development/             # Comprehensive local development workflows
+│   └── deployment/              # cPanel & container production deployment guide
+├── infrastructure/
+│   └── docker/                  # Docker Compose (MySQL, Redis, API) and Dockerfiles
 ├── packages/
 │   ├── types/                   # @alumnux/types: Domain, user, verification, and API types
 │   ├── schemas/                 # @alumnux/schemas: Shared Zod validation schemas
@@ -80,23 +94,19 @@ Alumni/
 │   ├── ui-tokens/               # @alumnux/ui-tokens: Cross-platform design tokens
 │   ├── api-client/              # @alumnux/api-client: Typed HTTP client for all apps
 │   └── config/                  # @alumnux/config: ESLint & TypeScript presets
-├── database/
-│   ├── schema/                  # Production MySQL DDL schema for cPanel / phpMyAdmin
-│   └── migrations/              # Database migration history
-├── docs/
-│   ├── architecture/            # Monorepo architecture & request flow specs
-│   ├── migration/               # Phase 1 migration logs & verification data
-│   ├── development/             # Comprehensive local development workflows
-│   └── deployment/              # cPanel shared hosting production deployment guide
-├── .github/
-│   └── workflows/ci.yml         # GitHub Actions CI workflow (Build, Lint, Typecheck, Test)
+├── scripts/
+│   ├── clean.js                 # Cross-platform cache & artifact cleaning script
+│   ├── start-desktop.cjs        # Native desktop launcher script
+│   └── tauri-runner.cjs         # Cross-platform Tauri runner
+├── workers/
+│   └── queue-worker/            # Asynchronous background job worker
 ├── .env.example                 # Root environment template
 ├── .gitignore                   # Multi-workspace Git exclusion rules
-├── .npmrc                       # pnpm configuration
 ├── package.json                 # Monorepo root manifest
+├── pnpm-lock.yaml               # pnpm dependency lockfile
 ├── pnpm-workspace.yaml          # Workspace package mapping & build script approvals
-├── turbo.json                   # Turborepo task pipeline configuration
 ├── tsconfig.base.json           # Shared base TypeScript configuration
+├── turbo.json                   # Turborepo task pipeline configuration
 └── README.md                    # Project documentation
 ```
 
@@ -144,14 +154,14 @@ Copy the environment template files:
 # Windows PowerShell
 Copy-Item .env.example .env
 Copy-Item apps/web/.env.example apps/web/.env.local
-Copy-Item services/api/.env.example services/api/.env
+Copy-Item apps/api/.env.example apps/api/.env
 Copy-Item apps/mobile/.env.example apps/mobile/.env.local
 ```
 ```bash
 # Unix / macOS
 cp .env.example .env
 cp apps/web/.env.example apps/web/.env.local
-cp services/api/.env.example services/api/.env
+cp apps/api/.env.example apps/api/.env
 cp apps/mobile/.env.example apps/mobile/.env.local
 ```
 
@@ -167,26 +177,29 @@ pnpm run dev
 ### Run Specific Workspaces
 ```bash
 # Web application (http://localhost:3000)
-pnpm --filter @alumnux/web dev
+pnpm run dev:web
 
 # API Backend (http://localhost:4000)
-pnpm --filter @alumnux/api dev
+pnpm run dev:api
 
 # Mobile application (Expo Metro bundler)
-pnpm --filter @alumnux/mobile start
+pnpm run dev:mobile
+
+# Desktop application (Tauri development)
+pnpm run desktop:dev
 ```
 
 ---
 
-## 7. Build, Test, Typecheck & Lint
+## 7. Build, Test, Typecheck & Clean
 
 Run repository-wide commands powered by Turborepo:
 
 ```bash
-# Run typechecks across all 10 workspaces
+# Run typechecks across all workspaces
 pnpm run typecheck
 
-# Run unit tests (Web vitest + API health check tests)
+# Run unit tests across all applications and services
 pnpm run test
 
 # Run ESLint across codebases
@@ -194,23 +207,26 @@ pnpm run lint
 
 # Build all packages, API, and web distribution bundle
 pnpm run build
+
+# Deep-clean all build artifacts and caches cross-platform
+pnpm run clean
 ```
 
 ---
 
 ## 8. Current Limitations & Next Phases
 
-### Current Phase 1 Status
+### Current Status
 - Monorepo restructuring complete with pnpm workspaces and Turborepo.
 - The existing website is running from `apps/web` with all functionality preserved.
 - Shared packages (`types`, `schemas`, `domain`, `ui-tokens`, `api-client`, `config`) are established.
-- API foundation (`services/api`) is operational with `/health` endpoint and tests.
-- Minimal mobile (`apps/mobile`) and desktop (`apps/desktop`) foundations established.
-- Complete MySQL schema for cPanel phpMyAdmin created in `database/schema/`.
+- API foundation (`apps/api`) is operational with MySQL persistence, `/health` check, authentication endpoints, and unit tests.
+- Mobile (`apps/mobile`) and desktop (`apps/desktop`) foundations established.
+- Container infrastructure configured in `infrastructure/docker` (MySQL, Redis, API).
+- Asynchronous queue worker foundation established in `workers/queue-worker`.
 
-### Phase 2 Roadmap
-1. **Server-Backed Authentication:** Transition from client-side mock auth in `apps/web` to JWT-based session management in `services/api`.
-2. **Database Migrations:** Connect `services/api` to MySQL via `mysql2` or `knex` with automated migrations.
-3. **Verification Pipeline:** Implement secure document upload handling on cPanel for student and degree credentials.
-4. **Mobile Screens:** Build out native student and alumni screens in `apps/mobile` consuming the shared API.
-5. **Redesigned Web Application:** Launch the next-generation web frontend using the shared design tokens and API client.
+### Next Steps Roadmap
+1. **Production MySQL Deployment:** Run database migrations against production MySQL using `apps/api/src/db/migrator.ts`.
+2. **Verification Pipeline:** Implement secure document upload handling on cPanel for student and degree credentials.
+3. **Mobile Screens:** Build out native student and alumni screens in `apps/mobile` consuming the shared API.
+4. **Redesigned Web Application:** Launch the next-generation web frontend using the shared design tokens and API client.
